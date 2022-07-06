@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "artyom.js": "^1.0.6",
+    "primeng": "^14.0.0-rc.1"
+  }
+}
