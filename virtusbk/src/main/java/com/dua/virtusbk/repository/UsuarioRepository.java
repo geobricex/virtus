@@ -1,0 +1,7 @@
+package com.dua.virtusbk.repository;
+
+import com.dua.virtusbk.entity.Usuario;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
+}
