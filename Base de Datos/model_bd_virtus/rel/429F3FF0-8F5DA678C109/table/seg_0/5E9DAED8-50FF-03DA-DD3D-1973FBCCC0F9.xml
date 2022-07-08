@@ -1,0 +1,148 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="5E9DAED8-50FF-03DA-DD3D-1973FBCCC0F9" name="syllabus">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 02:08:27 UTC</createdTime>
+<generatorID>39EC27BC-D4D2-EA57-18B8-DB0E6EE0A068</generatorID>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id_syllabu" id="A19A7652-E496-167F-063D-6AAD9F793A69">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 02:08:27 UTC</createdTime>
+<generatorID>3B26BDD2-4F72-5D11-7EEA-D48A535239F5</generatorID>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="name_syllabu" id="AD69939A-0CEB-2AF6-1F02-996C2B1B9A58">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 02:08:27 UTC</createdTime>
+<generatorID>EB755525-1924-746E-15E3-20E21754384E</generatorID>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT037</logicalDatatype>
+<dataTypeSize>50</dataTypeSize>
+<ownDataTypeParameters>50,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="description_syllabu" id="241DF67C-61E3-A325-A20D-0DC32498D61A">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 02:08:27 UTC</createdTime>
+<generatorID>76DD65BF-87EB-DE9C-6932-C8259798670F</generatorID>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT037</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<ownDataTypeParameters>100,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="keywords_syllabu" id="B741E600-C80F-2F8E-6387-51EE9C6BA138">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 02:08:27 UTC</createdTime>
+<generatorID>75BC2EBF-6EEE-B336-150F-2D6C725A465A</generatorID>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT040</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="pathimg_syllabus" id="E486D298-903F-60CC-48BC-23EEEFA0A235">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 02:08:27 UTC</createdTime>
+<generatorID>A71A05A6-1F6C-4F7B-3B9F-55E4BE794194</generatorID>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT037</logicalDatatype>
+<dataTypeSize>75</dataTypeSize>
+<ownDataTypeParameters>75,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="datereg_syllabu" id="2924201E-3005-B0E3-7E16-13C0C8EE0161">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 02:08:27 UTC</createdTime>
+<generatorID>95C8F4A0-545B-346E-525A-F0C62A25972F</generatorID>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT047</logicalDatatype>
+<dataTypePrecision>3</dataTypePrecision>
+<ownDataTypeParameters>,3,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="dateupdate_syllabu" id="97F74CF2-1AAD-D5AE-12F3-88CBEF11C489">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 02:08:27 UTC</createdTime>
+<generatorID>5CBCFAC8-2E95-0AFC-69E8-E7BAED9F3C5F</generatorID>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT047</logicalDatatype>
+<dataTypePrecision>3</dataTypePrecision>
+<ownDataTypeParameters>,3,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="state_syllabu" id="B1D6E8E7-3F9C-C15D-B714-A103AEBE567C">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 02:08:27 UTC</createdTime>
+<generatorID>91E16A41-AA13-5B17-548A-A30134B5BDF0</generatorID>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<dataTypeSize>1</dataTypeSize>
+<ownDataTypeParameters>1,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="courses_id_course" id="30322F61-B00A-CA61-5D04-9ED17B0AC1A8">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 02:08:27 UTC</createdTime>
+<generatorID>97AF918F-8603-2C1D-2E4D-41E9DF36DA45</generatorID>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="1B0035CA-7ECB-F029-543C-406CA995C710" referredColumn="87305660-6D3F-AFAE-FD06-D9FABB56844B"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="9C01C9E4-5E53-3E6B-6365-ED7730D16C3A" name="syllabus_PK">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 02:08:27 UTC</createdTime>
+<generatorID>73382565-4DF5-D6E2-BACB-F9940F767E61</generatorID>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="A19A7652-E496-167F-063D-6AAD9F793A69"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="8AFE051E-17CD-1B0C-1EC1-74A50067A369" name="syllabus_courses_FK">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 02:08:27 UTC</createdTime>
+<generatorID>2FD7B258-3A36-7465-5BDE-411652C4DCB4</generatorID>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="30322F61-B00A-CA61-5D04-9ED17B0AC1A8"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

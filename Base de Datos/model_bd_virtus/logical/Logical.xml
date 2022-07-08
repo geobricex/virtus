@@ -1,0 +1,7 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<LogicalDesign class="oracle.dbtools.crest.model.design.logical.LogicalDesign" name="Logical" id="46FFB1B2-88BF-7A0E-8500-0F06448C7E4A" mainViewID="30C6B78F-2F85-5560-0373-9CE20245471A">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 00:25:12 UTC</createdTime>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<shouldBeOpen>false</shouldBeOpen>
+</LogicalDesign>

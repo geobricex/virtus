@@ -1,0 +1,19 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="syllabus_modules" directorySegmentName="seg_0" id="00287F47-4D75-36A7-B5AF-6A4F8AFDCC6B">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 01:56:50 UTC</createdTime>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<engineerTo>
+<item key="429F3FF0-1FE0-58A6-4CC8-8F5DA678C109" value="true"/>
+</engineerTo>
+<sourcePk>73382565-4DF5-D6E2-BACB-F9940F767E61</sourcePk>
+<identifying>false</identifying>
+<optionalSource>true</optionalSource>
+<optionalTarget>false</optionalTarget>
+<sourceCardinality>1</sourceCardinality>
+<sourceEntity>39EC27BC-D4D2-EA57-18B8-DB0E6EE0A068</sourceEntity>
+<targetCardinalityString>*</targetCardinalityString>
+<targetEntity>811BDB7C-1016-9E9B-F6E5-2FE761345273</targetEntity>
+<transferable>true</transferable>
+<deleteRule>NO ACTION</deleteRule>
+</Relation>
