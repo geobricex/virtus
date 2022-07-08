@@ -1,0 +1,109 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="8A414403-78B4-DB29-D2AA-B1D1924DF063" name="answers">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 03:00:11 UTC</createdTime>
+<generatorID>81C33A03-A66C-8294-76CD-15F9E167FB0D</generatorID>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="id_answer" id="C2E45733-31D3-3BFC-F440-1776A2C09B74">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 03:00:11 UTC</createdTime>
+<generatorID>D1567727-E322-F5DA-0478-1C8D24D19CDE</generatorID>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="options_answer" id="ED60EAFF-F7D9-C9C1-A26A-8ED5A92D2BFC">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 03:00:11 UTC</createdTime>
+<generatorID>EDF5B47C-2331-24A5-2EE6-494147F297CD</generatorID>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>47823B89-BECE-2D4A-B641-EE3BE6149078</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="datereg_answer" id="759F4655-5B9C-B253-DFA6-308973D22E03">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 03:00:11 UTC</createdTime>
+<generatorID>4856DA27-BAD4-C41B-6312-8995EB919790</generatorID>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT047</logicalDatatype>
+<dataTypePrecision>3</dataTypePrecision>
+<ownDataTypeParameters>,3,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="dateupdate_answer" id="DD694153-E1C7-6D2F-C450-9E32B3463E7C">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 03:00:11 UTC</createdTime>
+<generatorID>1F814C2D-1153-2F55-F42B-F96009B38616</generatorID>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT047</logicalDatatype>
+<dataTypePrecision>3</dataTypePrecision>
+<ownDataTypeParameters>,3,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="questions_id_question" id="DF9199D0-2C78-AB88-01D8-813C273ED090">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 03:00:11 UTC</createdTime>
+<generatorID>E40E9438-BFF0-B1C3-E14D-8314FA9C6DD4</generatorID>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<previousColumn>false</previousColumn>
+<autoIncrementCycle>false</autoIncrementCycle>
+<associations>
+<colAssociation fkAssociation="BDBAF27C-34A5-E0A4-D78D-F5122176686D" referredColumn="122CE264-7DC6-40E4-CD0C-7CF386D3784F"/>
+</associations>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="7314825C-8750-2C86-B0CD-4C9C5F6F0C1D" name="answers_PK">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 03:00:11 UTC</createdTime>
+<generatorID>8A0C3992-A44E-9CAB-D16C-E1B39F2B1769</generatorID>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="C2E45733-31D3-3BFC-F440-1776A2C09B74"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="5DA861F5-0606-D753-85F8-8A0A7E0EC812" name="answers__IDX">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 03:00:11 UTC</createdTime>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<indexState>Unique Plain Index</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<relationGeneratorID>501DB87E-BD64-C6E6-8D5B-A957F34CFEA6</relationGeneratorID>
+<indexColumnUsage>
+<colUsage columnID="DF9199D0-2C78-AB88-01D8-813C273ED090"/>
+</indexColumnUsage>
+</ind_PK_UK>
+<ind_PK_UK id="59A7A993-C991-6C67-3F91-E4F3C47488B1" name="answers_questions_FK">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 03:00:11 UTC</createdTime>
+<generatorID>501DB87E-BD64-C6E6-8D5B-A957F34CFEA6</generatorID>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<indexState>Foreign Key</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="DF9199D0-2C78-AB88-01D8-813C273ED090"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

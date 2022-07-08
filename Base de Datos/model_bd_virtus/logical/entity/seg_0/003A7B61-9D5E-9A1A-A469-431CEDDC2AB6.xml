@@ -1,0 +1,189 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="003A7B61-9D5E-9A1A-A469-431CEDDC2AB6" name="persons">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 00:26:56 UTC</createdTime>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<engineerTo>
+<item key="4A337B55-A865-FDD5-7A3F-871B1ABFF68D" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="id_person" id="FC7828D3-89B9-28D0-8B29-FA2D18AFE98B">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 00:27:06 UTC</createdTime>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<engineerTo>
+<item key="4A337B55-A865-FDD5-7A3F-871B1ABFF68D" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="name_person" id="6BA8ECD8-87D6-4FCE-3FC6-5D78FA05966F">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 00:27:32 UTC</createdTime>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<engineerTo>
+<item key="4A337B55-A865-FDD5-7A3F-871B1ABFF68D" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT037</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="lastname_person" id="71A4BDC4-30C2-1A42-F164-4FA7A785410A">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 00:27:58 UTC</createdTime>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<engineerTo>
+<item key="4A337B55-A865-FDD5-7A3F-871B1ABFF68D" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT037</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="email_person" id="E88B638C-B1CD-35D5-9B3E-27220E27252D">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 00:29:55 UTC</createdTime>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<engineerTo>
+<item key="4A337B55-A865-FDD5-7A3F-871B1ABFF68D" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT037</logicalDatatype>
+<dataTypeSize>75</dataTypeSize>
+<ownDataTypeParameters>75,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="password_person" id="99E1E556-8C52-44E7-CE2E-A4AF2FBA3ECE">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 00:30:59 UTC</createdTime>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<engineerTo>
+<item key="4A337B55-A865-FDD5-7A3F-871B1ABFF68D" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT037</logicalDatatype>
+<dataTypeSize>64</dataTypeSize>
+<ownDataTypeParameters>64,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="type_person" id="B3FDD7E6-C30E-F037-DB64-626A8EBDF5DF">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 00:29:28 UTC</createdTime>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<engineerTo>
+<item key="4A337B55-A865-FDD5-7A3F-871B1ABFF68D" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<dataTypeSize>1</dataTypeSize>
+<ownDataTypeParameters>1,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="pathimg_person" id="6FB7830C-D4AF-04A0-6F7D-637F7597530C">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 00:28:19 UTC</createdTime>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<engineerTo>
+<item key="4A337B55-A865-FDD5-7A3F-871B1ABFF68D" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT037</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="codeverification_person" id="FD9EEAFA-7D80-3E76-347C-7C313907D9D1">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 00:28:39 UTC</createdTime>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<engineerTo>
+<item key="4A337B55-A865-FDD5-7A3F-871B1ABFF68D" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT037</logicalDatatype>
+<dataTypeSize>15</dataTypeSize>
+<ownDataTypeParameters>15,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="datereg_person" id="5403ABEF-BCC3-EDF0-E165-F3AF75D7D863">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 00:31:26 UTC</createdTime>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<engineerTo>
+<item key="4A337B55-A865-FDD5-7A3F-871B1ABFF68D" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT047</logicalDatatype>
+<dataTypePrecision>3</dataTypePrecision>
+<ownDataTypeParameters>,3,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="dateupdate_person" id="AD918072-2421-C2F7-3B1B-5F8A02D63567">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 00:59:21 UTC</createdTime>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<engineerTo>
+<item key="4A337B55-A865-FDD5-7A3F-871B1ABFF68D" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT047</logicalDatatype>
+<dataTypePrecision>3</dataTypePrecision>
+<ownDataTypeParameters>,3,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="provider_person" id="DAB79F65-0879-CB0A-DEDB-F3947A75DC35">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 00:32:10 UTC</createdTime>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<engineerTo>
+<item key="4A337B55-A865-FDD5-7A3F-871B1ABFF68D" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT037</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="id_location" id="AE4F521A-1F7F-22FE-CEDF-4965B9A8A7A0">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 00:32:41 UTC</createdTime>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<engineerTo>
+<item key="4A337B55-A865-FDD5-7A3F-871B1ABFF68D" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT037</logicalDatatype>
+<dataTypeSize>20</dataTypeSize>
+<ownDataTypeParameters>20,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="236A3BEF-2512-D160-80F9-05DC9CD23369" name="person PK">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 00:27:30 UTC</createdTime>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<engineerTo>
+<item key="4A337B55-A865-FDD5-7A3F-871B1ABFF68D" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>FC7828D3-89B9-28D0-8B29-FA2D18AFE98B</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

@@ -2,6 +2,9 @@
     "name": "harmony",
     "version": "13.1.0",
     "license": "PrimeNG Commercial",
+    "engines": {
+        "node": "16.15.1"
+    },
     "scripts": {
         "ng": "ng",
         "start": "ng serve",

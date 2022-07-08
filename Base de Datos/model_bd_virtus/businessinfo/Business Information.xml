@@ -1,0 +1,7 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<BusinessInfoDesign class="oracle.dbtools.crest.model.businessinfo.BusinessInfoDesign" name="Business Information" id="84DDD08A-506C-4DF8-B895-CE7F15CFCC39">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 00:25:13 UTC</createdTime>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<shouldBeOpen>false</shouldBeOpen>
+</BusinessInfoDesign>
