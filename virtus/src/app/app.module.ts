@@ -15,6 +15,17 @@ import {AppBreadcrumbComponent} from "./app.breadcrumb.component";
 import {AppFooterComponent} from "./app.footer.component";
 import {RippleModule} from "primeng/ripple";
 
+import {BreadcrumbService} from './app.breadcrumb.service';
+import {MenuService} from './app.menu.service';
+import {FormsModule} from "@angular/forms";
+import {DashboardDemoComponent} from "./pages/dashboard/dashboarddemo.component";
+import {CalendarModule} from "primeng/calendar";
+import {PanelModule} from "primeng/panel";
+import {CheckboxModule} from "primeng/checkbox";
+import {InputTextareaModule} from "primeng/inputtextarea";
+import {TableModule} from "primeng/table";
+import {FullCalendarModule} from "@fullcalendar/angular";
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,16 +36,24 @@ import {RippleModule} from "primeng/ripple";
     AppMenuComponent,
     AppMenuitemComponent,
     AppBreadcrumbComponent,
-    AppFooterComponent
+    AppFooterComponent,
+    DashboardDemoComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     InputTextModule,
     ButtonModule,
-    RippleModule
+    RippleModule,
+    FormsModule,
+    CalendarModule,
+    PanelModule,
+    CheckboxModule,
+    InputTextareaModule,
+    TableModule,
+    FullCalendarModule
   ],
-  providers: [],
+  providers: [MenuService, BreadcrumbService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
