@@ -3,27 +3,35 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "virtus-app": {
+    "virtus": {
       "projectType": "application",
-      "schematics": {},
-      "root": "projects/virtus-app",
-      "sourceRoot": "projects/virtus-app/src",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        },
+        "@schematics/angular:application": {
+          "strict": true
+        }
+      },
+      "root": "",
+      "sourceRoot": "src",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/virtus-app",
-            "index": "projects/virtus-app/src/index.html",
-            "main": "projects/virtus-app/src/main.ts",
-            "polyfills": "projects/virtus-app/src/polyfills.ts",
-            "tsConfig": "projects/virtus-app/tsconfig.app.json",
+            "outputPath": "dist/virtus",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
             "assets": [
-              "projects/virtus-app/src/favicon.ico",
-              "projects/virtus-app/src/assets"
+              "src/favicon.ico",
+              "src/assets"
             ],
             "styles": [
-              "projects/virtus-app/src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": []
           },
@@ -43,8 +51,8 @@
               ],
               "fileReplacements": [
                 {
-                  "replace": "projects/virtus-app/src/environments/environment.ts",
-                  "with": "projects/virtus-app/src/environments/environment.prod.ts"
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
                 }
               ],
               "outputHashing": "all"
@@ -64,10 +72,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "virtus-app:build:production"
+              "browserTarget": "virtus:build:production"
             },
             "development": {
-              "browserTarget": "virtus-app:build:development"
+              "browserTarget": "virtus:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -75,22 +83,23 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "virtus-app:build"
+            "browserTarget": "virtus:build"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/virtus-app/src/test.ts",
-            "polyfills": "projects/virtus-app/src/polyfills.ts",
-            "tsConfig": "projects/virtus-app/tsconfig.spec.json",
-            "karmaConfig": "projects/virtus-app/karma.conf.js",
+            "main": "src/test.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "tsconfig.spec.json",
+            "karmaConfig": "karma.conf.js",
+            "inlineStyleLanguage": "scss",
             "assets": [
-              "projects/virtus-app/src/favicon.ico",
-              "projects/virtus-app/src/assets"
+              "src/favicon.ico",
+              "src/assets"
             ],
             "styles": [
-              "projects/virtus-app/src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": []
           }
@@ -98,7 +107,5 @@
       }
     }
   },
-  "cli": {
-    "analytics": false
-  }
+  "defaultProject": "virtus"
 }
