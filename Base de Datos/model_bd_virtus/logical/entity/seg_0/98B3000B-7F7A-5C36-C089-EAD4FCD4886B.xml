@@ -76,8 +76,11 @@
 <item key="429F3FF0-1FE0-58A6-4CC8-8F5DA678C109" value="true"/>
 </engineerTo>
 <nullsAllowed>true</nullsAllowed>
-<use>0</use>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT037</logicalDatatype>
+<dataTypeSize>200</dataTypeSize>
+<ownDataTypeParameters>200,,</ownDataTypeParameters>
 </Attribute>
 <Attribute name="datereg_resource" id="3C62A8EB-5F96-D707-2132-2943AEB9A1F8">
 <createdBy>geova</createdBy>

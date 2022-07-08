@@ -120,14 +120,29 @@
 <dataTypeSize>1</dataTypeSize>
 <ownDataTypeParameters>1,,</ownDataTypeParameters>
 </Attribute>
+<Attribute name="id-evaluation" id="B680E4D7-1A4E-3C90-3AF3-D44272C8D1D3">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 02:56:11 UTC</createdTime>
+<generatorID>A8DDDC5A-2F89-16C5-08F3-F8E1B527143A</generatorID>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<engineerTo>
+<item key="429F3FF0-1FE0-58A6-4CC8-8F5DA678C109" value="true"/>
+</engineerTo>
+<referedAttribute>85A9AC0F-0CE3-E2E0-1864-BB67B6F1B654</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
 </attributes>
 <identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
 <identifier id="7FBFE757-47DA-A219-7517-6E4CE3E2CF26" name="questions PK">
 <createdBy>geova</createdBy>
 <createdTime>2022-07-08 01:17:34 UTC</createdTime>
 <ownerDesignName>model_bd_virtus</ownerDesignName>
+<shouldEngineer>false</shouldEngineer>
 <engineerTo>
-<item key="429F3FF0-1FE0-58A6-4CC8-8F5DA678C109" value="true"/>
+<item key="429F3FF0-1FE0-58A6-4CC8-8F5DA678C109" value="false"/>
 </engineerTo>
 <pk>true</pk>
 <usedAttributes>

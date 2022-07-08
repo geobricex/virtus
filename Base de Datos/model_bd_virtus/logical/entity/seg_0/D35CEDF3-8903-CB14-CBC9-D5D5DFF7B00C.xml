@@ -103,5 +103,33 @@
 <logicalDatatype>LOGDT027</logicalDatatype>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
+<Attribute name="id_answer" id="6FB8D669-77DB-B85A-D98B-D5FB5722DA53">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 02:54:58 UTC</createdTime>
+<generatorID>162A8D70-AB43-0DD0-536B-969D43A80716</generatorID>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<engineerTo>
+<item key="429F3FF0-1FE0-58A6-4CC8-8F5DA678C109" value="true"/>
+</engineerTo>
+<referedAttribute>D1567727-E322-F5DA-0478-1C8D24D19CDE</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
 </attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="B26ECA28-5790-18DE-96EF-1BADCE3AF623" name="persons_answers PK">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 02:56:05 UTC</createdTime>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<engineerTo>
+<item key="429F3FF0-1FE0-58A6-4CC8-8F5DA678C109" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>BD478663-5A33-2951-C8EB-4949567F4B14</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
 </Entity>

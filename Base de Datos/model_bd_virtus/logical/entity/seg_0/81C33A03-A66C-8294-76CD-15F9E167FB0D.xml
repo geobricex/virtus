@@ -80,4 +80,18 @@
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
 </attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="8A0C3992-A44E-9CAB-D16C-E1B39F2B1769" name="answers PK">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 02:54:52 UTC</createdTime>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<engineerTo>
+<item key="429F3FF0-1FE0-58A6-4CC8-8F5DA678C109" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>D1567727-E322-F5DA-0478-1C8D24D19CDE</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
 </Entity>

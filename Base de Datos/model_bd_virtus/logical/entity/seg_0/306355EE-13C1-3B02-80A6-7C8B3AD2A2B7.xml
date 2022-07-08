@@ -133,4 +133,18 @@
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
 </attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="174D0FFD-0D4E-7FB8-6377-402CB462A941" name="evaluations PK">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 02:56:10 UTC</createdTime>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<engineerTo>
+<item key="429F3FF0-1FE0-58A6-4CC8-8F5DA678C109" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>85A9AC0F-0CE3-E2E0-1864-BB67B6F1B654</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
 </Entity>
