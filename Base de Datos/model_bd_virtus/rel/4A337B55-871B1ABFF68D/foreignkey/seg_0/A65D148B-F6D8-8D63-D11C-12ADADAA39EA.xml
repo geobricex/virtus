@@ -1,0 +1,17 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="A65D148B-F6D8-8D63-D11C-12ADADAA39EA" containerWithKeyObject="C3278D80-BA96-535C-EB40-4D0D1C1318C9" localFKIndex="F650BBCB-CD82-E228-2CD5-D385CF6D4A9F" name="modules_syllabus_FK">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 03:00:11 UTC</createdTime>
+<generatorID>00287F47-4D75-36A7-B5AF-6A4F8AFDCC6B</generatorID>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<referredTableLongName>syllabus</referredTableLongName>
+<deleteRule>NO ACTION</deleteRule>
+<referredTableID>DF624959-65AA-C776-2F70-900FCD341315</referredTableID>
+<keyObject>85D62C4E-7299-FEDE-3DD5-573D700398D1</keyObject>
+<referredKeyID>85D62C4E-7299-FEDE-3DD5-573D700398D1</referredKeyID>
+<mandatory>true</mandatory>
+<refColNames>id_syllabu</refColNames>
+<transferable>true</transferable>
+<rely>false</rely>
+<columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>
+</FKIndexAssociation>

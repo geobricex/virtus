@@ -1,0 +1,17 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<FKIndexAssociation class="oracle.dbtools.crest.model.design.relational.FKIndexAssociation" directorySegmentName="seg_0" id="21F34478-925A-F018-2A59-FF7188D9CA71" containerWithKeyObject="E9F33D1B-A8CD-2626-59DA-98E7A463A73A" localFKIndex="DC2DBC0D-DD77-AA8A-915F-6CF0F7C834EE" name="persons_answers_answers_FK">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 03:00:11 UTC</createdTime>
+<generatorID>162A8D70-AB43-0DD0-536B-969D43A80716</generatorID>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<referredTableLongName>answers</referredTableLongName>
+<deleteRule>NO ACTION</deleteRule>
+<referredTableID>8A414403-78B4-DB29-D2AA-B1D1924DF063</referredTableID>
+<keyObject>7314825C-8750-2C86-B0CD-4C9C5F6F0C1D</keyObject>
+<referredKeyID>7314825C-8750-2C86-B0CD-4C9C5F6F0C1D</referredKeyID>
+<mandatory>true</mandatory>
+<refColNames>id_answer</refColNames>
+<transferable>true</transferable>
+<rely>false</rely>
+<columnDependencyConstraintGenerateInDDL>true</columnDependencyConstraintGenerateInDDL>
+</FKIndexAssociation>

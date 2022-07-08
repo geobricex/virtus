@@ -1,0 +1,49 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Table class="oracle.dbtools.crest.model.design.relational.Table" directorySegmentName="seg_0" id="F5AAAA3F-BA4D-77DF-0256-47B38A89B599" name="utils">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 03:00:11 UTC</createdTime>
+<generatorID>8AF0B42B-3E60-090B-450F-081472A171AB</generatorID>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<allowColumnReorder>false</allowColumnReorder>
+<existDependencyGenerateInDDl>true</existDependencyGenerateInDDl>
+<parsed>true</parsed>
+<columns itemClass="oracle.dbtools.crest.model.design.relational.Column">
+<Column name="key_util" id="9409DE67-B100-68D4-F4C8-6EACBE763910">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 03:00:11 UTC</createdTime>
+<generatorID>F8AB5108-EE72-3240-2D37-53C102D91A43</generatorID>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT037</logicalDatatype>
+<dataTypeSize>50</dataTypeSize>
+<ownDataTypeParameters>50,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+<Column name="value_util" id="CCA449F2-441C-9B4B-943C-B75FA81918E3">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 03:00:11 UTC</createdTime>
+<generatorID>F467CBA8-FFF2-2EFE-E2B5-A58616AEF750</generatorID>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT040</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+<autoIncrementCycle>false</autoIncrementCycle>
+</Column>
+</columns>
+<indexes itemClass="oracle.dbtools.crest.model.design.relational.Index">
+<ind_PK_UK id="7E92DDD3-7959-7D2B-2749-C3E5F1694A17" name="utils_PK">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 03:00:11 UTC</createdTime>
+<generatorID>2D7EA873-389C-4827-B159-241A31722952</generatorID>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<pk>true</pk>
+<indexState>Primary Constraint</indexState>
+<isSurrogateKey>false</isSurrogateKey>
+<indexColumnUsage>
+<colUsage columnID="9409DE67-B100-68D4-F4C8-6EACBE763910"/>
+</indexColumnUsage>
+</ind_PK_UK>
+</indexes>
+</Table>

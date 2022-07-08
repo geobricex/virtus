@@ -1,0 +1,19 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="questions_answers" directorySegmentName="seg_0" id="501DB87E-BD64-C6E6-8D5B-A957F34CFEA6">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 01:58:28 UTC</createdTime>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<engineerTo>
+<item key="429F3FF0-1FE0-58A6-4CC8-8F5DA678C109" value="true"/>
+</engineerTo>
+<sourcePk>7FBFE757-47DA-A219-7517-6E4CE3E2CF26</sourcePk>
+<identifying>false</identifying>
+<optionalSource>true</optionalSource>
+<optionalTarget>false</optionalTarget>
+<sourceCardinality>1</sourceCardinality>
+<sourceEntity>6FEE5293-3ACB-B713-0723-839C8EF96655</sourceEntity>
+<targetCardinalityString>1</targetCardinalityString>
+<targetEntity>81C33A03-A66C-8294-76CD-15F9E167FB0D</targetEntity>
+<transferable>true</transferable>
+<deleteRule>NO ACTION</deleteRule>
+</Relation>

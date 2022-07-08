@@ -1,0 +1,19 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Relation class="oracle.dbtools.crest.model.design.logical.Relation" name="persons_persons_courses" directorySegmentName="seg_0" id="A5F9ACCC-3CD2-775A-885D-6F514F10E55F">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-08 01:59:24 UTC</createdTime>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<engineerTo>
+<item key="429F3FF0-1FE0-58A6-4CC8-8F5DA678C109" value="true"/>
+</engineerTo>
+<sourcePk>236A3BEF-2512-D160-80F9-05DC9CD23369</sourcePk>
+<identifying>false</identifying>
+<optionalSource>true</optionalSource>
+<optionalTarget>false</optionalTarget>
+<sourceCardinality>1</sourceCardinality>
+<sourceEntity>003A7B61-9D5E-9A1A-A469-431CEDDC2AB6</sourceEntity>
+<targetCardinalityString>*</targetCardinalityString>
+<targetEntity>0910FABD-7D60-6EB3-8E99-5A8EDD422388</targetEntity>
+<transferable>true</transferable>
+<deleteRule>NO ACTION</deleteRule>
+</Relation>
