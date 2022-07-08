@@ -1,10 +1,22 @@
 import { Component } from '@angular/core';
+import { PrimeNGConfig } from 'primeng/api';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+    selector: 'app-root',
+    templateUrl: './app.component.html',
 })
 export class AppComponent {
-  title = 'virtus-app';
+
+    menuMode = 'static';
+
+    theme = 'absolution';
+
+    inputStyle = 'outlined';
+
+    constructor(private primengConfig: PrimeNGConfig) {
+    }
+
+    ngOnInit() {
+        this.primengConfig.ripple = true;
+    }
 }
