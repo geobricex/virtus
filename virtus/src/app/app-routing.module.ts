@@ -7,7 +7,8 @@ import {AppMainComponent} from "./app.main.component";
 @NgModule({
     imports: [
         RouterModule.forRoot([
-            {path: '', component: AppLoginComponent},
+            {path: '', component: AppMainpageComponent},
+            {path: 'home', component: AppMainpageComponent},
             {path: 'app', component: AppMainComponent},
             {path: 'login', component: AppLoginComponent},
             {path: '**', redirectTo: '/notfound'},

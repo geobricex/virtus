@@ -14,7 +14,9 @@ import {AppMenuitemComponent} from "./app.menuitem.component";
 import {AppBreadcrumbComponent} from "./app.breadcrumb.component";
 import {AppFooterComponent} from "./app.footer.component";
 import {RippleModule} from "primeng/ripple";
-
+//INICIO SERVICE
+import {CargarScriptsService} from "./services/cargar-scripts.service"
+// FIN SERVICES
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,7 +36,9 @@ import {RippleModule} from "primeng/ripple";
     ButtonModule,
     RippleModule
   ],
-  providers: [],
+  providers: [
+    CargarScriptsService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
