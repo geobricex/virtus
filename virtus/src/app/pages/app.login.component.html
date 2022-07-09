@@ -8,15 +8,15 @@
             <div style="margin-top:32px">
                 <div class="col-12">
                     <label>Correo electrónico / Usuario:</label>
-                    <input type="text" autocomplete="off" pInputText/>
+                    <input type="text" autocomplete="off" pInputText [(ngModel)]="email"/>
                 </div>
                 <div class="col-12">
                     <label>Ingrese Contraseña:</label>
-                    <input type="password" autocomplete="off" pInputText feedback="false"/>
+                    <input type="password" autocomplete="off" pInputText feedback="false" [(ngModel)]="password"/>
                 </div>
             </div>
             <div class="col-6">
-                <button type="button" pButton label="Acceder" class="p-button-raised" routerLink="/app"></button>
+                <button type="button" pButton label="Acceder" class="p-button-raised" (click)="login()"></button>
             </div>
         </div>
         <div class="right-part">

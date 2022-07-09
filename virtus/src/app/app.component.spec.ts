@@ -1,16 +1,29 @@
 import { TestBed, async } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
+import { AppMenuComponent } from './app.menu.component';
+import { AppTopBarComponent } from './app.topbar.component';
+import { AppFooterComponent } from './app.footer.component';
+import { AppBreadcrumbComponent } from './app.breadcrumb.component';
+import { BreadcrumbService } from './app.breadcrumb.service';
+import { TabViewModule } from 'primeng/tabview';
+import { MenuService } from './app.menu.service';
 
 describe('AppComponent', () => {
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             imports: [
-                RouterTestingModule
+                RouterTestingModule,
+                TabViewModule
             ],
             declarations: [
-                AppComponent
-            ]
+                AppComponent,
+                AppMenuComponent,
+                AppTopBarComponent,
+                AppFooterComponent,
+                AppBreadcrumbComponent
+            ],
+            providers: [BreadcrumbService, MenuService]
         }).compileComponents();
     }));
 
