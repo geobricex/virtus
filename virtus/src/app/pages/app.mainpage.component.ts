@@ -13,7 +13,10 @@ export class AppMainpageComponent {
   constructor( private  _CargarScriptsService:CargarScriptsService /*public sanitizer: DomSanitizer*/) {
    // this.cssUrl = './app.pagemain.component.css';
     _CargarScriptsService.loadingService(["https://res.cloudinary.com/bricex/raw/upload/v1657340119/library/io35k5oiz9vltw6cohvf.js"]);
-
+    _CargarScriptsService.loadingService([
+      "../assets/scripts/library/artyom.window.min.js",
+      "../assets/scripts/js/manager_voice.js"
+    ]);
   }
 
 }

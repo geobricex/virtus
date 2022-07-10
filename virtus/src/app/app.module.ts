@@ -29,6 +29,7 @@ import {CheckboxModule} from "primeng/checkbox";
 import {InputTextareaModule} from "primeng/inputtextarea";
 import {TableModule} from "primeng/table";
 import {FullCalendarModule} from "@fullcalendar/angular";
+import { TestvoiceComponent } from './testvoice/testvoice.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import {FullCalendarModule} from "@fullcalendar/angular";
     AppMenuitemComponent,
     AppBreadcrumbComponent,
     AppFooterComponent,
-    DashboardDemoComponent
+    DashboardDemoComponent,
+    TestvoiceComponent
   ],
   imports: [
     BrowserModule,
