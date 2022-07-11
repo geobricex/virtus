@@ -43,6 +43,7 @@ import {DataViewModule} from "primeng/dataview";
 import {CargarJson} from "./services/cargar-json";
 import {DropdownModule} from "primeng/dropdown";
 import { MiscursosComponent } from './pages/miscursos/miscursos.component';
+import { TemasComponent } from './pages/temas/temas.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -65,7 +66,8 @@ FullCalendarModule.registerPlugins([
     TestvoiceComponent,
     AppNotfoundComponent,
     CursosComponent,
-    MiscursosComponent
+    MiscursosComponent,
+    TemasComponent
   ],
     imports: [
         HttpClientModule,

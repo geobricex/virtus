@@ -8,6 +8,8 @@ import {AppLoginComponent} from './pages/app.login.component';
 import {AppMainpageComponent} from "./pages/app.mainpage.component";
 import {AppMainComponent} from "./app.main.component";
 import {AppNotfoundComponent} from "./pages/app.notfound.component";
+import {MiscursosComponent} from "./pages/miscursos/miscursos.component";
+import {TemasComponent} from "./pages/temas/temas.component";
 
 @NgModule({
     imports: [
@@ -18,7 +20,9 @@ import {AppNotfoundComponent} from "./pages/app.notfound.component";
             {path: 'app', component: AppMainComponent,
               children: [
                 {path: '', component: DashboardDemoComponent},
-                {path: 'course', component: CursosComponent}
+                {path: 'course', component: CursosComponent},
+                {path: 'mycourse', component: MiscursosComponent},
+                {path: 'mycourse/themes', component: TemasComponent}
                 ]
             },
             {path: 'login', component: AppLoginComponent},
