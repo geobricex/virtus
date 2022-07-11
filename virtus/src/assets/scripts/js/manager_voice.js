@@ -10,7 +10,7 @@ function startContinuousArtyom() {
         artyom.initialize({
             lang: "es-ES",
             continuous: true, // Artyom will listen forever
-            debug: true, // Show what recognizes in the Console
+            debug: false, // Show what recognizes in the Console
             listen: true, // Start listening after this
             speed: 0.9, // Talk a little bit slow
             mode: "normal" // This parameter is not required as it will be normal by default
@@ -22,32 +22,38 @@ function startContinuousArtyom() {
             {
                 indexes: ["a", "avión", "avion"],
                 action: function (i) {
-                    console.log("Literla A");
+                    console.log("Literal A");
+                    artyom.say("Literal A");
                 }
             }, {
                 indexes: ["b", "burro", "bicicleta"],
                 action: function (i) {
-                    console.log("Literla B");
+                    console.log("Literal B");
+                    artyom.say("Literal B");
                 }
             }, {
                 indexes: ["c", "conejo", "caballo"],
                 action: function (i) {
-                    console.log("Literla c");
+                    console.log("Literal c");
+                    artyom.say("Literal C");
                 }
             }, {
                 indexes: ["d", "dedo", "delfin"],
                 action: function (i) {
-                    console.log("Literla d");
+                    console.log("Literal d");
+                    artyom.say("Literal d");
                 }
             }, {
                 indexes: ["e", "elefante"],
                 action: function (i) {
-                    console.log("Literla e");
+                    console.log("Literal e");
+                    artyom.say("Literal e");
                 }
             }, {
                 indexes: ["f", "flor", , "foca"],
                 action: function (i) {
-                    console.log("Literla f");
+                    console.log("Literal f");
+                    artyom.say("Literal f");
                 }
             }
         ]);
@@ -68,6 +74,22 @@ function startContinuousArtyom() {
                 console.log("I said all that i knew");
             }
         });
+
+        var UserDictation = artyom.newDictation({
+            continuous: true, // Enable continuous if HTTPS connection
+            onResult: function (text) {
+                // Do something with the text
+                console.log(text);
+            },
+            onStart: function () {
+                console.log("Dictation started by the user");
+            },
+            onEnd: function () {
+                alert("Dictation stopped by the user");
+            }
+        });
+
+        UserDictation.start();
     }, 250);
 }
 
