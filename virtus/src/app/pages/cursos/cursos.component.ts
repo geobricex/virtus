@@ -10,7 +10,6 @@ import {BreadcrumbService} from '../../app.breadcrumb.service';
 })
 export class CursosComponent implements OnInit {
 
-
   courses:Curso[];
 
   sortOrder: number;
