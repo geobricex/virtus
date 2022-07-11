@@ -40,6 +40,8 @@ import {AppNotfoundComponent} from "./pages/app.notfound.component";
 import { CursosComponent } from './pages/cursos/cursos.component';
 import {DataViewModule} from "primeng/dataview";
 import {CargarJson} from "./services/cargar-json";
+import {DropdownModule} from "primeng/dropdown";
+import { MiscursosComponent } from './pages/miscursos/miscursos.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -60,25 +62,27 @@ FullCalendarModule.registerPlugins([
     AppFooterComponent,
     DashboardDemoComponent,
     AppNotfoundComponent,
-    CursosComponent
+    CursosComponent,
+    MiscursosComponent
   ],
-  imports: [
-    HttpClientModule,
-    BrowserAnimationsModule,
-    BrowserModule,
-    AppRoutingModule,
-    InputTextModule,
-    ButtonModule,
-    RippleModule,
-    FormsModule,
-    CalendarModule,
-    PanelModule,
-    CheckboxModule,
-    InputTextareaModule,
-    TableModule,
-    FullCalendarModule,
-    DataViewModule
-  ],
+    imports: [
+        HttpClientModule,
+        BrowserAnimationsModule,
+        BrowserModule,
+        AppRoutingModule,
+        InputTextModule,
+        ButtonModule,
+        RippleModule,
+        FormsModule,
+        CalendarModule,
+        PanelModule,
+        CheckboxModule,
+        InputTextareaModule,
+        TableModule,
+        FullCalendarModule,
+        DataViewModule,
+        DropdownModule
+    ],
 
   providers: [
     {provide: LocationStrategy, useClass: HashLocationStrategy},
