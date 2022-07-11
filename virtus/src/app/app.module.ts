@@ -40,7 +40,6 @@ import interactionPlugin from '@fullcalendar/interaction';
 import {AppNotfoundComponent} from "./pages/app.notfound.component";
 import { CursosComponent } from './pages/cursos/cursos.component';
 import {DataViewModule} from "primeng/dataview";
-import {CargarJson} from "./services/cargar-json";
 import {DropdownModule} from "primeng/dropdown";
 import { MiscursosComponent } from './pages/miscursos/miscursos.component';
 import { TemasComponent } from './pages/temas/temas.component';
@@ -90,7 +89,7 @@ FullCalendarModule.registerPlugins([
 
   providers: [
     {provide: LocationStrategy, useClass: HashLocationStrategy},
-    MenuService, BreadcrumbService, CargarScriptsService, CargarJson],
+    MenuService, BreadcrumbService, CargarScriptsService],
 
   bootstrap: [AppComponent]
 })
