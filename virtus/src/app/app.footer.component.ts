@@ -5,8 +5,9 @@ import {Component} from '@angular/core';
     template: `
       <div class="layout-footer">
           <a href="/dashboard" class="logo-container">
-              <img src="assets/layout/images/harmony-logo.png" alt="harmony-layout" />
-              <span class="app-name">HARMONY</span>
+              <span class="app-name">VIRTUS</span> <br>
+                <span class="text-pink-100" style="margin-left: 14px"> En latín Virtus tiene varios significados entre ellos principalmente Virtud, Valor,
+                Fortaleza, Coraje. </span>
           </a>
 
           <div class="footer-icons">
