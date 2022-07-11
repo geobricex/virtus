@@ -1,0 +1,4 @@
+-- actualizar archivos en data
+-- docker rmi virtus/virtus:1.0.1
+-- docker build -t virtus/virtus:1.0.1 .
+-- docker-compose down && docker-compose up -d   O   docker-compose up
