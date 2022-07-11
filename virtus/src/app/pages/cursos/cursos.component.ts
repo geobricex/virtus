@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { CargarJson } from '../../services/cargar-json';
 import {Curso} from '../../models/curso';
 import {BreadcrumbService} from '../../app.breadcrumb.service';
 
