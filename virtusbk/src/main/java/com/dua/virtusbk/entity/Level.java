@@ -15,7 +15,8 @@ import javax.persistence.*;
 @ToString
 public class Level {
     @Id
-    //@GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name="levels_id_levels_seq", sequenceName="levels_id_levels_seq", allocationSize=1)
+    @GeneratedValue(generator="levels_id_levels_seq")
     @Column(name = "id_levels", nullable = false)
     private Long id;
 

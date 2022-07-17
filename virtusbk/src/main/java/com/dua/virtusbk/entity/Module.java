@@ -18,7 +18,8 @@ import java.time.Instant;
 @ToString
 public class Module {
     @Id
-    //@GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name="modules_id_module_seq", sequenceName="modules_id_module_seq", allocationSize=1)
+    @GeneratedValue(generator="modules_id_module_seq")
     @Column(name = "id_module", nullable = false)
     private Long id1;
 

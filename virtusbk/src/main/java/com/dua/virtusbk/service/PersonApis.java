@@ -34,6 +34,19 @@ public class PersonApis {
         }
     }
 
+    @GetMapping("/byemail/{email}")
+    public ResponseEntity<Person> getListOfLaptopsByBrand (@PathVariable String email) {
+        Optional<Person> findPerson = Optional.ofNullable(personDAO.findByEmail(email));
+        if (findPerson.isPresent()) {
+            Person person = findPerson.get();
+            person.setPasswordPerson(null);
+            person.setCodeverificationPerson(null);
+            return ResponseEntity.ok(person);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    }
+
     @PostMapping
     public ResponseEntity<Person> insertPerson(@RequestBody Person person) {
         System.out.println("Email insert: "+person.getEmailPerson());
@@ -42,7 +55,7 @@ public class PersonApis {
     }
 
     @PutMapping
-    public ResponseEntity<Person> updatePersons(@RequestBody Person person) {
+    public ResponseEntity<Person> updatePerson(@RequestBody Person person) {
         Person upPerson = personDAO.save(person);
         if (upPerson != null) {
             return ResponseEntity.ok(upPerson);
@@ -52,7 +65,7 @@ public class PersonApis {
     }
 
     @DeleteMapping(value = "{id}")
-    public ResponseEntity<Person> deletePersons(@PathVariable("id") Long id_person) {
+    public ResponseEntity<Person> deletePerson(@PathVariable("id") Long id_person) {
         personDAO.deleteById(id_person);
         return ResponseEntity.ok(null);
     }

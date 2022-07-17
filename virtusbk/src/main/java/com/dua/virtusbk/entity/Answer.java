@@ -19,7 +19,8 @@ import java.time.Instant;
 @ToString
 public class Answer{
     @Id
-    //@GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name="answers_id_answer_seq", sequenceName="answers_id_answer_seq", allocationSize=1)
+    @GeneratedValue(generator="answers_id_answer_seq")
     @Column(name = "id_answer", nullable = false)
     private Long id1;
 

@@ -17,7 +17,8 @@ import java.time.Instant;
 @ToString
 public class Resource {
     @Id
-    //@GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name="resources_id_resource_seq", sequenceName="resources_id_resource_seq", allocationSize=1)
+    @GeneratedValue(generator="resources_id_resource_seq")
     @Column(name = "id_resource", nullable = false)
     private Long id;
 

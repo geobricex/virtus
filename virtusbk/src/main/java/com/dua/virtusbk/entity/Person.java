@@ -22,8 +22,9 @@ public class Person {
     @Id
     //@GeneratedValue(strategy = GenerationType.AUTO)
     //@GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name="webuser_idwebuser_seq", sequenceName="webuser_idwebuser_seq", allocationSize=1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="webuser_idwebuser_seq")
+    //@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="webuser_idwebuser_seq")
+    @SequenceGenerator(name="person_id_person_seq", sequenceName="person_id_person_seq", allocationSize=1)
+    @GeneratedValue(generator="person_id_person_seq")
     @Column(name = "id_person", nullable = false)
     private Long id;
 
