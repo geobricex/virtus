@@ -6,8 +6,7 @@ import {Component} from '@angular/core';
       <div class="layout-footer">
           <a href="/dashboard" class="logo-container">
               <span class="app-name">VIRTUS</span> <br>
-                <span class="text-pink-100" style="margin-left: 14px"> En latín Virtus tiene varios significados entre ellos principalmente Virtud, Valor,
-                Fortaleza, Coraje. </span>
+                <span class="text-pink-100" style="margin-left: 14px"> Aplicación educativa con enfoque universal. </span>
           </a>
 
           <div class="footer-icons">
