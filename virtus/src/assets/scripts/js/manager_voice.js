@@ -1,5 +1,34 @@
 
 console.log("Cargar artyomJS");
+
+// creamos un flag para saber si tenemos adblocker
+let isAdBlockEnabled = false;
+
+// creamos un elemento div y lo iniciamos con una clase
+// que sabemos que el adblocker eliminaría
+const ad = document.createElement('div');
+ad.innerHTML = '&nbsp;'
+ad.className = 'adsbox'
+// añadimos nuestra simulación de anuncio en el body
+document.body.appendChild(ad);
+
+// ahora dejamos 100ms para que el adblocker haga su trabajo
+// y entonces veremos si el elemento sigue visible
+window.setTimeout(() => {
+    console.log("test");
+    // si el elemento no tiene altura, es que
+    // el AdBlocker se lo ha cargado
+    isAdBlockEnabled = ad.offsetHeight === 0
+    // eliminamos el "falso" anuncio
+    ad.remove()
+    console.log("resultado ads: " + isAdBlockEnabled);
+    if (isAdBlockEnabled) {
+        alter("Quita tu bloqueado, mañoso");
+        // codigo a ejecutar si el adblocker está activado
+    }
+}, 100);
+
+
 var artyom = new Artyom();
 //https://codepen.io/mrtyn/pen/bGNVowB
 
@@ -90,6 +119,7 @@ function startContinuousArtyom() {
         });
 
         UserDictation.start();
+        artyom.simulateInstruction("conejo");
     }, 250);
 }
 
