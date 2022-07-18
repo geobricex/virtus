@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { User } from '../models/user';
-import { Router } from '@angular/router';
+import {Component} from '@angular/core';
+import {User} from '../models/user';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -12,11 +12,25 @@ export class AppLoginComponent {
   password: string;
   rol: string;
 
+  forgotPassword_dialog: boolean;
+  alreadyHasCode: boolean;
+
   constructor(public router: Router) {
+    this.forgotPassword_dialog = false;
+    this.alreadyHasCode = false;
   }
 
-  login () {
-    if(this.email === "admin" && this.password === "admin")
+  openDialogHasCode() {
+    this.forgotPassword_dialog = false;
+    this.alreadyHasCode = true;
+  }
+
+  openDialogForgotPassword() {
+    this.forgotPassword_dialog = true;
+  }
+
+  login() {
+    if (this.email === "admin" && this.password === "admin")
       this.rol = "A";
     else
       this.rol = "U"
