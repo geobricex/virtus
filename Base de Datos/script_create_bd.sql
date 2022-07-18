@@ -8,7 +8,7 @@
 -- SQLINES LICENSE FOR EVALUATION USE ONLY
 CREATE TABLE answers
     (
-     id_answer BIGINT NOT NULL ,
+     id_answer bigserial NOT NULL ,
      options_answer VARCHAR (8000) NOT NULL ,
      datereg_answer TIMESTAMP(3) NOT NULL ,
      dateupdate_answer TIMESTAMP(3) NOT NULL ,
@@ -33,7 +33,7 @@ ALTER TABLE answers ADD CONSTRAINT answers_PK PRIMARY KEY (id_answer)
 -- SQLINES LICENSE FOR EVALUATION USE ONLY
 CREATE TABLE courses
     (
-     id_course BIGINT NOT NULL ,
+     id_course bigserial NOT NULL ,
      name_course VARCHAR (50) NOT NULL ,
      description_course VARCHAR (100) NOT NULL ,
      keywords_course TEXT ,
@@ -51,7 +51,7 @@ ALTER TABLE courses ADD CONSTRAINT courses_PK PRIMARY KEY (id_course)
 -- SQLINES LICENSE FOR EVALUATION USE ONLY
 CREATE TABLE evaluations
     (
-     "id-evaluation" BIGINT NOT NULL ,
+     "id_evaluation" bigserial NOT NULL ,
      name_evaluation VARCHAR (500) NOT NULL ,
      description_evaluation VARCHAR (100) NOT NULL ,
      datereg_evaluation TIMESTAMP(3) NOT NULL ,
@@ -69,7 +69,7 @@ ALTER TABLE evaluations ADD CONSTRAINT evaluations_PK PRIMARY KEY ("id-evaluatio
 -- SQLINES LICENSE FOR EVALUATION USE ONLY
 CREATE TABLE levels
     (
-     id_levels BIGINT NOT NULL ,
+     id_levels bigserial NOT NULL ,
      name_level VARCHAR (10) NOT NULL ,
      description_level VARCHAR (100) ,
      state_level CHAR (1) NOT NULL ,
@@ -83,7 +83,7 @@ ALTER TABLE levels ADD CONSTRAINT levels_PK PRIMARY KEY (id_levels)
 -- SQLINES LICENSE FOR EVALUATION USE ONLY
 CREATE TABLE modules
     (
-     id_module BIGINT NOT NULL ,
+     id_module bigserial NOT NULL ,
      name_module VARCHAR (50) NOT NULL ,
      description_module VARCHAR (100) NOT NULL ,
      keywords_module TEXT ,
@@ -101,13 +101,13 @@ ALTER TABLE modules ADD CONSTRAINT modules_PK PRIMARY KEY (id_module)
 -- SQLINES LICENSE FOR EVALUATION USE ONLY
 CREATE TABLE persons
     (
-     id_person BIGINT NOT NULL ,
-     name_person VARCHAR(1) NOT NULL ,
-     lastname_person VARCHAR(1) NOT NULL ,
+     id_person bigserial NOT NULL ,
+     name_person VARCHAR(50) NOT NULL ,
+     lastname_person VARCHAR(50) NOT NULL ,
      email_person VARCHAR (75) NOT NULL ,
      password_person VARCHAR (64) NOT NULL ,
      type_person CHAR (1) NOT NULL ,
-     pathimg_person VARCHAR(1) ,
+     pathimg_person VARCHAR(100) ,
      codeverification_person VARCHAR (15) ,
      datereg_person TIMESTAMP(3) NOT NULL ,
      dateupdate_person TIMESTAMP(3) NOT NULL ,
@@ -122,7 +122,7 @@ ALTER TABLE persons ADD CONSTRAINT persons_PK PRIMARY KEY (id_person)
 -- SQLINES LICENSE FOR EVALUATION USE ONLY
 CREATE TABLE persons_answers
     (
-     id_person_answer BIGINT NOT NULL ,
+     id_person_answer bigserial NOT NULL ,
      datereg_person_answer TIMESTAMP(3) NOT NULL ,
      results_person_answer VARCHAR (8000) NOT NULL ,
      qualification_person_answer INTEGER ,
@@ -139,7 +139,7 @@ ALTER TABLE persons_answers ADD CONSTRAINT persons_answers_PK PRIMARY KEY (id_pe
 -- SQLINES LICENSE FOR EVALUATION USE ONLY
 CREATE TABLE persons_courses
     (
-     id_person_course BIGINT NOT NULL ,
+     id_person_course bigserial NOT NULL ,
      datereg_person_course TIMESTAMP(3) NOT NULL ,
      state_person_course CHAR (1) NOT NULL ,
      courses_id_course BIGINT NOT NULL ,
@@ -153,7 +153,7 @@ ALTER TABLE persons_courses ADD CONSTRAINT persons_courses_PK PRIMARY KEY (id_pe
 -- SQLINES LICENSE FOR EVALUATION USE ONLY
 CREATE TABLE questions
     (
-     id_question BIGINT NOT NULL ,
+     id_question bigserial NOT NULL ,
      type_question VARCHAR (10) NOT NULL ,
      title_question VARCHAR (200) NOT NULL ,
      description_question VARCHAR (500) NOT NULL ,
@@ -171,7 +171,7 @@ ALTER TABLE questions ADD CONSTRAINT questions_PK PRIMARY KEY (id_question)
 -- SQLINES LICENSE FOR EVALUATION USE ONLY
 CREATE TABLE resources
     (
-     id_resource BIGINT NOT NULL ,
+     id_resource bigserial NOT NULL ,
      name_resource VARCHAR (50) NOT NULL ,
      pathfile_resource VARCHAR (100) ,
      pathvideo_resource VARCHAR (200) ,
@@ -189,7 +189,7 @@ ALTER TABLE resources ADD CONSTRAINT resources_PK PRIMARY KEY (id_resource)
 -- SQLINES LICENSE FOR EVALUATION USE ONLY
 CREATE TABLE syllabus
     (
-     id_syllabu BIGINT NOT NULL ,
+     id_syllabu bigserial NOT NULL ,
      name_syllabu VARCHAR (50) NOT NULL ,
      description_syllabu VARCHAR (100) NOT NULL ,
      keywords_syllabu TEXT ,
