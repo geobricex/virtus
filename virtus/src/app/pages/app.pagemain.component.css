@@ -1,4 +1,19 @@
- #header {
+/* dcarvajals */
+#login{
+  background: darkmagenta;
+  padding: 10px 25px;
+  text-align: center;
+  border-radius: 10px;
+}
+#login a {
+  margin-right: inherit;
+}
+
+#login:hover {
+
+}
+
+#header {
   background: url("src/assets/layout/images/imagesVirtus/fondoVirtus.jpg");
   height: 630px;
   padding: 21px 145px;
