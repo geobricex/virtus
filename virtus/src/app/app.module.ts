@@ -45,6 +45,7 @@ import {MiscursosComponent} from './pages/miscursos/miscursos.component';
 import {TemasComponent} from './pages/temas/temas.component';
 import {SingupComponent} from './pages/singup/singup.component';
 import {DialogModule} from "primeng/dialog";
+import { ModuloComponent } from './pages/modulo/modulo.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -69,7 +70,8 @@ FullCalendarModule.registerPlugins([
     CursosComponent,
     MiscursosComponent,
     TemasComponent,
-    SingupComponent
+    SingupComponent,
+    ModuloComponent
   ],
   imports: [
     HttpClientModule,

@@ -11,6 +11,7 @@ import {AppNotfoundComponent} from "./pages/app.notfound.component";
 import {MiscursosComponent} from "./pages/miscursos/miscursos.component";
 import {TemasComponent} from "./pages/temas/temas.component";
 import {SingupComponent} from "./pages/singup/singup.component";
+import {ModuloComponent} from "./pages/modulo/modulo.component";
 
 @NgModule({
   imports: [
@@ -25,7 +26,8 @@ import {SingupComponent} from "./pages/singup/singup.component";
           {path: '', component: DashboardDemoComponent},
           {path: 'course', component: CursosComponent},
           {path: 'mycourse', component: MiscursosComponent},
-          {path: 'mycourse/themes', component: TemasComponent}
+          {path: 'mycourse/modules', component: ModuloComponent},
+          {path: 'mycourse/modules/themes', component: TemasComponent}
         ]
       },
       {path: 'login', component: AppLoginComponent},
