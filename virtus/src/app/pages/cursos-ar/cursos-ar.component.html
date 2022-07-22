@@ -1,0 +1,97 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <p-toast></p-toast>
+      <p-toolbar styleClass="mb-4">
+        <ng-template pTemplate="left">
+          <div class="my-2">
+            <button pButton pRipple label="Nuevo curso" icon="pi pi-plus" class="p-button-success mr-2"
+                    (click)="openNew()"></button>
+          </div>
+        </ng-template>
+      </p-toolbar>
+    </div>
+  </div>
+</div>
+
+<p-dialog [(visible)]="newcourse_dialog" [style]="{width: '450px'}" header="Nuevo curso" [modal]="true"
+          class="p-fluid">
+  <ng-template pTemplate="content">
+    <p-panel header="Datos principales" [toggleable]="true" class="line-height-3 mb-2"
+             style="margin-bottom: 2rem !important">
+      <div class="field">
+        <label for="email">Nombre:</label>
+        <input id="email" type="email" autocomplete="off" pInputText class="w-full"/>
+      </div>
+      <div class="field">
+        <label for="desc">Descripción:</label>
+        <textarea pInputTextarea name="" id="desc" cols="30" rows="5"></textarea>
+      </div>
+      <div class="field">
+        <label for="pclave">Palabras clave:</label>
+        <input id="pclave" type="email" autocomplete="off" pInputText class="w-full"/>
+      </div>
+    </p-panel>
+    <p-panel header="Modulos" [toggleable]="true" class="line-height-3 mb-2" [collapsed]="true">
+      <div class="field">
+        <label for="nombrem">Nombre:</label>
+        <input id="nombrem" type="email" autocomplete="off" pInputText class="w-full"/>
+      </div>
+      <div class="field">
+        <label for="descm">Descripción:</label>
+        <textarea pInputTextarea name="" id="descm" cols="30" rows="5"></textarea>
+      </div>
+      <div class="field">
+        <label for="pclavem">Palabras clave:</label>
+        <input id="pclavem" type="email" autocomplete="off" pInputText class="w-full"/>
+      </div>
+
+      <button pButton pRipple label="Agregar" icon="pi pi-new" class="p-button-info mb-2"></button>
+
+      <div class="field">
+        <div class="flex align-items-center flex-column sm:flex-row">
+          <p-chip label="Modulo 1" styleClass="m-1"></p-chip>
+          <p-chip label="Modulo 2" styleClass="m-1"></p-chip>
+          <p-chip label="Modulo 3" styleClass="m-1"></p-chip>
+          <p-chip label="Modulo 4" styleClass="m-1" [removable]="true"></p-chip>
+        </div>
+      </div>
+    </p-panel>
+    <p-panel header="Temas" [toggleable]="true" class="line-height-3 m-0" [collapsed]="true">
+      <div class="field">
+        <label for="nombret">Seleccione un modulo:</label>
+        <p-dropdown id="status" optionLabel="label" placeholder="Modulos...">
+          <ng-template pTemplate="selectedItem">
+            <span [class]="'product-badge'"> Modulos... </span>
+          </ng-template>
+        </p-dropdown>
+      </div>
+      <div class="field">
+        <label for="nombret">Nombre:</label>
+        <input id="nombret" type="email" autocomplete="off" pInputText class="w-full"/>
+      </div>
+      <div class="field">
+        <label for="desct">Descripción:</label>
+        <textarea pInputTextarea name="" id="desct" cols="30" rows="5"></textarea>
+      </div>
+      <div class="field">
+        <label for="pclavet">Palabras clave:</label>
+        <input id="pclavet" type="email" autocomplete="off" pInputText class="w-full"/>
+      </div>
+      <button pButton pRipple label="Agregar" icon="pi pi-new" class="p-button-info mb-2"></button>
+
+      <div class="field">
+        <div class="flex align-items-center flex-column sm:flex-row">
+          <p-chip label="Tema 1" styleClass="m-1"></p-chip>
+          <p-chip label="Tema 2" styleClass="m-1"></p-chip>
+          <p-chip label="Tema 3" styleClass="m-1"></p-chip>
+          <p-chip label="Tema 4" styleClass="m-1" [removable]="true"></p-chip>
+        </div>
+      </div>
+    </p-panel>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-warning"></button>
+    <button pButton pRipple label="Guardar cambios" icon="pi pi-check" class="p-button-success"></button>
+  </ng-template>
+</p-dialog>
