@@ -36,7 +36,8 @@
             ],
             "scripts": [
               "node_modules/prismjs/prism.js",
-              "node_modules/prismjs/components/prism-typescript.js"
+              "node_modules/prismjs/components/prism-typescript.js",
+              "node_modules/artyom.js/build/artyom.window.js"
             ]
           },
           "configurations": {
