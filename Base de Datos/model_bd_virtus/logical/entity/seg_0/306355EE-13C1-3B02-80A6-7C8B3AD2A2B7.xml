@@ -118,15 +118,15 @@
 <logicalDatatype>LOGDT011</logicalDatatype>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
-<Attribute name="id_levels" id="788D7FFB-5A90-9744-AF00-9B4C59F38EE6">
+<Attribute name="id_topic" id="67D4D885-BE62-850E-5166-110D18FE3F1F">
 <createdBy>geova</createdBy>
-<createdTime>2022-07-08 01:57:24 UTC</createdTime>
-<generatorID>E8402CA1-B914-C1D3-19CA-0815D19F2776</generatorID>
+<createdTime>2022-07-19 03:19:24 UTC</createdTime>
+<generatorID>1A14B468-0036-F3DA-89CB-001458EB610A</generatorID>
 <ownerDesignName>model_bd_virtus</ownerDesignName>
 <engineerTo>
 <item key="4A337B55-A865-FDD5-7A3F-871B1ABFF68D" value="true"/>
 </engineerTo>
-<referedAttribute>8F59D72A-BB54-1A80-3DC0-748C3D5DD520</referedAttribute>
+<referedAttribute>6C2C0444-DF6A-E5CF-7D8E-5490017826BA</referedAttribute>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT027</logicalDatatype>
@@ -144,6 +144,7 @@
 <pk>true</pk>
 <usedAttributes>
 <attributeRef>85A9AC0F-0CE3-E2E0-1864-BB67B6F1B654</attributeRef>
+<attributeRef>67D4D885-BE62-850E-5166-110D18FE3F1F</attributeRef>
 </usedAttributes>
 </identifier>
 </identifiers>

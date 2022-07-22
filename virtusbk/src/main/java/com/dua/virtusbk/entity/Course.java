@@ -1,0 +1,55 @@
+package com.dua.virtusbk.entity;
+
+import lombok.*;
+import org.hibernate.annotations.Type;
+
+import javax.persistence.*;
+import java.math.BigDecimal;
+import java.time.Instant;
+@Table(name = "courses")
+@Data
+@NoArgsConstructor
+@Entity
+@ToString
+
+public class Course {
+    @Id
+    @SequenceGenerator(name="courses_id_course_seq", sequenceName="courses_id_course_seq", allocationSize=1)
+    @GeneratedValue(generator="courses_id_course_seq")
+    @Column(name = "id_course", nullable = false)
+    private Long id;
+
+    @Column(name = "name_course", nullable = false, length = 50)
+    private String nameCourse;
+
+    @Column(name = "description_course", nullable = false, length = 100)
+    private String descriptionCourse;
+
+    @Column(name = "keywords_course")
+    @Lob
+    @Type(type = "org.hibernate.type.TextType")
+    private String keywordsCourse;
+
+    @Column(name = "pathimg_course", length = 75)
+    private String pathimgCourse;
+
+    @Column(name = "datereg_course", nullable = false)
+    private Instant dateregCourse;
+
+    @Column(name = "dateupdate_course", nullable = false)
+    private Instant dateupdateCourse;
+
+    @Column(name = "state_course", nullable = false, length = 1)
+    private String stateCourse;
+
+    @Column(name = "language_course", length = 20)
+    private String languageCourse;
+
+    @Column(name = "price_course", precision = 2)
+    private BigDecimal priceCourse;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "persons_id_person", nullable = false)
+    private Person personsIdPerson;
+
+}

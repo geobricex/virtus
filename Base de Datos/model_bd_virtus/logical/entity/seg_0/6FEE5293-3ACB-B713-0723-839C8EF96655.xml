@@ -134,6 +134,20 @@
 <logicalDatatype>LOGDT027</logicalDatatype>
 <ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
+<Attribute name="id_topic" id="9D5A0346-E587-5FEA-F37A-F406E0973A7B">
+<createdBy>geova</createdBy>
+<createdTime>2022-07-19 03:19:24 UTC</createdTime>
+<generatorID>A8DDDC5A-2F89-16C5-08F3-F8E1B527143A</generatorID>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<engineerTo>
+<item key="4A337B55-A865-FDD5-7A3F-871B1ABFF68D" value="true"/>
+</engineerTo>
+<referedAttribute>67D4D885-BE62-850E-5166-110D18FE3F1F</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT027</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
 </attributes>
 <identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
 <identifier id="7FBFE757-47DA-A219-7517-6E4CE3E2CF26" name="questions PK">

@@ -1,9 +1,5 @@
 package com.dua.virtusbk.entity;
 
-import com.dua.virtusbk.entity.Level;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -44,7 +40,7 @@ public class Resource {
     private String stateResource;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "levels_id_levels", nullable = false)
-    private Level levelsIdLevels;
+    @JoinColumn(name = "topics_id_topic", nullable = false)
+    private Topic levelsIdLevels;
 
 }

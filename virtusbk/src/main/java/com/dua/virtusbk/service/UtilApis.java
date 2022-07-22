@@ -21,8 +21,8 @@ public class UtilApis {
     //@RequestMapping(value = "", method = RequestMethod.GET)
     @GetMapping
     public ResponseEntity<List<Util>> getUtils() {
-        List<Util> listProducts = utilDAO.findAll();
-        return ResponseEntity.ok(listProducts);
+        List<Util> listUtils = utilDAO.findAll();
+        return ResponseEntity.ok(listUtils);
     }
 
     @GetMapping(value = "{id}")
