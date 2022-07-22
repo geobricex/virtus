@@ -5,7 +5,7 @@
                 <i class="pi pi-home"></i>
             </a>
         </li>
-        <li>&nbsp;/&nbsp;</li>
+        <li>&nbsp;/</li>
         <ng-template ngFor let-item let-last="last" [ngForOf]="items">
             <li>
                 <a [routerLink]="item.routerLink" *ngIf="item.routerLink"> {{item.label}} </a>
@@ -19,13 +19,7 @@
         <li>
             <a href="#">
                 <i class="pi pi-check-square"></i>
-                <span>Misión</span>
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <i class="pi pi-eye"></i>
-                <span>Visión</span>
+                <span>Misión y visión</span>
             </a>
         </li>
         <li>

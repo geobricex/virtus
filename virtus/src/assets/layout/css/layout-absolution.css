@@ -1740,26 +1740,26 @@ a {
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 .layout-dashboard .stats-box.sales {
-  background-color: #0ff0b3;
-  background-image: -webkit-gradient(linear, left top, right top, from(#0ff0b3), to(#036ed9));
-  background-image: -webkit-linear-gradient(to right, #0ff0b3, #036ed9);
-  background-image: -moz-linear-gradient(to right, #0ff0b3, #036ed9);
-  background-image: -ms-linear-gradient(to right, #0ff0b3, #036ed9);
-  background-image: -o-linear-gradient(to right, #0ff0b3, #036ed9);
-  background-image: linear-gradient(to right, #0ff0b3, #036ed9);
+  background-color: #03af7e;
+  background-image: -webkit-gradient(linear, left top, right top, from(#03af7e), to(#036ed9));
+  background-image: -webkit-linear-gradient(to right, #03af7e, #036ed9);
+  background-image: -moz-linear-gradient(to right, #03af7e, #036ed9);
+  background-image: -ms-linear-gradient(to right, #03af7e, #036ed9);
+  background-image: -o-linear-gradient(to right, #03af7e, #036ed9);
+  background-image: linear-gradient(to right, #03af7e, #036ed9);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#0ff0b3", endColorstr="#036ed9", gradientType="1");
 }
 .layout-dashboard .stats-box.sales .statistics-info-bg {
   background-color: #11606b;
 }
 .layout-dashboard .stats-box.views {
-  background-color: #fad961;
-  background-image: -webkit-gradient(linear, left top, right top, from(#fad961), to(#f76b1c));
-  background-image: -webkit-linear-gradient(to right, #fad961, #f76b1c);
-  background-image: -moz-linear-gradient(to right, #fad961, #f76b1c);
-  background-image: -ms-linear-gradient(to right, #fad961, #f76b1c);
-  background-image: -o-linear-gradient(to right, #fad961, #f76b1c);
-  background-image: linear-gradient(to right, #fad961, #f76b1c);
+  background-color: #fcc400;
+  background-image: -webkit-gradient(linear, left top, right top, from(#806601), to(#f76b1c));
+  background-image: -webkit-linear-gradient(to right, #806601, #f76b1c);
+  background-image: -moz-linear-gradient(to right, #806601, #f76b1c);
+  background-image: -ms-linear-gradient(to right, #806601, #f76b1c);
+  background-image: -o-linear-gradient(to right, #806601, #f76b1c);
+  background-image: linear-gradient(to right, #806601, #f76b1c);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#fad961", endColorstr="#f76b1c", gradientType="1");
 }
 .layout-dashboard .stats-box.views .statistics-info-bg {
@@ -1780,12 +1780,12 @@ a {
 }
 .layout-dashboard .stats-box.checkins {
   background-color: #f5515f;
-  background-image: -webkit-gradient(linear, left top, right top, from(#f5515f), to(#a1051d));
-  background-image: -webkit-linear-gradient(to right, #f5515f, #a1051d);
-  background-image: -moz-linear-gradient(to right, #f5515f, #a1051d);
-  background-image: -ms-linear-gradient(to right, #f5515f, #a1051d);
-  background-image: -o-linear-gradient(to right, #f5515f, #a1051d);
-  background-image: linear-gradient(to right, #f5515f, #a1051d);
+  background-image: -webkit-gradient(linear, left top, right top, from(#f86471), to(#a1051d));
+  background-image: -webkit-linear-gradient(to right, #f86471, #a1051d);
+  background-image: -moz-linear-gradient(to right, #f86471, #a1051d);
+  background-image: -ms-linear-gradient(to right, #f86471, #a1051d);
+  background-image: -o-linear-gradient(to right, #f86471, #a1051d);
+  background-image: linear-gradient(to right, #f86471, #a1051d);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#f5515f", endColorstr="#a1051d", gradientType="1");
 }
 .layout-dashboard .stats-box.checkins .statistics-info-bg {

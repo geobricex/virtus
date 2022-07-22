@@ -23,7 +23,7 @@ export class AppMenuComponent implements OnInit {
             {label: 'Cursos', icon: 'pi pi-fw pi-book', routerLink: ['/javascript'],
               items: [
                 {label: 'Todos los cursos', icon: 'pi pi-fw pi-box', routerLink: ['/app/course']},
-                {label: 'Mis cursos', icon: 'pi pi-fw pi-inbox', routerLink: ['/b']},
+                {label: 'Mis cursos', icon: 'pi pi-fw pi-inbox', routerLink: ['/app/mycourse']},
                 {label: 'Favoritos', icon: 'pi pi-fw pi-heart-fill', routerLink: ['/b']}
               ]
             },

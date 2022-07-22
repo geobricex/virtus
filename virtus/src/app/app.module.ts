@@ -3,10 +3,10 @@ import {HttpClientModule} from '@angular/common/http';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HashLocationStrategy, LocationStrategy} from '@angular/common';
-import { AppRoutingModule } from './app-routing.module';
+import {AppRoutingModule} from './app-routing.module';
 
-import { AppLoginComponent } from './pages/app.login.component';
-import { AppMainpageComponent } from './pages/app.mainpage.component';
+import {AppLoginComponent} from './pages/app.login.component';
+import {AppMainpageComponent} from './pages/app.mainpage.component';
 import {InputTextModule} from "primeng/inputtext";
 import {ButtonModule} from "primeng/button";
 import {AppMainComponent} from "./app.main.component";
@@ -21,7 +21,7 @@ import {RippleModule} from "primeng/ripple";
 import {CargarScriptsService} from "./services/cargar-scripts.service"
 // FIN SERVICES
 
-import { AppComponent } from './app.component';
+import {AppComponent} from './app.component';
 import {BreadcrumbService} from './app.breadcrumb.service';
 import {MenuService} from './app.menu.service';
 import {FormsModule} from "@angular/forms";
@@ -38,9 +38,14 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import {AppNotfoundComponent} from "./pages/app.notfound.component";
-import { CursosComponent } from './pages/cursos/cursos.component';
+import {CursosComponent} from './pages/cursos/cursos.component';
 import {DataViewModule} from "primeng/dataview";
-import {CargarJson} from "./services/cargar-json";
+import {DropdownModule} from "primeng/dropdown";
+import {MiscursosComponent} from './pages/miscursos/miscursos.component';
+import {TemasComponent} from './pages/temas/temas.component';
+import {SingupComponent} from './pages/singup/singup.component';
+import {DialogModule} from "primeng/dialog";
+import { ModuloComponent } from './pages/modulo/modulo.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -62,7 +67,11 @@ FullCalendarModule.registerPlugins([
     DashboardDemoComponent,
     TestvoiceComponent,
     AppNotfoundComponent,
-    CursosComponent
+    CursosComponent,
+    MiscursosComponent,
+    TemasComponent,
+    SingupComponent,
+    ModuloComponent
   ],
   imports: [
     HttpClientModule,
@@ -79,13 +88,16 @@ FullCalendarModule.registerPlugins([
     InputTextareaModule,
     TableModule,
     FullCalendarModule,
-    DataViewModule
+    DataViewModule,
+    DropdownModule,
+    DialogModule
   ],
 
   providers: [
     {provide: LocationStrategy, useClass: HashLocationStrategy},
-    MenuService, BreadcrumbService, CargarScriptsService, CargarJson],
+    MenuService, BreadcrumbService, CargarScriptsService],
 
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

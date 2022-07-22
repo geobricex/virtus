@@ -1,10 +1,5 @@
 package com.dua.virtusbk.entity;
 
-import com.dua.virtusbk.entity.Cours;
-import com.dua.virtusbk.entity.Person;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,7 +26,7 @@ public class PersonsCours {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "courses_id_course", nullable = false)
-    private Cours coursesIdCourse;
+    private Course coursesIdCourse;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "persons_id_person", nullable = false)
