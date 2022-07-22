@@ -26,7 +26,7 @@ public class TopicApi {
     private TopicRepository topicDAO;
 
 
-    @RequestMapping(value="/topics", method= RequestMethod.GET, produces= MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/topics", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<List<Topic>> getTopic() {
         List<Topic> list = topicDAO.findAll();

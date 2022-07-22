@@ -5,17 +5,27 @@ import com.dua.virtusbk.entity.Person;
 import com.dua.virtusbk.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/persons")
-public class PersonApi {
+public class PersonApi implements UserDetailsService {
 
     @Autowired
     private PersonRepository personDAO;
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     //@RequestMapping(value = "", method = RequestMethod.GET)
     @GetMapping
@@ -35,7 +45,7 @@ public class PersonApi {
     }
 
     @GetMapping("/byemail/{email}")
-    public ResponseEntity<Person> getListOfLaptopsByBrand (@PathVariable String email) {
+    public ResponseEntity<Person> getListOfLaptopsByBrand(@PathVariable String email) {
         Optional<Person> findPerson = Optional.ofNullable(personDAO.findByEmail(email));
         if (findPerson.isPresent()) {
             Person person = findPerson.get();
@@ -54,6 +64,17 @@ public class PersonApi {
         return ResponseEntity.ok(newPerson);
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        System.out.println("loadUserByEmail");
+        Person person = personDAO.findByEmail(email);
+        List<GrantedAuthority> typePersonRole = new ArrayList<>();
+        typePersonRole.add(new SimpleGrantedAuthority(person.getTypePerson()));
+        UserDetails userDetails = new User(person.getEmailPerson(), person.getPasswordPerson(), typePersonRole);
+        System.out.println(person.getEmailPerson() + " " + person.getPasswordPerson() + " " + typePersonRole);
+        return userDetails;
+    }
+
     @PutMapping
     public ResponseEntity<Person> updatePerson(@RequestBody Person person) {
         Person upPerson = personDAO.save(person);
@@ -69,4 +90,5 @@ public class PersonApi {
         personDAO.deleteById(id_person);
         return ResponseEntity.ok(null);
     }
+
 }

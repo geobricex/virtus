@@ -8,6 +8,8 @@ import lombok.ToString;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -23,8 +25,8 @@ public class Person {
     //@GeneratedValue(strategy = GenerationType.AUTO)
     //@GeneratedValue(strategy = GenerationType.SEQUENCE)
     //@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="webuser_idwebuser_seq")
-    @SequenceGenerator(name="person_id_person_seq", sequenceName="person_id_person_seq", allocationSize=1)
-    @GeneratedValue(generator="person_id_person_seq")
+    @SequenceGenerator(name = "persons_id_person_seq", sequenceName = "persons_id_person_seq", allocationSize = 1)
+    @GeneratedValue(generator = "persons_id_person_seq")
     @Column(name = "id_person", nullable = false)
     private Long id;
 

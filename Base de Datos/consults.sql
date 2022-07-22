@@ -1,1 +1,1 @@
-select * from syllabus;
+select * from persons;
