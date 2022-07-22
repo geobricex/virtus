@@ -59,9 +59,23 @@ public class PersonApi implements UserDetailsService {
 
     @PostMapping
     public ResponseEntity<Person> insertPerson(@RequestBody Person person) {
-        System.out.println("Email insert: "+person.getEmailPerson());
-        Person newPerson = personDAO.save(person);
-        return ResponseEntity.ok(newPerson);
+        System.out.println("Email insert: " + person.getEmailPerson());
+
+        String passwordPerson = person.getPasswordPerson();
+        System.out.println("Password insert: " + passwordPerson);
+
+        person.setPasswordPerson(bCryptPasswordEncoder.encode(passwordPerson));
+
+        personDAO.save(person);
+        return ResponseEntity.ok(person);
+    }
+
+    @PostMapping("/login")
+    @ResponseBody
+    public String loginByEmail(@RequestParam String email, @RequestParam String password) {
+        UserDetails userDetails = loadUserByUsername(email);
+        //FALTA
+        return userDetails.getUsername() + " " + userDetails.getPassword();
     }
 
     @Override

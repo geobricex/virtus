@@ -1,0 +1,25 @@
+{
+  "codeverificationPerson": "000",
+  "dateregPerson": "2022-07-22 20:39",
+  "dateupdatePerson": "2022-07-22 20:39",
+  "emailPerson": "geovanny.brito2017@uteq.edu.ec",
+  "idLocation": "0-0-0",
+  "lastnamePerson": "Brito Casanova",
+  "namePerson": "Geovanny José",
+  "passwordPerson": "Abc123",
+  "pathimgPerson": "geovanny.brito2017@uteq.edu.ec.png",
+  "providerPerson": "native",
+  "typePerson": "U"
+}
+
+
+
+       System.out.println("Email insert: " + person.getEmailPerson());
+
+        String passwordPerson = person.getPasswordPerson();
+        System.out.println("Password insert: " + passwordPerson);
+
+        person.setPasswordPerson(bCryptPasswordEncoder.encode(passwordPerson));
+
+        personDAO.save(person);
+        return ResponseEntity.ok(person);
