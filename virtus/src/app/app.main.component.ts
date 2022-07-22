@@ -1,13 +1,16 @@
-import {Component, OnInit} from '@angular/core';
-import { MenuService } from './app.menu.service';
-import { PrimeNGConfig } from 'primeng/api';
-import { AppComponent } from './app.component';
+import {Component, Input, OnInit} from '@angular/core';
+import {MenuService} from './app.menu.service';
+import {PrimeNGConfig} from 'primeng/api';
+import {AppComponent} from './app.component';
+import {User} from "./models/user";
 
 @Component({
   selector: 'app-main',
   templateUrl: './app.main.component.html'
 })
-export class AppMainComponent implements OnInit{
+export class AppMainComponent implements OnInit {
+
+  userLog: User;
 
   topbarMenuActive: boolean;
 
@@ -37,7 +40,8 @@ export class AppMainComponent implements OnInit{
 
   configClick: boolean;
 
-  constructor(private menuService: MenuService, private primengConfig: PrimeNGConfig, public app: AppComponent) { }
+  constructor(private menuService: MenuService, private primengConfig: PrimeNGConfig, public app: AppComponent) {
+  }
 
   ngOnInit() {
     this.primengConfig.ripple = true;
@@ -81,7 +85,7 @@ export class AppMainComponent implements OnInit{
     this.rightPanelClick = false;
   }
 
-  onMenuButtonClick(event:any) {
+  onMenuButtonClick(event: any) {
     this.menuClick = true;
     this.topbarMenuActive = false;
 
@@ -97,7 +101,7 @@ export class AppMainComponent implements OnInit{
     event.preventDefault();
   }
 
-  onQuickMenuButtonClick(event:any) {
+  onQuickMenuButtonClick(event: any) {
     if (this.isMobile()) {
       this.topbarIconsActive = !this.topbarIconsActive;
       this.quickMenuButtonClick = true;
@@ -105,11 +109,11 @@ export class AppMainComponent implements OnInit{
     event.preventDefault();
   }
 
-  onMenuClick($event:any) {
+  onMenuClick($event: any) {
     this.menuClick = true;
   }
 
-  onTopbarMenuButtonClick(event:any) {
+  onTopbarMenuButtonClick(event: any) {
     this.topbarItemClick = true;
     this.topbarMenuActive = !this.topbarMenuActive;
 
@@ -118,7 +122,7 @@ export class AppMainComponent implements OnInit{
     event.preventDefault();
   }
 
-  onTopbarItemClick(event:any, item:any) {
+  onTopbarItemClick(event: any, item: any) {
     this.topbarItemClick = true;
 
     if (this.activeTopbarItem === item) {
@@ -130,11 +134,11 @@ export class AppMainComponent implements OnInit{
     event.preventDefault();
   }
 
-  onTopbarSubItemClick(event:any) {
+  onTopbarSubItemClick(event: any) {
     event.preventDefault();
   }
 
-  onRightPanelButtonClick(event:any) {
+  onRightPanelButtonClick(event: any) {
     this.rightPanelClick = true;
     this.rightPanelActive = !this.rightPanelActive;
     event.preventDefault();
@@ -144,11 +148,11 @@ export class AppMainComponent implements OnInit{
     this.rightPanelClick = true;
   }
 
-  onRippleChange(event:any) {
+  onRippleChange(event: any) {
     this.app.ripple = event.checked;
   }
 
-  onConfigClick(event:any) {
+  onConfigClick(event: any) {
     this.configClick = true;
   }
 

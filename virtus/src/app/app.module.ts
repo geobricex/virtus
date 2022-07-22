@@ -32,7 +32,7 @@ import {CheckboxModule} from "primeng/checkbox";
 import {InputTextareaModule} from "primeng/inputtextarea";
 import {TableModule} from "primeng/table";
 import {FullCalendarModule} from "@fullcalendar/angular";
-import { TestvoiceComponent } from './testvoice/testvoice.component';
+import {TestvoiceComponent} from './testvoice/testvoice.component';
 
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -45,7 +45,15 @@ import {MiscursosComponent} from './pages/miscursos/miscursos.component';
 import {TemasComponent} from './pages/temas/temas.component';
 import {SingupComponent} from './pages/singup/singup.component';
 import {DialogModule} from "primeng/dialog";
-import { ModuloComponent } from './pages/modulo/modulo.component';
+import {ModuloComponent} from './pages/modulo/modulo.component';
+import {StorageService} from "./authentication/StorageService";
+import {MessagesModule} from "primeng/messages";
+import {ToastModule} from "primeng/toast";
+import {MessageService} from "primeng/api";
+import {Utils} from "./util/Utils";
+import {CursosArComponent} from './pages/cursos-ar/cursos-ar.component';
+import {ToolbarModule} from "primeng/toolbar";
+import {ChipModule} from "primeng/chip";
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -71,7 +79,8 @@ FullCalendarModule.registerPlugins([
     MiscursosComponent,
     TemasComponent,
     SingupComponent,
-    ModuloComponent
+    ModuloComponent,
+    CursosArComponent
   ],
   imports: [
     HttpClientModule,
@@ -90,12 +99,16 @@ FullCalendarModule.registerPlugins([
     FullCalendarModule,
     DataViewModule,
     DropdownModule,
-    DialogModule
+    DialogModule,
+    MessagesModule,
+    ToastModule,
+    ToolbarModule,
+    ChipModule
   ],
 
   providers: [
     {provide: LocationStrategy, useClass: HashLocationStrategy},
-    MenuService, BreadcrumbService, CargarScriptsService],
+    MenuService, BreadcrumbService, CargarScriptsService, StorageService, MessageService, Utils],
 
   bootstrap: [AppComponent]
 })

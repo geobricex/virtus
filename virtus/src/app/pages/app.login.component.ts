@@ -1,6 +1,9 @@
 import {Component} from '@angular/core';
 import {User} from '../models/user';
+import {Session} from '../models/session';
 import {Router} from '@angular/router';
+import {StorageService} from "../authentication/StorageService";
+import {Utils} from "../util/Utils";
 
 @Component({
   selector: 'app-login',
@@ -12,10 +15,13 @@ export class AppLoginComponent {
   password: string;
   rol: string;
 
+  userLog: User;
+  sessionLog: Session;
+
   forgotPassword_dialog: boolean;
   alreadyHasCode: boolean;
 
-  constructor(public router: Router) {
+  constructor(public router: Router, private storageService: StorageService, private utils: Utils) {
     this.forgotPassword_dialog = false;
     this.alreadyHasCode = false;
   }
@@ -30,14 +36,29 @@ export class AppLoginComponent {
   }
 
   login() {
-    if (this.email === "admin" && this.password === "admin")
-      this.rol = "A";
-    else
-      this.rol = "U"
 
-    let user = new User(this.email, this.password, this.rol);
-    console.log(user.email);
-    this.router.navigateByUrl('/app');
+    if (this.email === "root" && this.password === "root") {
+      this.rol = "R";
+      this.userLog = new User(this.email, this.password, this.rol);
+      this.sessionLog = new Session("123456", this.userLog);
+      this.storageService.setCurrentSession(this.sessionLog);
+      this.router.navigateByUrl('/app');
+    } else if (this.email === "admin" && this.password === "admin") {
+      this.rol = "A";
+      this.userLog = new User(this.email, this.password, this.rol);
+      this.sessionLog = new Session("123456", this.userLog);
+      this.storageService.setCurrentSession(this.sessionLog);
+      this.router.navigateByUrl('/app');
+    } else if (this.email === "user" && this.password === "user") {
+      this.rol = "U";
+      this.userLog = new User(this.email, this.password, this.rol);
+      this.sessionLog = new Session("123456", this.userLog);
+      this.storageService.setCurrentSession(this.sessionLog);
+      this.router.navigateByUrl('/app');
+    } else {
+      this.utils.showMessages("1", "El usuario no se encuentra registrado/los campos son inválidos.", "tst");
+    }
+
   }
 
 }

@@ -14,43 +14,43 @@
         <input type="text" pInputText=""/>
     </div>-->
 
-<!--    <a href="#" id="topbar-quickmenu-button" (click)="app.onQuickMenuButtonClick($event)">-->
-<!--      QUICK MENU-->
-<!--    </a>-->
-<!--    <div class="topbar-icons">-->
-<!--      <ul>-->
-<!--        <li>-->
-<!--          <a>-->
-<!--            <i class="pi pi-user topbar-icon-calendar"></i>-->
-<!--            <span class="icon-label">Perfil</span>-->
-<!--          </a>-->
-<!--          <div class="layout-quickmenu-tooltip">-->
-<!--            <div class="layout-quickmenu-tooltip-arrow"></div>-->
-<!--            <div class="layout-quickmenu-tooltip-text">Perfil</div>-->
-<!--          </div>-->
-<!--        </li>-->
-<!--        <li>-->
-<!--          <a>-->
-<!--            <i class="pi pi-cog topbar-icon-settings"></i>-->
-<!--            <span class="icon-label">Configuración</span>-->
-<!--          </a>-->
-<!--          <div class="layout-quickmenu-tooltip">-->
-<!--            <div class="layout-quickmenu-tooltip-arrow"></div>-->
-<!--            <div class="layout-quickmenu-tooltip-text">Configuración</div>-->
-<!--          </div>-->
-<!--        </li>-->
-<!--        <li>-->
-<!--          <a routerLink="/login">-->
-<!--            <i class="pi pi-sign-out topbar-icon-notes"></i>-->
-<!--            <span class="icon-label">Cerrar Sesión</span>-->
-<!--          </a>-->
-<!--          <div class="layout-quickmenu-tooltip">-->
-<!--            <div class="layout-quickmenu-tooltip-arrow"></div>-->
-<!--            <div class="layout-quickmenu-tooltip-text">Cerrar Sesión</div>-->
-<!--          </div>-->
-<!--        </li>-->
-<!--      </ul>-->
-<!--    </div>-->
+    <!--    <a href="#" id="topbar-quickmenu-button" (click)="app.onQuickMenuButtonClick($event)">-->
+    <!--      QUICK MENU-->
+    <!--    </a>-->
+    <!--    <div class="topbar-icons">-->
+    <!--      <ul>-->
+    <!--        <li>-->
+    <!--          <a>-->
+    <!--            <i class="pi pi-user topbar-icon-calendar"></i>-->
+    <!--            <span class="icon-label">Perfil</span>-->
+    <!--          </a>-->
+    <!--          <div class="layout-quickmenu-tooltip">-->
+    <!--            <div class="layout-quickmenu-tooltip-arrow"></div>-->
+    <!--            <div class="layout-quickmenu-tooltip-text">Perfil</div>-->
+    <!--          </div>-->
+    <!--        </li>-->
+    <!--        <li>-->
+    <!--          <a>-->
+    <!--            <i class="pi pi-cog topbar-icon-settings"></i>-->
+    <!--            <span class="icon-label">Configuración</span>-->
+    <!--          </a>-->
+    <!--          <div class="layout-quickmenu-tooltip">-->
+    <!--            <div class="layout-quickmenu-tooltip-arrow"></div>-->
+    <!--            <div class="layout-quickmenu-tooltip-text">Configuración</div>-->
+    <!--          </div>-->
+    <!--        </li>-->
+    <!--        <li>-->
+    <!--          <a routerLink="/login">-->
+    <!--            <i class="pi pi-sign-out topbar-icon-notes"></i>-->
+    <!--            <span class="icon-label">Cerrar Sesión</span>-->
+    <!--          </a>-->
+    <!--          <div class="layout-quickmenu-tooltip">-->
+    <!--            <div class="layout-quickmenu-tooltip-arrow"></div>-->
+    <!--            <div class="layout-quickmenu-tooltip-text">Cerrar Sesión</div>-->
+    <!--          </div>-->
+    <!--        </li>-->
+    <!--      </ul>-->
+    <!--    </div>-->
 
     <!--<a id="topbar-right-panel-button" href="#" (click)="app.onRightPanelButtonClick($event)">
         <i class="pi pi-ellipsis-v"></i>
@@ -58,7 +58,7 @@
     <a id="topbar-profile-menu-button" href="#" (click)="app.onTopbarMenuButtonClick($event)">
       <img src="assets/layout/images/imagesVirtus/imgUser.jpeg" alt="harmony-layout" class="topbar-profile"
            style="border-radius: 50%"/>
-      <span>Orlando Erazo</span>
+      <span>{{user.email}}</span>
     </a>
     <ul id="topbar-profile-menu" class="animated fadeInDown"
         [ngClass]="{'topbar-profile-menu-active': app.topbarMenuActive}">
