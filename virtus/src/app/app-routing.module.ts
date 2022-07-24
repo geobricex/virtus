@@ -13,6 +13,7 @@ import {TemasComponent} from "./pages/temas/temas.component";
 import {SingupComponent} from "./pages/singup/singup.component";
 import {ModuloComponent} from "./pages/modulo/modulo.component";
 import {TestvoiceComponent} from './testvoice/testvoice.component'
+import {TestpocketbaseComponent} from './testpocketbase/testpocketbase.component'
 import {CursosArComponent} from "./pages/cursos-ar/cursos-ar.component";
 
 @NgModule({
@@ -35,6 +36,7 @@ import {CursosArComponent} from "./pages/cursos-ar/cursos-ar.component";
       },
       {path: 'login', component: AppLoginComponent},
       {path: 'testvoice', component: TestvoiceComponent},
+      {path: 'testpocket', component: TestpocketbaseComponent},
       {path: '**', component: AppNotfoundComponent},
     ], {scrollPositionRestoration: 'enabled'})
   ],
