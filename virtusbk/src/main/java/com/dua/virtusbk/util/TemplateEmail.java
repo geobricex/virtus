@@ -5,25 +5,34 @@
  */
 package com.dua.virtusbk.util;
 
+import com.dua.virtusbk.entity.Person;
+import com.dua.virtusbk.entity.Util;
+import com.dua.virtusbk.repository.PersonRepository;
+import com.dua.virtusbk.repository.UtilRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.swing.table.DefaultTableModel;
+import java.util.List;
 
 /**
- *
- * @author tonyp
+ * @author Geovanny Brito C.
  */
 public class TemplateEmail {
 
     private Conection conex;
     private final String sentency = "select * from public.utils";
 
+    @Autowired
+    private UtilRepository utilRepository;
+
     public TemplateEmail() {
         conex = new Conection();
     }
 
-    public void insertarUsuario(String email, String name, String lastname, String code) {
+    public void insertUser(String email, String name, String lastname, String code) {
         Thread tr = new Thread(() -> {
             System.out.println("Create user()");
-            eInsertarUsuario(email, name, lastname, code);
+            eInsertUser(email, name, lastname, code);
         });
         tr.start();
     }
@@ -44,23 +53,24 @@ public class TemplateEmail {
         tr.start();
     }
 
-    private void eInsertarUsuario(String email, String name, String lastname, String code) {
-        DefaultTableModel table = conex.returnRecord(sentency);
-        String respon = recorre(table, "splantilla");
-        String urlx = recorre(table, "urlaplication");
+    private void eInsertUser(String email, String name, String lastname, String code) {
 
+        DefaultTableModel utilsData = utilRepository.returnUtilsData();
+
+        String respon = recorre(utilsData, "splantilla");
+        String urlx = recorre(utilsData, "urlaplication");
+        System.out.println("Enlace= " + urlx);
         respon = respon.replace("${paramnames}", name + " " + lastname);
-        respon = respon.replace("${paramintro}", "This account has been activated");
+        respon = respon.replace("${paramintro}", "Esta cuenta ha sido activadad");
         respon = respon.replace("${hosturl}", urlx);
         respon = respon.replace("${hostname}", DataStatic.nameApplication);
-        respon = respon.replace("${paramdetail}", "account confirmation");
+        respon = respon.replace("${paramdetail}", "confirmación de la cuenta");
         respon = respon.replace("${hosthackurl}", urlx + "verify.html?email=" + email + "&code=" + code);
-//        respon = respon.replace("To skip some steps in the process, click on the link below <a href=\"${hosthackurl}\" target=\"_blank\">link</a>.", "");
 
         Email em = new Email();
         WeEncoder wEr = new WeEncoder();
-        em.setmyEmailFrom(recorre(table, "email"), wEr.textDecryptor(recorre(table, "emailpass")));
-        em.setContentEmail(email, "Welcome to the " + DataStatic.nameApplication + " community.", respon);
+        em.setmyEmailFrom(recorre(utilsData, "email"), wEr.textDecryptor(recorre(utilsData, "emailpass")));
+        em.setContentEmail(email, "Bienvenido a la Comunidad de " + DataStatic.nameApplication, respon);
         boolean status = em.sendmyEmail();
         System.out.println("Status send email: " + status);
     }

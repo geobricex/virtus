@@ -25,11 +25,13 @@ import org.apache.commons.codec.binary.Base64;
 import static org.apache.commons.codec.binary.Base64.decodeBase64;
 import static org.apache.commons.codec.binary.Base64.encodeBase64;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.stereotype.Service;
 
 /**
  *
  * @author CleanCode
  */
+@Service
 public class WeEncoder {
 
     private static final String staticKey = "SRXD";

@@ -4,9 +4,12 @@ import com.dua.virtusbk.entity.Person;
 import com.dua.virtusbk.repository.PersonRepository;
 import com.dua.virtusbk.util.DataStatic;
 import com.dua.virtusbk.util.Methods;
+import com.dua.virtusbk.util.TemplateEmail;
+import com.dua.virtusbk.util.WeEncoder;
 import com.google.gson.JsonObject;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -17,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
 @Service
 public class PersonController {
     @Autowired
@@ -24,6 +28,41 @@ public class PersonController {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    private WeEncoder weEncoder;
+
+    public String[] sigUp(Person person) {
+        String status = "4", message = "Error en los parámetros introducidos", data = "[]";
+        if (Methods.comprobeEmail(person.getEmailPerson())
+                && ((Methods.comprobePassword(person.getPasswordPerson())
+                && person.getTypePerson().equals("native")))
+                && Methods.testregex("[0-9]+\\-[0-9]+\\-[0-9]+", person.getIdLocation())) {
+
+            String sendEmailCode = weEncoder.getEmailCode();
+
+            person.setCodeverificationPerson(sendEmailCode);
+            person.setEmailPerson(person.getEmailPerson().toLowerCase());
+            person.setPasswordPerson(bCryptPasswordEncoder.encode(person.getPasswordPerson()));
+            person.setTypePerson("S");
+            person = personDAO.save(person);
+
+            if (person.getTypePerson().equals("S")) {
+                TemplateEmail templateEmail = new TemplateEmail();
+                templateEmail.insertUser(person.getEmailPerson(), person.getNamePerson(), person.getLastnamePerson(), person.getCodeverificationPerson());
+                status = "2";
+                message = "Usuario registrado con éxito.";
+            } else {
+                status = "4";
+                message = "Datos del usuario no disponibles.";
+            }
+
+        } else {
+            status = "3";
+            message = "Los parámetros ingresados no son válidos";
+        }
+        return new String[]{status, message, data};
+    }
 
     public String[] logIn(String email, String password, String provider) {
         System.out.println("logIn Controller");

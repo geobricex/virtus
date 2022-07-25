@@ -6,6 +6,7 @@ import com.dua.virtusbk.entity.Person;
 import com.dua.virtusbk.repository.PersonRepository;
 import com.dua.virtusbk.util.Methods;
 import com.google.gson.JsonObject;
+import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -24,8 +26,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+
 import javax.xml.ws.Response;
 
 @RestController
@@ -58,7 +62,7 @@ public class PersonApi implements UserDetailsService {
     }
 
     @GetMapping("/byemail/{email}")
-    public ResponseEntity<Person> getListOfLaptopsByBrand(@PathVariable String email) {
+    public ResponseEntity<Person> getListByEmail(@PathVariable String email) {
         Optional<Person> findPerson = Optional.ofNullable(personDAO.findByEmail(email));
         if (findPerson.isPresent()) {
             Person person = findPerson.get();
@@ -71,21 +75,19 @@ public class PersonApi implements UserDetailsService {
     }
 
     @PostMapping
-    public ResponseEntity<Person> insertPerson(@RequestBody Person person) {
-        System.out.println("Email insert: " + person.getEmailPerson());
+    public ResponseEntity<Person> insertPerson(@RequestBody @Validated Person person) {
 
-        String passwordPerson = person.getPasswordPerson();
-        System.out.println("Password insert: " + passwordPerson);
-
-        person.setPasswordPerson(bCryptPasswordEncoder.encode(passwordPerson));
-
-        personDAO.save(person);
-        return ResponseEntity.ok(person);
+        String[] res = personController.sigUp(person);
+        if (res[0].equals("2")) {
+            return ResponseEntity.ok(person);
+        } else {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
     @PostMapping("/login")
     @ResponseBody
-    public ResponseEntity<String> loginByEmail(@RequestBody String data) {
+    public ResponseEntity<String> loginByEmail(@RequestBody @Validated String data) {
         System.out.println("logIn...");
         String message;
         JsonObject jso = Methods.stringToJSON(data);
@@ -97,12 +99,12 @@ public class PersonApi implements UserDetailsService {
             String[] res = personController.logIn(email, password, provider);
 
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
+            return new ResponseEntity<>(message, HttpStatus.OK);
         } else {
-            message = Methods.getJsonMessage("4", "Parametros de entrada vacios.", "{}");
+            message = Methods.getJsonMessage("4", "Parametros de entrada vacios.", "[]");
+            return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
         }
 
-        System.out.println(message);
-        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
 
