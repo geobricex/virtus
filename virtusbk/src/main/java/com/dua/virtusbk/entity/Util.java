@@ -6,6 +6,8 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 
 @Table(name = "utils")
@@ -20,6 +22,7 @@ public class Util {
     private String id;
 
     @Lob
+    @Type(type = "org.hibernate.type.TextType")
     @Column(name = "value_util", nullable = false)
     private String valueUtil;
 

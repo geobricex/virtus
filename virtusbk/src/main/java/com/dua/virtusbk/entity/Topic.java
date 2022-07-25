@@ -1,6 +1,7 @@
 package com.dua.virtusbk.entity;
 
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -47,6 +48,7 @@ public class Topic {
     private Integer levelsTopic;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @Cascade(value={org.hibernate.annotations.CascadeType.ALL})
     @JoinColumn(name = "syllabus_id_syllabu", nullable = false)
     private Syllabu syllabuIdSyllabu;
 

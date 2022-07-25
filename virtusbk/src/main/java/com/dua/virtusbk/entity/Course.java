@@ -1,11 +1,13 @@
 package com.dua.virtusbk.entity;
 
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.Instant;
+
 @Table(name = "courses")
 @Data
 @NoArgsConstructor
@@ -14,8 +16,8 @@ import java.time.Instant;
 
 public class Course {
     @Id
-    @SequenceGenerator(name="courses_id_course_seq", sequenceName="courses_id_course_seq", allocationSize=1)
-    @GeneratedValue(generator="courses_id_course_seq")
+    @SequenceGenerator(name = "courses_id_course_seq", sequenceName = "courses_id_course_seq", allocationSize = 1)
+    @GeneratedValue(generator = "courses_id_course_seq")
     @Column(name = "id_course", nullable = false)
     private Long id;
 
@@ -48,7 +50,8 @@ public class Course {
     @Column(name = "price_course", precision = 2)
     private BigDecimal priceCourse;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne
+    @Cascade(value={org.hibernate.annotations.CascadeType.ALL})
     @JoinColumn(name = "persons_id_person", nullable = false)
     private Person personsIdPerson;
 

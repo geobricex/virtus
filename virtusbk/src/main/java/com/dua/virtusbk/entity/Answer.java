@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.*;
@@ -34,6 +35,7 @@ public class Answer{
     private Instant dateupdateAnswer;
 
     @ManyToOne(optional = false)
+    @Cascade(value={org.hibernate.annotations.CascadeType.ALL})
     @JoinColumn(name = "questions_id_question", nullable = false)
     private Question questionsIdQuestion;
 

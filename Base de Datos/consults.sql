@@ -1,1 +1,1 @@
-select * from persons;
+select * from persons as per-- where per.email_person= 'geovanny.brito2017@uteq.edu.ec'

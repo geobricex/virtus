@@ -6,6 +6,8 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 
 @Table(name = "questions")
@@ -42,6 +44,7 @@ public class Question {
     private String stateQuestion;
 
     @ManyToOne(optional = false)
+    @Cascade(value={org.hibernate.annotations.CascadeType.ALL})
     @JoinColumn(name = "\"evaluations_id-evaluation\"", nullable = false)
     private Evaluation evaluationsIdEvaluation;
 

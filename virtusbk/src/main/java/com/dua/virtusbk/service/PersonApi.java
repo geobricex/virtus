@@ -1,11 +1,16 @@
 package com.dua.virtusbk.service;
 
 
+import com.dua.virtusbk.controller.PersonController;
 import com.dua.virtusbk.entity.Person;
 import com.dua.virtusbk.repository.PersonRepository;
+import com.dua.virtusbk.util.Methods;
+import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,8 +20,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import javax.xml.ws.Response;
 
 @RestController
 @RequestMapping("/persons")
@@ -26,6 +36,9 @@ public class PersonApi implements UserDetailsService {
     private PersonRepository personDAO;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    public PersonController personController;
 
     //@RequestMapping(value = "", method = RequestMethod.GET)
     @GetMapping
@@ -72,11 +85,26 @@ public class PersonApi implements UserDetailsService {
 
     @PostMapping("/login")
     @ResponseBody
-    public String loginByEmail(@RequestParam String email, @RequestParam String password) {
-        UserDetails userDetails = loadUserByUsername(email);
-        //FALTA
-        return userDetails.getUsername() + " " + userDetails.getPassword();
+    public ResponseEntity<String> loginByEmail(@RequestBody String data) {
+        System.out.println("logIn...");
+        String message;
+        JsonObject jso = Methods.stringToJSON(data);
+        if (jso.size() > 0) {
+            String email = Methods.JsonToString(jso, "email", "");
+            String password = Methods.JsonToString(jso, "password", "");
+            String provider = Methods.JsonToString(jso, "provider", "");
+
+            String[] res = personController.logIn(email, password, provider);
+
+            message = Methods.getJsonMessage(res[0], res[1], res[2]);
+        } else {
+            message = Methods.getJsonMessage("4", "Parametros de entrada vacios.", "{}");
+        }
+
+        System.out.println(message);
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
+
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
