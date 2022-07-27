@@ -24,7 +24,7 @@ import {CargarScriptsService} from "./services/cargar-scripts.service"
 import {AppComponent} from './app.component';
 import {BreadcrumbService} from './app.breadcrumb.service';
 import {MenuService} from './app.menu.service';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {DashboardDemoComponent} from "./pages/dashboarddemo.component";
 import {CalendarModule} from "primeng/calendar";
 import {PanelModule} from "primeng/panel";
@@ -105,7 +105,8 @@ FullCalendarModule.registerPlugins([
     MessagesModule,
     ToastModule,
     ToolbarModule,
-    ChipModule
+    ChipModule,
+    ReactiveFormsModule
   ],
 
   providers: [
