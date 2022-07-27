@@ -61,7 +61,7 @@ public class TemplateEmail {
         String urlx = recorre(utilsData, "urlaplication");
         System.out.println("Enlace= " + urlx);
         respon = respon.replace("${paramnames}", name + " " + lastname);
-        respon = respon.replace("${paramintro}", "Esta cuenta ha sido activadad");
+        respon = respon.replace("${paramintro}", "Esta cuenta ha sido activada");
         respon = respon.replace("${hosturl}", urlx);
         respon = respon.replace("${hostname}", DataStatic.nameApplication);
         respon = respon.replace("${paramdetail}", "confirmación de la cuenta");
