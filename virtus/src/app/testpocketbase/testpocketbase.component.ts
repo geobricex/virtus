@@ -2,8 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-
 import PocketBase from 'pocketbase';
+import { FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+
+//require('cross-fetch/polyfill');
+
+
 
 @Component({
   selector: 'app-testpocketbase',
@@ -12,52 +16,141 @@ import PocketBase from 'pocketbase';
 })
 export class TestpocketbaseComponent implements OnInit {
 
-  pathImg: string;
+  tokenAccess: string;
+  elementsImg: any;
 
-  constructor(private _http: HttpClient) { }
+  tmpFile: any;
+
+  myForm = new FormGroup({
+    field: new FormControl('', [Validators.required])
+  });
+
+
+
+
+  myGroup = new FormGroup({
+    firstName: new FormControl()
+  });
+
+  globalUri: string = "https://aplicaciones.uteq.edu.ec:9549";
+
+  constructor(private _http: HttpClient) {
+  }
+
+  initPocket(): Observable<any> {
+    return this.client.Admins.authViaEmail("anthony.pachay2017@uteq.edu.ec", "Abc1234567");;
+  }
+
+  client: any;
 
   ngOnInit(): void {
-    this.initPocketBase().subscribe(response => {
+
+    this.client = new PocketBase(this.globalUri);
+    console.log(" -- -- ");
+    let resp = this.initPocket();
+    console.log(resp);
+
+    //let listaImg = this.listarImagenes();
+    //console.log(listaImg);
+    this.listarImagenes().then(listas => {
+      console.log("listas: ", listas);
+      this.elementsImg = listas.items;
+    });
+
+
+
+    /*this.initPocketBase().subscribe(response => {
       // do some action
+      this.tokenAccess = response.token;
       console.log("inicio: ", response.token);
       this.listarImagenes(response.token).subscribe(listas => {
         console.log("listas: ", listas);
+        this.elementsImg = listas.items;
       });
-      this.pathImg = this.mostarImagen(response.token, "GPPzWD6nnKtS8ZK");
-      console.log("pathImg: " + this.pathImg);
+      //this.pathImg = this.mostarImagen(response.token, "BNLvZsE9FS7qy5M");
+      //console.log("pathImg: " + this.pathImg);
 
-    });
+    });*/
 
   }
 
-  initPocketBase(): Observable<any> {
-    var globalUri: string = 'http://localhost:8090';
-    var urltoken: string = globalUri + "/api/admins/auth-via-email";
 
-    return this._http.post(urltoken, { "email": "anthony.pachay2017@uteq.edu.ec", "password": "Abc1234567" });
+  onFileChange(event: any) {
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      this.tmpFile = file;
+      this.myForm.patchValue({
+        field: file
+      });
+    }
   }
 
-  listarImagenes(token: string): Observable<any> {
-    var globalUri: string = 'http://localhost:8090';
+  guardarArchivo() {
+    console.log(this.tmpFile);
+    if (this.tmpFile != undefined) {
+      /*this.insetarImagenes(this.tokenAccess).subscribe(response => {
+        console.log("resultado: ", response);
+      });*/
+      this.insetarImagenes2().then(respuesta => {
+        console.log("respuesta: ", respuesta);
+        console.log(this.makePathRecurso(respuesta));
+      });
+    }
+  }
+  async insetarImagenes2(): Promise<any> {
 
-    var urlServicio: string = globalUri + "/api/collections/archivos/records?page=1&perPage=10";// +"/GPPzWD6nnKtS8ZK" ;
+    let formData01 = new FormData();
+    formData01.append('field', this.tmpFile);
+    //console.log("test02", typeof (this.tmpFile), this.tmpFile);
+    return await this.client.Records.create("archivos", formData01);
+  }
+
+  async listarImagenes(): Promise<any> {
+    return await this.client.Records.getList("archivos", 1, 20);
+  }
+
+
+  /*REST*/
+
+  initPocketBaseRest(): Observable<any> {
+    var urltoken: string = this.globalUri + "/api/admins/auth-via-email";
+    var headers = new HttpHeaders()
+      .set('Access-Control-Allow-Origin', '*');
+    return this._http.post(urltoken, { "email": "anthony.pachay2017@uteq.edu.ec", "password": "Abc1234567" }, { 'headers': headers });
+  }
+
+  listarImagenesRest(token: string): Observable<any> {
+    var urlServicio: string = this.globalUri + "/api/collections/archivos/records?page=1&perPage=10";// +"/GPPzWD6nnKtS8ZK" ;
     var headers = new HttpHeaders()//.set('Content-Type', 'application/json')
       .set('Authorization', 'Admin ' + token);
     return this._http.get(urlServicio, { headers: headers });
   }
 
-  mostarImagen(token: string, idImagen: string): string {
-    var globalUri: string = 'http://localhost:8090';
-
+  makePathRecurso(element: any): string {
     //var urlServicio: string = globalUri + "/api/collections/archivos/records/" + idImagen + "?expand=rel1,rel2.subrel21.subrel22";// +"/" ;
-    var urlServicio: string = globalUri + "/api/files/archivos/" + idImagen + "/hDcEihCa55IszgwfOiQ3LBEaP1qNj4gv.jpg";// +"/" ;
-    return urlServicio;
+    var urlRecurso: string = this.globalUri + "/api/files/" + element["@collectionName"] + "/" + element.id + "/" + element.field;// +"/" ;
+    //console.log(urlRecurso);
+    return urlRecurso;
   }
 
-  insetarImagenes(token: string): Observable<any> {
-    var globalUri: string = 'http://localhost:8090/';
 
-    var urlServicio: string = globalUri + "/api/collections/archivos/records";
+
+  insetarImagenesRest(token: string): Observable<any> {
+
+    let formData01 = new FormData();
+
+    console.log("test02", typeof (this.tmpFile), this.tmpFile);
+    formData01.append('file', this.myForm.get('field')?.value);
+
+    var urlServicio: string = this.globalUri + "/api/collections/archivos/records";
+    var headers = new HttpHeaders().set('Content-Type', 'multipart/form-data')
+      .set('Authorization', 'Admin ' + token);
+    return this._http.post(urlServicio, formData01, { headers: headers });
+
+  }
+
+  insetarJsonRest(token: string): Observable<any> {
+    var urlServicio: string = this.globalUri + "/api/collections/archivos/records";
     var headers = new HttpHeaders().set('Content-Type', 'application/json')
       .set('Authorization', 'Admin ' + token);
     let objectJson = JSON.stringify({

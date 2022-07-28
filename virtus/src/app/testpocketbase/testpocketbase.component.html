@@ -1,2 +1,12 @@
 <p>testpocketbase works!</p>
-<img src="{{pathImg}}" alt="alt">
+<div [formGroup]="myGroup">
+    <label for="file">archivo</label>
+    <input formControlName="firstName" type="file" (change)="onFileChange($event)">
+    <button class="btn btn-primary" type="button" (click)="guardarArchivo()">Guardar</button>
+</div>
+
+<ul>
+    <li *ngFor="let elementImg of elementsImg">
+        <img src="{{makePathRecurso(elementImg)}}" alt="alt">
+    </li>
+</ul>
