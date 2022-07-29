@@ -59,13 +59,13 @@ export class AppLoginComponent {
 
   apiLogin(): Observable<any> {
     console.log(this.user.email, this.user.password);
-    this.globalUri = "/persons/login";
+    this.globalUri = "virtusbk/persons/login";
     var headers = new HttpHeaders()
-      .set('Access-Control-Allow-Origin', '*');
+      .set('Access-Control-Allow-Origin', '*')
+      .set('provider', 'native');
     return this._http.post(this.globalUri, {
       "email": this.user.email,
-      "password": this.user.password,
-      "provider": "native"
+      "password": this.user.password
     }, {'headers': headers});
     /*if (this.user.email === "root" && this.user.password === "root") {
       this.user.rol = "R";
