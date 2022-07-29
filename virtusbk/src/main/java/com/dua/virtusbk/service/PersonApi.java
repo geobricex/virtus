@@ -30,7 +30,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/persons")
-@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST})
+//@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST})
 public class PersonApi implements UserDetailsService {
 
     @Autowired
