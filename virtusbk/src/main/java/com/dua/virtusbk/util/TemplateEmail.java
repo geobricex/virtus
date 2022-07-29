@@ -10,31 +10,34 @@ import com.dua.virtusbk.entity.Util;
 import com.dua.virtusbk.repository.PersonRepository;
 import com.dua.virtusbk.repository.UtilRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Geovanny Brito C.
  */
+@Service
 public class TemplateEmail {
 
     private Conection conex;
     private final String sentency = "select * from public.utils";
 
     @Autowired
-    private UtilRepository utilRepository;
+    public UtilRepository utilDAO;
 
     public TemplateEmail() {
         conex = new Conection();
     }
 
     public void insertUser(String email, String name, String lastname, String code) {
-        Thread tr = new Thread(() -> {
-            System.out.println("Create user()");
-            eInsertUser(email, name, lastname, code);
-        });
-        tr.start();
+//        Thread tr = new Thread(() -> {
+        System.out.println("Create user()");
+        eInsertUser(email, name, lastname, code);
+//        });
+//        tr.start();
     }
 
     public void ActivarUsuario(String email, String names, String state) {
@@ -55,25 +58,25 @@ public class TemplateEmail {
 
     private void eInsertUser(String email, String name, String lastname, String code) {
 
-        DefaultTableModel utilsData = utilRepository.returnUtilsData();
-
-        String respon = recorre(utilsData, "splantilla");
-        String urlx = recorre(utilsData, "urlaplication");
-        System.out.println("Enlace= " + urlx);
-        respon = respon.replace("${paramnames}", name + " " + lastname);
-        respon = respon.replace("${paramintro}", "Esta cuenta ha sido activada");
-        respon = respon.replace("${hosturl}", urlx);
-        respon = respon.replace("${hostname}", DataStatic.nameApplication);
-        respon = respon.replace("${paramdetail}", "confirmación de la cuenta");
-        respon = respon.replace("${hosthackurl}", urlx + "verify.html?email=" + email + "&code=" + code);
-
-        Email em = new Email();
-        WeEncoder wEr = new WeEncoder();
-        em.setmyEmailFrom(recorre(utilsData, "email"), wEr.textDecryptor(recorre(utilsData, "emailpass")));
-        em.setContentEmail(email, "Bienvenido a la Comunidad de " + DataStatic.nameApplication, respon);
-        boolean status = em.sendmyEmail();
-        System.out.println("Status send email: " + status);
+//        String respon = "";// utilRepository.findBy(String splantilla); //recorre(utilsData, "splantilla");
+//        System.out.println(respon);
+//        String urlx = recorre(utilsData, "urlaplication");
+//        System.out.println("Enlace= " + urlx);
+//        respon = respon.replace("${paramnames}", name + " " + lastname);
+//        respon = respon.replace("${paramintro}", "Esta cuenta ha sido activada");
+//        respon = respon.replace("${hosturl}", urlx);
+//        respon = respon.replace("${hostname}", DataStatic.nameApplication);
+//        respon = respon.replace("${paramdetail}", "confirmación de la cuenta");
+//        respon = respon.replace("${hosthackurl}", urlx + "verify.html?email=" + email + "&code=" + code);
+//
+//        Email em = new Email();
+//        WeEncoder wEr = new WeEncoder();
+//        em.setmyEmailFrom(recorre(utilsData, "email"), wEr.textDecryptor(recorre(utilsData, "emailpass")));
+//        em.setContentEmail(email, "Bienvenido a la Comunidad de " + DataStatic.nameApplication, respon);
+//        boolean status = em.sendmyEmail();
+//        System.out.println("Status send email: " + status);
     }
+
 
     private void eActivarUsuario(String email, String names, String state) {
         DefaultTableModel table = conex.returnRecord(sentency);

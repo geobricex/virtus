@@ -7,8 +7,13 @@ import org.springframework.data.jpa.repository.Query;
 
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
+import java.util.Optional;
 
 public interface UtilRepository extends JpaRepository<Util, String> {
     @Query(value = "select * from public.utils", nativeQuery = true)
-    DefaultTableModel returnUtilsData();
+    List<Util>  returnUtilsData();
+
+    Optional<Util> findByValueUtil(String splantilla);
+
+    Optional<Util> findById(String id);
 }
