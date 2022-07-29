@@ -20,7 +20,7 @@ export class AppLoginComponent {
   forgotPassword_dialog: boolean;
   alreadyHasCode: boolean;
   client: any;
-  globalUri: string = "http://localhost:8888/virtusbk/";
+  globalUri: string = "";
 
   constructor(
     public router: Router,
@@ -59,7 +59,7 @@ export class AppLoginComponent {
 
   apiLogin(): Observable<any> {
     console.log(this.user.email, this.user.password);
-    this.globalUri += "persons/login";
+    this.globalUri = "/persons/login";
     var headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*');
     return this._http.post(this.globalUri, {
