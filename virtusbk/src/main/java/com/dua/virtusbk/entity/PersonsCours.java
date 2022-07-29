@@ -3,6 +3,8 @@ package com.dua.virtusbk.entity;
 import lombok.ToString;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.time.Instant;
 
@@ -29,6 +31,7 @@ public class PersonsCours {
     private Course coursesIdCourse;
 
     @ManyToOne(optional = false)
+    @Cascade(value={org.hibernate.annotations.CascadeType.ALL})
     @JoinColumn(name = "persons_id_person", nullable = false)
     private Person personsIdPerson;
 

@@ -3,6 +3,7 @@ package com.dua.virtusbk.entity;
 import lombok.ToString;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -44,6 +45,7 @@ public class Syllabu {
     private String stateSyllabu;
 
     @ManyToOne(optional = false)
+    @Cascade(value={org.hibernate.annotations.CascadeType.ALL})
     @JoinColumn(name = "courses_id_course", nullable = false)
     private Course coursesIdCourse;
 

@@ -8,6 +8,8 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.time.Instant;
 
@@ -43,6 +45,7 @@ public class PersonsAnswer {
     private Person personsIdPerson;
 
     @ManyToOne(optional = false)
+    @Cascade(value={org.hibernate.annotations.CascadeType.ALL})
     @JoinColumn(name = "answers_id_answer", nullable = false)
     private Answer answersIdAnswer;
 

@@ -3,6 +3,8 @@ package com.dua.virtusbk.entity;
 import lombok.ToString;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.time.Instant;
 
@@ -40,6 +42,7 @@ public class Evaluation {
     private Integer numberquestionEvaluation;
 
     @ManyToOne(optional = false)
+    @Cascade(value={org.hibernate.annotations.CascadeType.ALL})
     @JoinColumn(name = "topics_id_topic", nullable = false)
     private Topic levelsIdLevels;
 
