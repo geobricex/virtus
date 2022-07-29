@@ -28,7 +28,7 @@ public class VirtusbkApplication extends SpringBootServletInitializer {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("persons/**")
-                        .allowedOrigins("http://localhost:8888")
+                        .allowedOrigins("http://localhost:4200")
                         .allowedOrigins("https://aplicaciones.uteq.edu.ec/")
                         .allowedMethods("GET", "HEAD", "POST", "PUT", "DELETE")
                         .maxAge(3600);
