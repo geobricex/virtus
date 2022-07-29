@@ -71,7 +71,7 @@ public class PersonApi implements UserDetailsService {
 
     @PostMapping
     public ResponseEntity<Person> insertPerson(@RequestBody @Validated Person person) {
-
+        System.out.println("insertPerson...");
         String[] res = personController.sigUp(person);
         if (res[0].equals("2")) {
             return ResponseEntity.ok(person);
@@ -101,7 +101,6 @@ public class PersonApi implements UserDetailsService {
         }
 
     }
-
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

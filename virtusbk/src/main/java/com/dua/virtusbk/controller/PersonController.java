@@ -27,6 +27,9 @@ public class PersonController {
     private PersonRepository personDAO;
 
     @Autowired
+    private UtilController utilController;
+
+    @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
@@ -34,11 +37,12 @@ public class PersonController {
 
     public String[] sigUp(Person person) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
+
         if (Methods.comprobeEmail(person.getEmailPerson())
                 && ((Methods.comprobePassword(person.getPasswordPerson())
-                && person.getTypePerson().equals("native")))
+                && person.getProviderPerson().equals("native")))
                 && Methods.testregex("[0-9]+\\-[0-9]+\\-[0-9]+", person.getIdLocation())) {
-
+            System.out.println("sigUp...");
             String sendEmailCode = weEncoder.getEmailCode();
 
             person.setCodeverificationPerson(sendEmailCode);
@@ -48,10 +52,15 @@ public class PersonController {
             person = personDAO.save(person);
 
             if (person.getTypePerson().equals("S")) {
-                TemplateEmail templateEmail = new TemplateEmail();
-                templateEmail.insertUser(person.getEmailPerson(), person.getNamePerson(), person.getLastnamePerson(), person.getCodeverificationPerson());
-                status = "2";
-                message = "Usuario registrado con éxito.";
+
+                if (utilController.eInsertUser(person.getEmailPerson(), person.getNamePerson(), person.getLastnamePerson(), person.getCodeverificationPerson())) {
+                    status = "2";
+                    message = "Usuario registrado con éxito.";
+                } else {
+                    status = "4";
+                    message = "Error al enviar código de verificación.";
+                }
+
             } else {
                 status = "4";
                 message = "Datos del usuario no disponibles.";
