@@ -1,13 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {Component, OnInit} from '@angular/core';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Observable} from 'rxjs';
 
 import PocketBase from 'pocketbase';
-import { FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import {FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule} from '@angular/forms';
 
 //require('cross-fetch/polyfill');
-
-
 
 @Component({
   selector: 'app-testpocketbase',
@@ -26,8 +24,6 @@ export class TestpocketbaseComponent implements OnInit {
   });
 
 
-
-
   myGroup = new FormGroup({
     firstName: new FormControl()
   });
@@ -38,7 +34,8 @@ export class TestpocketbaseComponent implements OnInit {
   }
 
   initPocket(): Observable<any> {
-    return this.client.Admins.authViaEmail("anthony.pachay2017@uteq.edu.ec", "Abc1234567");;
+    return this.client.Admins.authViaEmail("anthony.pachay2017@uteq.edu.ec", "Abc1234567");
+    ;
   }
 
   client: any;
@@ -56,7 +53,6 @@ export class TestpocketbaseComponent implements OnInit {
       console.log("listas: ", listas);
       this.elementsImg = listas.items;
     });
-
 
 
     /*this.initPocketBase().subscribe(response => {
@@ -97,6 +93,7 @@ export class TestpocketbaseComponent implements OnInit {
       });
     }
   }
+
   async insetarImagenes2(): Promise<any> {
 
     let formData01 = new FormData();
@@ -116,14 +113,17 @@ export class TestpocketbaseComponent implements OnInit {
     var urltoken: string = this.globalUri + "/api/admins/auth-via-email";
     var headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*');
-    return this._http.post(urltoken, { "email": "anthony.pachay2017@uteq.edu.ec", "password": "Abc1234567" }, { 'headers': headers });
+    return this._http.post(urltoken, {
+      "email": "anthony.pachay2017@uteq.edu.ec",
+      "password": "Abc1234567"
+    }, {'headers': headers});
   }
 
   listarImagenesRest(token: string): Observable<any> {
     var urlServicio: string = this.globalUri + "/api/collections/archivos/records?page=1&perPage=10";// +"/GPPzWD6nnKtS8ZK" ;
     var headers = new HttpHeaders()//.set('Content-Type', 'application/json')
       .set('Authorization', 'Admin ' + token);
-    return this._http.get(urlServicio, { headers: headers });
+    return this._http.get(urlServicio, {headers: headers});
   }
 
   makePathRecurso(element: any): string {
@@ -132,7 +132,6 @@ export class TestpocketbaseComponent implements OnInit {
     //console.log(urlRecurso);
     return urlRecurso;
   }
-
 
 
   insetarImagenesRest(token: string): Observable<any> {
@@ -145,7 +144,7 @@ export class TestpocketbaseComponent implements OnInit {
     var urlServicio: string = this.globalUri + "/api/collections/archivos/records";
     var headers = new HttpHeaders().set('Content-Type', 'multipart/form-data')
       .set('Authorization', 'Admin ' + token);
-    return this._http.post(urlServicio, formData01, { headers: headers });
+    return this._http.post(urlServicio, formData01, {headers: headers});
 
   }
 
@@ -156,6 +155,6 @@ export class TestpocketbaseComponent implements OnInit {
     let objectJson = JSON.stringify({
       "nombre": "anthony"
     });
-    return this._http.post(urlServicio, objectJson, { headers: headers });
+    return this._http.post(urlServicio, objectJson, {headers: headers});
   }
 }
