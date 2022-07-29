@@ -1,14 +1,13 @@
-
 export class User {
-    private _email: string;
-    private _password: string;
-    private _rol: string;
+  private _email: string;
+  private _password: string;
+  private _rol: string;
 
-    constructor(email: string, password: string, rol: string) {
-      this._email = email;
-      this._password = password;
-      this._rol = rol
-    }
+  constructor(email: string, password: string, rol: string) {
+    this._email = email;
+    this._password = password;
+    this._rol = rol
+  }
 
   get email(): string {
     return this._email;
