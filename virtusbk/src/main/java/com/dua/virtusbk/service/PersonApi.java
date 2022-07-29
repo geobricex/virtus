@@ -8,6 +8,7 @@ import com.dua.virtusbk.util.Methods;
 import com.google.gson.JsonObject;
 import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,21 +26,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-
-import javax.xml.ws.Response;
 
 @RestController
 @RequestMapping("/persons")
+//@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST})
 public class PersonApi implements UserDetailsService {
 
     @Autowired
     private PersonRepository personDAO;
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     public PersonController personController;
@@ -134,5 +129,6 @@ public class PersonApi implements UserDetailsService {
         personDAO.deleteById(id_person);
         return ResponseEntity.ok(null);
     }
+
 
 }

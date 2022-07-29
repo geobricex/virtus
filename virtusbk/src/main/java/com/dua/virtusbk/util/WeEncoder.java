@@ -178,7 +178,7 @@ public class WeEncoder {
 //        System.out.println("Texto desencriptado:\n" + plainText);
 //        return plainText;
             Decifrar = Decifrar.replace("MmM", "+");
-            String secretKey = "EasyIot-UML Diagram Tools - TDDM4IoTbs";
+            String secretKey = "VIRTUS-DUA";
             byte[] message = Base64.decodeBase64(Decifrar.getBytes("utf-8"));
             MessageDigest md = MessageDigest.getInstance("MD5");
             byte[] digestOfPassword = md.digest(secretKey.getBytes("utf-8"));
@@ -195,6 +195,7 @@ public class WeEncoder {
         } catch (UnsupportedEncodingException | NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException ex) {
             Logger.getLogger(WeEncoder.class.getName()).log(Level.SEVERE, null, ex);
         }
+        System.out.println(base64EncryptedString);
         return base64EncryptedString;
     }
 
