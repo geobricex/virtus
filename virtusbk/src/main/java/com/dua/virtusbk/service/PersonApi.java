@@ -82,14 +82,14 @@ public class PersonApi implements UserDetailsService {
 
     @PostMapping("/login")
     @ResponseBody
-    public ResponseEntity<String> loginByEmail(@RequestBody @Validated String data) {
+    public ResponseEntity<String> loginByEmail(@RequestBody @Validated String data, @RequestHeader("provider") String dataHeader) {
         System.out.println("logIn...");
         String message;
         JsonObject jso = Methods.stringToJSON(data);
         if (jso.size() > 0) {
             String email = Methods.JsonToString(jso, "email", "");
             String password = Methods.JsonToString(jso, "password", "");
-            String provider = Methods.JsonToString(jso, "provider", "");
+            String provider = dataHeader;
 
             String[] res = personController.logIn(email, password, provider);
 

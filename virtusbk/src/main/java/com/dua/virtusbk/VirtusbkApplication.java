@@ -32,7 +32,7 @@ public class VirtusbkApplication extends SpringBootServletInitializer {
                         .allowedMethods("GET", "HEAD", "POST", "PUT", "DELETE")
                         .allowedHeaders("*")
                         .allowCredentials(true)
-                        .maxAge(3600);
+                        .maxAge(6000);//60 min
             }
         };
 
