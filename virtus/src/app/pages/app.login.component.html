@@ -1,7 +1,8 @@
 <p-toast key="tst" [baseZIndex]="99999"></p-toast>
 
 <div class="login-body" style="display: flex; justify-content: center;">
-  <div class="login-panel" style="position: absolute; top: 50%; transform: translate(0, -50%); height: 470px">
+  <div class="login-panel"
+       style="position: absolute; top: 50%; transform: translate(0, -50%); height: auto; display: flex;align-items: stretch;">
     <img src="assets/layout/images/imagesVirtus/logoVirtus.svg" alt="harmony-layout" class="mobile"
          style="width: 45%; margin: auto; margin-top: 2rem;"/>
     <div class="left-part">
@@ -32,8 +33,9 @@
         <span> ¿No tiene una cuenta? </span> <a routerLink="/singup" class="text-green-500"> Registrarse </a>
       </div>
     </div>
-    <div class="right-part">
-      <img src="assets/layout/images/imagesVirtus/fondoLogin.jpg" alt="harmony-layout" width="380" height="470"/>
+    <div class="right-part bg-blue-50" style="width: 50%;box-sizing: border-box;padding: 36px 75px 36px 36px;
+  background: url('assets/layout/images/imagesVirtus/nuevoFondoLogin.jpg'); background-repeat: no-repeat; background-attachment: fixed;
+  background-size: cover;">
     </div>
   </div>
 </div>

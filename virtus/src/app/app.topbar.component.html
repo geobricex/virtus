@@ -58,7 +58,7 @@
     <a id="topbar-profile-menu-button" href="#" (click)="app.onTopbarMenuButtonClick($event)">
       <img src="assets/layout/images/imagesVirtus/imgUser.jpeg" alt="harmony-layout" class="topbar-profile"
            style="border-radius: 50%"/>
-      <span>{{user.email}}</span>
+      <span>{{user.name_person !== undefined ? user.name_person : ''}} {{user.last_name !== undefined ? user.last_name : ''}}</span>
     </a>
     <ul id="topbar-profile-menu" class="animated fadeInDown"
         [ngClass]="{'topbar-profile-menu-active': app.topbarMenuActive}">
@@ -71,7 +71,7 @@
           <i class="pi pi-cog topbar-icon-settings"></i>
           <span class="topbar-item-name">Configuración</span>
         </a>
-        <a routerLink="/login" (click)="app.onTopbarItemClick($event, theme)">
+        <a (click)="logout()">
           <i class="topbar-icon pi pi-fw pi-sign-out"></i>
           <span class="topbar-item-name">Cerrar Sesion</span>
         </a>
