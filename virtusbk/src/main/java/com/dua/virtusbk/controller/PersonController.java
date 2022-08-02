@@ -35,7 +35,7 @@ public class PersonController {
     @Autowired
     private WeEncoder weEncoder;
 
-    public String[] sigUp(Person person) {
+    public String[] signUp(Person person) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
 
         if (Methods.comprobeEmail(person.getEmailPerson())
@@ -69,6 +69,70 @@ public class PersonController {
         } else {
             status = "3";
             message = "Los parámetros ingresados no son válidos";
+        }
+        return new String[]{status, message, data};
+    }
+
+    public String[] updatePerson(Person person) {
+        String status = "4", message = "Error en los parámetros introducidos", data = "[]";
+
+        if (Methods.testregex("[0-9]+\\-[0-9]+\\-[0-9]+", person.getIdLocation())
+            // && Methods.comprobeEmail(person.getEmailPerson())
+            // && ((Methods.comprobePassword(person.getPasswordPerson())
+            // && person.getProviderPerson().equals("native")))
+        ) {
+            System.out.println("updatePerson...");
+
+            if (!person.getTypePerson().equals("S") && !person.getTypePerson().equals("I")) {
+                status = "2";
+                message = "Datos del usuario actualizados.";
+                person = personDAO.save(person);
+            } else {
+                status = "4";
+                message = "Datos del usuario no disponibles.";
+            }
+
+        } else {
+            status = "3";
+            message = "Los parámetros ingresados no son válidos";
+        }
+        return new String[]{status, message, data};
+    }
+
+    public String[] requestCode(String flag, String email, String code) {
+        String status = "4", message = "Error en los parámetros introducidos", data = "[]";
+        List<Person> Persons = personDAO.findByEmailList(email);
+        if (Persons.size() == 1) {// solo exista un usuario con el correo electrónico
+            switch (flag) {
+                case "1":// Aceptar código
+                    if (Persons.get(0).getCodeverificationPerson().equals(code)) {
+                        Persons.get(0).setTypePerson("U");
+                        personDAO.save(Persons.get(0));
+                        status = "2";
+                        message = "Código de verificación es el correcto.";
+                    } else {
+                        status = "5";
+                        message = "Código de verificación no es el correcto.";
+                    }
+
+                    break;
+                case "2":// Reenviar nuevo código
+                    String codeEmail = weEncoder.getEmailCode();
+                    Persons.get(0).setCodeverificationPerson(codeEmail);
+                    personDAO.save(Persons.get(0));
+                    if (utilController.eInsertUser(Persons.get(0).getEmailPerson(), Persons.get(0).getNamePerson(), Persons.get(0).getLastnamePerson(), Persons.get(0).getCodeverificationPerson())) {
+                        status = "2";
+                        message = "Se ha enviado el código de verificación.";
+                    } else {
+                        status = "4";
+                        message = "Error al enviar código de verificación.";
+                    }
+
+                    break;
+            }
+        } else {
+            status = "4";
+            message = "Usuario no encontrado.";
         }
         return new String[]{status, message, data};
     }

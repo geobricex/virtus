@@ -9,6 +9,7 @@ import com.dua.virtusbk.controller.SyllabuController;
 import com.dua.virtusbk.entity.Course;
 import com.dua.virtusbk.entity.Syllabu;
 import com.dua.virtusbk.repository.SyllabuRepository;
+import com.dua.virtusbk.util.Methods;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -35,11 +36,19 @@ public class SyllabuApi {
     }
 
     @PostMapping
-    public ResponseEntity<Syllabu> insertCourse(@RequestBody @Validated Syllabu syllabu) {
-
-        String[] res = syllabuController.saveSyllabu(syllabu);
+    public ResponseEntity<Syllabu> insertCourse(@RequestBody @Validated Syllabu syllabu, @RequestHeader("token") String sessionToken) {
+        String message;
+        String[] clains = Methods.getDataToJwt(sessionToken);
+        String[] res = Methods.validatePermit(clains[0], clains[1], 1);
         if (res[0].equals("2")) {
-            return ResponseEntity.ok(syllabu);
+            res = syllabuController.saveSyllabu(syllabu);
+            if (res[0].equals("2")) {
+                return ResponseEntity.ok(syllabu);
+            } else {
+                message = Methods.getJsonMessage("4", "Credenciales de sesión inválidas, vuelve a iniciar sesión "
+                        + "e intentalo de nuevo.", "[]");
+                return ResponseEntity.badRequest().body(null);
+            }
         } else {
             return ResponseEntity.badRequest().body(null);
         }
