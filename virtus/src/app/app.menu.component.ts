@@ -23,23 +23,22 @@ export class AppMenuComponent implements OnInit {
 
   ngOnInit() {
     this.user = this.storageService.getCurrentUser();
+    console.log(this.user);
 
     if (this.user === undefined) {
       this.router.navigateByUrl('/login');
-    }
-
-    if (this.user.rol === "R") {
+    } else if (this.user.type_person === "R") {
       this.model = [
         {label: 'Inicio', icon: 'pi pi-fw pi-home', routerLink: ['/app']},
         {label: 'Cursos', icon: 'pi pi-fw pi-book', routerLink: ['/app/coursear']},
         {label: 'Gestión de usuarios', icon: 'pi pi-fw pi-users', routerLink: ['/javascript']}
       ];
-    } else if (this.user.rol === "A") {
+    } else if (this.user.type_person === "A") {
       this.model = [
         {label: 'Inicio', icon: 'pi pi-fw pi-home', routerLink: ['/app']},
         {label: 'Cursos', icon: 'pi pi-fw pi-book', routerLink: ['/app/coursear']}
       ];
-    } else if (this.user.rol === "U") {
+    } else if (this.user.type_person === "U") {
       this.model = [
         {label: 'Inicio', icon: 'pi pi-fw pi-home', routerLink: ['/app']},
         {
