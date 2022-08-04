@@ -154,6 +154,29 @@ public class PersonController {
         return new String[]{status, message, data};
     }
 
+    public String[] recoverAccount(String email, String password, String code) {
+        String status = "4", message = "Error en los parámetros introducidos", data = "[]";
+        List<Person> Persons = personDAO.findByEmailList(email);
+        if (Persons.size() == 1) {// solo exista un usuario con el correo electrónico
+
+            if (Persons.get(0).getCodeverificationPerson().equals(code)) {
+                Persons.get(0).setTypePerson("U");//Rol de Usuario nuevamente
+                Persons.get(0).setPasswordPerson(bCryptPasswordEncoder.encode(password));
+                personDAO.save(Persons.get(0));
+                status = "2";
+                message = "Código de verificación es el correcto.";
+            } else {
+                status = "5";
+                message = "Código de verificación no es el correcto.";
+            }
+
+        } else {
+            status = "4";
+            message = "Usuario no encontrado.";
+        }
+        return new String[]{status, message, data};
+    }
+
     public String[] logIn(String email, String password, String provider) {
         System.out.println("logIn Controller");
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";

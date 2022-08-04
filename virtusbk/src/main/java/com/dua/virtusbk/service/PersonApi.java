@@ -92,35 +92,17 @@ public class PersonApi {//implements UserDetailsService {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<Person> insertPerson(@RequestBody @Validated Person person) {
+    public ResponseEntity<String> insertPerson(@RequestBody @Validated Person person) {
         System.out.println("insertPerson...");
-        String[] res = personController.signUp(person);
-        if (res[0].equals("2")) {
-            return ResponseEntity.ok(person);
-        } else {
-            return ResponseEntity.badRequest().body(null);
-        }
-    }
-
-    @PostMapping("/requestcode")
-    public ResponseEntity<String> requestCodePerson(@RequestBody String data) {
-        System.out.println("requestCodePerson...");
         String message;
-        JsonObject jso = Methods.stringToJSON(data);
-        if (jso.size() > 0) {
-            String flag = Methods.JsonToString(jso, "flag", "");
-            String email = Methods.JsonToString(jso, "email", "");
-            String code = Methods.JsonToString(jso, "code", "");
-            String[] res = personController.requestCode(flag, email, code);
-
-            message = Methods.getJsonMessage(res[0], res[1], res[2]);
-
+        String[] res = personController.signUp(person);
+        message = Methods.getJsonMessage(res[0], res[1], res[2]);
+        if (res[0].equals("2")) {
             return new ResponseEntity<>(message, HttpStatus.OK);
+//            return ResponseEntity.ok(person);
         } else {
-            message = Methods.getJsonMessage("4", "Parametros de entrada vacios.", "[]");
             return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
         }
-
     }
 
     @PostMapping("/login")
@@ -145,6 +127,46 @@ public class PersonApi {//implements UserDetailsService {
 
     }
 
+    @PostMapping("/requestcode")
+    public ResponseEntity<String> recoverAccount(@RequestBody String data) {
+        System.out.println("recoverAccount...");
+        String message;
+        JsonObject jso = Methods.stringToJSON(data);
+        if (jso.size() > 0) {
+            String flag = Methods.JsonToString(jso, "flag", "");
+            String email = Methods.JsonToString(jso, "email", "");
+            String code = Methods.JsonToString(jso, "code", "");
+            String[] res = personController.requestCode(flag, email, code);
+
+            message = Methods.getJsonMessage(res[0], res[1], res[2]);
+
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } else {
+            message = Methods.getJsonMessage("4", "Parametros de entrada vacios.", "[]");
+            return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
+        }
+    }
+
+    @PostMapping("/recoveraccount")
+    public ResponseEntity<String> requestCodePerson(@RequestBody String data) {
+        System.out.println("requestCodePerson...");
+        String message;
+        JsonObject jso = Methods.stringToJSON(data);
+        if (jso.size() > 0) {
+            String email = Methods.JsonToString(jso, "email", "");
+            String password = Methods.JsonToString(jso, "password", "");
+            String code = Methods.JsonToString(jso, "code", "");
+            String[] res = personController.recoverAccount(email, password, code);
+
+            message = Methods.getJsonMessage(res[0], res[1], res[2]);
+
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } else {
+            message = Methods.getJsonMessage("4", "Parametros de entrada vacios.", "[]");
+            return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
+        }
+    }
+
 //    @Override
 //    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 //        System.out.println("loadUserByEmail");
@@ -157,17 +179,21 @@ public class PersonApi {//implements UserDetailsService {
 //    }
 
     @PutMapping
-    public String updatePerson(@RequestBody Person person, @RequestHeader("token") String sessionToken) {
+    public ResponseEntity<String> updatePerson(@RequestBody Person person, @RequestHeader("token") String sessionToken) {
         String message = "[]";
         String[] clains = Methods.getDataToJwt(sessionToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
         if (res[0].equals("2")) {
-            personController.updatePerson(person);
+            res = personController.updatePerson(person);
+            if (res[0].equals("2")) {
+                return new ResponseEntity<>(message, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+            }
         } else {
-            message = Methods.getJsonMessage("4", "Credenciales de sesión inválidas, vuelve a iniciar sesión "
-                    + "e intentalo de nuevo.", "[]");
+            message = Methods.getJsonMessage("4", "Parametros de entrada vacios.", "[]");
+            return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
         }
-        return message;
     }
 
     @DeleteMapping(value = "{id}")
