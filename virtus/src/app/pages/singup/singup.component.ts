@@ -15,6 +15,7 @@ export class SingupComponent implements OnInit {
   person: Person;
   newpassword: string;
   globalUri: string = "";
+  date: Date;
 
   constructor(
     private utils: Utils,
@@ -24,20 +25,25 @@ export class SingupComponent implements OnInit {
 
   ngOnInit(): void {
     this.person = new Person();
+    this.date = new Date();
   }
 
   registerUser() {
-    this.apirRegisterUser().subscribe(response => {
+    this.person._codeverificationPerson = "000";
+    this.person._dateregPerson = this.date.toISOString().split('T')[0] + " " + this.date.getHours() + ":" + this.date.getMinutes();
+    this.person._dateupdatePerson = this.date.toISOString().split('T')[0] + " " + this.date.getHours() + ":" + this.date.getMinutes();
+    this.person._idLocation = "0-0-0";
+    this.person._providerPerson = "native";
+    this.person._typePerson = "S";
+    console.log(this.person);
+    this.apirRegisterUser(this.person).subscribe(response => {
       console.log(response);
     });
   }
 
-  apirRegisterUser(): Observable<any> {
-    this.globalUri = "virtusbk/persons";
-    var jsonPerson = JSON.stringify(this.person);
-    return this._http.post(this.globalUri, {
-      jsonPerson
-    });
+  apirRegisterUser(person: Person): Observable<Person> {
+    this.globalUri = "virtusbk/persons/signup";
+    return this._http.post<Person>(this.globalUri, person);
   }
 
 }

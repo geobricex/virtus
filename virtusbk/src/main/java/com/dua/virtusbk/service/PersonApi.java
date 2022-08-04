@@ -75,7 +75,7 @@ public class PersonApi {//implements UserDetailsService {
 
     @PostMapping("/signup")
     public ResponseEntity<Person> insertPerson(@RequestBody @Validated Person person) {
-        System.out.println("insertPerson...");
+        System.out.println("insertPerson..." + person.toString());
         String[] res = personController.signUp(person);
         if (res[0].equals("2")) {
             return ResponseEntity.ok(person);
