@@ -31,7 +31,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/persons")
 //@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST})
-public class PersonApi implements UserDetailsService {
+public class PersonApi {//implements UserDetailsService {
 
     @Autowired
     private PersonRepository personDAO;
@@ -47,13 +47,17 @@ public class PersonApi implements UserDetailsService {
     }
 
     @GetMapping(value = "{id}")
-    public ResponseEntity<Person> getPersons(@PathVariable("id") Long id_person) {
-        Optional<Person> findPerson = personDAO.findById(id_person);
-        if (findPerson.isPresent()) {
-            return ResponseEntity.ok(findPerson.get());
+    public ResponseEntity<Person> getPerson(@PathVariable("token") String sessionToken) {
+        System.out.println("getPerson...");
+
+        String[] clains = Methods.getDataToJwt(sessionToken);
+        String[] res = Methods.validatePermit(clains[0], clains[1], 1);
+        if (res[0].equals("2")) {
+            return ResponseEntity.ok(personController.getPerson(Long.getLong(clains[0])));
         } else {
             return ResponseEntity.noContent().build();
         }
+
     }
 
     @GetMapping("/byemail/{email}")
@@ -123,16 +127,16 @@ public class PersonApi implements UserDetailsService {
 
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        System.out.println("loadUserByEmail");
-        Person person = personDAO.findByEmail(email);
-        List<GrantedAuthority> typePersonRole = new ArrayList<>();
-        typePersonRole.add(new SimpleGrantedAuthority(person.getTypePerson()));
-        UserDetails userDetails = new User(person.getEmailPerson(), person.getPasswordPerson(), typePersonRole);
-        System.out.println(person.getEmailPerson() + " " + person.getPasswordPerson() + " " + typePersonRole);
-        return userDetails;
-    }
+//    @Override
+//    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+//        System.out.println("loadUserByEmail");
+//        Person person = personDAO.findByEmail(email);
+//        List<GrantedAuthority> typePersonRole = new ArrayList<>();
+//        typePersonRole.add(new SimpleGrantedAuthority(person.getTypePerson()));
+//        UserDetails userDetails = new User(person.getEmailPerson(), person.getPasswordPerson(), typePersonRole);
+//        System.out.println(person.getEmailPerson() + " " + person.getPasswordPerson() + " " + typePersonRole);
+//        return userDetails;
+//    }
 
     @PutMapping
     public String updatePerson(@RequestBody Person person, @RequestHeader("token") String sessionToken) {
@@ -153,6 +157,5 @@ public class PersonApi implements UserDetailsService {
         personDAO.deleteById(id_person);
         return ResponseEntity.ok(null);
     }
-
 
 }

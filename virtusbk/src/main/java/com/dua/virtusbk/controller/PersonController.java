@@ -1,6 +1,7 @@
 package com.dua.virtusbk.controller;
 
 import com.dua.virtusbk.entity.Person;
+import com.dua.virtusbk.entity.Util;
 import com.dua.virtusbk.repository.PersonRepository;
 import com.dua.virtusbk.util.DataStatic;
 import com.dua.virtusbk.util.Methods;
@@ -11,17 +12,22 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
 @Service
+@Transactional
 public class PersonController {
     @Autowired
     private PersonRepository personDAO;
@@ -34,6 +40,16 @@ public class PersonController {
 
     @Autowired
     private WeEncoder weEncoder;
+
+    public Person getPerson(Long id_person) {
+        Optional<Person> findUtil = personDAO.findById(id_person);
+
+        if (findUtil.isPresent()) {
+            return (findUtil.get());
+        } else {
+            return null;
+        }
+    }
 
     public String[] signUp(Person person) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
@@ -50,7 +66,6 @@ public class PersonController {
             person.setPasswordPerson(bCryptPasswordEncoder.encode(person.getPasswordPerson()));
             person.setTypePerson("S");
             person = personDAO.save(person);
-
             if (person.getTypePerson().equals("S")) {
 
                 if (utilController.eInsertUser(person.getEmailPerson(), person.getNamePerson(), person.getLastnamePerson(), person.getCodeverificationPerson())) {
@@ -59,8 +74,8 @@ public class PersonController {
                 } else {
                     status = "4";
                     message = "Error al enviar código de verificación.";
+                    throw new RuntimeException("Error in Send Email");
                 }
-
             } else {
                 status = "4";
                 message = "Datos del usuario no disponibles.";
@@ -71,6 +86,7 @@ public class PersonController {
             message = "Los parámetros ingresados no son válidos";
         }
         return new String[]{status, message, data};
+
     }
 
     public String[] updatePerson(Person person) {

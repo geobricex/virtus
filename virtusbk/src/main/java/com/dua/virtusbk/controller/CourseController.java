@@ -17,12 +17,14 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 
 @Service
+@Transactional
 public class CourseController {
     @Autowired
     private CourseRepository courseDAO;

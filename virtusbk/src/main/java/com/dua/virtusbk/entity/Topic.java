@@ -1,8 +1,10 @@
 package com.dua.virtusbk.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Type;
+import org.springframework.context.annotation.Lazy;
 
 import javax.persistence.*;
 import java.time.Instant;
@@ -50,6 +52,7 @@ public class Topic {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @Cascade(value={org.hibernate.annotations.CascadeType.ALL})
     @JoinColumn(name = "syllabus_id_syllabu", nullable = false)
+    @JsonIgnore// No traer toda la relación en una consulta
     private Syllabu syllabuIdSyllabu;
 
 }
