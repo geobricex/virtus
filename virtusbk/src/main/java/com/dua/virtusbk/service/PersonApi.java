@@ -47,13 +47,31 @@ public class PersonApi {//implements UserDetailsService {
     }
 
     @GetMapping(value = "{id}")
-    public ResponseEntity<Person> getPerson(@PathVariable("token") String sessionToken) {
+    public ResponseEntity<Person> getPersons(@PathVariable("token") String sessionToken) {
         System.out.println("getPerson...");
-
-        String[] clains = Methods.getDataToJwt(sessionToken);
+        JsonObject jso = Methods.stringToJSON(sessionToken);
+        String sToken = Methods.JsonToString(jso, "sessionToken", "");
+        String[] clains = Methods.getDataToJwt(sToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
         if (res[0].equals("2")) {
             return ResponseEntity.ok(personController.getPerson(Long.getLong(clains[0])));
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+
+    }
+
+    @PostMapping("/getPerson")
+    public ResponseEntity<Person> getPerson(@RequestBody String sessionToken) {
+        System.out.println("getPerson...");
+        JsonObject jso = Methods.stringToJSON(sessionToken);
+        String sToken = Methods.JsonToString(jso, "sessionToken", "");
+        System.out.println(sToken);
+        String[] clains = Methods.getDataToJwt(sToken);
+        String[] res = Methods.validatePermit(clains[0], clains[1], 1);
+
+        if (res[0].equals("2")) {
+            return ResponseEntity.ok(personController.getPerson(Long.parseLong(clains[0])));
         } else {
             return ResponseEntity.noContent().build();
         }
