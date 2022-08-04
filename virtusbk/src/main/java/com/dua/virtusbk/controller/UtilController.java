@@ -41,7 +41,7 @@ public class UtilController {
 
             Email em = new Email();
             WeEncoder wEr = new WeEncoder();
-            em.setmyEmailFrom(findemail.get().getValueUtil(), "A"+wEr.textDecryptor(findemailpass.get().getValueUtil()));
+            em.setmyEmailFrom(findemail.get().getValueUtil(), wEr.textDecryptor(findemailpass.get().getValueUtil()));
             em.setContentEmail(email, "Bienvenido a la Comunidad de " + DataStatic.nameApplication, respon);
             boolean status = em.sendmyEmail();
             System.out.println("Status send email: " + status);
