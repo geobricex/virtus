@@ -18,7 +18,7 @@
         </div>
         <div class="field">
           <label>Correo electronico:</label>
-          <input type="text" autocomplete="off" pInputText class="w-full" [(ngModel)]="person.email_person"/>
+          <input type="email" autocomplete="off" pInputText class="w-full" [(ngModel)]="person.email_person"/>
         </div>
         <div class="field">
           <label>Contraseña:</label>
@@ -31,7 +31,8 @@
         </div>
       </div>
       <div class="col-12 text-center">
-        <button type="button" pButton label="Registrarse" class="p-button-raised w-full mb-3"></button>
+        <button type="button" pButton label="Registrarse" class="p-button-raised w-full mb-3"
+                (click)="registerUser()"></button>
       </div>
     </div>
     <div class="right-part bg-blue-50" style="width: 50%;box-sizing: border-box;padding: 36px 75px 36px 36px;

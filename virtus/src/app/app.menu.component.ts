@@ -22,6 +22,7 @@ export class AppMenuComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.storageService);
     this.user = this.storageService.getCurrentUser();
     console.log(this.user);
 
