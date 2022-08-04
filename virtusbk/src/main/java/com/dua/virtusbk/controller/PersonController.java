@@ -72,6 +72,7 @@ public class PersonController {
                 if (utilController.eInsertUser(person.getEmailPerson(), person.getNamePerson(), person.getLastnamePerson(), person.getCodeverificationPerson())) {
                     status = "2";
                     message = "Usuario registrado con éxito.";
+                    data = personToJson(person).toString();
                 } else {
                     status = "4";
                     message = "Error al enviar código de verificación.";
