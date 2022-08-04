@@ -27,29 +27,17 @@ export class SingupComponent implements OnInit {
   }
 
   registerUser() {
-
+    this.apirRegisterUser().subscribe(response => {
+      console.log(response);
+    });
   }
 
   apirRegisterUser(): Observable<any> {
     this.globalUri = "virtusbk/persons";
-    var headers = new HttpHeaders()
-      .set('Access-Control-Allow-Origin', '*')
-      .set('provider', 'native');
-
+    var jsonPerson = JSON.stringify(this.person);
     return this._http.post(this.globalUri, {
-      "codeverificationPerson": "",
-      "dateregPerson": "yyyy-MM-dd HH:mm",
-      "dateupdatePerson": "yyyy-MM-dd HH:mm",
-      "emailPerson": "string",
-      "id": 0,
-      "idLocation": "string",
-      "lastnamePerson": "string",
-      "namePerson": "string",
-      "passwordPerson": "string",
-      "pathimgPerson": "string",
-      "providerPerson": "string",
-      "typePerson": "string"
-    }, {'headers': headers});
+      jsonPerson
+    });
   }
 
 }

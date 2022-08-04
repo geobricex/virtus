@@ -70,6 +70,8 @@ export class AppLoginComponent {
   }
 
   apiLogin(): Observable<any> {
+
+
     console.log(this.user.email, this.user.password);
     this.globalUri = "virtusbk/persons/login";
     var headers = new HttpHeaders()
