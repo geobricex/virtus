@@ -31,7 +31,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/persons")
 //@CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST})
-public class PersonApi implements UserDetailsService {
+public class PersonApi {//implements UserDetailsService {
 
     @Autowired
     private PersonRepository personDAO;
@@ -47,13 +47,17 @@ public class PersonApi implements UserDetailsService {
     }
 
     @GetMapping(value = "{id}")
-    public ResponseEntity<Person> getPersons(@PathVariable("id") Long id_person) {
-        Optional<Person> findPerson = personDAO.findById(id_person);
-        if (findPerson.isPresent()) {
-            return ResponseEntity.ok(findPerson.get());
+    public ResponseEntity<Person> getPerson(@PathVariable("token") String sessionToken) {
+        System.out.println("getPerson...");
+
+        String[] clains = Methods.getDataToJwt(sessionToken);
+        String[] res = Methods.validatePermit(clains[0], clains[1], 1);
+        if (res[0].equals("2")) {
+            return ResponseEntity.ok(personController.getPerson(Long.getLong(clains[0])));
         } else {
             return ResponseEntity.noContent().build();
         }
+
     }
 
     @GetMapping("/byemail/{email}")
@@ -69,15 +73,36 @@ public class PersonApi implements UserDetailsService {
         }
     }
 
-    @PostMapping
+    @PostMapping("/signup")
     public ResponseEntity<Person> insertPerson(@RequestBody @Validated Person person) {
         System.out.println("insertPerson...");
-        String[] res = personController.sigUp(person);
+        String[] res = personController.signUp(person);
         if (res[0].equals("2")) {
             return ResponseEntity.ok(person);
         } else {
             return ResponseEntity.badRequest().body(null);
         }
+    }
+
+    @PostMapping("/requestcode")
+    public ResponseEntity<String> requestCodePerson(@RequestBody String data) {
+        System.out.println("requestCodePerson...");
+        String message;
+        JsonObject jso = Methods.stringToJSON(data);
+        if (jso.size() > 0) {
+            String flag = Methods.JsonToString(jso, "flag", "");
+            String email = Methods.JsonToString(jso, "email", "");
+            String code = Methods.JsonToString(jso, "code", "");
+            String[] res = personController.requestCode(flag, email, code);
+
+            message = Methods.getJsonMessage(res[0], res[1], res[2]);
+
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } else {
+            message = Methods.getJsonMessage("4", "Parametros de entrada vacios.", "[]");
+            return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
+        }
+
     }
 
     @PostMapping("/login")
@@ -102,25 +127,29 @@ public class PersonApi implements UserDetailsService {
 
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        System.out.println("loadUserByEmail");
-        Person person = personDAO.findByEmail(email);
-        List<GrantedAuthority> typePersonRole = new ArrayList<>();
-        typePersonRole.add(new SimpleGrantedAuthority(person.getTypePerson()));
-        UserDetails userDetails = new User(person.getEmailPerson(), person.getPasswordPerson(), typePersonRole);
-        System.out.println(person.getEmailPerson() + " " + person.getPasswordPerson() + " " + typePersonRole);
-        return userDetails;
-    }
+//    @Override
+//    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+//        System.out.println("loadUserByEmail");
+//        Person person = personDAO.findByEmail(email);
+//        List<GrantedAuthority> typePersonRole = new ArrayList<>();
+//        typePersonRole.add(new SimpleGrantedAuthority(person.getTypePerson()));
+//        UserDetails userDetails = new User(person.getEmailPerson(), person.getPasswordPerson(), typePersonRole);
+//        System.out.println(person.getEmailPerson() + " " + person.getPasswordPerson() + " " + typePersonRole);
+//        return userDetails;
+//    }
 
     @PutMapping
-    public ResponseEntity<Person> updatePerson(@RequestBody Person person) {
-        Person upPerson = personDAO.save(person);
-        if (upPerson != null) {
-            return ResponseEntity.ok(upPerson);
+    public String updatePerson(@RequestBody Person person, @RequestHeader("token") String sessionToken) {
+        String message = "[]";
+        String[] clains = Methods.getDataToJwt(sessionToken);
+        String[] res = Methods.validatePermit(clains[0], clains[1], 1);
+        if (res[0].equals("2")) {
+            personController.updatePerson(person);
         } else {
-            return ResponseEntity.notFound().build();
+            message = Methods.getJsonMessage("4", "Credenciales de sesión inválidas, vuelve a iniciar sesión "
+                    + "e intentalo de nuevo.", "[]");
         }
+        return message;
     }
 
     @DeleteMapping(value = "{id}")
@@ -128,6 +157,5 @@ public class PersonApi implements UserDetailsService {
         personDAO.deleteById(id_person);
         return ResponseEntity.ok(null);
     }
-
 
 }

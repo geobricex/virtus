@@ -25,10 +25,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return bCryptPasswordEncoder;
     }
 
+    @Autowired
+    protected void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+        // …
+    }
+
     @Override
-    protected void configure(AuthenticationManagerBuilder authenticationManagerBuilder)
-            throws Exception {
-        authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
+    protected void configure(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.authorizeRequests().antMatchers("/").permitAll();
+        httpSecurity.csrf().disable();
+    }
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder authenticationManagerBuilder)
+//            throws Exception {
+//        authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
 
 //                .inMemoryAuthentication()
 //                .withUser("user")
@@ -38,18 +48,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .withUser("admin")
 //                .password("admin")
 //                .roles("USER", "ADMIN");
-    }
+//    }
 
-    protected void configure(HttpSecurity httpSecurity) throws Exception{
-        httpSecurity
-                .authorizeRequests()
-                .anyRequest()
-                .authenticated()
-                .and()
-                .httpBasic();
-
-        httpSecurity.csrf().disable();
-    }
+//
+//    protected void configure(HttpSecurity httpSecurity) throws Exception{
+//        httpSecurity
+//                .authorizeRequests()
+//                .anyRequest()
+//                .authenticated()
+//                .and()
+//                .httpBasic();
+//
+//        httpSecurity.csrf().disable();
+//    }
 
 
 }

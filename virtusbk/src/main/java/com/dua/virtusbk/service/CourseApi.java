@@ -9,6 +9,7 @@ import com.dua.virtusbk.controller.CourseController;
 import com.dua.virtusbk.entity.Course;
 import com.dua.virtusbk.entity.Person;
 import com.dua.virtusbk.repository.CourseRepository;
+import com.dua.virtusbk.util.Methods;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -34,11 +35,19 @@ public class CourseApi {
     }
 
     @PostMapping
-    public ResponseEntity<Course> insertCourse(@RequestBody @Validated Course course) {
-
-        String[] res = courseController.saveCourse(course);
+    public ResponseEntity<Course> insertCourse(@RequestBody @Validated Course course, @RequestHeader("token") String sessionToken) {
+        String message;
+        String[] clains = Methods.getDataToJwt(sessionToken);
+        String[] res = Methods.validatePermit(clains[0], clains[1], 1);
         if (res[0].equals("2")) {
-            return ResponseEntity.ok(course);
+            res = courseController.saveCourse(course);
+            if (res[0].equals("2")) {
+                return ResponseEntity.ok(course);
+            } else {
+                message = Methods.getJsonMessage("4", "Credenciales de sesión inválidas, vuelve a iniciar sesión "
+                        + "e intentalo de nuevo.", "[]");
+                return ResponseEntity.badRequest().body(null);
+            }
         } else {
             return ResponseEntity.badRequest().body(null);
         }

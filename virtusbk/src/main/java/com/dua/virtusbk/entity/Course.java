@@ -1,5 +1,6 @@
 package com.dua.virtusbk.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Type;
@@ -53,6 +54,7 @@ public class Course {
     @ManyToOne
     @Cascade(value={org.hibernate.annotations.CascadeType.ALL})
     @JoinColumn(name = "persons_id_person", nullable = false)
+    @JsonIgnore// No traer toda la relación en una consulta
     private Person personsIdPerson;
 
 }

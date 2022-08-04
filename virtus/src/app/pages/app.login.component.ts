@@ -36,7 +36,7 @@ export class AppLoginComponent {
    * Metodo para inicializar cualquier cosa
    * */
   ngOnInit(): void {
-    this.user = new User("", "", "");
+    this.user = new User("", "", "", "", "", "");
     this.client = new PocketBase(this.globalUri);
   }
 
@@ -54,10 +54,24 @@ export class AppLoginComponent {
   }
 
   login() {
-    console.log(this.apiLogin().subscribe(response => console.log(response)));
+    this.apiLogin().subscribe(response => {
+      console.log(response);
+      this.utils.showMessages(response.status, response.information, "tst");
+      if (response.status === 2) {
+        let dataLogin = response.data[0];
+        this.user = new User(dataLogin.email_person, dataLogin.type_person, dataLogin.name_person,
+          dataLogin.lastname_person, dataLogin.pathimg_person, dataLogin.provider_person);
+        this.sessionLog = new Session(dataLogin.user_token, this.user);
+        this.storageService.setCurrentSession(this.sessionLog);
+        console.log(this.sessionLog);
+        this.router.navigateByUrl('/app');
+      }
+    });
   }
 
   apiLogin(): Observable<any> {
+
+
     console.log(this.user.email, this.user.password);
     this.globalUri = "virtusbk/persons/login";
     var headers = new HttpHeaders()
@@ -65,8 +79,10 @@ export class AppLoginComponent {
       .set('provider', 'native');
     return this._http.post(this.globalUri, {
       "email": this.user.email,
-      "password": this.user.password
+      "password": this.user.password,
+      "provider": "native"
     }, {'headers': headers});
+
     /*if (this.user.email === "root" && this.user.password === "root") {
       this.user.rol = "R";
       this.sessionLog = new Session("123456", this.user);
