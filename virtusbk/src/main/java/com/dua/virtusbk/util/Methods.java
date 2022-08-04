@@ -13,6 +13,7 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.core.GrantedAuthority;
@@ -40,7 +41,7 @@ public final class Methods {
         try {
             Claims claims = Jwts.parser()
                     .setSigningKey(DataStatic.privateKey)
-                    .parseClaimsJws(jwt).getBody();
+                    .parseClaimsJws(jwt.replace("{", "").replace("}","")).getBody();
             response = new String[]{claims.get("user").toString(), claims.get("permit").toString()};
         } catch (Exception e) {
             System.out.println("error JWT: " + e.getMessage());
@@ -49,27 +50,21 @@ public final class Methods {
         return response;
     }
 
-    public String getJWTTokenfromUser(Person person) {
-
-        List<GrantedAuthority> grantedAuthorities = AuthorityUtils
-                .commaSeparatedStringToAuthorityList(person.getTypePerson());
-
-        String tokenJWT = Jwts
-                .builder()
-                .setId("softtekJWT")
-                .setSubject(person.getEmailPerson())
+    public static String personToJson(Person person) {
+        String key = DataStatic.privateKey;
+        long tiempo = System.currentTimeMillis();
+        JwtBuilder jwtb = Jwts.builder()
+                .signWith(SignatureAlgorithm.HS256, key)
+                .setSubject("-1")
                 .claim("user", person.getId())
                 .claim("permit", person.getTypePerson())
-                .claim("authorities",
-                        grantedAuthorities.stream()
-                                .map(GrantedAuthority::getAuthority)
-                                .collect(Collectors.toList()))
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 10800000))//180 min
-                .signWith(SignatureAlgorithm.HS512,
-                        DataStatic.privateKey.getBytes()).compact();
+                .setIssuedAt(new Date(tiempo));
 
-        return tokenJWT;
+//        if (!customer.equals("mobile") && !customer.equals("desktop")) {
+        jwtb = jwtb.setExpiration(new Date(tiempo + 10800000));//180 min
+//        }
+
+        return jwtb.compact();
     }
 
     public static String getJsonMessage(String status, String information, String data) {
