@@ -70,8 +70,6 @@ export class AppLoginComponent {
   }
 
   apiLogin(): Observable<any> {
-
-
     console.log(this.user.email, this.user.password);
     this.globalUri = "virtusbk/persons/login";
     var headers = new HttpHeaders()
@@ -82,26 +80,21 @@ export class AppLoginComponent {
       "password": this.user.password,
       "provider": "native"
     }, {'headers': headers});
+  }
 
-    /*if (this.user.email === "root" && this.user.password === "root") {
-      this.user.rol = "R";
-      this.sessionLog = new Session("123456", this.user);
-      this.storageService.setCurrentSession(this.sessionLog);
-      this.router.navigateByUrl('/app');
-    } else if (this.user.email === "root" && this.user.password === "admin") {
-      this.user.rol = "A";
-      this.sessionLog = new Session("123456", this.user);
-      this.storageService.setCurrentSession(this.sessionLog);
-      this.router.navigateByUrl('/app');
-    } else if (this.user.email === "root" && this.user.password === "user") {
-      this.user.rol = "U";
-      this.sessionLog = new Session("123456", this.user);
-      this.storageService.setCurrentSession(this.sessionLog);
-      this.router.navigateByUrl('/app');
-    } else {
-      this.utils.showMessages("1", "El usuario no se encuentra registrado/los campos son inválidos.", "tst");
-    }*/
+  sendCodeVerification() {
 
+  }
+
+  apiSendCodeVerification(): Observable<any> {
+    this.globalUri = "virtusbk/persons/requestCode";
+    var headers = new HttpHeaders()
+      .set('Access-Control-Allow-Origin', '*')
+      .set('provider', 'native');
+    return this._http.post(this.globalUri, {
+      "flag": false,
+      
+    }, {'headers': headers});
   }
 
 }

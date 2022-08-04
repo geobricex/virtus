@@ -7,6 +7,7 @@ import {AppRoutingModule} from './app-routing.module';
 
 import {AppLoginComponent} from './pages/app.login.component';
 import {AppMainpageComponent} from './pages/app.mainpage.component';
+import {VerifyAccountComponent} from './pages/verify-account/verify-account.component';
 import {InputTextModule} from "primeng/inputtext";
 import {ButtonModule} from "primeng/button";
 import {AppMainComponent} from "./app.main.component";
@@ -54,7 +55,7 @@ import {Utils} from "./util/Utils";
 import {CursosArComponent} from './pages/cursos-ar/cursos-ar.component';
 import {ToolbarModule} from "primeng/toolbar";
 import {ChipModule} from "primeng/chip";
-import { TestpocketbaseComponent } from './testpocketbase/testpocketbase.component';
+import {TestpocketbaseComponent} from './testpocketbase/testpocketbase.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -82,7 +83,8 @@ FullCalendarModule.registerPlugins([
     SingupComponent,
     ModuloComponent,
     CursosArComponent,
-    TestpocketbaseComponent
+    TestpocketbaseComponent,
+    VerifyAccountComponent
   ],
   imports: [
     HttpClientModule,
