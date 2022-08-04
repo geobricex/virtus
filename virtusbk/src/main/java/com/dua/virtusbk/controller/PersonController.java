@@ -42,6 +42,7 @@ public class PersonController {
     private WeEncoder weEncoder;
 
     public Person getPerson(Long id_person) {
+        System.out.println(id_person);
         Optional<Person> findUtil = personDAO.findById(id_person);
 
         if (findUtil.isPresent()) {
@@ -214,7 +215,8 @@ public class PersonController {
 
     public JsonObject personToJson(Person person) {
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("user_token", getJWTTokenfromUser(person));
+//        jsonObject.addProperty("user_token", getJWTTokenfromUser(person));
+        jsonObject.addProperty("user_token", Methods.personToJson(person));
         jsonObject.addProperty("email_person", person.getEmailPerson());
         jsonObject.addProperty("lastname_person", person.getLastnamePerson());
         jsonObject.addProperty("name_person", person.getNamePerson());

@@ -1,6 +1,7 @@
 package com.dua.virtusbk.repository;
 
 import com.dua.virtusbk.entity.Person;
+import com.dua.virtusbk.entity.Util;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -8,6 +9,7 @@ import javax.swing.table.DefaultTableModel;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public interface PersonRepository extends JpaRepository<Person, Long> {
 
@@ -21,4 +23,5 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
             "where per.email_person=?1", nativeQuery = true)
     List<Person> findByEmailList(String param);
 
+    Optional<Person> findById(Long id);
 }
