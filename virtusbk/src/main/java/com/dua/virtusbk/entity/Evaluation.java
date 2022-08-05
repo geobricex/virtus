@@ -1,5 +1,6 @@
 package com.dua.virtusbk.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.ToString;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -45,6 +46,7 @@ public class Evaluation {
     @ManyToOne(optional = false)
     @Cascade(value={org.hibernate.annotations.CascadeType.ALL})
     @JoinColumn(name = "topics_id_topic", nullable = false)
+    @JsonIgnore// No traer toda la relación en una consulta
     private Topic levelsIdLevels;
 
 }

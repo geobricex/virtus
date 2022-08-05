@@ -2,6 +2,7 @@ package com.dua.virtusbk.entity;
 
 import com.dua.virtusbk.entity.Answer;
 import com.dua.virtusbk.entity.Person;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -48,6 +49,7 @@ public class PersonsAnswer {
     @ManyToOne(optional = false)
     @Cascade(value={org.hibernate.annotations.CascadeType.ALL})
     @JoinColumn(name = "answers_id_answer", nullable = false)
+    @JsonIgnore// No traer toda la relación en una consulta
     private Answer answersIdAnswer;
 
 }

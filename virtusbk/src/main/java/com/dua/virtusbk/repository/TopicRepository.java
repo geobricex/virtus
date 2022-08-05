@@ -1,8 +1,15 @@
 package com.dua.virtusbk.repository;
 
+import com.dua.virtusbk.entity.Syllabu;
 import com.dua.virtusbk.entity.Topic;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
 
 public interface TopicRepository extends JpaRepository<Topic, Long> {
-
+    @Query(value = "SELECT * " +
+            "FROM topics " +
+            "WHERE state_topic = 'A' and syllabus_id_syllabu=?1", nativeQuery = true)
+    List<Topic> findByIdTopicList(Long param);
 }
