@@ -24,7 +24,16 @@ export class StorageService {
     var sessionStr: any;
     var sessionAux: Session;
     sessionStr = this.localStorageService.getItem('currentUser');
-    sessionAux = <Session>JSON.parse(sessionStr);
+    if (sessionStr !== null) {
+      var jsonsession = JSON.parse(sessionStr);
+      console.log(sessionStr)
+      var currentUser: User;
+      currentUser = new User(jsonsession._user._email, jsonsession._user._type_person, jsonsession._user._name_person,
+        jsonsession._user._last_name, jsonsession._user._pathimg_person, jsonsession._user._provider_person);
+      sessionAux = new Session(jsonsession._token, currentUser);
+    }
+
+    // @ts-ignore
     return sessionAux;
   }
 
@@ -40,7 +49,7 @@ export class StorageService {
   getCurrentUser(): User {
     var session: any = this.getCurrentSession();
     var currentUser: User;
-    if (session !== null) {
+    if (session !== null && session !== undefined) {
       currentUser = new User(session._user._email, session._user._type_person, session._user._name_person,
         session._user._last_name, session._user._pathimg_person, session._user._provider_person);
     }

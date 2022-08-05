@@ -8,6 +8,7 @@ import {Utils} from "../util/Utils";
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import PocketBase from 'pocketbase';
+import {Person} from "../models/Person";
 
 @Component({
   selector: 'app-login',
@@ -82,19 +83,20 @@ export class AppLoginComponent {
     }, {'headers': headers});
   }
 
-  sendCodeVerification() {
-
+  recoverAccount() {
+    this.apiRecoverAccount().subscribe(response => {
+      console.log(response);
+      this.utils.showMessages(response.status, response.information, "tst");
+    });
   }
 
-  apiSendCodeVerification(): Observable<any> {
-    this.globalUri = "virtusbk/persons/requestCode";
-    var headers = new HttpHeaders()
-      .set('Access-Control-Allow-Origin', '*')
-      .set('provider', 'native');
-    return this._http.post(this.globalUri, {
-      "flag": false,
-      
-    }, {'headers': headers});
+  apiRecoverAccount(): Observable<any> {
+    this.globalUri = "virtusbk/persons/requestcode";
+    return this._http.post<Person>(this.globalUri, {
+      "flag": "2",
+      "email": this.user.email,
+      "code": ""
+    });
   }
 
 }
