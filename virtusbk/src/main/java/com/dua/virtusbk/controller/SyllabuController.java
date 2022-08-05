@@ -1,5 +1,6 @@
 package com.dua.virtusbk.controller;
 
+import com.dua.virtusbk.ExcludeProxiedFields;
 import com.dua.virtusbk.entity.Course;
 import com.dua.virtusbk.entity.Person;
 import com.dua.virtusbk.entity.Syllabu;
@@ -11,6 +12,7 @@ import com.dua.virtusbk.util.Methods;
 import com.dua.virtusbk.util.TemplateEmail;
 import com.dua.virtusbk.util.WeEncoder;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -35,10 +37,11 @@ public class SyllabuController {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
 
         syllabu = syllabuDAO.save(syllabu);
-
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("id_syllabu", syllabu.getId());
         status = "2";
         message = "Módulo registrado con éxito.";
-
+        data = jsonObject.toString();
 
         return new String[]{status, message, data};
     }
@@ -48,7 +51,7 @@ public class SyllabuController {
 
         List<Syllabu> syllabus = syllabuDAO.findByIdCourseList(Long.parseLong(id_course));
         if (syllabus.size() > 0) {
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();
             data = gson.toJson(syllabus);
             status = "2";
             message = "Información obetnida con éxito.";
