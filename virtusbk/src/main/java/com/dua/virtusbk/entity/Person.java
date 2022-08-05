@@ -45,7 +45,7 @@ public class Person {
     @Column(name = "type_person", nullable = false, length = 1)
     private String typePerson;
 
-    @Column(name = "pathimg_person", length = 50)
+    @Column(name = "pathimg_person", length = 200)
     private String pathimgPerson;
 
     @Column(name = "codeverification_person", length = 15)

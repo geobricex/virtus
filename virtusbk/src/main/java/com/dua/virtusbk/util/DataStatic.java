@@ -8,7 +8,6 @@ package com.dua.virtusbk.util;
 import javax.xml.crypto.Data;
 
 /**
- *
  * @author CleanCode
  */
 public class DataStatic {
@@ -36,7 +35,7 @@ public class DataStatic {
     public static String privateKey = "CleanCode&BRICEX";
 
     public static String protocol = "wss";
-//    public static String uriWebSockeet = "://localhost:8080";
+    //    public static String uriWebSockeet = "://localhost:8080";
     public static String uriWebSockeet = "://localhost:443";
 
     private static String fileLocation = "";
@@ -56,4 +55,15 @@ public class DataStatic {
         }
         return context.replace(StringTarget, StringReplacement);
     }
+
+    public static String avatarUser[] = {
+            "https://aplicaciones.uteq.edu.ec:9549/api/files/vhcVv4ysYudB08r/fy1slm2CJ2nFoll/DH5QMfmyOmb9amUzE8bx8cOoP3U9KiED.png",
+            "https://aplicaciones.uteq.edu.ec:9549/api/files/vhcVv4ysYudB08r/fy1slm2CJ2nFoll/VY6GPUg1LikvONdlzNpl8LXMXySnAwjt.png",
+            "https://aplicaciones.uteq.edu.ec:9549/api/files/vhcVv4ysYudB08r/fy1slm2CJ2nFoll/E2ZPMjFSslMEO7xXALoaGfIEOKp344FF.png",
+            "https://aplicaciones.uteq.edu.ec:9549/api/files/vhcVv4ysYudB08r/fy1slm2CJ2nFoll/ZhhGNxqcg1tRIaOUywNWtTOGuGZipcuI.png",
+            "https://aplicaciones.uteq.edu.ec:9549/api/files/vhcVv4ysYudB08r/fy1slm2CJ2nFoll/cjZRirzZKZRPedDJxanubAGq1fn0FHKO.png",
+            "https://aplicaciones.uteq.edu.ec:9549/api/files/vhcVv4ysYudB08r/fy1slm2CJ2nFoll/HYeTqCFtQLhAOJGX2NJBOz2ABIhHZX7U.png",
+            "https://aplicaciones.uteq.edu.ec:9549/api/files/vhcVv4ysYudB08r/fy1slm2CJ2nFoll/LuV2xf6e2Q1EyU6tKORzy82ivVj0IG6g.png",
+            "https://aplicaciones.uteq.edu.ec:9549/api/files/vhcVv4ysYudB08r/fy1slm2CJ2nFoll/R385p7pc3VlVSsaNtZaqcBMfFpej13eu.png"
+    };
 }

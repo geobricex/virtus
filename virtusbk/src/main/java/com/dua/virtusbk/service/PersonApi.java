@@ -6,27 +6,14 @@ import com.dua.virtusbk.entity.Person;
 import com.dua.virtusbk.repository.PersonRepository;
 import com.dua.virtusbk.util.Methods;
 import com.google.gson.JsonObject;
-import com.sun.istack.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
 
 @RestController
 @RequestMapping("/persons")
@@ -141,6 +128,34 @@ public class PersonApi {//implements UserDetailsService {
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
 
             return new ResponseEntity<>(message, HttpStatus.OK);
+        } else {
+            message = Methods.getJsonMessage("4", "Parametros de entrada vacios.", "[]");
+            return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
+        }
+    }
+
+    @PostMapping("/changepassword")
+    public ResponseEntity<String> changePassword(@RequestBody String data, @RequestHeader("token") String sessionToken) {
+        System.out.println("changePassword...");
+        String message = "[]";
+        String[] clains = Methods.getDataToJwt(sessionToken);
+        String[] res = Methods.validatePermit(clains[0], clains[1], 1);
+        if (res[0].equals("2")) {
+            JsonObject jso = Methods.stringToJSON(data);
+            if (jso.size() > 0) {
+                String password = Methods.JsonToString(jso, "password", "");
+                String newpassword = Methods.JsonToString(jso, "newpassword", "");
+
+                res = personController.changePassword(password, newpassword, clains[0]);
+
+                message = Methods.getJsonMessage(res[0], res[1], res[2]);
+
+                return new ResponseEntity<>(message, HttpStatus.OK);
+            } else {
+                message = Methods.getJsonMessage("4", "Parametros de entrada vacios.", "[]");
+                return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
+            }
+
         } else {
             message = Methods.getJsonMessage("4", "Parametros de entrada vacios.", "[]");
             return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);

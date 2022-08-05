@@ -34,7 +34,7 @@ public class Topic {
     @Type(type = "org.hibernate.type.TextType")
     private String keywordsTopic;
 
-    @Column(name = "pathimg_topic", length = 75)
+    @Column(name = "pathimg_topic", length = 200)
     private String pathimgTopic;
 
     @Column(name = "datereg_topic", nullable = false)

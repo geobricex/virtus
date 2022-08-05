@@ -22,6 +22,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import java.io.File;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -41,7 +42,7 @@ public final class Methods {
         try {
             Claims claims = Jwts.parser()
                     .setSigningKey(DataStatic.privateKey)
-                    .parseClaimsJws(jwt.replace("{", "").replace("}","")).getBody();
+                    .parseClaimsJws(jwt.replace("{", "").replace("}", "")).getBody();
             response = new String[]{claims.get("user").toString(), claims.get("permit").toString()};
         } catch (Exception e) {
             System.out.println("error JWT: " + e.getMessage());
@@ -703,5 +704,10 @@ public final class Methods {
             }
         }
         return new String[]{status, message, data};
+    }
+
+    public static int randomNumberInRange(int minimo, int maximo) {
+        // nextInt regresa en rango pero con límite superior exclusivo, por eso sumamos 1
+        return ThreadLocalRandom.current().nextInt(minimo, maximo + 1);
     }
 }

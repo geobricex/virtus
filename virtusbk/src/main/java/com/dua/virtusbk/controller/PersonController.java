@@ -20,6 +20,10 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -66,6 +70,14 @@ public class PersonController {
             person.setEmailPerson(person.getEmailPerson().toLowerCase());
             person.setPasswordPerson(bCryptPasswordEncoder.encode(person.getPasswordPerson()));
             person.setTypePerson("S");
+            String timeStamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
+            person.setDateregPerson(LocalDateTime.parse(timeStamp));
+            person.setDateupdatePerson(LocalDateTime.parse(timeStamp));
+            /*AVATAR ALEATORIO*/
+            String[] avatarUser = DataStatic.avatarUser;
+            int indexRandom = Methods.randomNumberInRange(0, avatarUser.length - 1);
+            person.setPathimgPerson(avatarUser[indexRandom]);
+            /*FIN AVATAR ALEATORIO*/
             person = personDAO.save(person);
             if (person.getTypePerson().equals("S")) {
 
@@ -102,9 +114,11 @@ public class PersonController {
             System.out.println("updatePerson...");
 
             if (!person.getTypePerson().equals("S") && !person.getTypePerson().equals("I")) {
+                person = personDAO.save(person);
+                String textMessage = "Sus datos se han actualizado de forma exitosa.";
+                utilController.eMessageUser(person.getEmailPerson(), person.getNamePerson(), person.getLastnamePerson(), textMessage);
                 status = "2";
                 message = "Datos del usuario actualizados.";
-                person = personDAO.save(person);
             } else {
                 status = "4";
                 message = "Datos del usuario no disponibles.";
@@ -138,16 +152,42 @@ public class PersonController {
                     String codeEmail = weEncoder.getEmailCode();
                     Persons.get(0).setCodeverificationPerson(codeEmail);
                     personDAO.save(Persons.get(0));
-                    if (utilController.eInsertUser(Persons.get(0).getEmailPerson(), Persons.get(0).getNamePerson(), Persons.get(0).getLastnamePerson(), Persons.get(0).getCodeverificationPerson())) {
+                    if (utilController.eCodeUser(Persons.get(0).getEmailPerson(), Persons.get(0).getNamePerson(), Persons.get(0).getLastnamePerson(), Persons.get(0).getCodeverificationPerson())) {
                         status = "2";
                         message = "Se ha enviado el código de verificación.";
                     } else {
                         status = "4";
                         message = "Error al enviar código de verificación.";
+                        throw new RuntimeException("Error in Send Email");
                     }
 
                     break;
             }
+        } else {
+            status = "4";
+            message = "Usuario no encontrado.";
+        }
+        return new String[]{status, message, data};
+    }
+
+    public String[] changePassword(String password, String newPassword, String id_person) {
+        String status = "4", message = "Error en los parámetros introducidos", data = "[]";
+        Optional<Person> Persons = personDAO.findById(Long.parseLong(id_person));
+        password = bCryptPasswordEncoder.encode(password);
+        newPassword = bCryptPasswordEncoder.encode(newPassword);
+        if (Persons.isPresent()) {
+            if (password.equals(Persons.get().getPasswordPerson()) && !password.equals(newPassword)) {
+                Persons.get().setPasswordPerson(newPassword);
+                personDAO.save(Persons.get());
+                String textMessage = "Su contraseña ha sido actualizada con éxito.";
+                utilController.eMessageUser(Persons.get().getEmailPerson(), Persons.get().getNamePerson(), Persons.get().getLastnamePerson(), textMessage);
+                status = "2";
+                message = "Contraseña actualizada.";
+            } else {
+                status = "5";
+                message = "No se puede actualizar la contraseña.";
+            }
+
         } else {
             status = "4";
             message = "Usuario no encontrado.";
