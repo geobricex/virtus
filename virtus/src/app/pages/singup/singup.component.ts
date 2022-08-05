@@ -31,6 +31,12 @@ export class SingupComponent implements OnInit {
   }
 
   registerUser() {
+
+    if (this.newpassword !== this.person._passwordPerson) {
+      this.utils.showMessages(1, "Las contraseñas no son iguales, intente de nuevo.", "tst");
+      return;
+    }
+
     this.msgs = [];
     this.msgs.push({severity: 'info', summary: 'Virtus', detail: 'Procesando...'});
     this.person._codeverificationPerson = "000";
@@ -45,6 +51,7 @@ export class SingupComponent implements OnInit {
       console.log(response);
       this.utils.showMessages(response.status, response.information, "tst");
       this.person = new Person(0, "", "", "", "", "", "", "", "", "", "");
+      this.newpassword = "";
     });
   }
 
