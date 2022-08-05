@@ -5,6 +5,7 @@ import com.dua.virtusbk.entity.Person;
 import com.dua.virtusbk.entity.PersonsCours;
 import com.dua.virtusbk.repository.CourseRepository;
 import com.dua.virtusbk.repository.PersonsCourseRepository;
+import com.dua.virtusbk.util.Methods;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -65,7 +66,7 @@ public class CourseController {
         personsCours.setCoursesIdCourse(course);
 
         String timeStamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
-        personsCours.setDateregPersonCourse(Instant.parse(timeStamp));
+        personsCours.setDateregPersonCourse(Methods.nowLocalDateTime());
 
         personsCours = personcourseDAO.save(personsCours);
 

@@ -12,6 +12,7 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Table(name = "answers")
 @Entity
@@ -32,7 +33,7 @@ public class Answer{
     private Instant dateregAnswer;
 
     @Column(name = "dateupdate_answer", nullable = false)
-    private Instant dateupdateAnswer;
+    private LocalDateTime dateupdateAnswer;
 
     @ManyToOne(optional = false)
     @Cascade(value={org.hibernate.annotations.CascadeType.ALL})

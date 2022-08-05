@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Lazy;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Table(name = "topics")
 @Data
@@ -38,10 +39,10 @@ public class Topic {
     private String pathimgTopic;
 
     @Column(name = "datereg_topic", nullable = false)
-    private Instant dateregTopic;
+    private LocalDateTime dateregTopic;
 
     @Column(name = "dateupdate_topic", nullable = false)
-    private Instant dateupdateTopic;
+    private LocalDateTime dateupdateTopic;
 
     @Column(name = "state_topic", nullable = false, length = 1)
     private String stateTopic;

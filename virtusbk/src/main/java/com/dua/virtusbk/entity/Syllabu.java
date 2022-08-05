@@ -9,6 +9,7 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Table(name = "syllabus")
 @Entity
@@ -37,10 +38,10 @@ public class Syllabu {
     private String pathimgSyllabus;
 
     @Column(name = "datereg_syllabu", nullable = false)
-    private Instant dateregSyllabu;
+    private LocalDateTime dateregSyllabu;
 
     @Column(name = "dateupdate_syllabu", nullable = false)
-    private Instant dateupdateSyllabu;
+    private LocalDateTime dateupdateSyllabu;
 
     @Column(name = "state_syllabu", nullable = false, length = 1)
     private String stateSyllabu;

@@ -7,6 +7,7 @@ import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Table(name = "evaluations")
 @Entity
@@ -27,10 +28,10 @@ public class Evaluation {
     private String descriptionEvaluation;
 
     @Column(name = "datereg_evaluation", nullable = false)
-    private Instant dateregEvaluation;
+    private LocalDateTime dateregEvaluation;
 
     @Column(name = "dateupdate_evaluation", nullable = false)
-    private Instant dateupdateEvaluation;
+    private LocalDateTime dateupdateEvaluation;
 
     @Column(name = "time_evaluation", nullable = false)
     private Boolean timeEvaluation = false;

@@ -23,6 +23,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -70,9 +71,10 @@ public class PersonController {
             person.setEmailPerson(person.getEmailPerson().toLowerCase());
             person.setPasswordPerson(bCryptPasswordEncoder.encode(person.getPasswordPerson()));
             person.setTypePerson("S");
-            String timeStamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
-            person.setDateregPerson(LocalDateTime.parse(timeStamp));
-            person.setDateupdatePerson(LocalDateTime.parse(timeStamp));
+            /*FECHA*/
+            person.setDateregPerson(Methods.nowLocalDateTime());
+            person.setDateupdatePerson(Methods.nowLocalDateTime());
+            /*FIN FECHA*/
             /*AVATAR ALEATORIO*/
             String[] avatarUser = DataStatic.avatarUser;
             int indexRandom = Methods.randomNumberInRange(0, avatarUser.length - 1);
@@ -114,6 +116,7 @@ public class PersonController {
             System.out.println("updatePerson...");
 
             if (!person.getTypePerson().equals("S") && !person.getTypePerson().equals("I")) {
+                person.setDateupdatePerson(Methods.nowLocalDateTime());
                 person = personDAO.save(person);
                 String textMessage = "Sus datos se han actualizado de forma exitosa.";
                 utilController.eMessageUser(person.getEmailPerson(), person.getNamePerson(), person.getLastnamePerson(), textMessage);
@@ -139,6 +142,7 @@ public class PersonController {
                 case "1":// Aceptar código
                     if (Persons.get(0).getCodeverificationPerson().equals(code)) {
                         Persons.get(0).setTypePerson("U");
+                        Persons.get(0).setDateupdatePerson(Methods.nowLocalDateTime());
                         personDAO.save(Persons.get(0));
                         status = "2";
                         message = "Código de verificación es el correcto.";
@@ -151,6 +155,7 @@ public class PersonController {
                 case "2":// Reenviar nuevo código
                     String codeEmail = weEncoder.getEmailCode();
                     Persons.get(0).setCodeverificationPerson(codeEmail);
+                    Persons.get(0).setDateupdatePerson(Methods.nowLocalDateTime());
                     personDAO.save(Persons.get(0));
                     if (utilController.eCodeUser(Persons.get(0).getEmailPerson(), Persons.get(0).getNamePerson(), Persons.get(0).getLastnamePerson(), Persons.get(0).getCodeverificationPerson())) {
                         status = "2";
@@ -178,6 +183,7 @@ public class PersonController {
         if (Persons.isPresent()) {
             if (password.equals(Persons.get().getPasswordPerson()) && !password.equals(newPassword)) {
                 Persons.get().setPasswordPerson(newPassword);
+                Persons.get().setDateupdatePerson(Methods.nowLocalDateTime());
                 personDAO.save(Persons.get());
                 String textMessage = "Su contraseña ha sido actualizada con éxito.";
                 utilController.eMessageUser(Persons.get().getEmailPerson(), Persons.get().getNamePerson(), Persons.get().getLastnamePerson(), textMessage);
@@ -203,6 +209,7 @@ public class PersonController {
             if (Persons.get(0).getCodeverificationPerson().equals(code)) {
                 Persons.get(0).setTypePerson("U");//Rol de Usuario nuevamente
                 Persons.get(0).setPasswordPerson(bCryptPasswordEncoder.encode(password));
+                Persons.get(0).setDateupdatePerson(Methods.nowLocalDateTime());
                 personDAO.save(Persons.get(0));
                 status = "2";
                 message = "Código de verificación es el correcto.";

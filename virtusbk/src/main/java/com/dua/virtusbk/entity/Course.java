@@ -8,6 +8,7 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Table(name = "courses")
 @Data
@@ -37,10 +38,10 @@ public class Course {
     private String pathimgCourse;
 
     @Column(name = "datereg_course", nullable = false)
-    private Instant dateregCourse;
+    private LocalDateTime dateregCourse;
 
     @Column(name = "dateupdate_course", nullable = false)
-    private Instant dateupdateCourse;
+    private LocalDateTime dateupdateCourse;
 
     @Column(name = "state_course", nullable = false, length = 1)
     private String stateCourse;

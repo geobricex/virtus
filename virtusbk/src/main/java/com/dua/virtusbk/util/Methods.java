@@ -20,6 +20,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -709,5 +713,12 @@ public final class Methods {
     public static int randomNumberInRange(int minimo, int maximo) {
         // nextInt regresa en rango pero con límite superior exclusivo, por eso sumamos 1
         return ThreadLocalRandom.current().nextInt(minimo, maximo + 1);
+    }
+
+    public static LocalDateTime nowLocalDateTime() {
+        String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime fechaOutput = LocalDateTime.parse(timeStamp, formatter); //parsea a LocalDateTime , la fecha de entrada con el respectivo formato indicado
+        return fechaOutput;
     }
 }
