@@ -15,6 +15,8 @@ import {ModuloComponent} from "./pages/modulo/modulo.component";
 import {TestvoiceComponent} from './testvoice/testvoice.component'
 import {TestpocketbaseComponent} from './testpocketbase/testpocketbase.component'
 import {CursosArComponent} from "./pages/cursos-ar/cursos-ar.component";
+import {VerifyAccountComponent} from "./pages/verify-account/verify-account.component";
+import {MyprofileComponent} from "./pages/myprofile/myprofile.component";
 
 @NgModule({
   imports: [
@@ -23,10 +25,12 @@ import {CursosArComponent} from "./pages/cursos-ar/cursos-ar.component";
       {path: 'home', component: AppMainpageComponent},
       {path: 'login', component: AppLoginComponent},
       {path: 'singup', component: SingupComponent},
+      {path: 'verify/:email/:code', component: VerifyAccountComponent},
       {
         path: 'app', component: AppMainComponent,
         children: [
           {path: '', component: DashboardDemoComponent},
+          {path: 'myprofile', component: MyprofileComponent},
           {path: 'course', component: CursosComponent},
           {path: 'coursear', component: CursosArComponent},
           {path: 'mycourse', component: MiscursosComponent},

@@ -52,7 +52,8 @@
   </ng-template>
   <ng-template pTemplate="footer">
     <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-warning"></button>
-    <button pButton pRipple label="Guardar cambios" icon="pi pi-check" class="p-button-success"></button>
+    <button pButton pRipple label="Guardar cambios" icon="pi pi-check" class="p-button-success"
+            (click)="recoverAccount()"></button>
   </ng-template>
 </p-dialog>
 

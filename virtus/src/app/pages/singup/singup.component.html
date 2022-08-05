@@ -1,3 +1,4 @@
+<p-toast key="tst" [baseZIndex]="99999"></p-toast>
 <div class="login-body" style="display: flex; justify-content: center;">
   <div class="login-panel"
        style="position: absolute; top: 50%; transform: translate(0, -50%); height: auto; display: flex;align-items: stretch;">
@@ -10,15 +11,15 @@
       <div class="mt-3">
         <div class="field">
           <label>Apellidos:</label>
-          <input type="text" autocomplete="off" pInputText class="w-full" [(ngModel)]="person.lastname_person"/>
+          <input type="text" autocomplete="off" pInputText class="w-full" [(ngModel)]="person._lastnamePerson"/>
         </div>
         <div class="field">
           <label>Nombres:</label>
-          <input type="text" autocomplete="off" pInputText class="w-full" [(ngModel)]="person.name_person"/>
+          <input type="text" autocomplete="off" pInputText class="w-full" [(ngModel)]="person._namePerson"/>
         </div>
         <div class="field">
           <label>Correo electronico:</label>
-          <input type="email" autocomplete="off" pInputText class="w-full" [(ngModel)]="person.email_person"/>
+          <input type="email" autocomplete="off" pInputText class="w-full" [(ngModel)]="person._emailPerson"/>
         </div>
         <div class="field">
           <label>Contraseña:</label>
@@ -27,7 +28,7 @@
         <div class="field">
           <label>Confirmar contraseña:</label>
           <input type="password" autocomplete="new-password" pInputText class="w-full"
-                 [(ngModel)]="person.password_person"/>
+                 [(ngModel)]="person._passwordPerson"/>
         </div>
       </div>
       <div class="col-12 text-center">

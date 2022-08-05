@@ -1,114 +1,126 @@
 export class Person {
-  private _id_person: number;
-  private _name_person: string;
-  private _lastname_person: string;
-  private _email_person: string;
-  private _password_person: string;
-  private _type_person: string;
-  private _pathimg_person: string;
-  private _codeverification_person: string;
-  private _datereg_person: object;
-  private _dateupdate_person: object;
-  private _provider_person: string;
-  private _id_location: string;
+  private id: number;
+  private namePerson: string;
+  private lastnamePerson: string;
+  private emailPerson: string;
+  private passwordPerson: string;
+  private typePerson: string;
+  private pathimgPerson: string;
+  private codeverificationPerson: string;
+  private dateregPerson: string;
+  private dateupdatePerson: string;
+  private providerPerson: string;
+  private idLocation: string;
 
-  constructor() {
-  }
-  
-  get id_person(): number {
-    return this._id_person;
-  }
 
-  set id_person(value: number) {
-    this._id_person = value;
-  }
-
-  get name_person(): string {
-    return this._name_person;
-  }
-
-  set name_person(value: string) {
-    this._name_person = value;
+  constructor(id: number, namePerson: string, lastnamePerson: string, emailPerson: string, typePerson: string, pathimgPerson: string, codeverificationPerson: string, dateregPerson: string, dateupdatePerson: string, providerPerson: string, idLocation: string) {
+    this.id = id;
+    this.namePerson = namePerson;
+    this.lastnamePerson = lastnamePerson;
+    this.emailPerson = emailPerson;
+    this.typePerson = typePerson;
+    this.pathimgPerson = pathimgPerson;
+    this.codeverificationPerson = codeverificationPerson;
+    this.dateregPerson = dateregPerson;
+    this.dateupdatePerson = dateupdatePerson;
+    this.providerPerson = providerPerson;
+    this.idLocation = idLocation;
   }
 
-  get lastname_person(): string {
-    return this._lastname_person;
+  get _id(): number {
+    return this.id;
   }
 
-  set lastname_person(value: string) {
-    this._lastname_person = value;
+  set _id(value: number) {
+    this.id = value;
   }
 
-  get email_person(): string {
-    return this._email_person;
+  get _namePerson(): string {
+    return this.namePerson;
   }
 
-  set email_person(value: string) {
-    this._email_person = value;
+  set _namePerson(value: string) {
+    this.namePerson = value;
   }
 
-  get password_person(): string {
-    return this._password_person;
+  get _lastnamePerson(): string {
+    return this.lastnamePerson;
   }
 
-  set password_person(value: string) {
-    this._password_person = value;
+  set _lastnamePerson(value: string) {
+    this.lastnamePerson = value;
   }
 
-  get type_person(): string {
-    return this._type_person;
+  get _emailPerson(): string {
+    return this.emailPerson;
   }
 
-  set type_person(value: string) {
-    this._type_person = value;
+  set _emailPerson(value: string) {
+    this.emailPerson = value;
   }
 
-  get pathimg_person(): string {
-    return this._pathimg_person;
+  get _passwordPerson(): string {
+    return this.passwordPerson;
   }
 
-  set pathimg_person(value: string) {
-    this._pathimg_person = value;
+  set _passwordPerson(value: string) {
+    this.passwordPerson = value;
   }
 
-  get codeverification_person(): string {
-    return this._codeverification_person;
+  get _typePerson(): string {
+    return this.typePerson;
   }
 
-  set codeverification_person(value: string) {
-    this._codeverification_person = value;
+  set _typePerson(value: string) {
+    this.typePerson = value;
   }
 
-  get datereg_person(): object {
-    return this._datereg_person;
+  get _pathimgPerson(): string {
+    return this.pathimgPerson;
   }
 
-  set datereg_person(value: object) {
-    this._datereg_person = value;
+  set _pathimgPerson(value: string) {
+    this.pathimgPerson = value;
   }
 
-  get dateupdate_person(): object {
-    return this._dateupdate_person;
+  get _codeverificationPerson(): string {
+    return this.codeverificationPerson;
   }
 
-  set dateupdate_person(value: object) {
-    this._dateupdate_person = value;
+  set _codeverificationPerson(value: string) {
+    this.codeverificationPerson = value;
   }
 
-  get provider_person(): string {
-    return this._provider_person;
+  get _dateregPerson(): string {
+    return this.dateregPerson;
   }
 
-  set provider_person(value: string) {
-    this._provider_person = value;
+  set _dateregPerson(value: string) {
+    this.dateregPerson = value;
   }
 
-  get id_location(): string {
-    return this._id_location;
+  get _dateupdatePerson(): string {
+    return this.dateupdatePerson;
   }
 
-  set id_location(value: string) {
-    this._id_location = value;
+  set _dateupdatePerson(value: string) {
+    this.dateupdatePerson = value;
+  }
+
+  get _providerPerson(): string {
+    return this.providerPerson;
+  }
+
+  set _providerPerson(value: string) {
+    this.providerPerson = value;
+  }
+
+  get _idLocation(): string {
+    return this.idLocation;
+  }
+
+  set _idLocation(value: string) {
+    this.idLocation = value;
   }
 }
 

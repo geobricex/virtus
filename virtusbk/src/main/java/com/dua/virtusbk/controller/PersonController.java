@@ -58,7 +58,7 @@ public class PersonController {
 
     public String[] signUp(Person person) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
-
+        System.out.println(person.getEmailPerson());
         if (Methods.comprobeEmail(person.getEmailPerson())
                 && ((Methods.comprobePassword(person.getPasswordPerson())
                 && person.getProviderPerson().equals("native")))

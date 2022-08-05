@@ -8,6 +8,7 @@ import {Utils} from "../util/Utils";
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import PocketBase from 'pocketbase';
+import {Person} from "../models/Person";
 
 @Component({
   selector: 'app-login',
@@ -70,8 +71,6 @@ export class AppLoginComponent {
   }
 
   apiLogin(): Observable<any> {
-
-
     console.log(this.user.email, this.user.password);
     this.globalUri = "virtusbk/persons/login";
     var headers = new HttpHeaders()
@@ -82,26 +81,22 @@ export class AppLoginComponent {
       "password": this.user.password,
       "provider": "native"
     }, {'headers': headers});
+  }
 
-    /*if (this.user.email === "root" && this.user.password === "root") {
-      this.user.rol = "R";
-      this.sessionLog = new Session("123456", this.user);
-      this.storageService.setCurrentSession(this.sessionLog);
-      this.router.navigateByUrl('/app');
-    } else if (this.user.email === "root" && this.user.password === "admin") {
-      this.user.rol = "A";
-      this.sessionLog = new Session("123456", this.user);
-      this.storageService.setCurrentSession(this.sessionLog);
-      this.router.navigateByUrl('/app');
-    } else if (this.user.email === "root" && this.user.password === "user") {
-      this.user.rol = "U";
-      this.sessionLog = new Session("123456", this.user);
-      this.storageService.setCurrentSession(this.sessionLog);
-      this.router.navigateByUrl('/app');
-    } else {
-      this.utils.showMessages("1", "El usuario no se encuentra registrado/los campos son inválidos.", "tst");
-    }*/
+  recoverAccount() {
+    this.apiRecoverAccount().subscribe(response => {
+      console.log(response);
+      this.utils.showMessages(response.status, response.information, "tst");
+    });
+  }
 
+  apiRecoverAccount(): Observable<any> {
+    this.globalUri = "virtusbk/persons/requestcode";
+    return this._http.post<Person>(this.globalUri, {
+      "flag": "2",
+      "email": this.user.email,
+      "code": ""
+    });
   }
 
 }
