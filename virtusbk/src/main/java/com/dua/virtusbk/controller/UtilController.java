@@ -70,7 +70,7 @@ public class UtilController {
             respon = respon.replace("${hosturl}", urlx);
             respon = respon.replace("${hostname}", DataStatic.nameApplication);
             respon = respon.replace("${paramdetail}", "confirmación de la cuenta");
-            respon = respon.replace("${hosthackurl}", urlx + "verify/" + email + "/" + code);
+            respon = respon.replace("${hosthackurl}", urlx + "/#/verify/" + email + "/" + code);
 
             Email em = new Email();
             WeEncoder wEr = new WeEncoder();
