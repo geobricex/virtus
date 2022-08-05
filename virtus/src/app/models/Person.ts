@@ -12,9 +12,20 @@ export class Person {
   private providerPerson: string;
   private idLocation: string;
 
-  constructor() {
-  }
 
+  constructor(id: number, namePerson: string, lastnamePerson: string, emailPerson: string, typePerson: string, pathimgPerson: string, codeverificationPerson: string, dateregPerson: string, dateupdatePerson: string, providerPerson: string, idLocation: string) {
+    this.id = id;
+    this.namePerson = namePerson;
+    this.lastnamePerson = lastnamePerson;
+    this.emailPerson = emailPerson;
+    this.typePerson = typePerson;
+    this.pathimgPerson = pathimgPerson;
+    this.codeverificationPerson = codeverificationPerson;
+    this.dateregPerson = dateregPerson;
+    this.dateupdatePerson = dateupdatePerson;
+    this.providerPerson = providerPerson;
+    this.idLocation = idLocation;
+  }
 
   get _id(): number {
     return this.id;

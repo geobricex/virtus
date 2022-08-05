@@ -1,0 +1,63 @@
+<p-toast key="tst" [baseZIndex]="99999"></p-toast>
+
+<p-dialog [(visible)]="formUpdatePhto" [style]="{width: '450px'}" header="Editar foto de perfil" [modal]="true"
+          class="p-fluid">
+
+  <ng-template pTemplate="content">
+    <div [formGroup]="frmPhoto" class="text-center">
+      <img [src]="urlimageupload" alt="" width="150" height="150"
+           style="border-radius: 50%; border: 5px solid #2D3F47"> <br>
+      <label for="uploadPhotoNew" class="p-button p-button-success w-4"> Seleccionar foto </label>
+      <input style="display: none" id="uploadPhotoNew" formControlName="firstName" type="file"
+             (change)="onFileChange($event)">
+    </div>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-warning"></button>
+    <button pButton pRipple label="Guardar cambios" icon="pi pi-check" class="p-button-success"
+            (click)="updatePhtoProfile()"></button>
+  </ng-template>
+
+</p-dialog>
+
+<div style="width: 50%; margin: auto;">
+  <p-panel header="Datos personales" [toggleable]="true" class="line-height-3 m-0">
+    <div class="p-3 text-center">
+      <img [src]="person._pathimgPerson" alt="profile photo" class="topbar-profile"
+           style="border-radius: 50%; border: 5px solid #2D3F47" width="150" height="150"/>
+      <button pButton icon="pi pi-pencil" class="p-button-outlined bg-white" *ngIf="editar_datos"
+              style="position: absolute;margin-top: 110px;margin-left: -36px;background: white; border-radius: 50%"
+              (click)="showUpdatePhoto()">
+      </button>
+      <br>
+      <button pButton label="Editar datos" class="p-button-warning mt-2" (click)="editar_datos = true"
+              *ngIf="!editar_datos"></button>
+    </div>
+    <div class="field">
+      <label for="apellidos">Apellidos</label>
+      <input id="apellidos" type="email" autocomplete="off" pInputText [(ngModel)]="person._lastnamePerson"
+             class="w-full" [readOnly]="!editar_datos"/>
+    </div>
+    <div class="field">
+      <label for="nombres">Nombres</label>
+      <input id="nombres" type="email" autocomplete="off" pInputText [(ngModel)]="person._namePerson"
+             class="w-full" [readOnly]="!editar_datos"/>
+    </div>
+    <div class="field">
+      <label for="email">Correo electrónico</label>
+      <input id="email" type="email" autocomplete="off" pInputText [(ngModel)]="person._emailPerson"
+             class="w-full" readonly="readonly" disabled="true"/>
+    </div>
+    <div class="text-right" *ngIf="editar_datos">
+      <button pButton label="Cancelar" class="p-button-warning mt-2" (click)="editar_datos = false"></button>
+      <button pButton label="Guardar cambios" class="p-button-success mt-2 ml-2" (click)="updateDataPerson()"></button>
+    </div>
+    <hr>
+    <h5>Contraseña</h5>
+    <button pButton label="Cambiar contraseña" class=" mt-2"></button>
+    <hr>
+    <h6>SUSPENSIÓN DE CUENTA</h6>
+    <button pButton label="Deshabilitar cuenta" class="p-button-danger mt-2"></button>
+    <button pButton label="Eliminar cuenta" class="p-button-danger p-button-outlined mt-2 ml-2"></button>
+  </p-panel>
+</div>

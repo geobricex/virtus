@@ -24,7 +24,7 @@ export class SingupComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.person = new Person();
+    this.person = new Person(0, "", "", "", "", "", "", "", "", "", "");
     this.date = new Date();
   }
 
@@ -38,10 +38,11 @@ export class SingupComponent implements OnInit {
     console.log(this.person);
     this.apirRegisterUser(this.person).subscribe(response => {
       console.log(response);
+      this.utils.showMessages(response.status, response.information, "tst");
     });
   }
 
-  apirRegisterUser(person: Person): Observable<Person> {
+  apirRegisterUser(person: Person): Observable<any> {
     this.globalUri = "virtusbk/persons/signup";
     return this._http.post<Person>(this.globalUri, person);
   }

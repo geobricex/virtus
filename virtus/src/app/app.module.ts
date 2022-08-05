@@ -56,6 +56,7 @@ import {CursosArComponent} from './pages/cursos-ar/cursos-ar.component';
 import {ToolbarModule} from "primeng/toolbar";
 import {ChipModule} from "primeng/chip";
 import {TestpocketbaseComponent} from './testpocketbase/testpocketbase.component';
+import { MyprofileComponent } from './pages/myprofile/myprofile.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -84,7 +85,8 @@ FullCalendarModule.registerPlugins([
     ModuloComponent,
     CursosArComponent,
     TestpocketbaseComponent,
-    VerifyAccountComponent
+    VerifyAccountComponent,
+    MyprofileComponent
   ],
   imports: [
     HttpClientModule,
