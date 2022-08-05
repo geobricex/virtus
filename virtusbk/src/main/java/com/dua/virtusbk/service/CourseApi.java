@@ -36,7 +36,7 @@ public class CourseApi {
         return ResponseEntity.ok(list);
     }
 
-    @PostMapping
+    @PostMapping("/insertcourse")
     public ResponseEntity<String> insertCourse(@RequestBody @Validated Course course, @RequestHeader("token") String sessionToken) {
         String message;
         String[] clains = Methods.getDataToJwt(sessionToken);
@@ -56,7 +56,7 @@ public class CourseApi {
         }
     }
 
-    @PostMapping
+    @PostMapping("/updatecourse")
     public ResponseEntity<String> updateCourse(@RequestBody @Validated Course course, @RequestHeader("token") String sessionToken) {
         String message = "[]";
         String[] clains = Methods.getDataToJwt(sessionToken);

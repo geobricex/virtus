@@ -34,7 +34,7 @@ public class PersonsCoursApi {
         return ResponseEntity.ok(list);
     }
 
-    @PostMapping
+    @PostMapping("/joincourse")
     public ResponseEntity<String> joinCourse(@RequestBody String data, @RequestHeader("token") String sessionToken) {
         String message = "[]";
         String[] clains = Methods.getDataToJwt(sessionToken);
