@@ -30,8 +30,8 @@ export class SingupComponent implements OnInit {
 
   registerUser() {
     this.person._codeverificationPerson = "000";
-    this.person._dateregPerson = this.date.toISOString().split('T')[0] + " " + this.date.getHours() + ":" + this.date.getMinutes();
-    this.person._dateupdatePerson = this.date.toISOString().split('T')[0] + " " + this.date.getHours() + ":" + this.date.getMinutes();
+    this.person._dateregPerson = "";
+    this.person._dateupdatePerson = "";
     this.person._idLocation = "0-0-0";
     this.person._providerPerson = "native";
     this.person._typePerson = "S";
