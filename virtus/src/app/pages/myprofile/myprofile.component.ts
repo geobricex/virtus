@@ -9,6 +9,7 @@ import {Session} from "../../models/session";
 
 import {FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule} from '@angular/forms';
 import PocketBase from "pocketbase";
+import {Message} from "primeng/api";
 
 @Component({
   selector: 'app-myprofile',
@@ -25,6 +26,8 @@ export class MyprofileComponent implements OnInit {
   tmpFile: any;
   client: any;
   urlimageupload: any;
+
+  msgs: Message[] = [];
 
   frmPhoto = new FormGroup({
     firstName: new FormControl()
@@ -73,7 +76,10 @@ export class MyprofileComponent implements OnInit {
 
   updateDataPerson() {
     console.log(this.person);
+    this.msgs = [];
+    this.msgs.push({severity: 'info', summary: 'Virtus', detail: 'Procesando...'});
     this.apiupdateDataPerson(this.person).subscribe(response => {
+      this.msgs = [];
       this.utils.showMessages(2, "Datos actualizados exitosamente.", "tst");
       this.editar_datos = false;
     });
