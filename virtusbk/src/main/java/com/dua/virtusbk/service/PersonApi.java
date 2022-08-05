@@ -147,6 +147,34 @@ public class PersonApi {//implements UserDetailsService {
         }
     }
 
+    @PostMapping("/changepassword")
+    public ResponseEntity<String> changePassword(@RequestBody String data, @RequestHeader("token") String sessionToken) {
+        System.out.println("changePassword...");
+        String message = "[]";
+        String[] clains = Methods.getDataToJwt(sessionToken);
+        String[] res = Methods.validatePermit(clains[0], clains[1], 1);
+        if (res[0].equals("2")) {
+            JsonObject jso = Methods.stringToJSON(data);
+            if (jso.size() > 0) {
+                String password = Methods.JsonToString(jso, "password", "");
+                String newpassword = Methods.JsonToString(jso, "newpassword", "");
+
+                res = personController.changePassword(password, newpassword, clains[0]);
+
+                message = Methods.getJsonMessage(res[0], res[1], res[2]);
+
+                return new ResponseEntity<>(message, HttpStatus.OK);
+            } else {
+                message = Methods.getJsonMessage("4", "Parametros de entrada vacios.", "[]");
+                return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
+            }
+
+        } else {
+            message = Methods.getJsonMessage("4", "Parametros de entrada vacios.", "[]");
+            return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
+        }
+    }
+
     @PostMapping("/recoveraccount")
     public ResponseEntity<String> requestCodePerson(@RequestBody String data) {
         System.out.println("requestCodePerson...");

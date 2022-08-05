@@ -102,9 +102,11 @@ public class PersonController {
             System.out.println("updatePerson...");
 
             if (!person.getTypePerson().equals("S") && !person.getTypePerson().equals("I")) {
+                person = personDAO.save(person);
+                String textMessage = "Sus datos se han actualizado de forma exitosa.";
+                utilController.eMessageUser(person.getEmailPerson(), person.getNamePerson(), person.getLastnamePerson(), textMessage);
                 status = "2";
                 message = "Datos del usuario actualizados.";
-                person = personDAO.save(person);
             } else {
                 status = "4";
                 message = "Datos del usuario no disponibles.";
@@ -138,16 +140,42 @@ public class PersonController {
                     String codeEmail = weEncoder.getEmailCode();
                     Persons.get(0).setCodeverificationPerson(codeEmail);
                     personDAO.save(Persons.get(0));
-                    if (utilController.eInsertUser(Persons.get(0).getEmailPerson(), Persons.get(0).getNamePerson(), Persons.get(0).getLastnamePerson(), Persons.get(0).getCodeverificationPerson())) {
+                    if (utilController.eCodeUser(Persons.get(0).getEmailPerson(), Persons.get(0).getNamePerson(), Persons.get(0).getLastnamePerson(), Persons.get(0).getCodeverificationPerson())) {
                         status = "2";
                         message = "Se ha enviado el código de verificación.";
                     } else {
                         status = "4";
                         message = "Error al enviar código de verificación.";
+                        throw new RuntimeException("Error in Send Email");
                     }
 
                     break;
             }
+        } else {
+            status = "4";
+            message = "Usuario no encontrado.";
+        }
+        return new String[]{status, message, data};
+    }
+
+    public String[] changePassword(String password, String newPassword, String id_person) {
+        String status = "4", message = "Error en los parámetros introducidos", data = "[]";
+        Optional<Person> Persons = personDAO.findById(Long.parseLong(id_person));
+        password = bCryptPasswordEncoder.encode(password);
+        newPassword = bCryptPasswordEncoder.encode(newPassword);
+        if (Persons.isPresent()) {
+            if (password.equals(Persons.get().getPasswordPerson()) && !password.equals(newPassword)) {
+                Persons.get().setPasswordPerson(newPassword);
+                personDAO.save(Persons.get());
+                String textMessage = "Su contraseña ha sido actualizada con éxito.";
+                utilController.eMessageUser(Persons.get().getEmailPerson(), Persons.get().getNamePerson(), Persons.get().getLastnamePerson(), textMessage);
+                status = "2";
+                message = "Contraseña actualizada.";
+            } else {
+                status = "5";
+                message = "No se puede actualizar la contraseña.";
+            }
+
         } else {
             status = "4";
             message = "Usuario no encontrado.";
