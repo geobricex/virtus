@@ -33,7 +33,7 @@ public class Syllabu {
     @Type(type = "org.hibernate.type.TextType")
     private String keywordsSyllabu;
 
-    @Column(name = "pathimg_syllabus", length = 75)
+    @Column(name = "pathimg_syllabus", length = 200)
     private String pathimgSyllabus;
 
     @Column(name = "datereg_syllabu", nullable = false)

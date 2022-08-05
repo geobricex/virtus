@@ -20,6 +20,10 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -66,6 +70,14 @@ public class PersonController {
             person.setEmailPerson(person.getEmailPerson().toLowerCase());
             person.setPasswordPerson(bCryptPasswordEncoder.encode(person.getPasswordPerson()));
             person.setTypePerson("S");
+            String timeStamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
+            person.setDateregPerson(LocalDateTime.parse(timeStamp));
+            person.setDateupdatePerson(LocalDateTime.parse(timeStamp));
+            /*AVATAR ALEATORIO*/
+            String[] avatarUser = DataStatic.avatarUser;
+            int indexRandom = Methods.randomNumberInRange(0, avatarUser.length - 1);
+            person.setPathimgPerson(avatarUser[indexRandom]);
+            /*FIN AVATAR ALEATORIO*/
             person = personDAO.save(person);
             if (person.getTypePerson().equals("S")) {
 
