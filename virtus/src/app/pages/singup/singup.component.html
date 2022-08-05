@@ -1,10 +1,12 @@
 <p-toast key="tst" [baseZIndex]="99999"></p-toast>
+
 <div class="login-body" style="display: flex; justify-content: center;">
   <div class="login-panel"
        style="position: absolute; top: 50%; transform: translate(0, -50%); height: auto; display: flex;align-items: stretch;">
     <img src="assets/layout/images/imagesVirtus/logoVirtus.svg" alt="harmony-layout" class="mobile"
          style="width: 45%; margin: auto; margin-top: 2rem;"/>
     <div class="left-part">
+      <p-messages [value]="msgs"></p-messages>
       <span class="login-panel-header">Registrarse en virtus</span>
       <span class="login-panel-subheader">Bienvenido, por favor utilice el formulario para registrarse en Virtus.
         Si ya tiene una cuenta, por favor  <a routerLink="/login" class="text-green-500"> inicie sesion </a> </span>
