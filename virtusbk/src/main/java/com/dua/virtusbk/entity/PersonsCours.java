@@ -7,6 +7,7 @@ import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Table(name = "persons_courses")
 @Entity
@@ -21,7 +22,7 @@ public class PersonsCours {
     private Long id;
 
     @Column(name = "datereg_person_course", nullable = false)
-    private Instant dateregPersonCourse;
+    private LocalDateTime dateregPersonCourse;
 
     @Column(name = "state_person_course", nullable = false, length = 1)
     private String statePersonCourse;

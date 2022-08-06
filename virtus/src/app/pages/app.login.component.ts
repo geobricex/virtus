@@ -8,6 +8,7 @@ import {Utils} from "../util/Utils";
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import PocketBase from 'pocketbase';
+import {Person} from "../models/Person";
 
 @Component({
   selector: 'app-login',
@@ -36,7 +37,7 @@ export class AppLoginComponent {
    * Metodo para inicializar cualquier cosa
    * */
   ngOnInit(): void {
-    this.user = new User("", "", "");
+    this.user = new User("", "", "", "", "", "");
     this.client = new PocketBase(this.globalUri);
   }
 
@@ -54,7 +55,19 @@ export class AppLoginComponent {
   }
 
   login() {
-    console.log(this.apiLogin().subscribe(response => console.log(response)));
+    this.apiLogin().subscribe(response => {
+      console.log(response);
+      this.utils.showMessages(response.status, response.information, "tst");
+      if (response.status === 2) {
+        let dataLogin = response.data[0];
+        this.user = new User(dataLogin.email_person, dataLogin.type_person, dataLogin.name_person,
+          dataLogin.lastname_person, dataLogin.pathimg_person, dataLogin.provider_person);
+        this.sessionLog = new Session(dataLogin.user_token, this.user);
+        this.storageService.setCurrentSession(this.sessionLog);
+        console.log(this.sessionLog);
+        this.router.navigateByUrl('/app');
+      }
+    });
   }
 
   apiLogin(): Observable<any> {
@@ -65,27 +78,25 @@ export class AppLoginComponent {
       .set('provider', 'native');
     return this._http.post(this.globalUri, {
       "email": this.user.email,
-      "password": this.user.password
+      "password": this.user.password,
+      "provider": "native"
     }, {'headers': headers});
-    /*if (this.user.email === "root" && this.user.password === "root") {
-      this.user.rol = "R";
-      this.sessionLog = new Session("123456", this.user);
-      this.storageService.setCurrentSession(this.sessionLog);
-      this.router.navigateByUrl('/app');
-    } else if (this.user.email === "root" && this.user.password === "admin") {
-      this.user.rol = "A";
-      this.sessionLog = new Session("123456", this.user);
-      this.storageService.setCurrentSession(this.sessionLog);
-      this.router.navigateByUrl('/app');
-    } else if (this.user.email === "root" && this.user.password === "user") {
-      this.user.rol = "U";
-      this.sessionLog = new Session("123456", this.user);
-      this.storageService.setCurrentSession(this.sessionLog);
-      this.router.navigateByUrl('/app');
-    } else {
-      this.utils.showMessages("1", "El usuario no se encuentra registrado/los campos son inválidos.", "tst");
-    }*/
+  }
 
+  recoverAccount() {
+    this.apiRecoverAccount().subscribe(response => {
+      console.log(response);
+      this.utils.showMessages(response.status, response.information, "tst");
+    });
+  }
+
+  apiRecoverAccount(): Observable<any> {
+    this.globalUri = "virtusbk/persons/requestcode";
+    return this._http.post<Person>(this.globalUri, {
+      "flag": "2",
+      "email": this.user.email,
+      "code": ""
+    });
   }
 
 }

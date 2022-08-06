@@ -12,6 +12,7 @@ import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Table(name = "persons_answers")
 @Entity
@@ -26,7 +27,7 @@ public class PersonsAnswer {
     private Long id;
 
     @Column(name = "datereg_person_answer", nullable = false)
-    private Instant dateregPersonAnswer;
+    private LocalDateTime dateregPersonAnswer;
 
     @Column(name = "results_person_answer", nullable = false, length = 8000)
     private String resultsPersonAnswer;

@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import {Router} from '@angular/router';
 import {Session} from "../models/session";
 import {User} from "../models/user";
+import {any} from "codelyzer/util/function";
 
 @Injectable()
 export class StorageService {
@@ -10,19 +11,30 @@ export class StorageService {
   private currentSession: Session;
 
   constructor(private router: Router) {
-    this.localStorageService = localStorage;
+    this.localStorageService = sessionStorage;
     this.currentSession = this.loadSessionData();
   }
 
-  setCurrentSession(session: Session): void {
+  setCurrentSession(session: any): void {
     this.currentSession = session;
     this.localStorageService.setItem('currentUser', JSON.stringify(session));
   }
 
   loadSessionData(): Session {
     var sessionStr: any;
+    var sessionAux: Session;
     sessionStr = this.localStorageService.getItem('currentUser');
-    return <Session>JSON.parse(sessionStr);
+    if (sessionStr !== null) {
+      var jsonsession = JSON.parse(sessionStr);
+      console.log(sessionStr)
+      var currentUser: User;
+      currentUser = new User(jsonsession._user._email, jsonsession._user._type_person, jsonsession._user._name_person,
+        jsonsession._user._last_name, jsonsession._user._pathimg_person, jsonsession._user._provider_person);
+      sessionAux = new Session(jsonsession._token, currentUser);
+    }
+
+    // @ts-ignore
+    return sessionAux;
   }
 
   getCurrentSession(): Session {
@@ -35,12 +47,18 @@ export class StorageService {
   }
 
   getCurrentUser(): User {
-    var session: Session = this.getCurrentSession();
-    return session.user;
+    var session: any = this.getCurrentSession();
+    var currentUser: User;
+    if (session !== null && session !== undefined) {
+      currentUser = new User(session._user._email, session._user._type_person, session._user._name_person,
+        session._user._last_name, session._user._pathimg_person, session._user._provider_person);
+    }
+    // @ts-ignore
+    return currentUser;
   };
 
   isAuthenticated(): boolean {
-    return (this.getCurrentToken() != null) ? true : false;
+    return (this.getCurrentToken() !== null);
   };
 
   getCurrentToken(): string {
@@ -51,6 +69,7 @@ export class StorageService {
   logout(): void {
     this.removeCurrentSession();
     this.router.navigate(['/login']);
+    location.reload();
   }
 
 }

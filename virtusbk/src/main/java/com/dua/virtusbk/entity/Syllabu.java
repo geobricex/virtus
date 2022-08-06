@@ -1,5 +1,6 @@
 package com.dua.virtusbk.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.ToString;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,7 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Table(name = "syllabus")
 @Entity
@@ -32,14 +34,14 @@ public class Syllabu {
     @Type(type = "org.hibernate.type.TextType")
     private String keywordsSyllabu;
 
-    @Column(name = "pathimg_syllabus", length = 75)
+    @Column(name = "pathimg_syllabus", length = 200)
     private String pathimgSyllabus;
 
     @Column(name = "datereg_syllabu", nullable = false)
-    private Instant dateregSyllabu;
+    private LocalDateTime dateregSyllabu;
 
     @Column(name = "dateupdate_syllabu", nullable = false)
-    private Instant dateupdateSyllabu;
+    private LocalDateTime dateupdateSyllabu;
 
     @Column(name = "state_syllabu", nullable = false, length = 1)
     private String stateSyllabu;
@@ -47,6 +49,7 @@ public class Syllabu {
     @ManyToOne(optional = false)
     @Cascade(value={org.hibernate.annotations.CascadeType.ALL})
     @JoinColumn(name = "courses_id_course", nullable = false)
+    @JsonIgnore// No traer toda la relación en una consulta
     private Course coursesIdCourse;
 
 }

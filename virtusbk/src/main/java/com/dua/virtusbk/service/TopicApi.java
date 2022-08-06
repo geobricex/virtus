@@ -11,6 +11,7 @@ import com.dua.virtusbk.entity.Syllabu;
 import com.dua.virtusbk.entity.Topic;
 import com.dua.virtusbk.repository.SyllabuRepository;
 import com.dua.virtusbk.repository.TopicRepository;
+import com.dua.virtusbk.util.Methods;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,7 @@ public class TopicApi {
 
     @Autowired
     private TopicController topicController;
+
     @RequestMapping(value = "/topics", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<List<Topic>> getTopic() {
@@ -38,11 +40,19 @@ public class TopicApi {
     }
 
     @PostMapping
-    public ResponseEntity<Topic> insertCourse(@RequestBody @Validated Topic topic) {
-
-        String[] res = topicController.saveTopic(topic);
+    public ResponseEntity<Topic> insertCourse(@RequestBody @Validated Topic topic, @RequestHeader("token") String sessionToken) {
+        String message;
+        String[] clains = Methods.getDataToJwt(sessionToken);
+        String[] res = Methods.validatePermit(clains[0], clains[1], 1);
         if (res[0].equals("2")) {
-            return ResponseEntity.ok(topic);
+            res = topicController.saveTopic(topic);
+            if (res[0].equals("2")) {
+                return ResponseEntity.ok(topic);
+            } else {
+                message = Methods.getJsonMessage("4", "Credenciales de sesión inválidas, vuelve a iniciar sesión "
+                        + "e intentalo de nuevo.", "[]");
+                return ResponseEntity.badRequest().body(null);
+            }
         } else {
             return ResponseEntity.badRequest().body(null);
         }

@@ -6,9 +6,7 @@
 package com.dua.virtusbk.service;
 
 import com.dua.virtusbk.entity.PersonsAnswer;
-import com.dua.virtusbk.entity.PersonsCours;
 import com.dua.virtusbk.repository.PersonsAnswerRepository;
-import com.dua.virtusbk.repository.PersonsCoursRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -5,6 +5,7 @@
  */
 package com.dua.virtusbk.util;
 
+import com.dua.virtusbk.entity.Person;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -12,16 +13,30 @@ import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
+
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.swing.table.DefaultTableModel;
 
 /**
  * This java class contains the methods used within the back-end
  * of the application.
+ *
  * @author CleanCode *
  */
 public final class Methods {
@@ -31,13 +46,30 @@ public final class Methods {
         try {
             Claims claims = Jwts.parser()
                     .setSigningKey(DataStatic.privateKey)
-                    .parseClaimsJws(jwt).getBody();
+                    .parseClaimsJws(jwt.replace("{", "").replace("}", "")).getBody();
             response = new String[]{claims.get("user").toString(), claims.get("permit").toString()};
         } catch (Exception e) {
             System.out.println("error JWT: " + e.getMessage());
             response = new String[]{"", ""};
         }
         return response;
+    }
+
+    public static String personToJson(Person person) {
+        String key = DataStatic.privateKey;
+        long tiempo = System.currentTimeMillis();
+        JwtBuilder jwtb = Jwts.builder()
+                .signWith(SignatureAlgorithm.HS256, key)
+                .setSubject("-1")
+                .claim("user", person.getId())
+                .claim("permit", person.getTypePerson())
+                .setIssuedAt(new Date(tiempo));
+
+//        if (!customer.equals("mobile") && !customer.equals("desktop")) {
+        jwtb = jwtb.setExpiration(new Date(tiempo + 10800000));//180 min
+//        }
+
+        return jwtb.compact();
     }
 
     public static String getJsonMessage(String status, String information, String data) {
@@ -48,8 +80,8 @@ public final class Methods {
      * This method is for the security application.
      *
      * @param request Processes HTTP type requests
-     * @param param String type variable, contains the information obtained to
-     * the method.
+     * @param param   String type variable, contains the information obtained to
+     *                the method.
      * @param defaulx String type variable, return variable
      * @return a String, for the security request.
      */
@@ -139,9 +171,9 @@ public final class Methods {
     /**
      * Get a part of the json.
      *
-     * @param jso Variable type json, contains the information.
+     * @param jso   Variable type json, contains the information.
      * @param param String type variable, contains the name of the json
-     * parameter to be divided.
+     *              parameter to be divided.
      * @return a json, divided.
      */
     public static JsonElement securGetJSON(JsonObject jso, String param) {
@@ -156,9 +188,9 @@ public final class Methods {
     /**
      * Method to divide a json.
      *
-     * @param jso Variable type json, contains the information.
-     * @param param String type variable, contains the name of the json
-     * parameter to be divided.
+     * @param jso     Variable type json, contains the information.
+     * @param param   String type variable, contains the name of the json
+     *                parameter to be divided.
      * @param defaulx String type variable, return variable
      * @return Return a String, with the json divided.
      */
@@ -178,9 +210,9 @@ public final class Methods {
     /**
      * A sub json of a json.
      *
-     * @param jso Variable type json, contains the information.
+     * @param jso   Variable type json, contains the information.
      * @param param String type variable, contains the name of the json
-     * parameter to be divided.
+     *              parameter to be divided.
      * @return a json.
      */
     public static JsonObject JsonToSubJSON(JsonObject jso, String param) {
@@ -199,9 +231,9 @@ public final class Methods {
     /**
      * From json to array.
      *
-     * @param jso Variable type json, contains the information.
+     * @param jso   Variable type json, contains the information.
      * @param param String type variable, contains the name of the json
-     * parameter to be divided.
+     *              parameter to be divided.
      * @return a jsonArray, with data loaded
      */
     public static JsonArray JsonToArray(JsonObject jso, String param) {
@@ -237,9 +269,9 @@ public final class Methods {
     /**
      * From json to String
      *
-     * @param jso Variable type json, contains the information.
-     * @param param String type variable, contains the name of the json
-     * parameter to be divided.
+     * @param jso     Variable type json, contains the information.
+     * @param param   String type variable, contains the name of the json
+     *                parameter to be divided.
      * @param defaulx String type variable, return variable
      * @return a String, with data loaded from the json.
      */
@@ -293,9 +325,9 @@ public final class Methods {
     /**
      * Obtain an element from a Json, and store it in a String variable.
      *
-     * @param jse The variable type JsonElement, contains the information.
+     * @param jse     The variable type JsonElement, contains the information.
      * @param defaulx String type variable, contains the element of the selected
-     * json.
+     *                json.
      * @return a variable of type String, selected element of the json.
      */
     public static String JsonElementToString(JsonElement jse, String defaulx) {
@@ -314,7 +346,7 @@ public final class Methods {
      * from JsonElement to json.
      *
      * @param jse Variable type jsonElement, contains an element of another
-     * json.
+     *            json.
      * @return an object-type json
      */
     public static JsonObject JsonElementToJSO(JsonElement jse) {
@@ -332,9 +364,9 @@ public final class Methods {
     /**
      * from json to Integer.
      *
-     * @param jso Variable type json, contains the information
-     * @param param String type variable, contains the name of the json
-     * parameter to be divided.
+     * @param jso     Variable type json, contains the information
+     * @param param   String type variable, contains the name of the json
+     *                parameter to be divided.
      * @param defaulx String type Integer, return variable
      * @return an integer, the variable is defaulx.
      */
@@ -354,9 +386,9 @@ public final class Methods {
     /**
      * from json to boolean
      *
-     * @param jso Variable type json, contains the information
-     * @param param String type variable, contains the name of the json
-     * parameter to be divided.
+     * @param jso     Variable type json, contains the information
+     * @param param   String type variable, contains the name of the json
+     *                parameter to be divided.
      * @param defaulx String type Boolean, return variable
      * @return an Boolean, the variable is defaulx.
      */
@@ -464,7 +496,6 @@ public final class Methods {
     }
 
     /**
-     *
      * @param xml the xml string to validate how xml
      * @return returns a boolean
      */
@@ -677,5 +708,17 @@ public final class Methods {
             }
         }
         return new String[]{status, message, data};
+    }
+
+    public static int randomNumberInRange(int minimo, int maximo) {
+        // nextInt regresa en rango pero con límite superior exclusivo, por eso sumamos 1
+        return ThreadLocalRandom.current().nextInt(minimo, maximo + 1);
+    }
+
+    public static LocalDateTime nowLocalDateTime() {
+        String timeStamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(Calendar.getInstance().getTime());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime fechaOutput = LocalDateTime.parse(timeStamp, formatter); //parsea a LocalDateTime , la fecha de entrada con el respectivo formato indicado
+        return fechaOutput;
     }
 }

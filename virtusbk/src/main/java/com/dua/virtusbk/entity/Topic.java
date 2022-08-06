@@ -1,11 +1,14 @@
 package com.dua.virtusbk.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Type;
+import org.springframework.context.annotation.Lazy;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Table(name = "topics")
 @Data
@@ -32,14 +35,14 @@ public class Topic {
     @Type(type = "org.hibernate.type.TextType")
     private String keywordsTopic;
 
-    @Column(name = "pathimg_topic", length = 75)
+    @Column(name = "pathimg_topic", length = 200)
     private String pathimgTopic;
 
     @Column(name = "datereg_topic", nullable = false)
-    private Instant dateregTopic;
+    private LocalDateTime dateregTopic;
 
     @Column(name = "dateupdate_topic", nullable = false)
-    private Instant dateupdateTopic;
+    private LocalDateTime dateupdateTopic;
 
     @Column(name = "state_topic", nullable = false, length = 1)
     private String stateTopic;
@@ -50,6 +53,7 @@ public class Topic {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @Cascade(value={org.hibernate.annotations.CascadeType.ALL})
     @JoinColumn(name = "syllabus_id_syllabu", nullable = false)
+    @JsonIgnore// No traer toda la relación en una consulta
     private Syllabu syllabuIdSyllabu;
 
 }

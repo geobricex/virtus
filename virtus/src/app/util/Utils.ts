@@ -8,10 +8,10 @@ export class Utils {
 
   }
 
-  showMessages(status: string, info: string, key: string) {
+  showMessages(status: number, info: string, key: string) {
     this.service.add({
       key: key,
-      severity: status === "1" ? "warn" : status === "2" ? "success" : status === "3" ? "error" : "info",
+      severity: status === 1 ? "warn" : status === 2 ? "success" : status === 3 ? "error" : "info",
       summary: 'Virtus',
       detail: info
     });

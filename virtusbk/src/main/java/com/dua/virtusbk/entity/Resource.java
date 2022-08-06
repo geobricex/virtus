@@ -7,6 +7,7 @@ import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Table(name = "resources")
 @Entity
@@ -33,10 +34,10 @@ public class Resource {
     private String pathurlsignResource;
 
     @Column(name = "datereg_resource")
-    private Instant dateregResource;
+    private LocalDateTime dateregResource;
 
     @Column(name = "dateupdate_resource")
-    private Instant dateupdateResource;
+    private LocalDateTime dateupdateResource;
 
     @Column(name = "state_resource", nullable = false, length = 1)
     private String stateResource;

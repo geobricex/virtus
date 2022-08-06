@@ -45,21 +45,21 @@ public class Person {
     @Column(name = "type_person", nullable = false, length = 1)
     private String typePerson;
 
-    @Column(name = "pathimg_person", length = 50)
+    @Column(name = "pathimg_person", length = 200)
     private String pathimgPerson;
 
     @Column(name = "codeverification_person", length = 15)
     private String codeverificationPerson;
 
     @Column(name = "datereg_person", nullable = false)
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm", iso = DateTimeFormat.ISO.DATE_TIME)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss", iso = DateTimeFormat.ISO.DATE_TIME)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime dateregPerson;
 
     @Column(name = "dateupdate_person", nullable = false)
     //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm", iso = DateTimeFormat.ISO.DATE_TIME)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss", iso = DateTimeFormat.ISO.DATE_TIME)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime dateupdatePerson;
 
     @Column(name = "provider_person", length = 20)
