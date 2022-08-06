@@ -49,6 +49,7 @@ export class TestvoiceComponent implements OnInit {
           this.artyom.say("auxiliar: " + wildcard);
         }
       });
+
       /*artyom.addCommands([
         {
           indexes: ["a", "avión", "avion"],
