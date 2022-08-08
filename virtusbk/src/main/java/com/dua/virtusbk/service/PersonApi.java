@@ -29,8 +29,8 @@ public class PersonApi {//implements UserDetailsService {
     //@RequestMapping(value = "", method = RequestMethod.GET)
     @GetMapping
     public ResponseEntity<List<Person>> getPersons() {
-        List<Person> listProducts = personDAO.findAll();
-        return ResponseEntity.ok(listProducts);
+        List<Person> listPerson = personDAO.findAll();
+        return ResponseEntity.ok(listPerson);
     }
 
     @GetMapping(value = "{id}")

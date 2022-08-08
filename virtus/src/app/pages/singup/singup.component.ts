@@ -4,6 +4,7 @@ import {Person} from "../../models/Person";
 import {Observable} from "rxjs";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Utils} from "../../util/Utils";
+import {Message} from "primeng/api";
 
 @Component({
   selector: 'app-singup',
@@ -16,6 +17,7 @@ export class SingupComponent implements OnInit {
   newpassword: string;
   globalUri: string = "";
   date: Date;
+  msgs: Message[] = [];
 
   constructor(
     private utils: Utils,
@@ -29,6 +31,14 @@ export class SingupComponent implements OnInit {
   }
 
   registerUser() {
+
+    if (this.newpassword !== this.person._passwordPerson) {
+      this.utils.showMessages(1, "Las contraseñas no son iguales, intente de nuevo.", "tst");
+      return;
+    }
+
+    this.msgs = [];
+    this.msgs.push({severity: 'info', summary: 'Virtus', detail: 'Procesando...'});
     this.person._codeverificationPerson = "000";
     this.person._dateregPerson = "";//this.date.toISOString().split('T')[0] + " " + this.date.getHours() + ":" + this.date.getMinutes();
     this.person._dateupdatePerson = "";// this.date.toISOString().split('T')[0] + " " + this.date.getHours() + ":" + this.date.getMinutes();
@@ -37,8 +47,11 @@ export class SingupComponent implements OnInit {
     this.person._typePerson = "S";
     console.log(this.person);
     this.apirRegisterUser(this.person).subscribe(response => {
+      this.msgs = [];
       console.log(response);
       this.utils.showMessages(response.status, response.information, "tst");
+      this.person = new Person(0, "", "", "", "", "", "", "", "", "", "");
+      this.newpassword = "";
     });
   }
 

@@ -7,10 +7,13 @@ package com.dua.virtusbk.service;
 
 import com.dua.virtusbk.controller.SyllabuController;
 import com.dua.virtusbk.entity.Course;
+import com.dua.virtusbk.entity.Person;
 import com.dua.virtusbk.entity.Syllabu;
 import com.dua.virtusbk.repository.SyllabuRepository;
 import com.dua.virtusbk.util.Methods;
+import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -35,22 +38,65 @@ public class SyllabuApi {
         return ResponseEntity.ok(list);
     }
 
-    @PostMapping
-    public ResponseEntity<Syllabu> insertCourse(@RequestBody @Validated Syllabu syllabu, @RequestHeader("token") String sessionToken) {
+    @PostMapping("/insertsyllabu")
+    public ResponseEntity<String> insertSyllabu(@RequestBody @Validated Syllabu syllabu, @RequestHeader("token") String sessionToken) {
         String message;
         String[] clains = Methods.getDataToJwt(sessionToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
         if (res[0].equals("2")) {
             res = syllabuController.saveSyllabu(syllabu);
             if (res[0].equals("2")) {
-                return ResponseEntity.ok(syllabu);
+                message = Methods.getJsonMessage(res[0], res[1], res[2]);
+                return new ResponseEntity<>(message, HttpStatus.OK);
             } else {
                 message = Methods.getJsonMessage("4", "Credenciales de sesión inválidas, vuelve a iniciar sesión "
                         + "e intentalo de nuevo.", "[]");
-                return ResponseEntity.badRequest().body(null);
+                return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
             }
         } else {
             return ResponseEntity.badRequest().body(null);
         }
     }
+
+    @GetMapping(value = "{id}")
+    public ResponseEntity<String> getSyllabu(@PathVariable("token") String sessionToken) {
+        System.out.println("getPerson...");
+        String message;
+        JsonObject jso = Methods.stringToJSON(sessionToken);
+        String sToken = Methods.JsonToString(jso, "sessionToken", "");
+        String[] clains = Methods.getDataToJwt(sToken);
+        String[] res = Methods.validatePermit(clains[0], clains[1], 1);
+        if (res[0].equals("2")) {
+            message = Methods.getJsonMessage(res[0], res[1], res[2]);
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    }
+
+    @PostMapping("/getsyllabus")
+    public ResponseEntity<String> getSyllabus(@RequestBody String id_course) {
+        System.out.println("getSyllabus...");
+        String message;
+//        JsonObject jso = Methods.stringToJSON(sessionToken);
+//        String sToken = Methods.JsonToString(jso, "sessionToken", "");
+//        String[] clains = Methods.getDataToJwt(sToken);
+//        String[] res = Methods.validatePermit(clains[0], clains[1], 1);
+//        if (res[0].equals("2")) {
+        JsonObject jso = Methods.stringToJSON(id_course);
+        String course_id_syllabu = Methods.JsonToString(jso, "course_id_syllabu", "");
+        String[] res = syllabuController.getSyllabu(course_id_syllabu);
+        if (res[0].equals("2")) {
+            message = Methods.getJsonMessage(res[0], res[1], res[2]);
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } else {
+            message = Methods.getJsonMessage("4", "Credenciales de sesión inválidas, vuelve a iniciar sesión "
+                    + "e intentalo de nuevo.", "[]");
+            return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
+        }
+//        } else {
+//            return ResponseEntity.noContent().build();
+//        }
+    }
+
 }

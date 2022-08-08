@@ -21,7 +21,7 @@ public class UtilController {
     public boolean eMessageUser(String email, String name, String lastname, String message) {
 //         List<Util> utils = utilDAO.returnUtilsData();
 
-        Optional<Util> findsplantilla = utilDAO.findById("splantilla2");
+        Optional<Util> findsplantilla = utilDAO.findById("splantillaM");
         Optional<Util> findurlaplication = utilDAO.findById("urlaplication");
         Optional<Util> findemailpass = utilDAO.findById("emailpass");
         Optional<Util> findemail = utilDAO.findById("email");
@@ -70,7 +70,7 @@ public class UtilController {
             respon = respon.replace("${hosturl}", urlx);
             respon = respon.replace("${hostname}", DataStatic.nameApplication);
             respon = respon.replace("${paramdetail}", "confirmación de la cuenta");
-            respon = respon.replace("${hosthackurl}", urlx + "verify/" + email + "/" + code);
+            respon = respon.replace("${hosthackurl}", urlx + "/#/verify/" + email + "/" + code);
 
             Email em = new Email();
             WeEncoder wEr = new WeEncoder();
