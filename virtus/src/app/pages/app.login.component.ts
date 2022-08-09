@@ -41,9 +41,6 @@ export class AppLoginComponent {
     this.client = new PocketBase(this.globalUri);
   }
 
-  initPocket(): Observable<any> {
-    return this.client.Admins.authViaEmail("anthony.pachay2017@uteq.edu.ec", "Abc1234567");
-  }
 
   openDialogHasCode() {
     this.forgotPassword_dialog = false;
@@ -70,9 +67,15 @@ export class AppLoginComponent {
     });
   }
 
+
   apiLogin(): Observable<any> {
+    if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+      this.globalUri = "virtusbk/persons/login";
+    }else{
+      this.globalUri = "virtus_bk/persons/login";
+    }
     console.log(this.user.email, this.user.password);
-    this.globalUri = "virtusbk/persons/login";
+
     var headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native');
@@ -91,7 +94,11 @@ export class AppLoginComponent {
   }
 
   apiRecoverAccount(): Observable<any> {
-    this.globalUri = "virtusbk/persons/requestcode";
+    if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+      this.globalUri = "virtusbk/persons/requestcode";
+    }else{
+      this.globalUri = "virtus_bk/persons/requestcode";
+    }
     return this._http.post<Person>(this.globalUri, {
       "flag": "2",
       "email": this.user.email,

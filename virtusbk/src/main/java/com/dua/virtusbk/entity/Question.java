@@ -44,8 +44,8 @@ public class Question {
     @Column(name = "state_question", nullable = false, length = 1)
     private String stateQuestion;
 
-    @ManyToOne(optional = false)
-    @Cascade(value={org.hibernate.annotations.CascadeType.ALL})
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+//    @Cascade(value={org.hibernate.annotations.CascadeType.ALL})
     @JoinColumn(name = "\"evaluations_id-evaluation\"", nullable = false)
     @JsonIgnore// No traer toda la relación en una consulta
     private Evaluation evaluationsIdEvaluation;

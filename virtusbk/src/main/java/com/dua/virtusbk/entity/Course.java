@@ -17,6 +17,10 @@ import java.time.LocalDateTime;
 @ToString
 
 public class Course {
+    public Course(Long id) {
+        this.id = id;
+    }
+
     @Id
     @SequenceGenerator(name = "courses_id_course_seq", sequenceName = "courses_id_course_seq", allocationSize = 1)
     @GeneratedValue(generator = "courses_id_course_seq")
@@ -53,7 +57,7 @@ public class Course {
     private BigDecimal priceCourse;
 
     @ManyToOne
-    @Cascade(value={org.hibernate.annotations.CascadeType.ALL})
+//    @Cascade(value={org.hibernate.annotations.CascadeType.ALL})
     @JoinColumn(name = "persons_id_person", nullable = false)
     @JsonIgnore// No traer toda la relación en una consulta
     private Person personsIdPerson;
