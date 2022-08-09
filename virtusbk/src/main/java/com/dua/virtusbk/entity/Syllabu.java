@@ -52,8 +52,8 @@ public class Syllabu {
     @Column(name = "state_syllabu", nullable = false, length = 1)
     private String stateSyllabu;
 
-    @ManyToOne(optional = false)
-    @Cascade(value={org.hibernate.annotations.CascadeType.ALL})
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+//    @Cascade(value={org.hibernate.annotations.CascadeType.ALL})
     @JoinColumn(name = "courses_id_course", nullable = false)
     @JsonIgnore// No traer toda la relación en una consulta
     private Course coursesIdCourse;

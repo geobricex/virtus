@@ -147,7 +147,6 @@ public class PersonApi {//implements UserDetailsService {
                 String newpassword = Methods.JsonToString(jso, "newpassword", "");
 
                 res = personController.changePassword(password, newpassword, clains[0]);
-
                 message = Methods.getJsonMessage(res[0], res[1], res[2]);
 
                 return new ResponseEntity<>(message, HttpStatus.OK);
@@ -157,8 +156,9 @@ public class PersonApi {//implements UserDetailsService {
             }
 
         } else {
-            message = Methods.getJsonMessage("4", "Parametros de entrada vacios.", "[]");
-            return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
+            message = Methods.getJsonMessage("4", "Credenciales de sesión inválidas, vuelve a iniciar sesión "
+                    + "e intentalo de nuevo.", "[]");
+            return new ResponseEntity<>(message, HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
         }
     }
 
@@ -200,14 +200,16 @@ public class PersonApi {//implements UserDetailsService {
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
         if (res[0].equals("2")) {
             res = personController.updatePerson(person);
+            message = Methods.getJsonMessage(res[0], res[1], res[2]);
             if (res[0].equals("2")) {
                 return new ResponseEntity<>(message, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
             }
         } else {
-            message = Methods.getJsonMessage("4", "Parametros de entrada vacios.", "[]");
-            return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
+            message = Methods.getJsonMessage("4", "Credenciales de sesión inválidas, vuelve a iniciar sesión "
+                    + "e intentalo de nuevo.", "[]");
+            return new ResponseEntity<>(message, HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
         }
     }
 

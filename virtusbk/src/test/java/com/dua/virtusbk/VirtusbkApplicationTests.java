@@ -1,8 +1,11 @@
 package com.dua.virtusbk;
 
 import com.dua.virtusbk.entity.Person;
+import com.dua.virtusbk.entity.PersonsCours;
 import com.dua.virtusbk.repository.PersonRepository;
 import com.dua.virtusbk.util.WeEncoder;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.apache.commons.codec.binary.Base64;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +30,22 @@ class VirtusbkApplicationTests {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Test
+    void testPersonCours() {
+//        PersonsCours personsCours = new PersonsCours();
+//
+//        personsCours.setStatePersonCourse("A");
+//        System.out.println(personsCours.returnJSON());
+
+
+//        Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();
+//        String rGson = gson.toJson(personsCours);
+//        System.out.println(rGson);
+//
+//        assert (rGson.equals(""));//
+
+    }
 
     @Test
     void testPerson() {
