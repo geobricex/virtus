@@ -20,10 +20,10 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @ToString
-public class Answer{
+public class Answer {
     @Id
-    @SequenceGenerator(name="answers_id_answer_seq", sequenceName="answers_id_answer_seq", allocationSize=1)
-    @GeneratedValue(generator="answers_id_answer_seq")
+    @SequenceGenerator(name = "answers_id_answer_seq", sequenceName = "answers_id_answer_seq", allocationSize = 1)
+    @GeneratedValue(generator = "answers_id_answer_seq")
     @Column(name = "id_answer", nullable = false)
     private Long id1;
 
@@ -36,8 +36,8 @@ public class Answer{
     @Column(name = "dateupdate_answer", nullable = false)
     private LocalDateTime dateupdateAnswer;
 
-    @ManyToOne(optional = false)
-    @Cascade(value={org.hibernate.annotations.CascadeType.ALL})
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+//    @Cascade(value={org.hibernate.annotations.CascadeType.ALL})
     @JoinColumn(name = "questions_id_question", nullable = false)
     @JsonIgnore// No traer toda la relación en una consulta
     private Question questionsIdQuestion;

@@ -57,9 +57,9 @@ public class Topic {
     private Integer levelsTopic;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @Cascade(value={org.hibernate.annotations.CascadeType.ALL})
+//    @Cascade(value={org.hibernate.annotations.CascadeType.ALL})
     @JoinColumn(name = "syllabus_id_syllabu", nullable = false)
-    @JsonIgnore// No traer toda la relación en una consulta
+//    @JsonIgnore// No traer toda la relación en una consulta
     private Syllabu syllabuIdSyllabu;
 
 }

@@ -63,7 +63,10 @@ import {CursosArComponent} from './pages/cursos-ar/cursos-ar.component';
 import {ToolbarModule} from "primeng/toolbar";
 import {ChipModule} from "primeng/chip";
 import {TestpocketbaseComponent} from './testpocketbase/testpocketbase.component';
-import { MyprofileComponent } from './pages/myprofile/myprofile.component';
+import {MyprofileComponent} from './pages/myprofile/myprofile.component';
+import {QuestionnaireComponent} from './pages/questionnaire/questionnaire.component';
+import {AccordionModule} from "primeng/accordion";
+import {RadioButtonModule} from "primeng/radiobutton";
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -93,7 +96,8 @@ FullCalendarModule.registerPlugins([
     CursosArComponent,
     TestpocketbaseComponent,
     VerifyAccountComponent,
-    MyprofileComponent
+    MyprofileComponent,
+    QuestionnaireComponent
   ],
   imports: [
     HttpClientModule,
@@ -122,7 +126,8 @@ FullCalendarModule.registerPlugins([
     DividerModule,
     TimelineModule,
     CardModule,
-    FieldsetModule
+    FieldsetModule,
+    AccordionModule
   ],
 
   providers: [

@@ -1,16 +1,11 @@
 package com.dua.virtusbk.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-
+import lombok.AllArgsConstructor;
 import javax.persistence.*;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -18,9 +13,16 @@ import java.time.LocalDateTime;
 @Table(name = "persons")
 @Entity
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 @ToString
+//@RequiredArgsConstructor
+
 public class Person {
+    public Person(Long id) {
+        this.id = id;
+    }
+
     @Id
     //@GeneratedValue(strategy = GenerationType.AUTO)
     //@GeneratedValue(strategy = GenerationType.SEQUENCE)
