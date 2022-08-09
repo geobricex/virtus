@@ -17,6 +17,7 @@ import {TestpocketbaseComponent} from './testpocketbase/testpocketbase.component
 import {CursosArComponent} from "./pages/cursos-ar/cursos-ar.component";
 import {VerifyAccountComponent} from "./pages/verify-account/verify-account.component";
 import {MyprofileComponent} from "./pages/myprofile/myprofile.component";
+import {QuestionnaireComponent} from "./pages/questionnaire/questionnaire.component";
 
 @NgModule({
   imports: [
@@ -34,6 +35,7 @@ import {MyprofileComponent} from "./pages/myprofile/myprofile.component";
           {path: 'course', component: CursosComponent},
           {path: 'coursear', component: CursosArComponent},
           {path: 'mycourse', component: MiscursosComponent},
+          {path: 'questionnaire', component: QuestionnaireComponent},
           {path: 'mycourse/modules', component: ModuloComponent},
           {path: 'mycourse/modules/themes', component: TemasComponent}
         ]

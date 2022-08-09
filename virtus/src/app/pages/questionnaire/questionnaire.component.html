@@ -1,0 +1,88 @@
+<div class="grid">
+  <div class="col-12">
+    <div class="card">
+      <div class="grid">
+        <div class="xl:col-7 lg:col-2 sm:col-2">
+          <h3 class="mt-2">VIRTUS</h3>
+        </div>
+        <div class="xl:col-1 md:col-2 sm:col-2 text-center border-right-1 line-height-3">
+          <span>Total</span> <br>
+          <span> <strong>3</strong> </span>
+        </div>
+        <div class="xl:col-1 md:col-2 sm:col-2 text-center border-right-1 line-height-3">
+          <span>Puntos</span> <br>
+          <span><strong>100</strong></span>
+        </div>
+        <div class="xl:col-1 md:col-2 sm:col-2 text-center border-right-1 line-height-3">
+          <span>Resueltas</span> <br>
+          <span><strong>2/3</strong></span>
+        </div>
+        <div class="xl:col-1 md:col-2 sm:col-2 text-center border-right-1 line-height-3">
+          <span>Tiempo</span> <br>
+          <span><strong>--:--</strong></span>
+        </div>
+        <div class="xl:col-1 md:col-2 sm:col-2 text-center">
+          <button pButton pRipple label="Enviar" class="p-button-success mt-2"></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 md:col-3">
+    <div class="card">
+      <h5>Banco de preguntas</h5>
+      <p-accordion>
+        <p-accordionTab header="Opciones multiples" [selected]="true" class="line-height-3 m-0">
+          <div class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2">
+            <span> N°1 </span>
+            <i class="pi pi-circle-on mt-1 text-sm text-green-600" style="float: right"></i>
+          </div>
+          <div class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2">
+            <span> N°2 </span>
+            <i class="pi pi-circle-on mt-1 text-sm text-green-600" style="float: right"></i>
+          </div>
+          <div class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2">
+            <span> N°3 </span>
+            <i class="pi pi-circle-on mt-1 text-sm text-pink-600" style="float: right"></i>
+          </div>
+        </p-accordionTab>
+      </p-accordion>
+    </div>
+  </div>
+  <div class="col-12 md:col-9">
+    <div class="card">
+      <h4> Pregunta N°1 </h4>
+      <span class="p-buttonset">
+      <button pButton pRipple icon="pi pi-play" class="p-button-rounded p-button-warning mr-2 mb-2"></button>
+      <button pButton pRipple icon="pi pi-video" class="p-button-rounded p-button-info mr-2 mb-2"></button>
+      <button pButton pRipple icon="pi pi-volume-up" class="p-button-rounded p-button-success mr-2 mb-2"></button>
+        </span>
+      <h5> El computador sirve para: </h5>
+      <ol type="a">
+        <li>
+          <div class="field-radiobutton">
+            <p-radioButton name="city" value="escribir" [(ngModel)]="valRadio" id="city1"></p-radioButton>
+            <label for="city1">Escribir</label>
+          </div>
+        </li>
+        <li>
+          <div class="field-radiobutton">
+            <p-radioButton name="city" value="comer" [(ngModel)]="valRadio" id="city2"></p-radioButton>
+            <label for="city2">Comer</label>
+          </div>
+        </li>
+        <li>
+          <div class="field-radiobutton">
+            <p-radioButton name="city" value="tomar" [(ngModel)]="valRadio" id="city3"></p-radioButton>
+            <label for="city3">Tomar bebidas</label>
+          </div>
+        </li>
+      </ol>
+      <hr>
+      <button pButton pRipple icon="pi pi-step-backward-alt" label="Anterior"
+              class="p-button-info mr-2 mb-2"></button>
+      <button pButton pRipple icon="pi pi-step-forward" label="Siguiente" class="p-button-info mr-2 mb-2"
+              style="float: right"></button>
+    </div>
+  </div>
+</div>
+
