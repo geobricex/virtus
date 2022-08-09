@@ -1,16 +1,42 @@
 import { Component, OnInit } from '@angular/core';
 import { CargarScriptsService } from '../services/cargar-scripts.service';
+import {PrimeIcons} from 'primeng/api';
 
 declare var Artyom: any;
 
 @Component({
   selector: 'app-testvoice',
   templateUrl: './testvoice.component.html',
-  styleUrls: ['./testvoice.component.css']
+  styleUrls: ['./testvoice.component.css', './testvoice.component.scss']
 })
 export class TestvoiceComponent implements OnInit {
 
   private artyom: any = new Artyom();
+
+  public element: any = {
+    request: "¿Cual es el nombre del periferico preferido al momento de interactuar con la computadora?",
+    options: [
+      {
+        "literal":"Literal A",
+        "content":"Mouse",
+        "response": false
+      },
+      {
+        "literal":"Literal B",
+        "content":"Impresora",
+        "response": true
+      },
+      {
+        "literal":"Literal C",
+        "content":"teclado",
+        "response": false
+      }
+    ]
+  };
+
+  public events1: any[];
+
+  public literalSeleccionado: any;
 
   constructor(private _CargarScripts: CargarScriptsService) {
     console.log("Load Test....");
@@ -24,8 +50,18 @@ export class TestvoiceComponent implements OnInit {
 
     console.log(window.hasOwnProperty('webkitSpeechRecognition') && window.hasOwnProperty('speechSynthesis'));
 
+    this.events1 = [
+      {status: 'No. 01', date: '15/10/2020 14:00', icon: PrimeIcons.CHECK, color: '#09b8b6'},
+      {status: 'No. 02', date: '15/10/2020 16:15', icon: PrimeIcons.PENCIL, color: '#FF9800'},
+      {status: 'No. 03', date: '16/10/2020 10:00', icon: PrimeIcons.CLOCK, color: '#607D8B'},
+      {status: 'No. 04', date: '16/10/2020 10:00', icon: PrimeIcons.CLOCK, color: '#607D8B'}
+    ];
 
-    this.startContinuousArtyom();
+    //this.startContinuousArtyom();
+  }
+
+  changeRadio():void{
+    console.log("cambio", this.literalSeleccionado);
   }
 
   startContinuousArtyom(): void {
@@ -33,15 +69,18 @@ export class TestvoiceComponent implements OnInit {
     //this.artyom.fatality();
     //setTimeout(function () {
 
-      this.artyom.addCommands({
+      /*this.artyom.addCommands({
         indexes:["Hello","Hey","Hurra"],
         action: function(i:any){
           // i = index of the recognized option
           console.log("Something matches", i);
           //this.artyom.say("hola encontrado ");
         }
-      });
+      });*/
 
+
+
+      /*
       this.artyom.addCommands({
         //smart:true,// We need to say that this command is smart !
         indexes:["literal"], // * = the spoken text after How many people live in is recognized
@@ -50,7 +89,7 @@ export class TestvoiceComponent implements OnInit {
         }
       });
 
-      /*artyom.addCommands([
+      artyom.addCommands([
         {
           indexes: ["a", "avión", "avion"],
           action: function (i: any) {
@@ -92,20 +131,16 @@ export class TestvoiceComponent implements OnInit {
 
       // Or the artisan mode to write less
 
-      this.artyom.on(["Buenos días"]).then(function (i: any) {
-        console.log("Triggered");
-      });
 
-      this.artyom.say("Buenos días, indique el literal correcto");
 
-      this.artyom.say("buenos dias", {
+      /*this.artyom.say("buenos dias", {
         onStart: function () {
           console.log("Talking ...");
         },
         onEnd: function () {
           console.log("I said all that i knew");
         }
-      });
+      });*/
 
       /*var UserDictation = artyom.newDictation({
         continuous: true, // Enable continuous if HTTPS connection
@@ -125,6 +160,10 @@ export class TestvoiceComponent implements OnInit {
 
     //}, 250);
 
+
+
+
+
     this.artyom.initialize({
       lang: "es-ES",
       continuous: false, // Artyom will listen forever
@@ -135,11 +174,35 @@ export class TestvoiceComponent implements OnInit {
     }).then(function () {
       console.log("Ready to work!");
     });
+
+    setTimeout(()=>{
+      //this.probarcomando();
+      let btnStart = document.querySelector("#btnStart");
+      if(btnStart) (btnStart as HTMLFormElement).click();
+    }, 2000);
+
+    /*this.artyom.say("Buenos días, indique el literal correcto");*/
   }
 
-  probarcomando() {
-    console.log("¿Cual es el nombre del periferico preferido al momento de interactuar con la computadora?");
-    this.artyom.say("¿Cual es el nombre del periferico preferido al momento de interactuar con la computadora");
+  probarcomando():any {
+    //console.log("¿Cual es el nombre del periferico preferido al momento de interactuar con la computadora?");
+    //this.artyom.say("¿Cual es el nombre del periferico preferido al momento de interactuar con la computadora");
     //this.artyom.simulateInstruction("Hello");
+
+    this.artyom.say(this.element.request);
+
+    for (let i = 0; i < this.element.options.length; i++){
+      this.artyom.say(this.element.options[i].literal);
+      this.artyom.say(this.element.options[i].content);
+      if(i == 0)
+      {
+        console.log("Pure pure");
+        this.artyom.on([this.element.options[i].literal]).then(function (e: any) {
+          console.log("reconocido: ", e);
+        });
+      }
+    }
+
+
   }
 }

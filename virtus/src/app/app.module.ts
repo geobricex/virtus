@@ -18,6 +18,13 @@ import {AppBreadcrumbComponent} from "./app.breadcrumb.component";
 import {AppFooterComponent} from "./app.footer.component";
 import {RippleModule} from "primeng/ripple";
 
+import {RadioButtonModule} from "primeng/radiobutton";
+import {DividerModule} from 'primeng/divider';
+import {TimelineModule} from 'primeng/timeline';
+import {CardModule} from 'primeng/card';
+import {FieldsetModule} from 'primeng/fieldset';
+
+
 //INICIO SERVICE
 import {CargarScriptsService} from "./services/cargar-scripts.service"
 // FIN SERVICES
@@ -110,7 +117,12 @@ FullCalendarModule.registerPlugins([
     ToastModule,
     ToolbarModule,
     ChipModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RadioButtonModule,
+    DividerModule,
+    TimelineModule,
+    CardModule,
+    FieldsetModule
   ],
 
   providers: [
