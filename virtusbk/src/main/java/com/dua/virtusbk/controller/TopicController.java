@@ -46,6 +46,19 @@ public class TopicController {
 
         return new String[]{status, message, data};
     }
+    public String[] updateTopic(Topic topic) {
+        String status = "4", message = "Error en los parámetros introducidos", data = "[]";
+
+        topic.setDateupdateTopic(Methods.nowLocalDateTime());
+        topic = topicDAO.save(topic);
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("id_topic", topic.getId());
+        status = "2";
+        message = "Usuario registrado con éxito.";
+        data = jsonObject.toString();
+
+        return new String[]{status, message, data};
+    }
 
     public String[] getTopic(String id_syllabu) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";

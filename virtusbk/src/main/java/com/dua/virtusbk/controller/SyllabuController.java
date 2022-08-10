@@ -45,7 +45,19 @@ public class SyllabuController {
 
         return new String[]{status, message, data};
     }
+    public String[] updateSyllabu(Syllabu syllabu) {
+        String status = "4", message = "Error en los parámetros introducidos", data = "[]";
 
+        syllabu.setDateupdateSyllabu(Methods.nowLocalDateTime());
+        syllabu = syllabuDAO.save(syllabu);
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("id_syllabu", syllabu.getId());
+        status = "2";
+        message = "Módulo actualizaco con éxito.";
+        data = jsonObject.toString();
+
+        return new String[]{status, message, data};
+    }
     public String[] getSyllabu(String id_course) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
 

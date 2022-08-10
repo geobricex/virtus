@@ -9,6 +9,7 @@ declare var Artyom: any;
   templateUrl: './testvoice.component.html',
   styleUrls: ['./testvoice.component.css', './testvoice.component.scss']
 })
+
 export class TestvoiceComponent implements OnInit {
 
   private artyom: any = new Artyom();
@@ -122,17 +123,17 @@ export class TestvoiceComponent implements OnInit {
       if (btnStart) (btnStart as HTMLFormElement).click();
     }, 5000);
 
-    this.artyom.on(["hola"]).then(function (i: any) {
-      console.log("Triggered");
-    });
+    // this.artyom.on(["hola"]).then(function (i: any) {
+    //   console.log("Triggered");
+    // });
 
-    this.artyom.redirectRecognizedTextOutput(function (recognized: string, isFinal: boolean) {
-      if (isFinal) {
-        console.log("Texto final reconocido: " + recognized);
-      } else {
-        console.log(recognized);
-      }
-    });
+    // this.artyom.redirectRecognizedTextOutput(function (recognized: string, isFinal: boolean) {
+    //   if (isFinal) {
+    //     console.log("Texto final reconocido: " + recognized);
+    //   } else {
+    //     console.log(recognized);
+    //   }
+    // });
 
     this.artyom.initialize({
       lang: "es-ES",

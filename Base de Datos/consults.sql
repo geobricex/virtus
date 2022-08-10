@@ -1,4 +1,4 @@
-select * from persons;
+select * from persons order by id_person;
 
 -- delete from persons where name_person = 'Juan';
 -- delete from persons_courses

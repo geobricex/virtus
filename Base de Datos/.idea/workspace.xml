@@ -7,15 +7,7 @@
     <list default="true" id="bbc5533f-4237-4b82-99c8-ccd5e9e0c413" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/consults.sql" beforeDir="false" afterPath="$PROJECT_DIR$/consults.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../rutas.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../rutas.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtus/proxy.conf.json" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/proxy.conf.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtus/src/app/pages/app.login.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/src/app/pages/app.login.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtus/src/app/pages/singup/singup.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/src/app/pages/singup/singup.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/CourseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/CourseController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/entity/Person.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/entity/Person.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/entity/PersonsCours.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/entity/PersonsCours.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/service/PersonsCoursApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/service/PersonsCoursApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtusbk/src/test/java/com/dua/virtusbk/VirtusbkApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/test/java/com/dua/virtusbk/VirtusbkApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtus/src/app/testvoice/testvoice.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/src/app/testvoice/testvoice.component.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
