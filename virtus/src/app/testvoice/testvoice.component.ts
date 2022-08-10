@@ -95,6 +95,8 @@ export class TestvoiceComponent implements OnInit {
       indexes: ["literal *", "opción *"],
       action: function (i: number, wildcard: string) {
         let database: string[] = ["a", "b", "c", "d"];
+        console.log("wilcardOriginal:" + wildcard);
+        wildcard = wildcard.trim().replace(/[^a-zA-Z]+/, "");
         console.log("wildcard:", wildcard, i, database.indexOf(wildcard.trim()));
         if (database.indexOf(wildcard.trim()) > -1) {
           //this.artyom.say("Ha indicado la selección del literal " + wildcard);
