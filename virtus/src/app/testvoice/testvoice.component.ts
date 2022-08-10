@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { CargarScriptsService } from '../services/cargar-scripts.service';
+import {Component, OnInit} from '@angular/core';
+import {CargarScriptsService} from '../services/cargar-scripts.service';
 import {PrimeIcons} from 'primeng/api';
 
 declare var Artyom: any;
@@ -17,18 +17,18 @@ export class TestvoiceComponent implements OnInit {
     request: "¿Cual es el nombre del periferico preferido al momento de interactuar con la computadora?",
     options: [
       {
-        "literal":"Literal A",
-        "content":"Mouse",
+        "literal": "Literal A",
+        "content": "Mouse",
         "response": false
       },
       {
-        "literal":"Literal B",
-        "content":"Impresora",
+        "literal": "Literal B",
+        "content": "Impresora",
         "response": true
       },
       {
-        "literal":"Literal C",
-        "content":"teclado",
+        "literal": "Literal C",
+        "content": "teclado",
         "response": false
       }
     ]
@@ -39,16 +39,14 @@ export class TestvoiceComponent implements OnInit {
   public literalSeleccionado: any;
 
   constructor(private _CargarScripts: CargarScriptsService) {
-    console.log("Load Test....");
   }
 
   ngOnInit(): void {
     console.log("Load Test....");
 
 
-    console.log("Fin _ Cargar artyomJS");
-
-    console.log(window.hasOwnProperty('webkitSpeechRecognition') && window.hasOwnProperty('speechSynthesis'));
+    let microphoneApi: boolean = window.hasOwnProperty('webkitSpeechRecognition') && window.hasOwnProperty('speechSynthesis');
+    console.log("Validar api de microfono: " + microphoneApi);
 
     this.events1 = [
       {status: 'No. 01', date: '15/10/2020 14:00', icon: PrimeIcons.CHECK, color: '#09b8b6'},
@@ -56,153 +54,139 @@ export class TestvoiceComponent implements OnInit {
       {status: 'No. 03', date: '16/10/2020 10:00', icon: PrimeIcons.CLOCK, color: '#607D8B'},
       {status: 'No. 04', date: '16/10/2020 10:00', icon: PrimeIcons.CLOCK, color: '#607D8B'}
     ];
-
-    //this.startContinuousArtyom();
   }
 
-  changeRadio():void{
+  ngAfterViewInit(): void {
+    // Call the method creating a child component of class 'ComponentA' inside the template
+    console.log("ejecutar despues de terminar carga");
+    this.startContinuousArtyom();
+  }
+
+  changeRadio(): void {
     console.log("cambio", this.literalSeleccionado);
   }
 
   startContinuousArtyom(): void {
 
     //this.artyom.fatality();
-    //setTimeout(function () {
 
-      /*this.artyom.addCommands({
-        indexes:["Hello","Hey","Hurra"],
-        action: function(i:any){
-          // i = index of the recognized option
-          console.log("Something matches", i);
-          //this.artyom.say("hola encontrado ");
+    this.artyom.fatality();
+    /*this.artyom.addCommands({
+      indexes: ["Hello", "Hey", "Hurra"],
+      action: function (i: any) {
+        // i = index of the recognized option
+        console.log("Something matches", i);
+        //this.artyom.say("hola encontrado ");
+      }
+    });*/
+
+    this.artyom.say("Iniciando todo...", {
+      onStart: function () {
+        console.log("Talking ...");
+      },
+      onEnd: function () {
+        console.log("I said all that i knew");
+      }
+    });
+
+    let myGroup: any = {
+      description: "Si el usuario indica un literal que se encuentra en la lista",
+      smart: true, // Activar comando como un comando smart para poder usar comodines
+      indexes: ["literal *", "opción *"],
+      action: function (i: number, wildcard: string) {
+        let database: string[] = ["a", "b", "c", "d"];
+        console.log("wildcard:", wildcard, i, database.indexOf(wildcard.trim()));
+        if (database.indexOf(wildcard.trim()) > -1) {
+          //this.artyom.say("Ha indicado la selección del literal " + wildcard);
+          console.log("Ha indicado la selección del literal " + wildcard);
+        } else {
+          //this.artyom.say("No se encuentra ese literal");
+          console.log("No se encuentra ese literal")
         }
-      });*/
+      }
+    };
 
+    this.artyom.addCommands(myGroup);
 
+    /*console.log("a la escucha");
+    this.artyom.on(["Buenos días"]).then(function (i: any) {
+      console.log("Triggered");
+    });
+    console.log("fin de la escucha");*/
 
-      /*
-      this.artyom.addCommands({
-        //smart:true,// We need to say that this command is smart !
-        indexes:["literal"], // * = the spoken text after How many people live in is recognized
-        action:function(i:any, wildcard:string ){
-          this.artyom.say("auxiliar: " + wildcard);
-        }
-      });
+    setTimeout(() => {
+      //this.probarcomando();
+      let btnStart = document.querySelector("#btnStart");
+      if (btnStart) (btnStart as HTMLFormElement).click();
+    }, 5000);
 
-      artyom.addCommands([
-        {
-          indexes: ["a", "avión", "avion"],
-          action: function (i: any) {
-            console.log("Literal A");
-            artyom.say("Literal A");
-          }
-        }, {
-          indexes: ["b", "burro", "bicicleta"],
-          action: function (i: any) {
-            console.log("Literal B");
-            artyom.say("Literal B");
-          }
-        }, {
-          indexes: ["c", "conejo", "caballo"],
-          action: function (i: any) {
-            console.log("Literal c");
-            artyom.say("Literal C");
-          }
-        }, {
-          indexes: ["d", "dedo", "delfin"],
-          action: function (i: any) {
-            console.log("Literal d");
-            artyom.say("Literal d");
-          }
-        }, {
-          indexes: ["e", "elefante"],
-          action: function (i: any) {
-            console.log("Literal e");
-            artyom.say("Literal e");
-          }
-        }, {
-          indexes: ["f", "flor", , "foca"],
-          action: function (i: any) {
-            console.log("Literal f");
-            artyom.say("Literal f");
-          }
-        }
-      ]);*/
+    this.artyom.on(["hola"]).then(function (i: any) {
+      console.log("Triggered");
+    });
 
-      // Or the artisan mode to write less
-
-
-
-      /*this.artyom.say("buenos dias", {
-        onStart: function () {
-          console.log("Talking ...");
-        },
-        onEnd: function () {
-          console.log("I said all that i knew");
-        }
-      });*/
-
-      /*var UserDictation = artyom.newDictation({
-        continuous: true, // Enable continuous if HTTPS connection
-        onResult: function (text: string) {
-          // Do something with the text
-          console.log(text);
-        },
-        onStart: function () {
-          console.log("Dictation started by the user");
-        },
-        onEnd: function () {
-          alert("Dictation stopped by the user");
-        }
-      });
-
-      UserDictation.start();*/
-
-    //}, 250);
-
-
-
-
+    this.artyom.redirectRecognizedTextOutput(function (recognized: string, isFinal: boolean) {
+      if (isFinal) {
+        console.log("Texto final reconocido: " + recognized);
+      } else {
+        console.log(recognized);
+      }
+    });
 
     this.artyom.initialize({
       lang: "es-ES",
-      continuous: false, // Artyom will listen forever
-      debug: true, // Show what recognizes in the Console
+      continuous: true, // Artyom will listen forever
+      debug: false, // Show what recognizes in the Console
       listen: true, // Start listening after this
-      speed: 0.9, // Talk a little bit slow
-      mode: "normal" // This parameter is not required as it will be normal by default
+      speed: 1, // Talk a little bit slow
+      mode: "normal", // This parameter is not required as it will be normal by default,
+      executionKeyword: "escucha"
     }).then(function () {
-      console.log("Ready to work!");
+      console.log("artyom configurado...");
     });
 
-    setTimeout(()=>{
-      //this.probarcomando();
-      let btnStart = document.querySelector("#btnStart");
-      if(btnStart) (btnStart as HTMLFormElement).click();
-    }, 2000);
-
-    /*this.artyom.say("Buenos días, indique el literal correcto");*/
   }
 
-  probarcomando():any {
-    //console.log("¿Cual es el nombre del periferico preferido al momento de interactuar con la computadora?");
-    //this.artyom.say("¿Cual es el nombre del periferico preferido al momento de interactuar con la computadora");
-    //this.artyom.simulateInstruction("Hello");
+  probarcomando(): any {
 
-    this.artyom.say(this.element.request);
+    this.artyom.say("Buenos días, a continuación leeremos las preguntas");
 
-    for (let i = 0; i < this.element.options.length; i++){
-      this.artyom.say(this.element.options[i].literal);
-      this.artyom.say(this.element.options[i].content);
-      if(i == 0)
-      {
+    let reader: string = "";
+    reader += this.element.request + " \n";
+    //this.artyom.say(this.element.request);
+
+    for (let i = 0; i < this.element.options.length; i++) {
+      reader += this.element.options[i].literal + " \n";
+      reader += this.element.options[i].content + " \n";
+      if (i == -1) {
         console.log("Pure pure");
-        this.artyom.on([this.element.options[i].literal]).then(function (e: any) {
+        /*this.artyom.on([this.element.options[i].literal]).then(function (e: any) {
           console.log("reconocido: ", e);
-        });
+        });*/
       }
     }
+    //console.log(reader);
+    this.artyom.say(reader);
+    //
 
+    /*this.artyom.simulateInstruction("opción a");*/
+
+    /*
+        let UserDictation = this.artyom.newDictation({
+          continuous: true, // Enable continuous if HTTPS connection
+          onResult: function (text: string) {
+            // Do something with the text
+            console.log(text);
+          },
+          onStart: function () {
+            console.log("Dictation started by the user");
+          },
+          onEnd: function () {
+            alert("Dictation stopped by the user");
+          }
+        });
+
+        UserDictation.start();
+    */
 
   }
 }
