@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {BreadcrumbService} from "../../app.breadcrumb.service";
-import {Tema} from "../../models/tema";
+import {Topic} from "../../models/topic";
 
 @Component({
   selector: 'app-temas',
@@ -9,7 +9,7 @@ import {Tema} from "../../models/tema";
 })
 export class TemasComponent implements OnInit {
 
-  temas: Tema[];
+  temas: Topic[];
 
   sortOrder: number;
 
@@ -25,24 +25,7 @@ export class TemasComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.temas = [{
-      name_theme: "Conceptos básicos",
-      description_theme: "Descripcion de los conceptos basicos",
-      keywords_theme: "concepto basico primero",
-      pathimg_theme: "https://i.ytimg.com/vi/giw-HxZKY2o/maxresdefault.jpg",
-      datereg_theme: "18-07-2022",
-      dateupdate_theme: "18-07-2022",
-      state_theme: "A"
-    },
-      {
-        name_theme: "Hardware",
-        description_theme: "Descripcion de los componentes hardware",
-        keywords_theme: "concepto basico primero",
-        pathimg_theme: "https://bibliotecadeinvestigaciones.files.wordpress.com/2013/01/pc-hardware-0.jpg",
-        datereg_theme: "18-07-2022",
-        dateupdate_theme: "18-07-2022",
-        state_theme: "A"
-      }]
+
   }
 
   onSortChange(event: any) {

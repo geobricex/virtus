@@ -9,15 +9,7 @@ export class Modules {
   private stateSyllabu: string;
 
 
-  constructor(id: number, nameSyllabu: string, descriptionSyllabu: string, keywordsSyllabu: string, pathimgSyllabus: string, dateregSyllabu: string, dateupdateSyllabu: string, stateSyllabu: string) {
-    this.id = id;
-    this.nameSyllabu = nameSyllabu;
-    this.descriptionSyllabu = descriptionSyllabu;
-    this.keywordsSyllabu = keywordsSyllabu;
-    this.pathimgSyllabus = pathimgSyllabus;
-    this.dateregSyllabu = dateregSyllabu;
-    this.dateupdateSyllabu = dateupdateSyllabu;
-    this.stateSyllabu = stateSyllabu;
+  constructor() {
   }
 
 

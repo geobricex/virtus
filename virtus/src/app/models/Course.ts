@@ -10,9 +10,19 @@ export class Course {
   private languageCourse: string;
   private priceCourse: string;
 
-  constructor() {
-  }
 
+  constructor(id: number, nameCourse: string, descriptionCourse: string, keywordsCourse: string, pathimgCourse: string, dateregCourse: string, dateupdateCourse: string, stateCourse: string, languageCourse: string, priceCourse: string) {
+    this.id = id;
+    this.nameCourse = nameCourse;
+    this.descriptionCourse = descriptionCourse;
+    this.keywordsCourse = keywordsCourse;
+    this.pathimgCourse = pathimgCourse;
+    this.dateregCourse = dateregCourse;
+    this.dateupdateCourse = dateupdateCourse;
+    this.stateCourse = stateCourse;
+    this.languageCourse = languageCourse;
+    this.priceCourse = priceCourse;
+  }
 
   get _id(): number {
     return this.id;
