@@ -12,10 +12,12 @@ import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 
 @Service
+@Transactional
 public class QuestionController {
     @Autowired
     private QuestionRepository questionDAO;
@@ -29,7 +31,7 @@ public class QuestionController {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("id_question", question.getId());
         status = "2";
-        message = "Usuario registrado con éxito.";
+        message = "Pregunta registrada con éxito.";
         data = jsonObject.toString();
 
         return new String[]{status, message, data};
@@ -38,11 +40,24 @@ public class QuestionController {
     public String[] updateQuestion(Question question) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
 
+        question = questionDAO.save(question);
+
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("id_question", question.getId());
+        status = "2";
+        message = "Pregunta actualizada con éxito.";
+        data = jsonObject.toString();
 
         return new String[]{status, message, data};
     }
 
-    public String[] getQuestions(String id_) {
+    public String[] getQuestion(String id_question) {
+        String status = "4", message = "Error en los parámetros introducidos", data = "[]";
+
+        return new String[]{status, message, data};
+    }
+
+    public String[] getQuestions(String id_evaluation) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
 
         return new String[]{status, message, data};

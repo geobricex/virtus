@@ -14,10 +14,12 @@ import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 
 @Service
+@Transactional
 public class EvaluationController {
     @Autowired
     private EvaluationRepository evaluationDAO;
@@ -75,10 +77,10 @@ public class EvaluationController {
         return new String[]{status, message, data};
     }
 
-    public String[] getEvaluation(String id_topic) {
+    public String[] getEvaluation(String id_evaluation) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
 
-        Object[] evaluations = evaluationDAO.findIdEvaluation(Long.parseLong(id_topic));
+        Object[] evaluations = evaluationDAO.findIdEvaluation(Long.parseLong(id_evaluation));
         if (evaluations.length > 0) {
             Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();
             data = gson.toJson(evaluations);
@@ -101,7 +103,7 @@ public class EvaluationController {
 
         JsonArray jso = Methods.stringToJsonArray(homeInformation);
         if (!jso.toString().equals("[]")) {
-            status = "4";
+            status = "2";
             message = "Información retornada con éxito.";
             data = jso.toString();
         }

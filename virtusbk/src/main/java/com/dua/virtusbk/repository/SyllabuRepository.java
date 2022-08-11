@@ -13,4 +13,7 @@ public interface SyllabuRepository extends JpaRepository<Syllabu, Long> {
             "FROM syllabus " +
             "WHERE state_syllabu = 'A' AND courses_id_course =?1", nativeQuery = true)
     List<Syllabu> findByIdCourseList(Long param);
+
+    @Query(value = "SELECT * FROM syllabus where id_syllabu =?1", nativeQuery = true)
+    Object[] findIdSyllabu(Long param);
 }

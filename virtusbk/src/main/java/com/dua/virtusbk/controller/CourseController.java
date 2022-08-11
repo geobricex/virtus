@@ -36,7 +36,6 @@ public class CourseController {
     @Autowired
     private PersonsCourseRepository personcourseDAO;
 
-
     public String[] saveCourse(Course course, String id_person) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
 
@@ -55,14 +54,14 @@ public class CourseController {
         return new String[]{status, message, data};
     }
 
-    public String[] updateCourse(Course course) {
+    public String[] updateCourse(Course course, String id_person) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
 
         course = courseDAO.save(course);
 
         status = "2";
         message = "Curso actualizado con éxito.";
-        data = "[{" + course.getId() + "}]";
+        data = "[{\"id_course\":" + course.getId() + "}]";
 
         return new String[]{status, message, data};
     }

@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
 
 
 @Service
+@Transactional
 public class SyllabuController {
     @Autowired
     private SyllabuRepository syllabuDAO;
@@ -49,6 +50,7 @@ public class SyllabuController {
 
         return new String[]{status, message, data};
     }
+
     public String[] updateSyllabu(Syllabu syllabu) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
 
@@ -62,11 +64,31 @@ public class SyllabuController {
 
         return new String[]{status, message, data};
     }
-    public String[] getSyllabu(String id_course) {
+
+    public String[] getSyllabus(String id_course) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
 
         List<Syllabu> syllabus = syllabuDAO.findByIdCourseList(Long.parseLong(id_course));
         if (syllabus.size() > 0) {
+            Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();
+            data = gson.toJson(syllabus);
+            status = "2";
+            message = "Información obetnida con éxito.";
+            System.out.println(data);
+
+        } else {
+            status = "4";
+            message = "No se ha encontrado información.";
+        }
+
+        return new String[]{status, message, data};
+    }
+
+    public String[] getSyllabu(String id_syllabu) {
+        String status = "4", message = "Error en los parámetros introducidos", data = "[]";
+
+        Object[] syllabus = syllabuDAO.findIdSyllabu(Long.parseLong(id_syllabu));
+        if (syllabus.length > 0) {
             Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();
             data = gson.toJson(syllabus);
             status = "2";

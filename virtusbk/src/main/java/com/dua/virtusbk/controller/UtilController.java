@@ -16,10 +16,12 @@ import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 
 @Service
+@Transactional
 public class UtilController {
     @Autowired
     private UtilRepository utilDAO;

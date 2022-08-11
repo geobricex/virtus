@@ -57,6 +57,7 @@ public class SyllabuApi {
             return new ResponseEntity<>(message, HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
         }
     }
+
     @PostMapping("/updatesyllabu")
     public ResponseEntity<String> updateSyllabu(@RequestBody @Validated Syllabu syllabu, @RequestHeader("token") String sessionToken) {
         String message;
@@ -76,19 +77,21 @@ public class SyllabuApi {
             return new ResponseEntity<>(message, HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
         }
     }
+
     @GetMapping(value = "{id}")
-    public ResponseEntity<String> getSyllabu(@PathVariable("token") String sessionToken) {
-        System.out.println("getPerson...");
+    public ResponseEntity<String> get_Syllabu(@PathVariable("token") String sessionToken) {
+        System.out.println("getSyllabu...");
         String message;
         JsonObject jso = Methods.stringToJSON(sessionToken);
         String sToken = Methods.JsonToString(jso, "sessionToken", "");
         String[] clains = Methods.getDataToJwt(sToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
+        message = Methods.getJsonMessage(res[0], res[1], res[2]);
+
         if (res[0].equals("2")) {
-            message = Methods.getJsonMessage(res[0], res[1], res[2]);
             return new ResponseEntity<>(message, HttpStatus.OK);
         } else {
-            return ResponseEntity.noContent().build();
+            return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
         }
     }
 
@@ -103,13 +106,34 @@ public class SyllabuApi {
 //        if (res[0].equals("2")) {
         JsonObject jso = Methods.stringToJSON(id_course);
         String course_id_syllabu = Methods.JsonToString(jso, "course_id_syllabu", "");
-        String[] res = syllabuController.getSyllabu(course_id_syllabu);
+        String[] res = syllabuController.getSyllabus(course_id_syllabu);
+        message = Methods.getJsonMessage(res[0], res[1], res[2]);
         if (res[0].equals("2")) {
-            message = Methods.getJsonMessage(res[0], res[1], res[2]);
             return new ResponseEntity<>(message, HttpStatus.OK);
         } else {
-            message = Methods.getJsonMessage("4", "Credenciales de sesión inválidas, vuelve a iniciar sesión "
-                    + "e intentalo de nuevo.", "[]");
+            return new ResponseEntity<>(message, HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
+        }
+//        } else {
+//            return ResponseEntity.noContent().build();
+//        }
+    }
+
+    @PostMapping("/getsyllabu")
+    public ResponseEntity<String> getSyllabu(@RequestBody String id_syllabus) {
+        System.out.println("getSyllabu...");
+        String message;
+//        JsonObject jso = Methods.stringToJSON(sessionToken);
+//        String sToken = Methods.JsonToString(jso, "sessionToken", "");
+//        String[] clains = Methods.getDataToJwt(sToken);
+//        String[] res = Methods.validatePermit(clains[0], clains[1], 1);
+//        if (res[0].equals("2")) {
+        JsonObject jso = Methods.stringToJSON(id_syllabus);
+        String id_syllabu = Methods.JsonToString(jso, "id_syllabu", "");
+        String[] res = syllabuController.getSyllabu(id_syllabu);
+        message = Methods.getJsonMessage(res[0], res[1], res[2]);
+        if (res[0].equals("2")) {
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } else {
             return new ResponseEntity<>(message, HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
         }
 //        } else {

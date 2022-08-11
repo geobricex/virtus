@@ -1,8 +1,8 @@
 select * from persons order by id_person;
 
--- delete from persons where name_person = 'Juan';
+-- delete from courses where name_course = 'bronco';
 -- delete from persons_courses
-select * from utils;
+select * from courses;
 select * from persons_courses;
 select id_syllabu, name_syllabu, description_syllabu, keywords_syllabu, pathimg_syllabus, state_syllabu
 , dateupdate_syllabu from syllabus

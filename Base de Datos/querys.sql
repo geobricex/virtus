@@ -1,3 +1,3 @@
-select * from evaluations where id_evaluation =1
+select * from syllabus where id_syllabu =1
 
 

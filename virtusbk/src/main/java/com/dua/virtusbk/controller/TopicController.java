@@ -30,6 +30,7 @@ import java.util.stream.Collectors;
 
 
 @Service
+@Transactional
 public class TopicController {
     @Autowired
     private TopicRepository topicDAO;
@@ -65,13 +66,32 @@ public class TopicController {
         return new String[]{status, message, data};
     }
 
-    public String[] getTopic(String id_syllabu) {
+    public String[] getTopics(String id_syllabu) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
 
         List<Topic> topics = topicDAO.findByIdTopicList(Long.parseLong(id_syllabu));
         if (topics.size() > 0) {
             Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();
             data = gson.toJson(topics).toString();
+            status = "2";
+            message = "Información obetnida con éxito.";
+            System.out.println(data);
+
+        } else {
+            status = "4";
+            message = "No se ha encontrado información.";
+        }
+
+        return new String[]{status, message, data};
+    }
+
+    public String[] getTopic(String id_syllabu) {
+        String status = "4", message = "Error en los parámetros introducidos", data = "[]";
+
+        Object[] topics = topicDAO.findIdTopic(Long.parseLong(id_syllabu));
+        if (topics.length > 0) {
+            Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();
+            data = gson.toJson(topics);
             status = "2";
             message = "Información obetnida con éxito.";
             System.out.println(data);

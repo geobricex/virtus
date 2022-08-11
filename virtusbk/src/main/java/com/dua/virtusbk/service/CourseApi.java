@@ -63,7 +63,7 @@ public class CourseApi {
         String[] clains = Methods.getDataToJwt(sessionToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
         if (res[0].equals("2")) {
-            res = courseController.updateCourse(course);
+            res = courseController.updateCourse(course, clains[0]);
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
             if (res[0].equals("2")) {
                 return new ResponseEntity<>(message, HttpStatus.OK);
