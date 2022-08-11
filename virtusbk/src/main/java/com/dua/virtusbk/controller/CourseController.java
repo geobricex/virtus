@@ -40,7 +40,11 @@ public class CourseController {
     public String[] saveCourse(Course course) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
 
+        course.setDateregCourse(Methods.nowLocalDateTime());
+        course.setDateupdateCourse(Methods.nowLocalDateTime());
+        course.setStateCourse("A");
         course = courseDAO.save(course);
+
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("id_course", course.getId());
         status = "2";

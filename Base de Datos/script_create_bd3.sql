@@ -1,7 +1,7 @@
 -- SQLINES DEMO *** le SQL Developer Data Modeler 21.2.0.183.1957
--- SQLINES DEMO *** -08-10 23:14:33 COT
--- SQLINES DEMO ***  Server 2000
--- SQLINES DEMO *** Server 2000
+-- SQLINES DEMO *** -08-11 00:57:06 COT
+-- SQLINES DEMO ***  Server 2012
+-- SQLINES DEMO *** Server 2012
 
 
 
@@ -12,14 +12,13 @@ CREATE TABLE answers
      options_answer VARCHAR (8000) NOT NULL ,
      datereg_answer TIMESTAMP(3) NOT NULL ,
      dateupdate_answer TIMESTAMP(3) NOT NULL ,
-     questions_id_question BIGINT NOT NULL
+     questions_id_question BIGINT NOT NULL ,
+     questions_question_category_id_questioncategory BIGINT NOT NULL
     );
 
 
-
-
-
-ALTER TABLE answers ADD CONSTRAINT answers_PK PRIMARY KEY (id_answer);
+ALTER TABLE answers ADD CONSTRAINT answers_PK PRIMARY KEY (id_answer)
+     ;
 
 
 -- SQLINES LICENSE FOR EVALUATION USE ONLY
@@ -38,7 +37,8 @@ CREATE TABLE courses
      price_course NUMERIC (2)
     );
 
-ALTER TABLE courses ADD CONSTRAINT courses_PK PRIMARY KEY (id_course);
+ALTER TABLE courses ADD CONSTRAINT courses_PK PRIMARY KEY (id_course)
+     ;
 
 
 -- SQLINES LICENSE FOR EVALUATION USE ONLY
@@ -55,7 +55,8 @@ CREATE TABLE evaluations
      topics_id_topic BIGINT NOT NULL
     );
 
-ALTER TABLE evaluations ADD CONSTRAINT evaluations_PK PRIMARY KEY (id_evaluation);
+ALTER TABLE evaluations ADD CONSTRAINT evaluations_PK PRIMARY KEY (id_evaluation)
+     ;
 
 
 -- SQLINES LICENSE FOR EVALUATION USE ONLY
@@ -75,7 +76,8 @@ CREATE TABLE persons
      id_location VARCHAR (20)
     );
 
-ALTER TABLE persons ADD CONSTRAINT persons_PK PRIMARY KEY (id_person);
+ALTER TABLE persons ADD CONSTRAINT persons_PK PRIMARY KEY (id_person)
+     ;
 
 
 -- SQLINES LICENSE FOR EVALUATION USE ONLY
@@ -91,7 +93,8 @@ CREATE TABLE persons_answers
      answers_id_answer BIGINT NOT NULL
     );
 
-ALTER TABLE persons_answers ADD CONSTRAINT persons_answers_PK PRIMARY KEY (id_person_answer);
+ALTER TABLE persons_answers ADD CONSTRAINT persons_answers_PK PRIMARY KEY (id_person_answer)
+     ;
 
 
 -- SQLINES LICENSE FOR EVALUATION USE ONLY
@@ -104,7 +107,19 @@ CREATE TABLE persons_courses
      persons_id_person BIGINT NOT NULL
     );
 
-ALTER TABLE persons_courses ADD CONSTRAINT persons_courses_PK PRIMARY KEY (id_person_course);
+ALTER TABLE persons_courses ADD CONSTRAINT persons_courses_PK PRIMARY KEY (id_person_course)
+     ;
+
+
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE TABLE question_category
+    (
+     id_questioncategory BIGSERIAL NOT NULL ,
+     name_questioncategory VARCHAR (30)
+    );
+
+ALTER TABLE question_category ADD CONSTRAINT question_category_PK PRIMARY KEY (id_questioncategory)
+     ;
 
 
 -- SQLINES LICENSE FOR EVALUATION USE ONLY
@@ -118,10 +133,12 @@ CREATE TABLE questions
      points_question BOOLEAN ,
      maximumpoints_question INTEGER ,
      state_question VARCHAR (1) NOT NULL ,
-     evaluations_id_evaluation BIGINT NOT NULL
+     evaluations_id_evaluation BIGINT NOT NULL ,
+     question_category_id_questioncategory BIGINT NOT NULL
     );
 
-ALTER TABLE questions ADD CONSTRAINT questions_PK PRIMARY KEY (id_question);
+ALTER TABLE questions ADD CONSTRAINT questions_PK PRIMARY KEY (id_question, question_category_id_questioncategory)
+     ;
 
 
 -- SQLINES LICENSE FOR EVALUATION USE ONLY
@@ -138,7 +155,8 @@ CREATE TABLE resources
      topics_id_topic BIGINT NOT NULL
     );
 
-ALTER TABLE resources ADD CONSTRAINT resources_PK PRIMARY KEY (id_resource);
+ALTER TABLE resources ADD CONSTRAINT resources_PK PRIMARY KEY (id_resource)
+     ;
 
 
 -- SQLINES LICENSE FOR EVALUATION USE ONLY
@@ -155,7 +173,8 @@ CREATE TABLE syllabus
      courses_id_course BIGINT NOT NULL
     );
 
-ALTER TABLE syllabus ADD CONSTRAINT syllabus_PK PRIMARY KEY (id_syllabu);
+ALTER TABLE syllabus ADD CONSTRAINT syllabus_PK PRIMARY KEY (id_syllabu)
+     ;
 
 
 -- SQLINES LICENSE FOR EVALUATION USE ONLY
@@ -173,7 +192,8 @@ CREATE TABLE topics
      syllabus_id_syllabu BIGINT NOT NULL
     );
 
-ALTER TABLE topics ADD CONSTRAINT topics_PK PRIMARY KEY (id_topic);
+ALTER TABLE topics ADD CONSTRAINT topics_PK PRIMARY KEY (id_topic)
+     ;
 
 
 -- SQLINES LICENSE FOR EVALUATION USE ONLY
@@ -183,17 +203,20 @@ CREATE TABLE utils
      value_util TEXT NOT NULL
     );
 
-ALTER TABLE utils ADD CONSTRAINT utils_PK PRIMARY KEY (key_util);
+ALTER TABLE utils ADD CONSTRAINT utils_PK PRIMARY KEY (key_util)
+     ;
 
 
 ALTER TABLE answers
     ADD CONSTRAINT answers_questions_FK FOREIGN KEY
     (
-     questions_id_question
+     questions_id_question,
+     questions_question_category_id_questioncategory
     )
     REFERENCES questions
     (
-     id_question
+     id_question ,
+     question_category_id_questioncategory
     )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION;
@@ -290,6 +313,19 @@ ALTER TABLE questions
     ON UPDATE NO ACTION;
 
 
+ALTER TABLE questions
+    ADD CONSTRAINT questions_question_category_FK FOREIGN KEY
+    (
+     question_category_id_questioncategory
+    )
+    REFERENCES question_category
+    (
+     id_questioncategory
+    )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION;
+
+
 ALTER TABLE resources
     ADD CONSTRAINT resources_topics_FK FOREIGN KEY
     (
@@ -333,9 +369,9 @@ ALTER TABLE topics
 
 -- SQLINES DEMO *** n de Oracle SQL Developer Data Modeler:
 --
--- SQLINES DEMO ***                        11
+-- SQLINES DEMO ***                        12
 -- SQLINES DEMO ***                         1
--- SQLINES DEMO ***                        22
+-- SQLINES DEMO ***                        24
 -- SQLINES DEMO ***                         0
 -- SQLINES DEMO ***                         0
 -- SQLINES DEMO ***                         0
@@ -350,6 +386,10 @@ ALTER TABLE topics
 -- SQLINES DEMO *** EGMENT                  0
 -- SQLINES DEMO ***                         0
 -- SQLINES DEMO ***                         0
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO ***                         0
+-- SQLINES DEMO *** FUNCTION                0
+-- SQLINES DEMO *** SCHEME                  0
 --
 -- SQLINES DEMO ***                         0
 --

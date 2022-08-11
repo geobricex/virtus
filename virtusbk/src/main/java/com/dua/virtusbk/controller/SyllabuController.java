@@ -36,7 +36,11 @@ public class SyllabuController {
     public String[] saveSyllabu(Syllabu syllabu) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
 
+        syllabu.setDateregSyllabu(Methods.nowLocalDateTime());
+        syllabu.setDateupdateSyllabu(Methods.nowLocalDateTime());
+        syllabu.setStateSyllabu("A");
         syllabu = syllabuDAO.save(syllabu);
+
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("id_syllabu", syllabu.getId());
         status = "2";
