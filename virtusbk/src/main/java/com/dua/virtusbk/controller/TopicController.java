@@ -45,7 +45,7 @@ public class TopicController {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("id_topic", topic.getId());
         status = "2";
-        message = "Usuario registrado con éxito.";
+        message = "Tema registrado con éxito.";
         data = jsonObject.toString();
 
         return new String[]{status, message, data};
@@ -59,7 +59,7 @@ public class TopicController {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("id_topic", topic.getId());
         status = "2";
-        message = "Usuario registrado con éxito.";
+        message = "Tema actualizado con éxito.";
         data = jsonObject.toString();
 
         return new String[]{status, message, data};
@@ -77,7 +77,7 @@ public class TopicController {
             System.out.println(data);
 
         } else {
-            status = "2";
+            status = "4";
             message = "No se ha encontrado información.";
         }
 

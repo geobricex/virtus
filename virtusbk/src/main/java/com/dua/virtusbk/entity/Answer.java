@@ -25,13 +25,13 @@ public class Answer {
     @SequenceGenerator(name = "answers_id_answer_seq", sequenceName = "answers_id_answer_seq", allocationSize = 1)
     @GeneratedValue(generator = "answers_id_answer_seq")
     @Column(name = "id_answer", nullable = false)
-    private Long id1;
+    private Long id;
 
     @Column(name = "options_answer", nullable = false, length = 8000)
     private String optionsAnswer;
 
     @Column(name = "datereg_answer", nullable = false)
-    private Instant dateregAnswer;
+    private LocalDateTime dateregAnswer;
 
     @Column(name = "dateupdate_answer", nullable = false)
     private LocalDateTime dateupdateAnswer;

@@ -57,7 +57,7 @@ public class SyllabuController {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("id_syllabu", syllabu.getId());
         status = "2";
-        message = "Módulo actualizaco con éxito.";
+        message = "Módulo actualizado con éxito.";
         data = jsonObject.toString();
 
         return new String[]{status, message, data};
@@ -74,7 +74,7 @@ public class SyllabuController {
             System.out.println(data);
 
         } else {
-            status = "2";
+            status = "4";
             message = "No se ha encontrado información.";
         }
 

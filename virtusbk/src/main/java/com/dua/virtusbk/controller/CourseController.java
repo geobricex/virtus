@@ -37,9 +37,10 @@ public class CourseController {
     private PersonsCourseRepository personcourseDAO;
 
 
-    public String[] saveCourse(Course course) {
+    public String[] saveCourse(Course course, String id_person) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
 
+        course.setPersonsIdPerson(new Person(Long.parseLong(id_person)));
         course.setDateregCourse(Methods.nowLocalDateTime());
         course.setDateupdateCourse(Methods.nowLocalDateTime());
         course.setStateCourse("A");
