@@ -71,7 +71,7 @@ public class UtilApis {
         String message;
 //        JsonObject jso = Methods.stringToJSON(data);
 //        String sessionToken = Methods.JsonToString(jso, "sessionToken", "0");
-
+        System.out.println("gethomeinformation()");
         String[] clains = Methods.getDataToJwt(sessionToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
         if (res[0].equals("2")) {
