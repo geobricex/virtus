@@ -125,17 +125,17 @@ public class EvaluationApi {
     }
 
     @PostMapping("/getEvaluationQuestions")
-    public ResponseEntity<String> getEvaluationQuestions(@RequestBody @Validated String data){//, @RequestHeader("token") String sessionToken) {
+    public ResponseEntity<String> getEvaluationQuestions(@RequestBody @Validated String data, @RequestHeader("token") String sessionToken) {
         System.out.println("getEvaluationQuestions...");
         String message;
         /*TEMPORAL*/
-        JsonObject jso = Methods.stringToJSON(data);
-        String sessionToken = Methods.JsonToString(jso, "sessionToken", "");
+//        JsonObject jso = Methods.stringToJSON(data);
+//        String sessionToken = Methods.JsonToString(jso, "sessionToken", "");
         /*FIN TEMPORAL*/
         String[] clains = Methods.getDataToJwt(sessionToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
         if (res[0].equals("2")) {
-//            JsonObject jso = Methods.stringToJSON(data);
+            JsonObject jso = Methods.stringToJSON(data);
             if (jso.size() > 0) {
                 String id_evaluation = Methods.JsonToString(jso, "id_evaluation", "");
                 res = evaluationController.getEvaluationQuestions(id_evaluation, clains[0]);

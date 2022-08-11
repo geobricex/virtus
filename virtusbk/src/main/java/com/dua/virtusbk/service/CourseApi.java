@@ -45,7 +45,6 @@ public class CourseApi {
             res = courseController.saveCourse(course, clains[0]);
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
             if (res[0].equals("2")) {
-
                 return new ResponseEntity<>(message, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
@@ -75,5 +74,31 @@ public class CourseApi {
                     + "e intentalo de nuevo.", "[]");
             return new ResponseEntity<>(message, HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
         }
+    }
+
+    @PostMapping("/selectcoursesyllabutopic")
+    public ResponseEntity<String> selectCourseSyllabuTopic(@RequestBody String data) {//, @RequestHeader("token") String sessionToken) {
+        String message = "[]";
+
+//        JsonObject jso = Methods.stringToJSON(data);
+//        String sessionToken = Methods.JsonToString(jso, "sessionToken", "");
+//
+//        String[] clains = Methods.getDataToJwt(sessionToken);
+//        String[] res = Methods.validatePermit(clains[0], clains[1], 1);
+//        if (res[0].equals("2")) {
+        JsonObject jso = Methods.stringToJSON(data);
+        String id_course = Methods.JsonToString(jso, "id_course", "");
+        String[] res = courseController.selectCourseSyllabuTopic(id_course);
+        message = Methods.getJsonMessage(res[0], res[1], res[2]);
+        if (res[0].equals("2")) {
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
+        }
+//        } else {
+//            message = Methods.getJsonMessage("4", "Credenciales de sesión inválidas, vuelve a iniciar sesión "
+//                    + "e intentalo de nuevo.", "[]");
+//            return new ResponseEntity<>(message, HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
+//        }
     }
 }
