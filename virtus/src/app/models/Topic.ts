@@ -1,5 +1,5 @@
 export class Topic {
-  private id: string;
+  private id: number;
   private nameTopic: string;
   private descriptionTopic: string;
   private keywordsTopic: string;
@@ -9,15 +9,24 @@ export class Topic {
   private stateTopic: string;
   private levelsTopic: string;
 
-  constructor() {
+
+  constructor(id: number, nameTopic: string, descriptionTopic: string, keywordsTopic: string, pathimgTopic: string, dateregTopic: string, dateupdateTopic: string, stateTopic: string, levelsTopic: string) {
+    this.id = id;
+    this.nameTopic = nameTopic;
+    this.descriptionTopic = descriptionTopic;
+    this.keywordsTopic = keywordsTopic;
+    this.pathimgTopic = pathimgTopic;
+    this.dateregTopic = dateregTopic;
+    this.dateupdateTopic = dateupdateTopic;
+    this.stateTopic = stateTopic;
+    this.levelsTopic = levelsTopic;
   }
 
-
-  get _id(): string {
+  get _id(): number {
     return this.id;
   }
 
-  set_id(value: string) {
+  set_id(value: number) {
     this.id = value;
   }
 

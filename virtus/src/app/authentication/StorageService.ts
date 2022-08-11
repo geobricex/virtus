@@ -38,6 +38,7 @@ export class StorageService {
   }
 
   getCurrentSession(): Session {
+    console.log(this.currentSession);
     return this.currentSession;
   }
 

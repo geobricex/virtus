@@ -9,6 +9,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import PocketBase from 'pocketbase';
 import {Person} from "../models/Person";
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-login',
@@ -20,14 +21,13 @@ export class AppLoginComponent {
   sessionLog: Session;
   forgotPassword_dialog: boolean;
   alreadyHasCode: boolean;
-  client: any;
   globalUri: string = "";
 
   constructor(
     public router: Router,
     private storageService: StorageService,
-    private utils: Utils,
-    private _http: HttpClient
+    private _http: HttpClient,
+    private service: MessageService
   ) {
     this.forgotPassword_dialog = false;
     this.alreadyHasCode = false;
@@ -38,7 +38,6 @@ export class AppLoginComponent {
    * */
   ngOnInit(): void {
     this.user = new User("", "", "", "", "", "");
-    this.client = new PocketBase(this.globalUri);
   }
 
 
@@ -54,7 +53,7 @@ export class AppLoginComponent {
   login() {
     this.apiLogin().subscribe(response => {
       console.log(response);
-      this.utils.showMessages(response.status, response.information, "tst");
+      this.showMessages(response.status, response.information, "tst");
       if (response.status === 2) {
         let dataLogin = response.data[0];
         this.user = new User(dataLogin.email_person, dataLogin.type_person, dataLogin.name_person,
@@ -71,7 +70,7 @@ export class AppLoginComponent {
   apiLogin(): Observable<any> {
     if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
       this.globalUri = "virtusbk/persons/login";
-    }else{
+    } else {
       this.globalUri = "virtus_bk/persons/login";
     }
     console.log(this.user.email, this.user.password);
@@ -88,20 +87,29 @@ export class AppLoginComponent {
   recoverAccount() {
     this.apiRecoverAccount().subscribe(response => {
       console.log(response);
-      this.utils.showMessages(response.status, response.information, "tst");
+      this.showMessages(response.status, response.information, "tst");
     });
   }
 
   apiRecoverAccount(): Observable<any> {
     if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
       this.globalUri = "virtusbk/persons/requestcode";
-    }else{
+    } else {
       this.globalUri = "virtus_bk/persons/requestcode";
     }
     return this._http.post<Person>(this.globalUri, {
       "flag": "2",
       "email": this.user.email,
       "code": ""
+    });
+  }
+
+  showMessages(status: number, info: string, key: string) {
+    this.service.add({
+      key: key,
+      severity: status === 1 ? "warn" : status === 2 ? "success" : status === 3 ? "error" : "info",
+      summary: 'Virtus',
+      detail: info
     });
   }
 

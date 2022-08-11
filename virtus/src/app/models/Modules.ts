@@ -1,3 +1,5 @@
+import {Course} from "./Course";
+
 export class Modules {
   private id: number;
   private nameSyllabu: string;
@@ -7,11 +9,19 @@ export class Modules {
   private dateregSyllabu: string;
   private dateupdateSyllabu: string;
   private stateSyllabu: string;
+  private coursesIdCourse: Course;
 
 
-  constructor() {
+  constructor(id: number, nameSyllabu: string, descriptionSyllabu: string, keywordsSyllabu: string, pathimgSyllabus: string, dateregSyllabu: string, dateupdateSyllabu: string, stateSyllabu: string) {
+    this.id = id;
+    this.nameSyllabu = nameSyllabu;
+    this.descriptionSyllabu = descriptionSyllabu;
+    this.keywordsSyllabu = keywordsSyllabu;
+    this.pathimgSyllabus = pathimgSyllabus;
+    this.dateregSyllabu = dateregSyllabu;
+    this.dateupdateSyllabu = dateupdateSyllabu;
+    this.stateSyllabu = stateSyllabu;
   }
-
 
   get _id(): number {
     return this.id;
@@ -75,5 +85,14 @@ export class Modules {
 
   set _stateSyllabu(value: string) {
     this.stateSyllabu = value;
+  }
+
+
+  get _coursesIdCourse(): Course {
+    return this.coursesIdCourse;
+  }
+
+  set _coursesIdCourse(value: Course) {
+    this.coursesIdCourse = value;
   }
 }
