@@ -5,50 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bbc5533f-4237-4b82-99c8-ccd5e9e0c413" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/querys.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/script_create_bd3.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/df8c8b86-2dab-4442-98ba-1fa49a5319ba.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/df8c8b86-2dab-4442-98ba-1fa49a5319ba.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/df8c8b86-2dab-4442-98ba-1fa49a5319ba/storage_v2/_src_/database/virtus.kxFZzw/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/df8c8b86-2dab-4442-98ba-1fa49a5319ba/storage_v2/_src_/database/virtus.kxFZzw/schema/public.abK9xQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/consults.sql" beforeDir="false" afterPath="$PROJECT_DIR$/consults.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/datatypes/Diagrams.local" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/datatypes/Diagrams.local" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/dl_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/dl_settings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/dmd_open.local" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/dmd_open.local" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/logical/Objects.local" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/logical/Objects.local" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/logical/entity/seg_0/306355EE-13C1-3B02-80A6-7C8B3AD2A2B7.xml" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/logical/entity/seg_0/306355EE-13C1-3B02-80A6-7C8B3AD2A2B7.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/logical/entity/seg_0/6FEE5293-3ACB-B713-0723-839C8EF96655.xml" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/logical/entity/seg_0/6FEE5293-3ACB-B713-0723-839C8EF96655.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/logical/entity/seg_0/811BDB7C-1016-9E9B-F6E5-2FE761345273.xml" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/logical/entity/seg_0/811BDB7C-1016-9E9B-F6E5-2FE761345273.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/logical/entity/seg_0/81C33A03-A66C-8294-76CD-15F9E167FB0D.xml" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/logical/entity/seg_0/81C33A03-A66C-8294-76CD-15F9E167FB0D.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/logical/relation/seg_0/1A14B468-0036-F3DA-89CB-001458EB610A.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/logical/relation/seg_0/501DB87E-BD64-C6E6-8D5B-A957F34CFEA6.xml" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/logical/relation/seg_0/501DB87E-BD64-C6E6-8D5B-A957F34CFEA6.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/logical/relation/seg_0/A8DDDC5A-2F89-16C5-08F3-F8E1B527143A.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/logical/subviews/30C6B78F-2F85-5560-0373-9CE20245471A.xml" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/logical/subviews/30C6B78F-2F85-5560-0373-9CE20245471A.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/mapping/ExtendedMap.xml" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/mapping/ExtendedMap.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/rel/24129099-36171B85948E.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/rel/24129099-36171B85948E/foreignkey/seg_0/434836B7-9487-3987-6D2F-2E5F97A7C23C.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/rel/24129099-36171B85948E/foreignkey/seg_0/53F89ADA-3B1B-8AD8-0D27-BC70CCE39D12.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/rel/24129099-36171B85948E/foreignkey/seg_0/7A1DB371-CDFA-D053-5049-6AE8B264B7B4.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/rel/24129099-36171B85948E/foreignkey/seg_0/7ED09D86-0A23-48BD-676B-04C0B4276DD2.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/rel/24129099-36171B85948E/foreignkey/seg_0/A2B7F176-904D-74C3-8152-9DC44AC8D31C.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/rel/24129099-36171B85948E/foreignkey/seg_0/A3BF6239-5C6C-5045-5646-54CE83D6F701.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/rel/24129099-36171B85948E/foreignkey/seg_0/A44937B0-ED4A-CA36-4BDF-712C5C53CCF0.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/rel/24129099-36171B85948E/foreignkey/seg_0/B8B62CD3-C869-BE03-7914-BA14F5BF6088.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/rel/24129099-36171B85948E/foreignkey/seg_0/C1FA87F0-E12D-FAD8-FD53-2BA59CCC043D.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/rel/24129099-36171B85948E/foreignkey/seg_0/E6132AB6-019D-0350-D270-6627B61FCEC7.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/rel/24129099-36171B85948E/foreignkey/seg_0/F2CBF36C-D900-CB67-A812-5F9748A18D5C.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/rel/24129099-36171B85948E/subviews/DA9A459B-286C-4C5E-D859-8A8677B77E2A.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/rel/24129099-36171B85948E/table/seg_0/1C4DE00C-A230-C16A-C5C1-A6937419B036.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/rel/24129099-36171B85948E/table/seg_0/2AE4E296-0E54-B0D1-8737-521BD1549400.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/rel/24129099-36171B85948E/table/seg_0/2CAEFF94-A71A-A5C9-1F3F-AD49EFE63826.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/rel/24129099-36171B85948E/table/seg_0/4175B61B-BA40-366B-95AD-4E789FCFE0B3.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/rel/24129099-36171B85948E/table/seg_0/5FEF9337-8C38-DE84-5C6E-990A24DC8BDD.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/rel/24129099-36171B85948E/table/seg_0/665578F6-DEEF-FE73-807F-05E82F885545.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/rel/24129099-36171B85948E/table/seg_0/6CAEBADA-4F88-B0EC-EFB7-9BE81C33B2AD.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/rel/24129099-36171B85948E/table/seg_0/BC78411E-94A9-B553-564B-6A59382E7D8F.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/rel/24129099-36171B85948E/table/seg_0/C8341D7B-BC6C-DD05-97D5-D41358EBBFF5.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/rel/24129099-36171B85948E/table/seg_0/F062D870-FC84-04C9-F472-F55C0BE6C9A3.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/rel/24129099-36171B85948E/table/seg_0/FD451AF8-9F0A-0611-D7BA-1F4E223FE50D.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/script_create_bd2.sql" beforeDir="false" afterPath="$PROJECT_DIR$/script_create_bd2.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

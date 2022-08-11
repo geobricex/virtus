@@ -25,7 +25,7 @@ public class Resource {
     @Column(name = "name_resource", nullable = false, length = 50)
     private String nameResource;
 
-    @Column(name = "pathfile_resource", length = 100)
+    @Column(name = "pathfile_resource", length = 200)
     private String pathfileResource;
 
     @Column(name = "pathvideo_resource", length = 200)

@@ -23,16 +23,13 @@ public class Question {
     @Column(name = "id_question", nullable = false)
     private Long id;
 
-    @Column(name = "type_question", nullable = false, length = 10)
-    private String typeQuestion;
-
     @Column(name = "title_question", nullable = false, length = 200)
     private String titleQuestion;
 
     @Column(name = "description_question", nullable = false, length = 500)
     private String descriptionQuestion;
 
-    @Column(name = "pathurlsign_question", length = 100)
+    @Column(name = "pathurlsign_question", length = 200)
     private String pathurlsignQuestion;
 
     @Column(name = "points_question")
@@ -46,8 +43,12 @@ public class Question {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
 //    @Cascade(value={org.hibernate.annotations.CascadeType.ALL})
-    @JoinColumn(name = "\"evaluations_id-evaluation\"", nullable = false)
+    @JoinColumn(name = "evaluations_id_evaluation", nullable = false)
     @JsonIgnore// No traer toda la relación en una consulta
     private Evaluation evaluationsIdEvaluation;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "question_category_id_questioncategory", nullable = false)
+    @JsonIgnore
+    private Evaluation questionCategoryIdQuestionCategory;
 }
