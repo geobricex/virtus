@@ -67,16 +67,15 @@ public class UtilApis {
     }
 
     @PostMapping("/gethomeinformation")
-    public ResponseEntity<String> gethome(@RequestBody @Validated String data){//}, @RequestHeader("token") String sessionToken) {
+    public ResponseEntity<String> gethome(@RequestBody @Validated String data, @RequestHeader("token") String sessionToken) {
         String message;
-
-        JsonObject jso = Methods.stringToJSON(data);
-        String sessionToken = Methods.JsonToString(jso, "sessionToken", "0");
+//        JsonObject jso = Methods.stringToJSON(data);
+//        String sessionToken = Methods.JsonToString(jso, "sessionToken", "0");
 
         String[] clains = Methods.getDataToJwt(sessionToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
         if (res[0].equals("2")) {
-//            JsonObject jso = Methods.stringToJSON(data);
+            JsonObject jso = Methods.stringToJSON(data);
             if (jso.size() > 0) {
                 int id_type = Methods.JsonToInteger(jso, "id_type", 0);
                 int id_param = Methods.JsonToInteger(jso, "id_param", 0);

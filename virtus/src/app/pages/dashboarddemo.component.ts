@@ -40,7 +40,7 @@ export class DashboardDemoComponent implements OnInit {
     console.log(this.globalUri)
     var headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
-      .set('sessionToken', 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiItMSIsInVzZXIiOjEsInBlcm1pdCI6IkEiLCJpYXQiOjE2NjAxNzQ4MTQsImV4cCI6MTY2MDE4NTYxNH0.YWq-CSsYc7y0p2AWRIECJmcym_tBVhTJ2xQJJDSfXv8')
+      .set('sessionToken', 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiItMSIsInVzZXIiOjEsInBlcm1pdCI6IkEiLCJpYXQiOjE2NjAxODQ2NzQsImV4cCI6MTY2MDE5NTQ3NH0.uG9tHSt4vuI0XcgNV86QoRTLYzWpYASfX7BN2qD7ers')
     return this._http.post(this.globalUri, {
       "id_type": 1,
       "id_param": 1
