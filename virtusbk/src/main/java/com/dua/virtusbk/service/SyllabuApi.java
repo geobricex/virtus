@@ -5,12 +5,15 @@
  */
 package com.dua.virtusbk.service;
 
+import com.dua.virtusbk.ExcludeProxiedFields;
 import com.dua.virtusbk.controller.SyllabuController;
 import com.dua.virtusbk.entity.Course;
 import com.dua.virtusbk.entity.Person;
 import com.dua.virtusbk.entity.Syllabu;
 import com.dua.virtusbk.repository.SyllabuRepository;
 import com.dua.virtusbk.util.Methods;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,9 +43,14 @@ public class SyllabuApi {
 
     @PostMapping("/insertsyllabu")
     public ResponseEntity<String> insertSyllabu(@RequestBody @Validated Syllabu syllabu, @RequestHeader("token") String sessionToken) {
+        System.out.println("insertsyllabu");
         String message;
         String[] clains = Methods.getDataToJwt(sessionToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
+
+        Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();
+        System.out.println("JSON= " + gson.toJson(syllabu));
+
         if (res[0].equals("2")) {
             res = syllabuController.saveSyllabu(syllabu);
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
