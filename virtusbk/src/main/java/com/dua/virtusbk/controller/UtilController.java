@@ -123,11 +123,11 @@ public class UtilController {
         }
     }
 
-    public String[] getInformationHome(int id_type, int id_param) {
+    public String[] getInformationHome(int id_type, String id_param) {
         System.out.println("getInformationHome");
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
 
-        String homeInformation = utilDAO.returnInformationHome(id_type, id_param);
+        String homeInformation = utilDAO.returnInformationHome(id_type, Integer.parseInt(id_param));
 
         JsonArray jso = Methods.stringToJsonArray(homeInformation);
         if (!jso.toString().equals("[]")) {

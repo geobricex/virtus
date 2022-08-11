@@ -78,9 +78,8 @@ public class UtilApis {
             JsonObject jso = Methods.stringToJSON(data);
             if (jso.size() > 0) {
                 int id_type = Methods.JsonToInteger(jso, "id_type", 0);
-                int id_param = Methods.JsonToInteger(jso, "id_param", 0);
 
-                res = utilController.getInformationHome(id_type, id_param);
+                res = utilController.getInformationHome(id_type, clains[0]);
                 message = Methods.getJsonMessage(res[0], res[1], res[2]);
                 if (res[0].equals("2")) {
                     return new ResponseEntity<>(message, HttpStatus.OK);
