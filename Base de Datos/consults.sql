@@ -25,3 +25,13 @@ SELECT pc.id_person_course, pc.datereg_person_course,
     INNER JOIN persons p on c.persons_id_person = p.id_person
     WHERE pc.persons_id_person = 1
     AND state_course = 'A' AND state_person_course = 'A'
+
+select count(*) as my_courses from persons_courses where persons_id_person = 1
+select COALESCE(sum(qualification_person_answer),'0') as my_point from persons_answers
+where persons_id_person = 1
+select count(*) as total_course from courses
+where state_course not in ('I')
+select count(*) as total_user from persons
+where type_person not in ('I', 'S')
+
+select infor from home_select(1,1)

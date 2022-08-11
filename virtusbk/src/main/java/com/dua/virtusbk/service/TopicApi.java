@@ -60,7 +60,7 @@ public class TopicApi {
             return new ResponseEntity<>(message, HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
         }
     }
-    @PostMapping("/inserttopic")
+    @PostMapping("/updatetopic")
     public ResponseEntity<String> updateTopic(@RequestBody @Validated Topic topic, @RequestHeader("token") String sessionToken) {
         String message;
         String[] clains = Methods.getDataToJwt(sessionToken);

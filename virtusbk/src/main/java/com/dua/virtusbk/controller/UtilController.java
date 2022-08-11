@@ -1,12 +1,18 @@
 package com.dua.virtusbk.controller;
 
+import com.dua.virtusbk.ExcludeProxiedFields;
 import com.dua.virtusbk.entity.Course;
 import com.dua.virtusbk.entity.Util;
 import com.dua.virtusbk.repository.CourseRepository;
 import com.dua.virtusbk.repository.UtilRepository;
 import com.dua.virtusbk.util.DataStatic;
 import com.dua.virtusbk.util.Email;
+import com.dua.virtusbk.util.Methods;
 import com.dua.virtusbk.util.WeEncoder;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -115,6 +121,22 @@ public class UtilController {
         } else {
             return false;
         }
+    }
 
+    public String[] getInformationHome(int id_type, int id_param) {
+        System.out.println("getInformationHome");
+        String status = "4", message = "Error en los parámetros introducidos", data = "[]";
+
+        String homeInformation = utilDAO.returnInformationHome(id_type, id_param);
+
+        JsonArray jso = Methods.stringToJsonArray(homeInformation);
+        if (!jso.toString().equals("[]")) {
+            status = "2";
+            message = "Información retornada con éxito.";
+            data = jso.toString();
+        }
+        System.out.println(data);
+
+        return new String[]{status, message, data};
     }
 }

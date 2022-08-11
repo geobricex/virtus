@@ -81,8 +81,7 @@ export class AppLoginComponent {
       .set('provider', 'native');
     return this._http.post(this.globalUri, {
       "email": this.user.email,
-      "password": this.user.password,
-      "provider": "native"
+      "password": this.user.password
     }, {'headers': headers});
   }
 
