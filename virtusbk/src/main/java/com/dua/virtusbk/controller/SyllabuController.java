@@ -38,7 +38,6 @@ public class SyllabuController {
         System.out.println("saveSyllabu");
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
 
-        syllabu.setCoursesIdCourse(syllabu.getCoursesIdCourse());
         syllabu.setDateregSyllabu(Methods.nowLocalDateTime());
         syllabu.setDateupdateSyllabu(Methods.nowLocalDateTime());
         syllabu.setStateSyllabu("A");

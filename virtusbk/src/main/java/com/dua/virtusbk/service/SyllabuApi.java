@@ -48,9 +48,6 @@ public class SyllabuApi {
         String[] clains = Methods.getDataToJwt(sessionToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
 
-        Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();
-        System.out.println("JSON= " + gson.toJson(syllabu));
-
         if (res[0].equals("2")) {
             res = syllabuController.saveSyllabu(syllabu);
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
