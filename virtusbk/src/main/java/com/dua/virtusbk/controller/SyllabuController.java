@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
 
 
 @Service
+@Transactional
 public class SyllabuController {
     @Autowired
     private SyllabuRepository syllabuDAO;
@@ -36,7 +37,11 @@ public class SyllabuController {
     public String[] saveSyllabu(Syllabu syllabu) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
 
+        syllabu.setDateregSyllabu(Methods.nowLocalDateTime());
+        syllabu.setDateupdateSyllabu(Methods.nowLocalDateTime());
+        syllabu.setStateSyllabu("A");
         syllabu = syllabuDAO.save(syllabu);
+
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("id_syllabu", syllabu.getId());
         status = "2";
@@ -46,7 +51,21 @@ public class SyllabuController {
         return new String[]{status, message, data};
     }
 
-    public String[] getSyllabu(String id_course) {
+    public String[] updateSyllabu(Syllabu syllabu) {
+        String status = "4", message = "Error en los parámetros introducidos", data = "[]";
+
+        syllabu.setDateupdateSyllabu(Methods.nowLocalDateTime());
+        syllabu = syllabuDAO.save(syllabu);
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("id_syllabu", syllabu.getId());
+        status = "2";
+        message = "Módulo actualizado con éxito.";
+        data = jsonObject.toString();
+
+        return new String[]{status, message, data};
+    }
+
+    public String[] getSyllabus(String id_course) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
 
         List<Syllabu> syllabus = syllabuDAO.findByIdCourseList(Long.parseLong(id_course));
@@ -58,7 +77,26 @@ public class SyllabuController {
             System.out.println(data);
 
         } else {
+            status = "4";
+            message = "No se ha encontrado información.";
+        }
+
+        return new String[]{status, message, data};
+    }
+
+    public String[] getSyllabu(String id_syllabu) {
+        String status = "4", message = "Error en los parámetros introducidos", data = "[]";
+
+        Object[] syllabus = syllabuDAO.findIdSyllabu(Long.parseLong(id_syllabu));
+        if (syllabus.length > 0) {
+            Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();
+            data = gson.toJson(syllabus);
             status = "2";
+            message = "Información obetnida con éxito.";
+            System.out.println(data);
+
+        } else {
+            status = "4";
             message = "No se ha encontrado información.";
         }
 

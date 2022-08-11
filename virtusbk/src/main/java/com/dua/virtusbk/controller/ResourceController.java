@@ -1,78 +1,68 @@
 package com.dua.virtusbk.controller;
 
 import com.dua.virtusbk.ExcludeProxiedFields;
-import com.dua.virtusbk.entity.Course;
-import com.dua.virtusbk.entity.Person;
-import com.dua.virtusbk.entity.Syllabu;
+import com.dua.virtusbk.entity.Evaluation;
+import com.dua.virtusbk.entity.Resource;
 import com.dua.virtusbk.entity.Topic;
-import com.dua.virtusbk.repository.CourseRepository;
-import com.dua.virtusbk.repository.PersonRepository;
+import com.dua.virtusbk.repository.ResourceRepository;
 import com.dua.virtusbk.repository.TopicRepository;
-import com.dua.virtusbk.util.DataStatic;
 import com.dua.virtusbk.util.Methods;
-import com.dua.virtusbk.util.TemplateEmail;
-import com.dua.virtusbk.util.WeEncoder;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.ObjectError;
 
 import javax.transaction.Transactional;
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Service
 @Transactional
-public class TopicController {
+public class ResourceController {
     @Autowired
-    private TopicRepository topicDAO;
+    private ResourceRepository resourceDAO;
 
-    public String[] saveTopic(Topic topic) {
+    public String[] saveResource(Resource resource) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
 
-        topic.setDateregTopic(Methods.nowLocalDateTime());
-        topic.setDateupdateTopic(Methods.nowLocalDateTime());
-        topic.setStateTopic("A");
-        topic = topicDAO.save(topic);
+        resource.setDateregResource(Methods.nowLocalDateTime());
+        resource.setDateupdateResource(Methods.nowLocalDateTime());
+        resource.setStateResource("A");
+        resource = resourceDAO.save(resource);
 
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("id_topic", topic.getId());
+        jsonObject.addProperty("id_resource", resource.getId());
         status = "2";
-        message = "Tema registrado con éxito.";
+        message = "Recurso agregado con éxito.";
         data = jsonObject.toString();
 
         return new String[]{status, message, data};
     }
 
-    public String[] updateTopic(Topic topic) {
+    public String[] updateResource(Resource resource) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
 
-        topic.setDateupdateTopic(Methods.nowLocalDateTime());
-        topic = topicDAO.save(topic);
+        resource.setDateupdateResource(Methods.nowLocalDateTime());
+        resource.setStateResource("A");
+        resource = resourceDAO.save(resource);
+
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("id_topic", topic.getId());
+        jsonObject.addProperty("id_resource", resource.getId());
         status = "2";
-        message = "Tema actualizado con éxito.";
+        message = "Recurso actualizado con éxito.";
         data = jsonObject.toString();
 
         return new String[]{status, message, data};
     }
 
-    public String[] getTopics(String id_syllabu) {
+    public String[] getResources(String id_topic) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
-
-        List<Topic> topics = topicDAO.findByIdTopicList(Long.parseLong(id_syllabu));
-        if (topics.size() > 0) {
+        List<Resource> resources = resourceDAO.findIdTopicResourceList(Long.parseLong(id_topic));
+        if (resources.size() > 0) {
             Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();
-            data = gson.toJson(topics).toString();
+            data = gson.toJson(resources);
             status = "2";
             message = "Información obetnida con éxito.";
             System.out.println(data);
@@ -81,17 +71,15 @@ public class TopicController {
             status = "4";
             message = "No se ha encontrado información.";
         }
-
         return new String[]{status, message, data};
     }
 
-    public String[] getTopic(String id_syllabu) {
+    public String[] getResource(String id_resource) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
-
-        Object[] topics = topicDAO.findIdTopic(Long.parseLong(id_syllabu));
-        if (topics.length > 0) {
+        Object[] evaluations = resourceDAO.findIdResource(Long.parseLong(id_resource));
+        if (evaluations.length > 0) {
             Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();
-            data = gson.toJson(topics);
+            data = gson.toJson(evaluations);
             status = "2";
             message = "Información obetnida con éxito.";
             System.out.println(data);
@@ -100,7 +88,6 @@ public class TopicController {
             status = "4";
             message = "No se ha encontrado información.";
         }
-
         return new String[]{status, message, data};
     }
 

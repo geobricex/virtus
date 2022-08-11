@@ -11,9 +11,13 @@ import java.util.Optional;
 
 public interface UtilRepository extends JpaRepository<Util, String> {
     @Query(value = "select * from public.utils", nativeQuery = true)
-    List<Util>  returnUtilsData();
+    List<Util> returnUtilsData();
 
     Optional<Util> findByValueUtil(String splantilla);
 
     Optional<Util> findById(String id);
+
+    @Query(value = "select infor from home_select(?1,?2)", nativeQuery = true)
+    String returnInformationHome(int type, int param);
+
 }

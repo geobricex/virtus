@@ -12,4 +12,7 @@ public interface TopicRepository extends JpaRepository<Topic, Long> {
             "FROM topics " +
             "WHERE state_topic = 'A' and syllabus_id_syllabu=?1", nativeQuery = true)
     List<Topic> findByIdTopicList(Long param);
+
+    @Query(value = "SELECT * FROM topics where id_topic =?1", nativeQuery = true)
+    Object[] findIdTopic(Long param);
 }

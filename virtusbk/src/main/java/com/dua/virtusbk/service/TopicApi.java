@@ -61,6 +61,26 @@ public class TopicApi {
         }
     }
 
+    @PostMapping("/updatetopic")
+    public ResponseEntity<String> updateTopic(@RequestBody @Validated Topic topic, @RequestHeader("token") String sessionToken) {
+        String message;
+        String[] clains = Methods.getDataToJwt(sessionToken);
+        String[] res = Methods.validatePermit(clains[0], clains[1], 1);
+        if (res[0].equals("2")) {
+            res = topicController.updateTopic(topic);
+            message = Methods.getJsonMessage(res[0], res[1], res[2]);
+            if (res[0].equals("2")) {
+                return new ResponseEntity<>(message, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
+            }
+        } else {
+            message = Methods.getJsonMessage("4", "Credenciales de sesión inválidas, vuelve a iniciar sesión "
+                    + "e intentalo de nuevo.", "[]");
+            return new ResponseEntity<>(message, HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
+        }
+    }
+
     @PostMapping("/gettopics")
     public ResponseEntity<String> getTopics(@RequestBody String id_syllabyu) {
         System.out.println("getTopics...");
@@ -72,14 +92,35 @@ public class TopicApi {
 //        if (res[0].equals("2")) {
         JsonObject jso = Methods.stringToJSON(id_syllabyu);
         String course_id_syllabu = Methods.JsonToString(jso, "syllabu_id_topic", "");
-        String[] res = topicController.getTopic(course_id_syllabu);
+        String[] res = topicController.getTopics(course_id_syllabu);
+        message = Methods.getJsonMessage(res[0], res[1], res[2]);
         if (res[0].equals("2")) {
-            message = Methods.getJsonMessage(res[0], res[1], res[2]);
             return new ResponseEntity<>(message, HttpStatus.OK);
         } else {
-            message = Methods.getJsonMessage("4", "Credenciales de sesión inválidas, vuelve a iniciar sesión "
-                    + "e intentalo de nuevo.", "[]");
-            return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
+            return new ResponseEntity<>(message, HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
+        }
+//        } else {
+//            return ResponseEntity.noContent().build();
+//        }
+    }
+
+    @PostMapping("/gettopic")
+    public ResponseEntity<String> getTopic(@RequestBody String id_syllabyu) {
+        System.out.println("getTopic...");
+        String message;
+//        JsonObject jso = Methods.stringToJSON(sessionToken);
+//        String sToken = Methods.JsonToString(jso, "sessionToken", "");
+//        String[] clains = Methods.getDataToJwt(sToken);
+//        String[] res = Methods.validatePermit(clains[0], clains[1], 1);
+//        if (res[0].equals("2")) {
+        JsonObject jso = Methods.stringToJSON(id_syllabyu);
+        String course_id_syllabu = Methods.JsonToString(jso, "syllabu_id_topic", "");
+        String[] res = topicController.getTopic(course_id_syllabu);
+        message = Methods.getJsonMessage(res[0], res[1], res[2]);
+        if (res[0].equals("2")) {
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(message, HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
         }
 //        } else {
 //            return ResponseEntity.noContent().build();

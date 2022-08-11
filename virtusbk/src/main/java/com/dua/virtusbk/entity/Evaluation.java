@@ -43,6 +43,9 @@ public class Evaluation {
     @Column(name = "numberquestion_evaluation")
     private Integer numberquestionEvaluation;
 
+    @Column(name = "state_evaluation", nullable = false, length = 1)
+    private String state_evaluation;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
 //    @Cascade(value={org.hibernate.annotations.CascadeType.ALL})
     @JoinColumn(name = "topics_id_topic", nullable = false)

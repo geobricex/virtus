@@ -1,0 +1,32 @@
+/*OPCIÓN SIMPLE Y MÚLTIPLE*/
+
+{
+   "answer":[
+      {
+         "opcion": "Escribir",
+         "correct": "Yes",
+         "resource": "https://firebasestorage.googleapis.com/v0/b/banderasapipaises.appspot.com/o/Banderas%2Faf.svg?alt=media&token=43145643-83b2-419b-ae57-0cf8b09744e1"
+
+      },
+      {
+         "opcion": "Comer",
+         "correct": "No",
+         "resource": "https://firebasestorage.googleapis.com/v0/b/banderasapipaises.appspot.com/o/Banderas%2Faf.svg?alt=media&token=43145643-83b2-419b-ae57-0cf8b09744e1"
+      },  
+      {
+         "opcion": "Tomar bebidas",
+         "correct": "No",
+         "resource": "https://firebasestorage.googleapis.com/v0/b/banderasapipaises.appspot.com/o/Banderas%2Faf.svg?alt=media&token=43145643-83b2-419b-ae57-0cf8b09744e1"
+      },
+      {
+         "opcion": "text del d",
+         "correct": "No",
+         "resource": "https://firebasestorage.googleapis.com/v0/b/banderasapipaises.appspot.com/o/Banderas%2Faf.svg?alt=media&token=43145643-83b2-419b-ae57-0cf8b09744e1"
+      },
+      {
+         "opcion": "text del e",
+         "correct": "No",
+         "resource": "https://firebasestorage.googleapis.com/v0/b/banderasapipaises.appspot.com/o/Banderas%2Faf.svg?alt=media&token=43145643-83b2-419b-ae57-0cf8b09744e1"
+      }
+   ]
+}
