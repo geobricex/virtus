@@ -160,10 +160,12 @@ export class QuestionnaireComponent implements OnInit {
                 this.tiempoEvaluacion = m + ":" + s;
               });
           }
-          this.startContinuousArtyom();
+          if(this.voiceComandsSupport()) {
+            this.startContinuousArtyom();
+          }
           this.cambiarPregunta(0, true);
           //this.initCanvas(false);
-          this.autoClick("#video_silenciar");
+          this.autoClick("#silenciar_video");
         }
       }
     });
