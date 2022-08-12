@@ -44,7 +44,7 @@ export class StorageService {
 
   removeCurrentSession(): void {
     this.localStorageService.removeItem('currentUser');
-    this.currentSession;
+    this.currentSession = new Session("", new User("", "", "", "", "", ""));
   }
 
   getCurrentUser(): User {
@@ -70,7 +70,7 @@ export class StorageService {
   logout(): void {
     this.removeCurrentSession();
     this.router.navigate(['/login']);
-    location.reload();
+    //location.reload();
   }
 
 }

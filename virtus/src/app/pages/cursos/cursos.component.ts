@@ -7,6 +7,8 @@ import {Observable} from "rxjs";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Utils} from "../../util/Utils";
 import {Person} from "../../models/Person";
+import {ConfirmationService} from "primeng/api";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-cursos',
@@ -19,11 +21,18 @@ export class CursosComponent implements OnInit {
   sortOrder: number;
   sortField: string;
   globalUri: string = "";
+  informationCourse: boolean;
+  infoCourseSelected: any = {};
+
+  expandedRows: any = {};
+  isExpanded: boolean = false;
 
   constructor(
     private breadcrumbService: BreadcrumbService,
     private utils: Utils,
-    private _http: HttpClient) {
+    private _http: HttpClient,
+    private confirmationService: ConfirmationService,
+    public router: Router) {
     this.breadcrumbService.setItems([
       {label: 'Cursos', routerLink: ['/']},
       {label: 'Todos los cursos', routerLink: ['/app/course']}
@@ -31,15 +40,79 @@ export class CursosComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loadCoruse();
+  }
+
+  expandAll() {
+    if (!this.isExpanded) {
+      let module: any = {};
+      this.infoCourseSelected.syllabus_.forEach((module: { id_course: string | number; }) => this.expandedRows[module.id_course] = true);
+
+    } else {
+      this.expandedRows = {};
+    }
+    this.isExpanded = !this.isExpanded;
+  }
+
+  saberMas(idCourse: any) {
+    console.log(idCourse)
+    this.apiSaberMas(idCourse).subscribe(response => {
+      console.log(response);
+      this.infoCourseSelected = response.data[0];
+      console.log(this.infoCourseSelected);
+      this.informationCourse = true;
+    });
+  }
+
+  apiSaberMas(idCourse: any): Observable<any> {
+    this.globalUri = this.utils.globalUrl + "course/selectcoursesyllabutopic";
+    return this._http.post(this.globalUri, {id_course: idCourse});
+  }
+
+  loadCoruse() {
     this.apiLoadCourses().subscribe(response => {
-      this.courses = response;
+      this.courses = response.data;
       console.log(this.courses);
     });
   }
 
-  apiLoadCourses(): Observable<Course[]> {
-    this.globalUri = "virtusbk/course";
-    return this._http.get<Course[]>(this.globalUri, {});
+  joinCourse(idCourse: any) {
+    this.confirmationService.confirm({
+      key: 'confirmJoin',
+      message: 'Esta seguro de ingresar a este curso ?',
+      acceptLabel: 'Si',
+      rejectLabel: 'No',
+      accept: () => {
+        console.log(idCourse);
+        this.apiJoinCourse(idCourse).subscribe(response => {
+          console.log(response);
+          this.utils.showMessages(response.status, response.information, "tst");
+          this.loadCoruse();
+          this.router.navigateByUrl('/app/mycourse');
+        });
+      },
+      reject: () => {
+
+      }
+    });
+  }
+
+  apiJoinCourse(idCourse: any): Observable<any> {
+    this.globalUri = this.utils.globalUrl + "personscours/joincourse";
+    var headers = new HttpHeaders()
+      .set('Access-Control-Allow-Origin', '*')
+      .set('provider', 'native')
+      .set('token', this.utils.token);
+    return this._http.post(this.globalUri, {id_course: idCourse}, {headers: headers});
+  }
+
+  apiLoadCourses(): Observable<any> {
+    this.globalUri = this.utils.globalUrl + "personscours/allcoursenojoin";
+    var headers = new HttpHeaders()
+      .set('Access-Control-Allow-Origin', '*')
+      .set('provider', 'native')
+      .set('token', this.utils.token);
+    return this._http.post(this.globalUri, {state_course_person: "A"}, {headers: headers});
   }
 
   onSortChange(event: any) {

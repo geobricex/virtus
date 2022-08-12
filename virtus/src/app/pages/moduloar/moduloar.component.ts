@@ -84,11 +84,11 @@ export class ModuloarComponent implements OnInit {
         "", "", "", "", "");
       this.module._coursesIdCourse = courseAux;
       console.log(this.module)
-      /*this.apiSaveCourse(this.module).subscribe(response => {
+      this.apiSaveCourse(this.module).subscribe(response => {
         this.utils.showMessages(response.status, response.information, "tst");
         this.loadCourse();
         this.resetModule();
-      });*/
+      });
     });
 
   }
