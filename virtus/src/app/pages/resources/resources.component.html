@@ -1,0 +1,64 @@
+<div class="grid p-fluid">
+
+  <div class="col-12">
+    <div class="card">
+      <h5>Recursos</h5>
+      <p-carousel [value]="resourcesData" [numVisible]="3" [numScroll]="3" [circular]="false"
+                  [responsiveOptions]="carouselResponsiveOptions">
+        <ng-template let-resource pTemplate="item">
+          <div class="border-round m-2 text-center p-2" style="border: 1px solid var(--surface-d)">
+            <div>
+              <h5 class="mb-1">{{resource.nameResource}}</h5>
+              <hr>
+              <div class="my-3">
+                <button *ngIf="resource.pathfileResource !== ''" pButton pRipple icon="pi pi-file"
+                        class="mr-2 p-button-rounded" pTooltip="Archivo"
+                        tooltipPosition="bottom"></button>
+                <button *ngIf="resource.pathurlsignResource !== ''" pButton pRipple icon="pi pi-video"
+                        class="mr-2 p-button-rounded p-button-success"
+                        pTooltip="Lengua de señas" tooltipPosition="bottom"></button>
+                <button *ngIf="resource.pathvideoResource !== ''" pButton pRipple icon="pi pi-video"
+                        class="p-button-rounded p-button-info"
+                        pTooltip="Video" tooltipPosition="bottom"></button>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </p-carousel>
+    </div>
+  </div>
+
+  <div class="col-12">
+    <div class="card">
+      <h5>Evaluaciones</h5>
+      <p-carousel [value]="evaluationData" [numVisible]="3" [numScroll]="3" [circular]="false"
+                  [responsiveOptions]="carouselResponsiveOptions">
+        <ng-template let-evaluation pTemplate="item">
+          <div class="border-round m-2 text-center p-2" style="border: 1px solid var(--surface-d)">
+            <div>
+              <h5 class="mb-1">{{evaluation.nameEvaluation}}</h5>
+              <span> {{evaluation.descriptionEvaluation}} </span> <br>
+              <div class="mt-3">
+                <span class="p-badge p-badge-warning"> Preguntas: {{evaluation.numberquestionEvaluation}} </span> <br>
+                <span
+                  class="p-badge p-badge-success mt-3"> Tiene tiempo: {{evaluation.timeEvaluation ? 'Si' : 'No'}} </span>
+                <br>
+                <span *ngIf="evaluation.timeEvaluation"
+                      class="p-badge p-badge-secondary mt-3"> Tiempo (minutos): {{evaluation.timeminutesEvaluation}} </span>
+                <span *ngIf="!evaluation.timeEvaluation"
+                      class="p-badge p-badge-secondary mt-3"> Tiempo (minutos): Ilimitado </span>
+              </div>
+              <hr>
+              <div class="my-3">
+                <button pButton pRipple icon="pi pi-book" label="Ingresar" class="mr-2 p-button-info w-8rem"
+                        pTooltip="Empezar evaluacion" tooltipPosition="bottom"
+                        routerLink="questionnaire/{{evaluation.id}}"></button>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </p-carousel>
+    </div>
+  </div>
+
+</div>

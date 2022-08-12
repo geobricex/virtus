@@ -78,6 +78,12 @@ export class TopicarComponent implements OnInit {
         this.form['description'].value,
         this.form['keywords'].value,
         urlPhoto, "", "", "", "");
+      let moduleAux = new Modules(
+        parseInt(this.idModule === null ? "0" : this.idModule),
+        "", "", "",
+        "", "", "", ""
+      )
+      this.topic._syllabuIdSyllabu = moduleAux;
       this.apiSaveTopic(this.topic).subscribe(response => {
         this.utils.showMessages(response.status, response.information, "tst");
         this.resetTopic();

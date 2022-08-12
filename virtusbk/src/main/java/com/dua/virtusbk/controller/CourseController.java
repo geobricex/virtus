@@ -90,7 +90,7 @@ public class CourseController {
 
         data = gson.toJson(personsCours);
         status = "2";
-        message = "Información recuperada con éxito.";
+        message = "Se ha unido al curso correctamente." ;
 
         return new String[]{status, message, data};
     }
@@ -99,13 +99,14 @@ public class CourseController {
         System.out.println("myCourseJoin");
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
 
-        Object[] personsCours = personcourseDAO.findByPersonCourse(Long.parseLong(id_person), state_course_person);
+        String personsCours = personcourseDAO.findByPersonCourseF(Long.parseLong(id_person), state_course_person);
 
-        Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();
-
-        data = gson.toJson(personsCours);
-        status = "2";
-        message = "Información recuperada con éxito.";
+        JsonArray jso = Methods.stringToJsonArray(personsCours);
+        if (!jso.toString().equals("[]")) {
+            status = "2";
+            message = "Información retornada con éxito.";
+            data = jso.toString();
+        }
 
         System.out.println(data);
         return new String[]{status, message, data};

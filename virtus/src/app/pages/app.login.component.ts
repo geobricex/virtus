@@ -37,6 +37,7 @@ export class AppLoginComponent {
    * Metodo para inicializar cualquier cosa
    * */
   ngOnInit(): void {
+    //location.reload();
     this.user = new User("", "", "", "", "", "");
   }
 

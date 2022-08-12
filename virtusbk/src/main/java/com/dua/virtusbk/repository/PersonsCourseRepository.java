@@ -20,8 +20,8 @@ public interface PersonsCourseRepository extends JpaRepository<PersonsCours, Lon
             "    AND state_course = ?2 AND state_person_course = 'A'", nativeQuery = true)
     Object[] findByPersonCourse(Long persons_id_person, String state_course_person);
 
-    @Query(value = " SELECT * FROM person_course_select(?1,'?2')", nativeQuery = true)
-    Object[] findByPersonCourseF(Long persons_id_person, String state_course_person);
+    @Query(value = " SELECT * FROM person_course_select(?1,?2)", nativeQuery = true)
+    String findByPersonCourseF(Long persons_id_person, String state_course_person);
 
     @Query(value = " SELECT * FROM public.allcoursenojoin_select(?1,'?2')", nativeQuery = true)
     String finAllCourseNoJoin(Long persons_id_person, String state_course_person);
