@@ -73,6 +73,8 @@ import {SidebarModule} from "primeng/sidebar";
 import {ResourcesComponent} from './pages/resources/resources.component';
 import {CarouselModule} from "primeng/carousel";
 import {TooltipModule} from "primeng/tooltip";
+import {ResourcesarComponent} from './pages/resourcesar/resourcesar.component';
+import {InputSwitchModule} from "primeng/inputswitch";
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -107,6 +109,7 @@ FullCalendarModule.registerPlugins([
     ModuloarComponent,
     TopicarComponent,
     ResourcesComponent,
+    ResourcesarComponent,
   ],
   imports: [
     HttpClientModule,
@@ -140,7 +143,8 @@ FullCalendarModule.registerPlugins([
     ConfirmDialogModule,
     SidebarModule,
     CarouselModule,
-    TooltipModule
+    TooltipModule,
+    InputSwitchModule
   ],
 
   providers: [

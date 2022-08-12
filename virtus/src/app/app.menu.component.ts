@@ -38,7 +38,9 @@ export class AppMenuComponent implements OnInit {
     } else if (this.user.type_person === "A") {
       this.model = [
         {label: 'Inicio', icon: 'pi pi-fw pi-home', routerLink: ['/app']},
-        {label: 'Cursos', icon: 'pi pi-fw pi-book', routerLink: ['/app/coursear']}
+        {label: 'Cursos', icon: 'pi pi-fw pi-book', routerLink: ['/app/coursear']},
+        {label: 'Gestión de usuarios', icon: 'pi pi-fw pi-users', routerLink: ['/app/']},
+        {label: 'Reportes', icon: 'pi pi-fw pi-chart-pie', routerLink: ['/app/']}
       ];
     } else if (this.user.type_person === "U") {
       this.model = [
