@@ -56,7 +56,7 @@ import {ModuloComponent} from './pages/modulo/modulo.component';
 import {StorageService} from "./authentication/StorageService";
 import {MessagesModule} from "primeng/messages";
 import {ToastModule} from "primeng/toast";
-import {MessageService} from "primeng/api";
+import {ConfirmationService, MessageService} from "primeng/api";
 import {Utils} from "./util/Utils";
 import {CursosArComponent} from './pages/cursos-ar/cursos-ar.component';
 import {ToolbarModule} from "primeng/toolbar";
@@ -66,8 +66,10 @@ import {MyprofileComponent} from './pages/myprofile/myprofile.component';
 import {QuestionnaireComponent} from './pages/questionnaire/questionnaire.component';
 import {AccordionModule} from "primeng/accordion";
 import {RadioButtonModule} from "primeng/radiobutton";
-import { ModuloarComponent } from './pages/moduloar/moduloar.component';
-import { TopicarComponent } from './pages/topicar/topicar.component';
+import {ModuloarComponent} from './pages/moduloar/moduloar.component';
+import {TopicarComponent} from './pages/topicar/topicar.component';
+import {ConfirmDialogModule} from "primeng/confirmdialog";
+import {SidebarModule} from "primeng/sidebar";
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -100,7 +102,7 @@ FullCalendarModule.registerPlugins([
     MyprofileComponent,
     QuestionnaireComponent,
     ModuloarComponent,
-    TopicarComponent
+    TopicarComponent,
   ],
   imports: [
     HttpClientModule,
@@ -130,12 +132,14 @@ FullCalendarModule.registerPlugins([
     TimelineModule,
     CardModule,
     FieldsetModule,
-    AccordionModule
+    AccordionModule,
+    ConfirmDialogModule,
+    SidebarModule
   ],
 
   providers: [
     {provide: LocationStrategy, useClass: HashLocationStrategy},
-    MenuService, BreadcrumbService, CargarScriptsService, StorageService, MessageService, Utils],
+    MenuService, BreadcrumbService, CargarScriptsService, StorageService, MessageService, Utils, ConfirmationService],
 
   bootstrap: [AppComponent]
 })

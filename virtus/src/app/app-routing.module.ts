@@ -40,8 +40,8 @@ import {TopicarComponent} from "./pages/topicar/topicar.component";
           {path: 'coursear/modulear/:idcourse/topicar/:idmodule', component: TopicarComponent},
           {path: 'mycourse', component: MiscursosComponent},
           {path: 'questionnaire', component: QuestionnaireComponent},
-          {path: 'mycourse/modules', component: ModuloComponent},
-          {path: 'mycourse/modules/themes', component: TemasComponent}
+          {path: 'mycourse/modules/:idcourse', component: ModuloComponent},
+          {path: 'mycourse/modules/:idcourse/themes/:idmodule', component: TemasComponent}
         ]
       },
       {path: 'login', component: AppLoginComponent},

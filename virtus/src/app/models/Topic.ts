@@ -1,3 +1,5 @@
+import {Modules} from "./Modules";
+
 export class Topic {
   private id: number;
   private nameTopic: string;
@@ -8,7 +10,7 @@ export class Topic {
   private dateupdateTopic: string;
   private stateTopic: string;
   private levelsTopic: string;
-
+  private syllabuIdSyllabu: Modules;
 
   constructor(id: number, nameTopic: string, descriptionTopic: string, keywordsTopic: string, pathimgTopic: string, dateregTopic: string, dateupdateTopic: string, stateTopic: string, levelsTopic: string) {
     this.id = id;
@@ -92,5 +94,14 @@ export class Topic {
 
   set_levelsTopic(value: string) {
     this.levelsTopic = value;
+  }
+
+
+  get _syllabuIdSyllabu(): Modules {
+    return this.syllabuIdSyllabu;
+  }
+
+  set _syllabuIdSyllabu(value: Modules) {
+    this.syllabuIdSyllabu = value;
   }
 }

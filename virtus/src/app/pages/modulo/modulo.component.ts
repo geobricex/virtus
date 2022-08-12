@@ -1,6 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {BreadcrumbService} from "../../app.breadcrumb.service";
 import {Modulo} from "../../models/modulo";
+import {Observable} from "rxjs";
+import {Utils} from "../../util/Utils";
+import {HttpClient} from "@angular/common/http";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-modulo',
@@ -9,13 +13,18 @@ import {Modulo} from "../../models/modulo";
 })
 export class ModuloComponent implements OnInit {
 
-  modulos: Modulo[];
-
+  modules: Modulo[];
   sortOrder: number;
-
   sortField: string;
+  globalUri: string = "";
+  idCourse: string | null = "";
 
-  constructor(private breadcrumbService: BreadcrumbService) {
+  constructor(
+    private breadcrumbService: BreadcrumbService,
+    private utils: Utils, private _http: HttpClient,
+    private _route: ActivatedRoute
+  ) {
+    this.idCourse = this._route.snapshot.paramMap.get("idcourse");
     this.breadcrumbService.setItems([
       {label: 'Cursos', routerLink: ['/']},
       {label: 'Mis cursos', routerLink: ['/app/mycourse']},
@@ -24,17 +33,21 @@ export class ModuloComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.modulos = [
-      {
-        name_module: "¿Qué es una computadora?",
-        description_module: "Descripcion de que es una computadura bonita",
-        keywords_module: "compu lapto",
-        pathimg_module: "https://pcredcom.com/blog/wp-content/uploads/2020/05/Elegir-computadora-ideal-2.jpeg",
-        datereg_module: "17-07-2022",
-        dateupdate_module: "17-07-2022",
-        state_module: "A"
-      }
-    ]
+    this.loadModule();
+  }
+
+  loadModule() {
+    this.apiLoadModule().subscribe(response => {
+      console.log(response);
+      this.modules = response.data;
+      console.log(this.modules)
+    });
+  }
+
+  apiLoadModule(): Observable<any> {
+    this.globalUri = this.utils.globalUrl + "syllabu/getsyllabus";
+    return this._http.post<any>(this.globalUri,
+      {course_id_syllabu: this.idCourse});
   }
 
   onSortChange(event: any) {
