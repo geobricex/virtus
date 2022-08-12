@@ -90,7 +90,7 @@ public class CourseController {
 
         data = gson.toJson(personsCours);
         status = "2";
-        message = "Información recuperada con éxito.";
+        message = "Se ha unido al curso correctamente." ;
 
         return new String[]{status, message, data};
     }
