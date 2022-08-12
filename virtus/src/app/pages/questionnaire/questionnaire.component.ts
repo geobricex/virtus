@@ -19,7 +19,11 @@ declare var Artyom: any;
   styleUrls: ['./questionnaire.component.css']
 })
 export class QuestionnaireComponent implements OnInit {
-
+  idCourse: string | null = "";
+  idModule: string | null = "";
+  idTopic: string | null = "";
+  idEvaluation: string | null = "";
+  idResource: string | null = "";
   valRadio: string;
 
   private artyom: any = new Artyom();
@@ -49,11 +53,32 @@ export class QuestionnaireComponent implements OnInit {
 
   constructor(private breadcrumbService: BreadcrumbService,
               private _http: HttpClient,
+              private _route: ActivatedRoute,
               private utils: Utils,
               private activatedRoute: ActivatedRoute) {
+    this.idCourse = this._route.snapshot.paramMap.get("idcourse");
+    this.idModule = this._route.snapshot.paramMap.get("idmodule");
+    this.idTopic = this._route.snapshot.paramMap.get("idTopic");
+    this.idEvaluation = this._route.snapshot.paramMap.get("idEvaluation");
+    this.idResource = this._route.snapshot.paramMap.get("idResource");
     this.breadcrumbService.setItems([
-      {label: 'Cuestionario', routerLink: ['/app/questionnaire']}
+      {label: 'Cursos', routerLink: ['/app']},
+      {label: 'Mis cursos', routerLink: ['/app/mycourse']},
+      {label: 'Modulos', routerLink: ['/app/mycourse/modules/' + this.idCourse]},
+      {label: 'Temas', routerLink: ['/app/mycourse/modules/' + this.idCourse + '/themes/' + this.idModule]},
+      {
+        label: 'Recursos y evaluaciones',
+        routerLink: ['/app/mycourse/modules/' + this.idCourse + '/themes/' + this.idModule + '/resources/' + this.idTopic]
+      },
+      {
+        label: 'Evaluación',
+        routerLink: ['/app/mycourse/modules/' + this.idCourse + '/themes/' + this.idModule  + '/resources/'+ this.idResource + '/questionnaire/'+ this.idEvaluation]
+      },
     ]);
+
+    // this.breadcrumbService.setItems([
+    //   {label: 'Cuestionario', routerLink: ['/app/questionnaire']}
+    // ]);
   }
 
   ngOnInit(): void {
@@ -160,7 +185,7 @@ export class QuestionnaireComponent implements OnInit {
                 this.tiempoEvaluacion = m + ":" + s;
               });
           }
-          if(this.voiceComandsSupport()) {
+          if (this.voiceComandsSupport()) {
             this.startContinuousArtyom();
           }
           this.cambiarPregunta(0, true);
@@ -290,7 +315,7 @@ export class QuestionnaireComponent implements OnInit {
     }
   }
 
-  evaluar_control_video(wildcard: string, i: number, database:string[]): void {
+  evaluar_control_video(wildcard: string, i: number, database: string[]): void {
     console.log("wilcardOriginal:" + wildcard);
     wildcard = wildcard.trim().replace(/[^a-zA-Z]+/, "");
     console.log("wildcard:", wildcard, i, database.indexOf(wildcard.trim()));
@@ -333,7 +358,20 @@ export class QuestionnaireComponent implements OnInit {
           //reproducir_video
           //pausar_video
           //silenciar_video
-          this.evaluar_control_video(wildcard, i, database);
+          // this.evaluar_control_video(wildcard, i, database);
+          console.log("wilcardOriginal:" + wildcard);
+          wildcard = wildcard.trim().replace(/[^a-zA-Z]+/, "");
+          console.log("wildcard:", wildcard, i, database.indexOf(wildcard.trim()));
+          if (database.indexOf(wildcard.trim()) > -1) {
+            //this.artyom.say("Ha indicado la selección del literal " + wildcard);
+            console.log("Ha indicado la selección del literal " + wildcard);
+            console.log("#video_" + wildcard.trim() + ": => click")
+            // this.autoClick("#video_" + wildcard.trim());
+            let btnStart = document.querySelector("#video_" + wildcard.trim());
+            if (btnStart) (btnStart as HTMLFormElement).click();
+          } else {
+            console.log("No se encuentra ese literal")
+          }
         }
       }
     ];
@@ -342,10 +380,10 @@ export class QuestionnaireComponent implements OnInit {
 
 
     //setTimeout(() => {
-      //this.probarcomando();
-      //let btnStart = document.querySelector("#btnStart");
-      //if (btnStart) (btnStart as HTMLFormElement).click();
-      //this.autoClick("#btnStart");
+    //this.probarcomando();
+    //let btnStart = document.querySelector("#btnStart");
+    //if (btnStart) (btnStart as HTMLFormElement).click();
+    //this.autoClick("#btnStart");
 
     //}, 5000);
 
