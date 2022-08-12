@@ -47,7 +47,8 @@
         <p-accordionTab header="Opción única" [selected]="true" class="line-height-3 m-0">
           <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
             <div *ngIf="question.name_questioncategory == tipoPregunta(2)"
-                 class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2">
+                 class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
+                 (click)="cambiarPregunta(i2)" >
               <span> {{"N°" + (i2 + 1)}} </span>
               <i class="pi pi-circle-on mt-1 text-sm {{question.resuelto?'text-green-600': 'text-pink-600'}}"
                  style="float: right"></i>
@@ -57,7 +58,8 @@
         <p-accordionTab header="Opción multiples" [selected]="true" class="line-height-3 m-0">
           <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
             <div *ngIf="question.name_questioncategory == tipoPregunta(3)"
-                 class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2">
+                 class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
+                 (click)="cambiarPregunta(i2)" >
               <span> {{"N°" + (i2 + 1)}} </span>
               <i class="pi pi-circle-on mt-1 text-sm {{question.resuelto?'text-green-600': 'text-pink-600'}}"
                  style="float: right"></i>
@@ -67,7 +69,8 @@
         <p-accordionTab header="Complete" [selected]="true" class="line-height-3 m-0">
           <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
             <div *ngIf="question.name_questioncategory == tipoPregunta(1)"
-                 class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2">
+                 class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
+                 (click)="cambiarPregunta(i2)" >
               <span> {{"N°" + (i2 + 1)}} </span>
               <i class="pi pi-circle-on mt-1 text-sm {{question.resuelto?'text-green-600': 'text-pink-600'}}"
                  style="float: right"></i>
@@ -77,7 +80,8 @@
         <p-accordionTab header="Relación" [selected]="true" class="line-height-3 m-0">
           <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
             <div *ngIf="question.name_questioncategory == tipoPregunta(4)"
-                 class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2">
+                 class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
+                 (click)="cambiarPregunta(i2)" >
               <span> {{"N°" + (i2 + 1)}} </span>
               <i class="pi pi-circle-on mt-1 text-sm {{question.resuelto?'text-green-600': 'text-pink-600'}}"
                  style="float: right"></i>
@@ -102,15 +106,6 @@
               image="{{'assets/imgresource/empty/shield.png'}}"
       ></p-chip>
 
-
-      <!--div *ngIf="questionObject.pathurlsign_question != null" class="col-12 text-center">
-
-        <youtube-player [videoId]="id" (ready)="savePlayer($event)" [playerVars]="playerVars">
-        </youtube-player>
-        <button type="button" (click)="playVideo()">Play</button>
-        <button type="button" (click)="pauseVideo()">Pause</button>
-      </div-->
-
       <div *ngIf="questionObject.pathurlsign_question != null" class="col-12 text-center">
         <video id="pathurlsign_question" height="300" controls [src]="questionObject.pathurlsign_question"
                [autoplay]="true">
@@ -131,8 +126,8 @@
       </div>
 
       <h5>{{questionObject.description_question}}</h5>
-
-      <div *ngIf="questionObject.name_questioncategory == 'Simple Option' && !questionObject.canResource">
+      <!--Selección unica normal-->
+      <div *ngIf="questionObject.name_questioncategory == tipoPregunta(2) && !questionObject.canResource">
         <div *ngFor="let option of questionObject.answers_[0].options_answer; let i = index"
              [attr.data-index]="i">
           <div class="field-radiobutton">
@@ -143,7 +138,8 @@
           </div>
         </div>
       </div>
-      <div *ngIf="questionObject.name_questioncategory == 'Simple Option' && questionObject.canResource"
+      <!--Selección unica normal con imagenes-->
+      <div *ngIf="questionObject.name_questioncategory == tipoPregunta(2) && questionObject.canResource"
            class="flex align-items-center justify-content-between">
 
         <p-card *ngFor="let option of questionObject.answers_[0].options_answer; let i = index"
@@ -162,11 +158,46 @@
             </div>
           </ng-template>
         </p-card>
+      </div>
+      <!--Selección múltiple normal-->
+      <div *ngIf="questionObject.name_questioncategory == tipoPregunta(3) && !questionObject.canResource">
+        <div *ngFor="let option of questionObject.answers_[0].options_answer; let i = index"
+             [attr.data-index]="i">
+          <div class="field-radiobutton">
+            <p-checkbox [inputId]="'option_ck_' + alphabet[i]" name="Simple_Option"
+                           (onClick)="changeRadio(i)" [(ngModel)]="option.miSelected"
+                           [value]="true"></p-checkbox>
+            <label [for]="'option_ck_' + alphabet[i]">{{alphabet[i].toUpperCase() + ")\t" + option.opcion}}</label>
+          </div>
+        </div>
+      </div>
+      <!--Selección múltiple normal con imagenes-->
+      <div *ngIf="questionObject.name_questioncategory == tipoPregunta(3) && questionObject.canResource"
+           class="flex align-items-center justify-content-between">
+
+        <p-card *ngFor="let option of questionObject.answers_[0].options_answer; let i = index"
+                [attr.data-index]="i" [style]="{width: '120px'}" styleClass="p-card-shadow">
+          <ng-template pTemplate="header">
+            <img alt="Card" [src]="option.resource" width="100">
+          </ng-template>
+          <p>{{option.opcion}}</p>
+          <ng-template pTemplate="footer">
+            <div class="field-radiobutton">
+              <p-checkbox [inputId]="'option_ck_2_' + alphabet[i]" name="Simple_Option"
+                             (onClick)="changeRadio(i)" [(ngModel)]="option.miSelected"
+                             [value]="true"></p-checkbox>
+              <label
+                [for]="'option_ck_2_' + alphabet[i]"><strong>{{'Literal ' + alphabet[i].toUpperCase()}}</strong></label>
+            </div>
+          </ng-template>
+        </p-card>
 
       </div>
+
+      <!--Recursos para dibujar-->
       <p-fieldset legend="Raya el correcto" [toggleable]="true">
         <div class="col-12" style="display: flex;align-items: center;justify-content: center;">
-          <canvas id="canvas_response_rd" style="background-color: #00a186;"
+          <canvas #canvasEl id="canvasEl"
                   width="450" height="75"></canvas>
         </div>
       </p-fieldset>

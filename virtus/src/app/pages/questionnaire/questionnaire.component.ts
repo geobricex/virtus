@@ -5,6 +5,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, Subscription, timer} from 'rxjs';
 import {Person} from "../../models/Person";
 import {Utils} from "../../util/Utils";
+import {ActivatedRoute} from '@angular/router';
 
 import {Evaluation, EvaluationQuestionsResponse, Questions} from "../../models/evaluation_questionarie";
 import {FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule} from '@angular/forms';
@@ -42,21 +43,29 @@ export class QuestionnaireComponent implements OnInit {
 
   public literalSeleccionado: any;
 
-  @ViewChild('canvas_response_rd') CanvasEl: ElementRef;
+  @ViewChild('canvasEl', {static: true}) CanvasEl: ElementRef<HTMLCanvasElement>;
   private contex: CanvasRenderingContext2D | null;
-
 
 
   constructor(private breadcrumbService: BreadcrumbService,
               private _http: HttpClient,
-              private utils: Utils) {
+              private utils: Utils,
+              private activatedRoute: ActivatedRoute) {
     this.breadcrumbService.setItems([
       {label: 'Cuestionario', routerLink: ['/app/questionnaire']}
     ]);
   }
 
   ngOnInit(): void {
-    this.obtenerPreguntas();
+    this.activatedRoute.queryParams.subscribe((params) => {
+      let questionnaire = this.activatedRoute.snapshot.params;
+
+      console.log(questionnaire); // OUTPUT 123
+      if (questionnaire['ideva'] != undefined) {
+        this.obtenerPreguntas(questionnaire['ideva']);
+      }
+    });
+    console.log("canvas, ", this.CanvasEl);
 
   }
 
@@ -70,18 +79,18 @@ export class QuestionnaireComponent implements OnInit {
     this.tiempoEvaluacion$.unsubscribe();
   }
 
-  tipoPregunta(typo: number):string{
-    let resp:string = "";
-    if(typo == 1){
+  tipoPregunta(typo: number): string {
+    let resp: string = "";
+    if (typo == 1) {
       resp = "Complete";
     }
-    if(typo == 2){
+    if (typo == 2) {
       resp = "Simple Option";
     }
-    if(typo == 3){
+    if (typo == 3) {
       resp = "Multiple Option";
     }
-    if(typo == 4){
+    if (typo == 4) {
       resp = "Relate";
     }
     return resp;
@@ -90,7 +99,7 @@ export class QuestionnaireComponent implements OnInit {
   totalPuntos(): number {
     let tpuntos: number = 0;
     for (let ind = 0; ind < this.evaluationObject.questions_.length; ind++) {
-      if(this.evaluationObject.questions_[ind].points_question) {
+      if (this.evaluationObject.questions_[ind].points_question) {
         tpuntos += this.evaluationObject.questions_[ind].maximumpoints_question;
       }
     }
@@ -128,8 +137,8 @@ export class QuestionnaireComponent implements OnInit {
     return resp;
   }
 
-  obtenerPreguntas(): void {
-    let idEvaluacion: number = 1;
+  obtenerPreguntas(idEvaluacion: number): void {
+    //let idEvaluacion: number = 1;
     //codigo para extraer de la url o veran donde
     this.obtenerPreguntasWS(idEvaluacion).subscribe(response => {
       console.log("obtenerPreguntasWS: ", response);
@@ -151,19 +160,28 @@ export class QuestionnaireComponent implements OnInit {
                 this.tiempoEvaluacion = m + ":" + s;
               });
           }
-          this.cambiarPregunta(0);
-          //this.startContinuousArtyom();
+          this.startContinuousArtyom();
+          this.cambiarPregunta(0, true);
+          //this.initCanvas(false);
+          this.autoClick("#video_silenciar");
         }
       }
     });
 
   }
 
-  cambiarPregunta(indice:number):void{
-    this.indexQuestionObject = 0;
-    this.questionObject = this.evaluationObject.questions_[this.indexQuestionObject];
-    let rec:string =  this.questionObject.answers_[0].options_answer[0].resource!;
-    this.questionObject.canResource = (rec.length > 0);
+  cambiarPregunta(indice: number, flag = false): void {
+    console.log("cambia a pregunta:" + indice);
+    if (indice != this.indexQuestionObject) {
+      this.indexQuestionObject = indice;
+      this.questionObject = this.evaluationObject.questions_[this.indexQuestionObject];
+      let rec: string = this.questionObject.answers_[0].options_answer[0].resource!;
+      rec = rec != undefined ? rec : "";
+      this.questionObject.canResource = (rec.length > 0);
+      console.log("pregunta: ", this.questionObject);
+    }
+    this.initCanvas(flag);
+    this.leerPregunta();
   }
 
 
@@ -238,7 +256,7 @@ export class QuestionnaireComponent implements OnInit {
   mutedVideo() {
     this.initVideoControls();
     if (this.btnVideoControl) {
-      let actual: boolean =(this.btnVideoControl as HTMLFormElement)['muted'];
+      let actual: boolean = (this.btnVideoControl as HTMLFormElement)['muted'];
       (this.btnVideoControl as HTMLFormElement)['muted'] = !actual;
     }
   }
@@ -250,22 +268,43 @@ export class QuestionnaireComponent implements OnInit {
     if (this.alphabet.indexOf(wildcard.trim()) > -1) {
       //this.artyom.say("Ha indicado la selección del literal " + wildcard);
       console.log("Ha indicado la selección del literal " + wildcard);
-      if (this.questionObject.name_questioncategory == "Simple Option") {
-        this.autoClick("#option_rd_" + wildcard.trim());
-      } else if (this.questionObject.name_questioncategory == "Simple Option") {
-        this.autoClick("#option_chk_" + wildcard.trim());
-      }
 
+      if (this.questionObject.name_questioncategory == this.tipoPregunta(2)) {
+        if (this.questionObject.canResource) {
+          this.autoClick("#option_rd_2_" + wildcard.trim());
+        } else {
+          this.autoClick("#option_rd_" + wildcard.trim());
+        }
+      } else if (this.questionObject.name_questioncategory == this.tipoPregunta(3)) {
+        if (this.questionObject.canResource) {
+          this.autoClick("#option_ck_2_" + wildcard.trim());
+        } else {
+          this.autoClick("#option_ck_" + wildcard.trim());
+        }
+      }
     } else {
       //this.artyom.say("No se encuentra ese literal");
       console.log("No se encuentra ese literal")
     }
   }
 
+  evaluar_control_video(wildcard: string, i: number, database:string[]): void {
+    console.log("wilcardOriginal:" + wildcard);
+    wildcard = wildcard.trim().replace(/[^a-zA-Z]+/, "");
+    console.log("wildcard:", wildcard, i, database.indexOf(wildcard.trim()));
+    if (database.indexOf(wildcard.trim()) > -1) {
+      //this.artyom.say("Ha indicado la selección del literal " + wildcard);
+      console.log("Ha indicado la selección del literal " + wildcard);
+      console.log("#video_" + wildcard.trim() + ": => click")
+      this.autoClick("#video_" + wildcard.trim());
+    } else {
+      console.log("No se encuentra ese literal")
+    }
+  }
 
   /*Comandos de voz*/
 
-  voiceComandsSupport():boolean{
+  voiceComandsSupport(): boolean {
     let microphoneApi: boolean = window.hasOwnProperty('webkitSpeechRecognition') && window.hasOwnProperty('speechSynthesis');
     return microphoneApi;
   }
@@ -274,7 +313,7 @@ export class QuestionnaireComponent implements OnInit {
 
     this.artyom.fatality();
 
-    let myGroup: any = {
+    let myGroup: any = [{
       description: "Si el usuario indica un literal que se encuentra en la lista",
       smart: true, // Activar comando como un comando smart para poder usar comodines
       indexes: ["literal *", "opción *"],
@@ -282,21 +321,35 @@ export class QuestionnaireComponent implements OnInit {
         //let database: string[] = ["a", "b", "c", "d"];
         this.evaluar(wildcard, i);
       }
-    };
+    },
+      {
+        description: "controles de video",
+        smart: true, // Activar comando como un comando smart para poder usar comodines
+        indexes: ["video *"],
+        action: function (i: number, wildcard: string) {
+          let database: string[] = ["reproducir", "pausar", "silenciar"];
+          //reproducir_video
+          //pausar_video
+          //silenciar_video
+          this.evaluar_control_video(wildcard, i, database);
+        }
+      }
+    ];
 
     this.artyom.addCommands(myGroup);
 
 
-    setTimeout(() => {
+    //setTimeout(() => {
       //this.probarcomando();
       //let btnStart = document.querySelector("#btnStart");
       //if (btnStart) (btnStart as HTMLFormElement).click();
-      this.autoClick("#btnStart");
-    }, 5000);
+      //this.autoClick("#btnStart");
+
+    //}, 5000);
 
     this.artyom.initialize({
       lang: "es-ES",
-      continuous: true, // Artyom will listen forever
+      continuous: true, // Artyom will listen foreversilenciar
       debug: false, // Show what recognizes in the Console
       listen: true, // Start listening after this
       speed: 1, // Talk a little bit slow
@@ -321,20 +374,91 @@ export class QuestionnaireComponent implements OnInit {
 
   /*Operaciones en canvas*/
 
-  initCanvas(selector: string): void {
-    let canvas = document.querySelector(selector);
-    if (canvas) (canvas as HTMLFormElement);
+  public onoff: boolean;
+  public lastLoc = {x: 0, y: 0};
 
-    /**
-     * kmkmkm
-     */
-    this.contex = (this.CanvasEl.nativeElement as HTMLCanvasElement)
-      .getContext("2d");
-    this.draw();
+  initCanvas(nuevo: boolean): void {
+    console.log("canvas Element ", this.CanvasEl);
+    console.log(this.CanvasEl.nativeElement);
+    let mecanvas = this.CanvasEl.nativeElement;
+    //this.contex = (this.CanvasEl.nativeElement as HTMLCanvasElement).getContext("2d");
+    //this.contex = this.CanvasEl.nativeElement.getContext('2d');
+    mecanvas.style['cursor'] = 'pointer';
+    let cantidad: number = this.questionObject.answers_[0].options_answer.length;
+    mecanvas.width = (75 * cantidad);
+    mecanvas.getContext('2d')!.clearRect(0, 0, mecanvas.width, mecanvas.height);
 
+    for (let ind = 0; ind < cantidad; ind++) {
+      let img = new Image();
+      img.onload = function () {
+        img.width = 10;
+        let ctx = mecanvas.getContext('2d')!;
+        ctx.drawImage(img, (ind * 75), 0, 75, 75);
+      };
+      img.src = 'assets/imgresource/alfabeto/' + this.alphabet[ind] + '.png';
+    }
+    if (nuevo) {
+      mecanvas.onmousedown = (e: {
+        pageX: any; pageY: any; clientX: number; clientY: number;
+      }) => {
+        this.onoff = true;
+        this.lastLoc = this.windowCanvas(e.clientX, e.clientY);
+      };
+      mecanvas.onmousemove = (e: any) => {
+
+        if (this.onoff) {
+          let ctx = mecanvas.getContext('2d')!;
+          var curLoc = this.windowCanvas(e.clientX, e.clientY);
+          ctx.beginPath();
+          ctx.moveTo(this.lastLoc.x, this.lastLoc.y);
+          ctx.lineTo(curLoc.x, curLoc.y);
+          ctx.strokeStyle = "#00a186";
+          ctx.lineWidth = 4;
+          ctx.lineCap = "round";
+          ctx.stroke();
+          this.lastLoc = curLoc;
+        }
+        //console.log("... Move onmousemove");
+      }
+
+      // The mouse click , Release , Move , Leave event execution
+      mecanvas.onmouseup = (e: {
+        preventDefault: () => void; pageX: any; pageY: any;
+      }) => {
+        this.onoff = false;
+        let indice = Math.trunc((this.lastLoc.x) / 75);
+        console.log(this.lastLoc.x, indice);
+        let wildcard: string = this.alphabet[indice];
+        if (this.questionObject.name_questioncategory == this.tipoPregunta(2)) {
+          if (this.questionObject.canResource) {
+            this.autoClick("#option_rd_2_" + wildcard.trim());
+          } else {
+            this.autoClick("#option_rd_" + wildcard.trim());
+          }
+        } else if (this.questionObject.name_questioncategory == this.tipoPregunta(3)) {
+          if (this.questionObject.canResource) {
+            this.autoClick("#option_ck_2_" + wildcard.trim());
+          } else {
+            this.autoClick("#option_ck_" + wildcard.trim());
+          }
+        }
+      }
+      mecanvas.onmouseout = (e: {
+        preventDefault: () => void;
+      }) => {
+
+        this.onoff = false;
+      };
+    }
   }
 
-  draw(): void {
-    //Dibujar imagenes
+  /** *  obtain canvas coordinate  */
+  windowCanvas(x: number, y: number) {
+    let mecanvas = this.CanvasEl.nativeElement;
+    var ctxbox = mecanvas.getBoundingClientRect();
+    //console.log('canvas coordinate ', Math.round(x - ctxbox.left), Math.round(y - ctxbox.top));
+    return {
+      x: Math.round(x - ctxbox.left), y: Math.round(y - ctxbox.top)
+    };
   }
 }

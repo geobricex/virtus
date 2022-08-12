@@ -139,7 +139,7 @@ FullCalendarModule.registerPlugins([
     CardModule,
     FieldsetModule,
     AccordionModule,
-    BadgeModule
+    BadgeModule,
     ConfirmDialogModule,
     SidebarModule,
     CarouselModule,
@@ -152,5 +152,6 @@ FullCalendarModule.registerPlugins([
 
   bootstrap: [AppComponent]
 })
+
 export class AppModule {
 }
