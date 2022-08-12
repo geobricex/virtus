@@ -70,6 +70,9 @@ import {ModuloarComponent} from './pages/moduloar/moduloar.component';
 import {TopicarComponent} from './pages/topicar/topicar.component';
 import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {SidebarModule} from "primeng/sidebar";
+import {ResourcesComponent} from './pages/resources/resources.component';
+import {CarouselModule} from "primeng/carousel";
+import {TooltipModule} from "primeng/tooltip";
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -103,6 +106,7 @@ FullCalendarModule.registerPlugins([
     QuestionnaireComponent,
     ModuloarComponent,
     TopicarComponent,
+    ResourcesComponent,
   ],
   imports: [
     HttpClientModule,
@@ -134,7 +138,9 @@ FullCalendarModule.registerPlugins([
     FieldsetModule,
     AccordionModule,
     ConfirmDialogModule,
-    SidebarModule
+    SidebarModule,
+    CarouselModule,
+    TooltipModule
   ],
 
   providers: [

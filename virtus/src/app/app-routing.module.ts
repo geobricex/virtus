@@ -20,6 +20,7 @@ import {MyprofileComponent} from "./pages/myprofile/myprofile.component";
 import {QuestionnaireComponent} from "./pages/questionnaire/questionnaire.component";
 import {ModuloarComponent} from "./pages/moduloar/moduloar.component";
 import {TopicarComponent} from "./pages/topicar/topicar.component";
+import {ResourcesComponent} from "./pages/resources/resources.component";
 
 @NgModule({
   imports: [
@@ -39,9 +40,13 @@ import {TopicarComponent} from "./pages/topicar/topicar.component";
           {path: 'coursear/modulear/:idcourse', component: ModuloarComponent},
           {path: 'coursear/modulear/:idcourse/topicar/:idmodule', component: TopicarComponent},
           {path: 'mycourse', component: MiscursosComponent},
-          {path: 'questionnaire', component: QuestionnaireComponent},
+          {
+            path: 'mycourse/modules/:idcourse/themes/:idmodule/resources/:idTopic/questionnaire/:ideva',
+            component: QuestionnaireComponent
+          },
           {path: 'mycourse/modules/:idcourse', component: ModuloComponent},
-          {path: 'mycourse/modules/:idcourse/themes/:idmodule', component: TemasComponent}
+          {path: 'mycourse/modules/:idcourse/themes/:idmodule', component: TemasComponent},
+          {path: 'mycourse/modules/:idcourse/themes/:idmodule/resources/:idTopic', component: ResourcesComponent}
         ]
       },
       {path: 'login', component: AppLoginComponent},

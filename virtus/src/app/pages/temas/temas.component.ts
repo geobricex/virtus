@@ -25,13 +25,6 @@ export class TemasComponent implements OnInit {
     private _route: ActivatedRoute,
     private utils: Utils,
     private _http: HttpClient) {
-    this.breadcrumbService.setItems([
-      {label: 'Cursos', routerLink: ['/app']},
-      {label: 'Mis cursos', routerLink: ['/app/mycourse']},
-      {label: 'Modulos', routerLink: ['/app/mycourse/modules']},
-      {label: 'Temas', routerLink: ['/app/mycourse/modules/themes']}
-    ]);
-
     this.idCourse = this._route.snapshot.paramMap.get("idcourse");
     this.idModule = this._route.snapshot.paramMap.get("idmodule");
     this.breadcrumbService.setItems([
