@@ -2,99 +2,181 @@
   <div class="col-12">
     <div class="card">
       <div class="grid">
-        <div class="xl:col-7 lg:col-2 sm:col-2">
-          <h3 class="mt-2">VIRTUS</h3>
+        <div class="xl:col-6 lg:col-6 sm:col-6">
+          <h4 class="mt-2">{{evaluationObject.name_evaluation}}</h4>
         </div>
         <!--div class="xl:col-1 md:col-2 sm:col-2 text-center border-right-1 line-height-3">
           <span>Total</span> <br>
           <span> <strong>3</strong> </span>
         </div-->
-        <div class="xl:col-1 md:col-2 sm:col-2 text-center border-right-1 line-height-3">
+        <!--div class="xl:col-1 md:col-2 sm:col-2 text-center border-right-1 line-height-3">
           <span>Puntos</span> <br>
           <span><strong>{{totalPuntos()}}</strong></span>
-        </div>
+        </div-->
         <div class="xl:col-1 md:col-2 sm:col-2 text-center border-right-1 line-height-3">
           <span>Resueltas</span> <br>
-          <span><strong>2/3</strong></span>
+          <span><strong>{{getCountResueltas()}}</strong></span>
         </div>
         <div class="xl:col-1 md:col-2 sm:col-2 text-center border-right-1 line-height-3">
           <span>Tiempo</span> <br>
-          <span><strong>--:--</strong></span>
+          <span><strong>{{tiempoEvaluacion}}</strong></span>
         </div>
         <div class="xl:col-1 md:col-2 sm:col-2 text-center">
           <button pButton pRipple label="Enviar" class="p-button-success mt-2"></button>
         </div>
+        <div class="col-12 p-fieldset-content">
+          <p>{{evaluationObject.description_evaluation}}</p>
+        </div>
       </div>
     </div>
+  </div>
+  <div class="col-12">
+    <p-messages severity="warn" [enableService]="true" *ngIf="!voiceComandsSupport()">
+      <ng-template pTemplate>
+        <img src="assets/imgresource/empty/notification.png" width="75"/>
+        <div class="ml-2">Actualmente tenemos problemas de compatibilidad.<br/>En este navegador <strong>no podrás usar
+          los comandos de voz</strong>.
+        </div>
+      </ng-template>
+    </p-messages>
   </div>
   <div class="col-6 md:col-3">
     <div class="card">
       <h5>Banco de preguntas</h5>
       <p-accordion>
-        <p-accordionTab header="Verdadero o falso." [selected]="false" class="line-height-3 m-0">
-        </p-accordionTab>
-        <p-accordionTab header="Opción única." [selected]="true" class="line-height-3 m-0">
-          <div *ngFor="let question of listQuestions; let i2 = index"
-               class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2">
-            <span> {{"N°" + (i2 + 1)}} </span>
-            <i class="pi pi-circle-on mt-1 text-sm {{question.resolve == 2?'text-green-600': 'text-pink-600'}}"
-               style="float: right"></i>
+        <p-accordionTab header="Opción única" [selected]="true" class="line-height-3 m-0">
+          <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
+            <div *ngIf="question.name_questioncategory == tipoPregunta(2)"
+                 class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2">
+              <span> {{"N°" + (i2 + 1)}} </span>
+              <i class="pi pi-circle-on mt-1 text-sm {{question.resuelto?'text-green-600': 'text-pink-600'}}"
+                 style="float: right"></i>
+            </div>
           </div>
         </p-accordionTab>
-        <p-accordionTab header="Opciones multiples." [selected]="false" class="line-height-3 m-0">
+        <p-accordionTab header="Opción multiples" [selected]="true" class="line-height-3 m-0">
+          <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
+            <div *ngIf="question.name_questioncategory == tipoPregunta(3)"
+                 class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2">
+              <span> {{"N°" + (i2 + 1)}} </span>
+              <i class="pi pi-circle-on mt-1 text-sm {{question.resuelto?'text-green-600': 'text-pink-600'}}"
+                 style="float: right"></i>
+            </div>
+          </div>
+        </p-accordionTab>
+        <p-accordionTab header="Complete" [selected]="true" class="line-height-3 m-0">
+          <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
+            <div *ngIf="question.name_questioncategory == tipoPregunta(1)"
+                 class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2">
+              <span> {{"N°" + (i2 + 1)}} </span>
+              <i class="pi pi-circle-on mt-1 text-sm {{question.resuelto?'text-green-600': 'text-pink-600'}}"
+                 style="float: right"></i>
+            </div>
+          </div>
+        </p-accordionTab>
+        <p-accordionTab header="Relación" [selected]="true" class="line-height-3 m-0">
+          <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
+            <div *ngIf="question.name_questioncategory == tipoPregunta(4)"
+                 class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2">
+              <span> {{"N°" + (i2 + 1)}} </span>
+              <i class="pi pi-circle-on mt-1 text-sm {{question.resuelto?'text-green-600': 'text-pink-600'}}"
+                 style="float: right"></i>
+            </div>
+          </div>
         </p-accordionTab>
 
-        <p-accordionTab header="Opciones multiples" [selected]="true" class="line-height-3 m-0">
-          <div class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2">
-            <span> N°1 </span>
-            <i class="pi pi-circle-on mt-1 text-sm text-green-600" style="float: right"></i>
-          </div>
-          <div class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2">
-            <span> N°2 </span>
-            <i class="pi pi-circle-on mt-1 text-sm text-green-600" style="float: right"></i>
-          </div>
-          <div class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2">
-            <span> N°3 </span>
-            <i class="pi pi-circle-on mt-1 text-sm text-pink-600" style="float: right"></i>
-          </div>
-        </p-accordionTab>
       </p-accordion>
+      <div class="xl:col-12 md:col-12 sm:col-12 text-center">
+        <span>Total Puntos: </span> <span><strong>{{totalPuntos()}}</strong></span>
+      </div>
     </div>
   </div>
   <div class="col-12 md:col-9">
     <div class="card">
-      <h4> Pregunta N°1 </h4>
-      <span class="p-buttonset">
-      <button pButton pRipple icon="pi pi-play" class="p-button-rounded p-button-warning mr-2 mb-2"></button>
-      <button pButton pRipple icon="pi pi-video" class="p-button-rounded p-button-info mr-2 mb-2"></button>
-      <button pButton pRipple icon="pi pi-volume-up" class="p-button-rounded p-button-success mr-2 mb-2"></button>
-        </span>
-      <h5> El computador sirve para: </h5>
-      <ol type="a">
-        <li>
+      <h4> {{'Pregunta N° ' + (indexQuestionObject + 1 || 0)}} </h4>
+
+      <p-chip label="{{getNivelQuestion(questionObject.level_question || 1)}}"
+              image="{{'assets/imgresource/emojis/lvl'+(questionObject.level_question|| 1)+'.png'}}"
+      ></p-chip>
+      <p-chip *ngIf="questionObject.points_question == false" label="Piloto"
+              image="{{'assets/imgresource/empty/shield.png'}}"
+      ></p-chip>
+
+
+      <!--div *ngIf="questionObject.pathurlsign_question != null" class="col-12 text-center">
+
+        <youtube-player [videoId]="id" (ready)="savePlayer($event)" [playerVars]="playerVars">
+        </youtube-player>
+        <button type="button" (click)="playVideo()">Play</button>
+        <button type="button" (click)="pauseVideo()">Pause</button>
+      </div-->
+
+      <div *ngIf="questionObject.pathurlsign_question != null" class="col-12 text-center">
+        <video id="pathurlsign_question" height="300" controls [src]="questionObject.pathurlsign_question"
+               [autoplay]="true">
+        </video>
+      </div>
+
+      <div *ngIf="questionObject.pathurlsign_question != null" class="col-12 text-center">
+        <div class="p-buttonset">
+          <button id="reproducir_video" pButton pRipple icon="pi pi-play"
+                  class="p-button-rounded p-button-warning mr-2 mb-2"
+                  (click)="playVideo()"></button>
+          <button id="pausar_video" pButton pRipple icon="pi pi-pause" class="p-button-rounded p-button-info mr-2 mb-2"
+                  (click)="pauseVideo()"></button>
+          <button id="silenciar_video" pButton pRipple icon="pi pi-volume-up"
+                  class="p-button-rounded p-button-success mr-2 mb-2"
+                  (click)="mutedVideo()"></button>
+        </div>
+      </div>
+
+      <h5>{{questionObject.description_question}}</h5>
+
+      <div *ngIf="questionObject.name_questioncategory == 'Simple Option' && !questionObject.canResource">
+        <div *ngFor="let option of questionObject.answers_[0].options_answer; let i = index"
+             [attr.data-index]="i">
           <div class="field-radiobutton">
-            <p-radioButton name="city" value="escribir" [(ngModel)]="valRadio" id="city1"></p-radioButton>
-            <label for="city1">Escribir</label>
+            <p-radioButton [inputId]="'option_rd_' + alphabet[i]" name="Simple_Option"
+                           (onClick)="changeRadio(i)" [(ngModel)]="option.miSelected"
+                           [value]="true"></p-radioButton>
+            <label [for]="'option_rd_' + alphabet[i]">{{alphabet[i].toUpperCase() + ")\t" + option.opcion}}</label>
           </div>
-        </li>
-        <li>
-          <div class="field-radiobutton">
-            <p-radioButton name="city" value="comer" [(ngModel)]="valRadio" id="city2"></p-radioButton>
-            <label for="city2">Comer</label>
-          </div>
-        </li>
-        <li>
-          <div class="field-radiobutton">
-            <p-radioButton name="city" value="tomar" [(ngModel)]="valRadio" id="city3"></p-radioButton>
-            <label for="city3">Tomar bebidas</label>
-          </div>
-        </li>
-      </ol>
+        </div>
+      </div>
+      <div *ngIf="questionObject.name_questioncategory == 'Simple Option' && questionObject.canResource"
+           class="flex align-items-center justify-content-between">
+
+        <p-card *ngFor="let option of questionObject.answers_[0].options_answer; let i = index"
+                [attr.data-index]="i" [style]="{width: '120px'}" styleClass="p-card-shadow">
+          <ng-template pTemplate="header">
+            <img alt="Card" [src]="option.resource" width="100">
+          </ng-template>
+          <p>{{option.opcion}}</p>
+          <ng-template pTemplate="footer">
+            <div class="field-radiobutton">
+              <p-radioButton [inputId]="'option_rd_2_' + alphabet[i]" name="Simple_Option"
+                             (onClick)="changeRadio(i)" [(ngModel)]="option.miSelected"
+                             [value]="true"></p-radioButton>
+              <label
+                [for]="'option_rd_2_' + alphabet[i]"><strong>{{'Literal ' + alphabet[i].toUpperCase()}}</strong></label>
+            </div>
+          </ng-template>
+        </p-card>
+
+      </div>
+      <p-fieldset legend="Raya el correcto" [toggleable]="true">
+        <div class="col-12" style="display: flex;align-items: center;justify-content: center;">
+          <canvas id="canvas_response_rd" style="background-color: #00a186;"
+                  width="450" height="75"></canvas>
+        </div>
+      </p-fieldset>
       <hr>
       <button pButton pRipple icon="pi pi-step-backward-alt" label="Anterior"
-              class="p-button-info mr-2 mb-2"></button>
+              *ngIf="indexQuestionObject > 0"
+              class="p-button-info mr-2 mb-2" (onClick)="siguientePregunta()"></button>
       <button pButton pRipple icon="pi pi-step-forward" label="Siguiente" class="p-button-info mr-2 mb-2"
-              style="float: right"></button>
+              *ngIf="indexQuestionObject < evaluationObject.questions_.length"
+              style="float: right" (onClick)="anteriorPregunta()"></button>
     </div>
   </div>
 </div>

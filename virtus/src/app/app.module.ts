@@ -22,6 +22,8 @@ import {DividerModule} from 'primeng/divider';
 import {TimelineModule} from 'primeng/timeline';
 import {CardModule} from 'primeng/card';
 import {FieldsetModule} from 'primeng/fieldset';
+import {BadgeModule} from 'primeng/badge';
+
 
 
 //INICIO SERVICE
@@ -130,7 +132,8 @@ FullCalendarModule.registerPlugins([
     TimelineModule,
     CardModule,
     FieldsetModule,
-    AccordionModule
+    AccordionModule,
+    BadgeModule
   ],
 
   providers: [
