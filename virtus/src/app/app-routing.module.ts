@@ -21,6 +21,7 @@ import {QuestionnaireComponent} from "./pages/questionnaire/questionnaire.compon
 import {ModuloarComponent} from "./pages/moduloar/moduloar.component";
 import {TopicarComponent} from "./pages/topicar/topicar.component";
 import {ResourcesComponent} from "./pages/resources/resources.component";
+import {ResourcesarComponent} from "./pages/resourcesar/resourcesar.component";
 
 @NgModule({
   imports: [
@@ -39,6 +40,7 @@ import {ResourcesComponent} from "./pages/resources/resources.component";
           {path: 'coursear', component: CursosArComponent},
           {path: 'coursear/modulear/:idcourse', component: ModuloarComponent},
           {path: 'coursear/modulear/:idcourse/topicar/:idmodule', component: TopicarComponent},
+          {path: 'coursear/modulear/:idcourse/topicar/:idmodule/resourcesar/:idTopic', component: ResourcesarComponent},
           {path: 'mycourse', component: MiscursosComponent},
           {
             path: 'mycourse/modules/:idcourse/themes/:idmodule/resources/:idTopic/questionnaire/:ideva',

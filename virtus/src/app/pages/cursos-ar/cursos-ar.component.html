@@ -41,8 +41,9 @@
                 class="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0">
                 <button pButton icon="pi pi-folder-open" label="Ingresar"
                         class="mb-2 p-button p-button-info" routerLink="modulear/{{course.id}}"></button>
-                <!-- <span class="product-price">${{product.price}}</span>
-                <span [class]="'product-badge status-' + product.inventoryStatus.toLowerCase()">{{product.inventoryStatus}}</span>-->
+                <button pButton icon="pi pi-info-circle" label="Saber más"
+                        class="mb-2 p-button p-button-success cursor-pointer"
+                        (click)="saberMas(course.id)"></button>
               </div>
             </div>
           </div>
@@ -68,8 +69,10 @@
               <div class="flex align-items-center justify-content-between">
                 <button pButton icon="pi pi-folder-open" label="Ingresar"
                         class="mb-2 p-button p-button-info" routerLink="modulear/{{course.id}}"></button>
-                <!--<span class="product-price">${{product.price}}</span>
-                <p-button icon="pi pi-shopping-cart" [disabled]="product.inventoryStatus === 'OUTOFSTOCK'"></p-button>-->
+                <button pButton icon="pi pi-info-circle" label="Saber más"
+                        class="mb-2 p-button p-button-success cursor-pointer"
+                        (click)="saberMas(course.id)"></button>
+                <span class="product-price">{{course.languageCourse}}</span>
               </div>
             </div>
           </div>
@@ -140,3 +143,70 @@
             class="p-button-success" (click)="saveCourse()"></button>
   </ng-template>
 </p-dialog>
+
+<p-sidebar [(visible)]="informationCourse" position="right" [baseZIndex]="10000" [style]="{width:'35rem'}">
+  <h3 style="font-weight:normal">{{infoCourseSelected.name_course}}</h3>
+  <h6> {{infoCourseSelected.description_course}} </h6>
+
+  <span class="p-badge p-badge-info"> MODULOS </span>
+
+  <p-table [value]="infoCourseSelected.syllabus_" dataKey="name" [expandedRowKeys]="expandedRows"
+           responsiveLayout="scroll" [style]="{'margin-top':'1rem'}">
+    <ng-template pTemplate="caption">
+      <button pButton icon="pi pi-fw {{isExpanded ? 'pi-minus' : 'pi-plus'}}"
+              label="{{isExpanded ? 'Ocultar todo' : 'Expandir todo'}}" (click)="expandAll()"></button>
+      <div class="flex table-header">
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 3rem"></th>
+        <th pSortableColumn="name_syllabu">Título
+          <p-sortIcon field="name"></p-sortIcon>
+        </th>
+        <th pSortableColumn="description_syllabu">Descripción
+          <p-sortIcon field="price"></p-sortIcon>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-module let-expanded="expanded">
+      <tr>
+        <td>
+          <button type="button" pButton pRipple [pRowToggler]="module"
+                  class="p-button-text p-button-rounded p-button-plain"
+                  [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+        </td>
+        <td style="min-width: 12rem;">{{module.name_syllabu}}</td>
+        <td style="min-width: 10rem;">{{module.description_syllabu}}</td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="rowexpansion" let-module>
+      <tr>
+        <td colspan="7">
+          <div class="p-3">
+            <h4 class="text-pink-500"> Temas del módulo de: {{module.name_syllabu}} </h4>
+            <p-table [value]="module.topics_" dataKey="id" responsiveLayout="scroll">
+              <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="name_topic">Título <p-sortIcon field="price"></p-sortIcon></th>
+        <th pSortableColumn="description_topic">Descripción <p-sortIcon field="customer"></p-sortIcon></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-topic let-expanded="expanded">
+      <tr>
+        <td style="min-width: 12rem;">{{topic.name_topic}}</td>
+        <td style="min-width: 10rem;">{{topic.description_topic}}</td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="6">No existen temas asignados a este módulo.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+  </div>
+  </td>
+  </tr>
+  </ng-template>
+  </p-table>
+</p-sidebar>

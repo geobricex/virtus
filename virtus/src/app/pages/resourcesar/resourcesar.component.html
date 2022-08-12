@@ -1,0 +1,123 @@
+<div class="grid p-fluid">
+
+  <div class="col-12">
+    <div class="card">
+      <h5>Recursos</h5>
+      <button pButton label="Nuevo" icon="pi pi-plus" class="p-button p-button-success w-8rem mt-2"></button>
+      <p-carousel [value]="resourcesData" [numVisible]="3" [numScroll]="3" [circular]="false"
+                  [responsiveOptions]="carouselResponsiveOptions" [style]="{'margin-top':'1rem'}">
+        <ng-template let-resource pTemplate="item">
+          <div class="border-round m-2 text-center p-2" style="border: 1px solid var(--surface-d)">
+            <div>
+              <h5 class="mb-1">{{resource.nameResource}}</h5>
+              <div class="my-3">
+                <button *ngIf="resource.pathfileResource !== ''" pButton pRipple icon="pi pi-file"
+                        class="mr-2 p-button-rounded" pTooltip="Archivo"
+                        tooltipPosition="bottom"></button>
+                <button *ngIf="resource.pathurlsignResource !== ''" pButton pRipple icon="pi pi-video"
+                        class="mr-2 p-button-rounded p-button-success"
+                        pTooltip="Lengua de señas" tooltipPosition="bottom"></button>
+                <button *ngIf="resource.pathvideoResource !== ''" pButton pRipple icon="pi pi-video"
+                        class="p-button-rounded p-button-info"
+                        pTooltip="Video" tooltipPosition="bottom"></button>
+              </div>
+              <hr>
+              <div class="my-3">
+                <button pButton pRipple icon="pi pi-pencil" label="Editar" class="mr-2 p-button-info w-8rem"
+                        pTooltip="Editar recurso" tooltipPosition="bottom"></button>
+                <button pButton pRipple icon="pi pi-trash" label="Eliminar" class="mr-2 p-button-danger w-8rem"
+                        pTooltip="Eliminar recurso" tooltipPosition="bottom"></button>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </p-carousel>
+    </div>
+  </div>
+
+  <div class="col-12">
+    <div class="card">
+      <h5>Evaluaciones</h5>
+      <button pButton label="Nuevo" icon="pi pi-plus" class="p-button p-button-success w-8rem mt-2"
+              (click)="newEvaluationsDialog=true"></button>
+      <p-carousel [value]="evaluationData" [numVisible]="3" [numScroll]="3" [circular]="false"
+                  [responsiveOptions]="carouselResponsiveOptions" [style]="{'margin-top':'1rem'}">
+        <ng-template let-evaluation pTemplate="item">
+          <div class="border-round m-2 text-center p-2" style="border: 1px solid var(--surface-d)">
+            <div>
+              <h5 class="mb-1">{{evaluation.nameEvaluation}}</h5>
+              <span> {{evaluation.descriptionEvaluation}} </span> <br>
+              <div class="mt-3">
+                <span class="p-badge p-badge-warning"> Preguntas: {{evaluation.numberquestionEvaluation}} </span> <br>
+                <span
+                  class="p-badge p-badge-success mt-3"> Tiene tiempo: {{evaluation.timeEvaluation ? 'Si' : 'No'}} </span>
+                <br>
+                <span *ngIf="evaluation.timeEvaluation"
+                      class="p-badge p-badge-secondary mt-3"> Tiempo (minutos): {{evaluation.timeminutesEvaluation}} </span>
+                <span *ngIf="!evaluation.timeEvaluation"
+                      class="p-badge p-badge-secondary mt-3"> Tiempo (minutos): Ilimitado </span>
+              </div>
+              <hr>
+              <div class="my-3">
+                <button pButton pRipple icon="pi pi-pencil" label="Editar" class="mr-2 p-button-info w-8rem"
+                        pTooltip="Editar evaluacion" tooltipPosition="bottom"
+                        routerLink="questionnaire/{{evaluation.id}}"></button>
+                <button pButton pRipple icon="pi pi-trash" label="Eliminar" class="mr-2 p-button-danger w-8rem"
+                        pTooltip="Eliminar recurso" tooltipPosition="bottom"></button>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </p-carousel>
+    </div>
+  </div>
+
+  <p-dialog [(visible)]="newEvaluationsDialog" [style]="{width: '450px'}" header="Nueva evaluación" [modal]="true"
+            class="p-fluid">
+    <ng-template pTemplate="content">
+      <form [formGroup]="registerFormEvaluation" name="form">
+
+        <div class="field">
+          <label for="nombrem">Nombre:</label>
+          <input id="nombrem" type="text" autocomplete="off" pInputText class="w-full" formControlName="name"
+                 [ngClass]="
+                 (form['name'].invalid && (form['name'].dirty && form['name'].touched)) ?
+                 'ng-dirty ng-invalid' : ''"/>
+          <small *ngIf="form['name'].invalid && (form['name'].dirty && form['name'].touched)"
+                 class="p-error">Este campo es requerido.</small>
+        </div>
+        <div class="field">
+          <label for="descm">Descripción:</label>
+          <textarea pInputTextarea name="" id="descm" cols="30" rows="5" formControlName="description" [ngClass]="
+                 (form['description'].invalid && (form['description'].dirty && form['description'].touched)) ?
+                 'ng-dirty ng-invalid' : ''"></textarea>
+          <small
+            *ngIf="form['description'].invalid && (form['description'].dirty && form['description'].touched)"
+            class="p-error">Este campo es requerido.</small>
+        </div>
+        <div class="field">
+          <label>Tiempo:</label>
+          <p-dropdown id="languagex" [options]="tiempo" optionLabel="label" optionValue="value"
+                      formControlName="timeEvaluation" [ngClass]="
+                 (form['timeEvaluation'].invalid && (form['timeEvaluation'].dirty && form['timeEvaluation'].touched)) ?
+                 'ng-dirty ng-invalid' : ''"></p-dropdown>
+          <small
+            *ngIf="form['timeEvaluation'].invalid && (form['timeEvaluation'].dirty && form['timeEvaluation'].touched)"
+            class="p-error">Este campo es requerido.</small>
+        </div>
+        <div class="field">
+          <label for="tiempomin"> Tiempo(minmutos): </label>
+          <input id="tiempomin" type="text" autocomplete="off" pInputText class="w-full"
+                 formControlName="timeminutesEvaluation"/>
+        </div>
+      </form>
+    </ng-template>
+    <ng-template pTemplate="footer">
+      <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-warning"
+              (click)="resetEvaluation()"></button>
+      <button pButton pRipple [disabled]="registerFormEvaluation.invalid" label="Guardar cambios" icon="pi pi-check"
+              class="p-button-success" (click)="saveEvaluation()"></button>
+    </ng-template>
+  </p-dialog>
+
+</div>

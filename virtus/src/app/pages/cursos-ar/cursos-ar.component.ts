@@ -25,6 +25,12 @@ export class CursosArComponent implements OnInit {
   urlimageupload: any;
   idiomas: any [];
 
+  infoCourseSelected: any = {};
+  informationCourse: boolean;
+
+  expandedRows: any = {};
+  isExpanded: boolean = false;
+
   reegisterFormCourse: FormGroup;
   courseSuccessful = false;
 
@@ -57,6 +63,32 @@ export class CursosArComponent implements OnInit {
         language: ["", Validators.required]
       }
     );
+  }
+
+  expandAll() {
+    if (!this.isExpanded) {
+      let module: any = {};
+      this.infoCourseSelected.syllabus_.forEach((module: { id_course: string | number; }) => this.expandedRows[module.id_course] = true);
+
+    } else {
+      this.expandedRows = {};
+    }
+    this.isExpanded = !this.isExpanded;
+  }
+
+  saberMas(idCourse: any) {
+    console.log(idCourse)
+    this.apiSaberMas(idCourse).subscribe(response => {
+      console.log(response);
+      this.infoCourseSelected = response.data[0];
+      console.log(this.infoCourseSelected);
+      this.informationCourse = true;
+    });
+  }
+
+  apiSaberMas(idCourse: any): Observable<any> {
+    this.globalUri = this.utils.globalUrl + "course/selectcoursesyllabutopic";
+    return this._http.post(this.globalUri, {id_course: idCourse});
   }
 
   get form() {
