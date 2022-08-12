@@ -1,32 +1,33 @@
 import {Component, OnInit} from '@angular/core';
 import {BreadcrumbService} from "../../app.breadcrumb.service";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {Utils} from "../../util/Utils";
 import {Observable} from "rxjs";
 import {Course} from "../../models/Course";
-import {FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule, FormBuilder} from '@angular/forms';
-
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Utils} from "../../util/Utils";
+import {ActivatedRoute} from "@angular/router";
+import {Modules} from "../../models/Modules";
 
 
 @Component({
-  selector: 'app-cursos-ar',
-  templateUrl: './cursos-ar.component.html',
-  styleUrls: ['./cursos-ar.component.scss']
+  selector: 'app-moduloar',
+  templateUrl: './moduloar.component.html',
+  styleUrls: ['./moduloar.component.scss']
 })
-export class CursosArComponent implements OnInit {
+export class ModuloarComponent implements OnInit {
 
-  newcourse_dialog: boolean;
-  globalUri: string = "";
-  course: Course;
-  courses: Course[];
+  module: Modules;
+  modules: Modules[];
   sortOrder: number;
   sortField: string;
-  tmpFile: any;
+  newModuleDialog: boolean;
+  globalUri: string = "";
+  idCourse: string | null = "";
   urlimageupload: any;
-  idiomas: any [];
+  tmpFile: any;
 
-  reegisterFormCourse: FormGroup;
-  courseSuccessful = false;
+  registerFormModule: FormGroup;
+  moduleSuccessful = false;
 
   frmPhoto = new FormGroup({
     firstName: new FormControl()
@@ -34,89 +35,98 @@ export class CursosArComponent implements OnInit {
 
   constructor(
     private breadcrumbService: BreadcrumbService,
+    private utils: Utils,
     private _http: HttpClient,
-    private formBuilder: FormBuilder,
-    private utils: Utils) {
+    private _route: ActivatedRoute,
+    private formBuilder: FormBuilder
+  ) {
+    this.idCourse = this._route.snapshot.paramMap.get("idcourse");
     this.breadcrumbService.setItems([
-      {label: 'Cursos', routerLink: ['/app/coursear']}
+      {label: 'Cursos', routerLink: ['/app/coursear']},
+      {label: 'Modulos', routerLink: ['/app/coursear/modulear/' + this.idCourse]}
     ]);
   }
 
   ngOnInit(): void {
-    this.idiomas = [
-      {label: "Español", value: "es"},
-      {label: "English", value: "en"}
-    ]
     this.utils.initPocket();
     this.loadCourse();
-    this.reegisterFormCourse = this.formBuilder.group(
+    this.registerFormModule = this.formBuilder.group(
       {
         name: ["", Validators.required],
         description: ["", Validators.required],
-        keywords: ["", Validators.required],
-        language: ["", Validators.required]
+        keywords: ["", Validators.required]
       }
     );
   }
 
-  get form() {
-    return this.reegisterFormCourse.controls;
-  }
+  saveModule() {
+    this.moduleSuccessful = true;
 
-  loadCourse() {
-    this.apiLoadCourses().subscribe(response => {
-      this.courses = response;
-      console.log(this.courses);
-    });
-  }
-
-
-  saveCourse() {
-    this.courseSuccessful = true;
-
-    if (this.reegisterFormCourse.invalid) {
+    if (this.registerFormModule.invalid) {
       return;
     }
 
     console.log(this.form['name'].value);
     console.log(this.form['description'].value);
     console.log(this.form['keywords'].value);
-    console.log(this.form['language'].value);
     let urlPhoto: string = "";
     this.utils.changeImage(this.tmpFile).then(response => {
       urlPhoto = this.utils.makePathRecurso(response);
-      this.course = new Course(
+      this.module = new Modules(
         0,
         this.form['name'].value,
         this.form['description'].value,
         this.form['keywords'].value,
-        urlPhoto, "", "",
-        "", this.form['language'].value, "0.0"
-      );
-      this.apiSaveCoruse(this.course).subscribe(response => {
-        console.log(response);
+        urlPhoto, "", "", ""
+      )
+      let courseAux = new Course(parseInt(this.idCourse === null ? "0" : this.idCourse),
+        "", "", "", "",
+        "", "", "", "", "");
+      this.module._coursesIdCourse = courseAux;
+      console.log(this.module)
+      /*this.apiSaveCourse(this.module).subscribe(response => {
         this.utils.showMessages(response.status, response.information, "tst");
-        this.resetCourse();
         this.loadCourse();
-      });
+        this.resetModule();
+      });*/
     });
 
   }
 
-  apiSaveCoruse(course: Course): Observable<any> {
-    this.globalUri = this.utils.globalUrl + "course/insertcourse";
+  resetModule() {
+    this.newModuleDialog = false;
+    this.moduleSuccessful = false;
+    this.registerFormModule.reset();
+  }
+
+  openNew() {
+    this.newModuleDialog = true;
+  }
+
+  loadCourse() {
+    this.apiLoadCourses().subscribe(response => {
+      console.log(response);
+      this.modules = response.data;
+    });
+  }
+
+  apiLoadCourses(): Observable<any> {
+    this.globalUri = this.utils.globalUrl + "syllabu/getsyllabus";
+    return this._http.post<any>(this.globalUri,
+      {course_id_syllabu: this.idCourse});
+  }
+
+  apiSaveCourse(module: Modules): Observable<any> {
+    this.globalUri = this.utils.globalUrl + "syllabu/insertsyllabu";
     var headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
       .set('token', this.utils.token);
-    return this._http.post(this.globalUri, course, {headers: headers});
+    return this._http.post<any>(this.globalUri, module, {headers: headers});
   }
 
-  resetCourse() {
-    this.courseSuccessful = false;
-    this.urlimageupload = "";
-    this.reegisterFormCourse.reset();
-    this.newcourse_dialog = false;
+  get form() {
+    return this.registerFormModule.controls;
   }
 
   onFileChange(event: any) {
@@ -139,16 +149,6 @@ export class CursosArComponent implements OnInit {
         field: file
       });
     }
-  }
-
-
-  openNew() {
-    this.newcourse_dialog = true;
-  }
-
-  apiLoadCourses(): Observable<Course[]> {
-    this.globalUri = "virtusbk/course";
-    return this._http.get<Course[]>(this.globalUri, {});
   }
 
   onSortChange(event: any) {

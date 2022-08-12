@@ -4,17 +4,21 @@ import {Person} from "../models/Person";
 import {Observable} from "rxjs";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Session} from "../models/session";
+import {StorageService} from "../authentication/StorageService";
+import {Utils} from "../util/Utils";
 
 @Component({
   templateUrl: './dashboard.component.html'
 })
 export class DashboardDemoComponent implements OnInit {
-  sessionLog: Session;
+
   globalUri: string = "";
+  homedata: any = [];
 
   constructor(
     private breadcrumbService: BreadcrumbService,
-    private _http: HttpClient
+    private _http: HttpClient,
+    private utils: Utils
   ) {
     this.breadcrumbService.setItems([
       {label: 'Inicio', routerLink: ['/app']}
@@ -23,27 +27,22 @@ export class DashboardDemoComponent implements OnInit {
 
   ngOnInit() {
     console.log("ngOnInit Home")
-    this.getHome();
-    console.log(this.getHome())
+    this.apiInformationHome().subscribe(response => {
+      console.log(response);
+      this.homedata = response.data[0];
+    })
   }
 
-  getHome() {
-    this.apiInformationHome();
-  }
 
   apiInformationHome(): Observable<any> {
-    if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
-      this.globalUri = "virtusbk/utils/gethomeinformation";
-    } else {
-      this.globalUri = "virtus_bk/utils/gethomeinformation";
-    }
+    console.log(this.utils.globalUrl);
+    this.globalUri = this.utils.globalUrl + "utils/gethomeinformation";
     console.log(this.globalUri)
     var headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
-      .set('sessionToken', 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiItMSIsInVzZXIiOjEsInBlcm1pdCI6IkEiLCJpYXQiOjE2NjAxODQ2NzQsImV4cCI6MTY2MDE5NTQ3NH0.uG9tHSt4vuI0XcgNV86QoRTLYzWpYASfX7BN2qD7ers')
+      .set('token', this.utils.token);
     return this._http.post(this.globalUri, {
-      "id_type": 1,
-      "id_param": 1
+      "id_type": 1
     }, {'headers': headers});
   }
 

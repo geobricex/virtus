@@ -35,6 +35,7 @@ public class SyllabuController {
     private SyllabuRepository syllabuDAO;
 
     public String[] saveSyllabu(Syllabu syllabu) {
+        System.out.println("saveSyllabu");
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
 
         syllabu.setDateregSyllabu(Methods.nowLocalDateTime());

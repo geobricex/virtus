@@ -18,6 +18,8 @@ import {CursosArComponent} from "./pages/cursos-ar/cursos-ar.component";
 import {VerifyAccountComponent} from "./pages/verify-account/verify-account.component";
 import {MyprofileComponent} from "./pages/myprofile/myprofile.component";
 import {QuestionnaireComponent} from "./pages/questionnaire/questionnaire.component";
+import {ModuloarComponent} from "./pages/moduloar/moduloar.component";
+import {TopicarComponent} from "./pages/topicar/topicar.component";
 
 @NgModule({
   imports: [
@@ -34,6 +36,8 @@ import {QuestionnaireComponent} from "./pages/questionnaire/questionnaire.compon
           {path: 'myprofile', component: MyprofileComponent},
           {path: 'course', component: CursosComponent},
           {path: 'coursear', component: CursosArComponent},
+          {path: 'coursear/modulear/:idcourse', component: ModuloarComponent},
+          {path: 'coursear/modulear/:idcourse/topicar/:idmodule', component: TopicarComponent},
           {path: 'mycourse', component: MiscursosComponent},
           {path: 'questionnaire', component: QuestionnaireComponent},
           {path: 'mycourse/modules', component: ModuloComponent},

@@ -10,6 +10,7 @@ import com.dua.virtusbk.util.Methods;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,4 +111,35 @@ public class CourseController {
         return new String[]{status, message, data};
     }
 
+    public String[] allCourseNoJoin(String id_person, String state_course_person) {
+        System.out.println("allCourseNoJoin");
+        String status = "4", message = "Error en los parámetros introducidos", data = "[]";
+
+        String personsCours = personcourseDAO.finAllCourseNoJoin(Long.parseLong(id_person), state_course_person);
+        JsonArray jso = Methods.stringToJsonArray(personsCours);
+        if (!jso.toString().equals("[]")) {
+            status = "2";
+            message = "Información retornada con éxito.";
+            data = jso.toString();
+        }
+
+        System.out.println(data);
+        return new String[]{status, message, data};
+    }
+
+    public String[] selectCourseSyllabuTopic(String id_course) {
+        System.out.println("allCourseNoJoin");
+        String status = "4", message = "Error en los parámetros introducidos", data = "[]";
+
+        String personsCours = personcourseDAO.finSelectCourseSyllabuTopic(Long.parseLong(id_course));
+        JsonArray jso = Methods.stringToJsonArray(personsCours);
+        if (!jso.toString().equals("[]")) {
+            status = "2";
+            message = "Información retornada con éxito.";
+            data = jso.toString();
+        }
+
+        System.out.println(data);
+        return new String[]{status, message, data};
+    }
 }

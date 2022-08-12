@@ -21,6 +21,11 @@ public interface PersonsCourseRepository extends JpaRepository<PersonsCours, Lon
     Object[] findByPersonCourse(Long persons_id_person, String state_course_person);
 
     @Query(value = " SELECT * FROM person_course_select(?1,'?2')", nativeQuery = true)
-    Object[] findByPersonCourseF(int persons_id_person, String state_course_person);
+    Object[] findByPersonCourseF(Long persons_id_person, String state_course_person);
 
+    @Query(value = " SELECT * FROM public.allcoursenojoin_select(?1,'?2')", nativeQuery = true)
+    String finAllCourseNoJoin(Long persons_id_person, String state_course_person);
+
+    @Query(value = " SELECT * FROM public.course_syllabu_topic_select(?1)", nativeQuery = true)
+    String finSelectCourseSyllabuTopic(Long id_course);
 }

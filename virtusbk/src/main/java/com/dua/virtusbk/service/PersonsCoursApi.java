@@ -57,18 +57,44 @@ public class PersonsCoursApi {
     }
 
     @PostMapping("/mycoursejoin")
-    public ResponseEntity<String> myCourseJoin(@RequestBody String data) {//, @RequestHeader("token") String sessionToken) {
+    public ResponseEntity<String> myCourseJoin(@RequestBody String data, @RequestHeader("token") String sessionToken) {
         String message = "[]";
 
-        JsonObject jso = Methods.stringToJSON(data);
-        String sessionToken = Methods.JsonToString(jso, "sessionToken", "");
+//        JsonObject jso = Methods.stringToJSON(data);
+//        String sessionToken = Methods.JsonToString(jso, "sessionToken", "");
 
         String[] clains = Methods.getDataToJwt(sessionToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
         if (res[0].equals("2")) {
-//            JsonObject jso = Methods.stringToJSON(data);
+            JsonObject jso = Methods.stringToJSON(data);
             String state_course_person = Methods.JsonToString(jso, "state_course_person", "");
             res = courseController.myCourseJoin(clains[0], state_course_person);
+            message = Methods.getJsonMessage(res[0], res[1], res[2]);
+            if (res[0].equals("2")) {
+                return new ResponseEntity<>(message, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
+            }
+        } else {
+            message = Methods.getJsonMessage("4", "Credenciales de sesión inválidas, vuelve a iniciar sesión "
+                    + "e intentalo de nuevo.", "[]");
+            return new ResponseEntity<>(message, HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
+        }
+    }
+
+    @PostMapping("/allcoursenojoin")
+    public ResponseEntity<String> allCourseNoJoin(@RequestBody String data, @RequestHeader("token") String sessionToken) {
+        String message = "[]";
+
+//        JsonObject jso = Methods.stringToJSON(data);
+//        String sessionToken = Methods.JsonToString(jso, "sessionToken", "");
+
+        String[] clains = Methods.getDataToJwt(sessionToken);
+        String[] res = Methods.validatePermit(clains[0], clains[1], 1);
+        if (res[0].equals("2")) {
+            JsonObject jso = Methods.stringToJSON(data);
+            String state_course_person = Methods.JsonToString(jso, "state_course_person", "");
+            res = courseController.allCourseNoJoin(clains[0], state_course_person);
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
             if (res[0].equals("2")) {
                 return new ResponseEntity<>(message, HttpStatus.OK);

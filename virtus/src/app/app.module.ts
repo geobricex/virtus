@@ -66,6 +66,8 @@ import {MyprofileComponent} from './pages/myprofile/myprofile.component';
 import {QuestionnaireComponent} from './pages/questionnaire/questionnaire.component';
 import {AccordionModule} from "primeng/accordion";
 import {RadioButtonModule} from "primeng/radiobutton";
+import { ModuloarComponent } from './pages/moduloar/moduloar.component';
+import { TopicarComponent } from './pages/topicar/topicar.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -96,7 +98,9 @@ FullCalendarModule.registerPlugins([
     TestpocketbaseComponent,
     VerifyAccountComponent,
     MyprofileComponent,
-    QuestionnaireComponent
+    QuestionnaireComponent,
+    ModuloarComponent,
+    TopicarComponent
   ],
   imports: [
     HttpClientModule,
