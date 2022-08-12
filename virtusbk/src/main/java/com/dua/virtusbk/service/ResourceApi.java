@@ -82,20 +82,24 @@ public class ResourceApi {
     @PostMapping("/getresources")
     public ResponseEntity<String> getResources(@RequestBody @Validated String id_topic) {//, @RequestHeader("token") String sessionToken) {
         System.out.println("getResources...");
-        String message;
+        String message = "";
 //        JsonObject jso = Methods.stringToJSON(token);
 //        String sToken = Methods.JsonToString(jso, "token", "");
 //        String[] clains = Methods.getDataToJwt(sToken);
 //        String[] res = Methods.validatePermit(clains[0], clains[1], 1);
 //        if (res[0].equals("2")) {
         JsonObject jso = Methods.stringToJSON(id_topic);
-        String topic_id_evaluation = Methods.JsonToString(jso, "topic_id_evaluation", "");
-        String[] res = resourceController.getResources(topic_id_evaluation);
-        message = Methods.getJsonMessage(res[0], res[1], res[2]);
-        if (res[0].equals("2")) {
-            return new ResponseEntity<>(message, HttpStatus.OK);
+        String topic_id_resources = Methods.JsonToString(jso, "topic_id_resources", "");
+        if (!topic_id_resources.equals("")) {
+            String[] res = resourceController.getResources(topic_id_resources);
+            message = Methods.getJsonMessage(res[0], res[1], res[2]);
+            if (res[0].equals("2")) {
+                return new ResponseEntity<>(message, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(message, HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
+            }
         } else {
-            return new ResponseEntity<>(message, HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
+            return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
         }
 //        } else {
 //            return ResponseEntity.noContent().build();
