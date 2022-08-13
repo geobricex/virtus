@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {BreadcrumbService} from "../../app.breadcrumb.service";
-import {Topic} from "../../models/topic";
+import {Topic} from "../../models/Topic";
 import {ActivatedRoute} from "@angular/router";
 import {Utils} from "../../util/Utils";
 import {HttpClient} from "@angular/common/http";
