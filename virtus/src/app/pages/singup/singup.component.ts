@@ -59,6 +59,7 @@ export class SingupComponent implements OnInit {
     if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
       this.globalUri = "virtus_bk/persons/signup";
     }else{
+      // this.globalUri = "virtusbk/persons/signup";
       this.globalUri = "virtusbk/persons/signup";
     }
     return this._http.post<Person>(this.globalUri, person);
