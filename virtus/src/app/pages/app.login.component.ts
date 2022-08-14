@@ -69,10 +69,13 @@ export class AppLoginComponent {
 
 
   apiLogin(): Observable<any> {
+
     if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
-      this.globalUri = "virtusbk/persons/login";
-    } else {
       this.globalUri = "virtus_bk/persons/login";
+    } else {
+      // this.globalUri = "virtus_bk/persons/login";
+      this.globalUri = "virtusbk/persons/login";
+
     }
     console.log(this.user.email, this.user.password);
 

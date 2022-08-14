@@ -180,7 +180,7 @@ export class CursosArComponent implements OnInit {
   }
 
   apiLoadCourses(): Observable<Course[]> {
-    this.globalUri = "virtusbk/course";
+    this.globalUri = this.utils.globalUrl + "course";
     return this._http.get<Course[]>(this.globalUri, {});
   }
 

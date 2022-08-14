@@ -116,6 +116,7 @@ export class TopicarComponent implements OnInit {
 
   apiLoadTopics(): Observable<any> {
     this.globalUri = this.utils.globalUrl + "topic/gettopics";
+    console.log(this.globalUri);
     return this._http.post<any>(this.globalUri,
       {syllabu_id_topic: this.idModule});
   }
