@@ -88,6 +88,7 @@ export class ResourcesarComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.utils.initPocket();
     this.tiempo = [
       {label: "---:---", value: null},
       {label: "Si", value: true},
@@ -117,6 +118,7 @@ export class ResourcesarComponent implements OnInit {
         "", "", "", "",
         "", "", "")
       this.resource._topicsIdTopic = topicAux;
+      console.log(this.resource);
       this.apiSaveResources().subscribe(response => {
         this.utils.showMessages(response.status, response.information, "tst");
         this.loadResources();
@@ -133,7 +135,7 @@ export class ResourcesarComponent implements OnInit {
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
       .set('token', this.utils.token);
-    return this._http.post(this.globalUri, this.evaluation, {headers: headers});
+    return this._http.post(this.globalUri, this.resource, {headers: headers});
   }
 
   resetResources() {
