@@ -39,23 +39,23 @@ a span{cursor: pointer;}
 :root {
   --image-video-style: sepia(100%);
 }
-//img, video {filter: var(--image-video-style, none);}
+img, video {filter: var(--image-video-style, none);}
 
-.img_style_color_none{
-  filter:none;
-}
-.img_style_color_B_N{
-  filter:grayscale(100%);;
-}
-.img_style_color_sepia{
-  filter:sepia(100%);;
-}
-.img_style_color_brillo_bajo{
-  filter:brightness(50%);;
-}
-.img_style_color_contraste_alto{
-  filter:contrast(200%);;
-}
-.img_style_color_saturacion_elevada{
-  filter:saturate(250%);;
-}
+//.img_style_color_none{
+//  filter:none;
+//}
+//.img_style_color_B_N{
+//  filter:grayscale(100%);;
+//}
+//.img_style_color_sepia{
+//  filter:sepia(100%);;
+//}
+//.img_style_color_brillo_bajo{
+//  filter:brightness(50%);;
+//}
+//.img_style_color_contraste_alto{
+//  filter:contrast(200%);;
+//}
+//.img_style_color_saturacion_elevada{
+//  filter:saturate(250%);;
+//}

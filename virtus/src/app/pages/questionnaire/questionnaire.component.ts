@@ -10,7 +10,6 @@ import {ActivatedRoute} from '@angular/router';
 import {Evaluation, EvaluationQuestionsResponse, Questions} from "../../models/evaluation_questionarie";
 import {FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule} from '@angular/forms';
 import {AppMainComponent} from '../../app.main.component';
-import {AppComponent} from "../../app.component";
 
 
 declare var Artyom: any;
@@ -57,8 +56,7 @@ export class QuestionnaireComponent implements OnInit {
               private _http: HttpClient,
               private _route: ActivatedRoute,
               private utils: Utils,
-              private activatedRoute: ActivatedRoute,
-              public app: AppComponent) {
+              private activatedRoute: ActivatedRoute) {
 
     this.idCourse = this._route.snapshot.paramMap.get("idcourse");
     this.idModule = this._route.snapshot.paramMap.get("idmodule");

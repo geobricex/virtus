@@ -1,4 +1,4 @@
-import {Topic} from "./topic";
+import {Topic} from "./Topic";
 
 export class Evaluation {
   private id: number;
