@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, HostBinding, Input} from '@angular/core';
 import {PrimeNGConfig} from 'primeng/api';
 
 @Component({
@@ -16,6 +16,8 @@ export class AppComponent {
 
   ripple: boolean;
 
+  @HostBinding("style.--image-video-style")
+  @Input()
   public modeStyle: string = 'img_style_color_none';
 
 

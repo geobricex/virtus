@@ -35,15 +35,7 @@
     <p-messages severity="warn" [enableService]="true" *ngIf="!voiceComandsSupport()">
       <ng-template pTemplate>
         <img src="assets/imgresource/empty/notification.png" width="75"
-             [ngClass]="{
-'img_style_color_none': app.modeStyle=='img_style_color_none',
-'img_style_color_B_N': app.modeStyle=='img_style_color_B_N',
-'img_style_color_sepia': app.modeStyle=='img_style_color_sepia',
-'img_style_color_brillo_bajo': app.modeStyle=='img_style_color_brillo_bajo',
-'img_style_color_contraste_alto': app.modeStyle=='img_style_color_contraste_alto',
-'img_style_color_saturacion_elevada': app.modeStyle=='img_style_color_saturacion_elevada'
-}"
-        />
+             />
         <div class="ml-2">Actualmente tenemos problemas de compatibilidad.<br/>En este navegador <strong>no podrás usar
           los comandos de voz</strong>.
         </div>
@@ -118,7 +110,7 @@
 
       <div *ngIf="questionObject.pathurlsign_question != null" class="col-12 text-center">
         <video id="pathurlsign_question" height="300" controls [src]="questionObject.pathurlsign_question"
-               [autoplay]="true">
+               [autoplay]="true" >
         </video>
       </div>
 
@@ -157,7 +149,7 @@
         <p-card *ngFor="let option of questionObject.answers_[0].options_answer; let i = index"
                 [attr.data-index]="i" [style]="{width: '120px'}" styleClass="p-card-shadow">
           <ng-template pTemplate="header">
-            <img class="img-color" alt="Card" [src]="option.resource" width="100">
+            <img class="img-color" alt="Card" [src]="option.resource" width="100" >
           </ng-template>
           <p>{{option.opcion}}</p>
           <ng-template pTemplate="footer">
@@ -190,7 +182,7 @@
         <p-card *ngFor="let option of questionObject.answers_[0].options_answer; let i = index"
                 [attr.data-index]="i" [style]="{width: '120px'}" styleClass="p-card-shadow">
           <ng-template pTemplate="header">
-            <img alt="Card" [src]="option.resource" width="100">
+            <img alt="Card" [src]="option.resource" width="100" >
           </ng-template>
           <p>{{option.opcion}}</p>
           <ng-template pTemplate="footer">

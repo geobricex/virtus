@@ -14,27 +14,27 @@ import {AppMainComponent} from './app.main.component';
 
       <h5>Estilos de imagen</h5>
       <div class="field-radiobutton">
-        <p-radioButton name="menuMode" value="img_style_color_none" [(ngModel)]="app.modeStyle"></p-radioButton>
+        <p-radioButton name="menuMode" value="none" [(ngModel)]="app.modeStyle"></p-radioButton>
         <label for="@prevent">Ninguno</label>
       </div>
       <div class="field-radiobutton">
-        <p-radioButton name="menuMode" value="img_style_color_B_N" [(ngModel)]="app.modeStyle"></p-radioButton>
+        <p-radioButton name="menuMode" value="grayscale(100%)" [(ngModel)]="app.modeStyle"></p-radioButton>
         <label for="@prevent">Blanco y Negro</label>
       </div>
       <div class="field-radiobutton">
-        <p-radioButton name="menuMode" value="img_style_color_sepia" [(ngModel)]="app.modeStyle"></p-radioButton>
+        <p-radioButton name="menuMode" value="sepia(100%)" [(ngModel)]="app.modeStyle"></p-radioButton>
         <label for="@prevent">Sepia</label>
       </div>
       <div class="field-radiobutton">
-        <p-radioButton name="menuMode" value="img_style_color_brillo_bajo" [(ngModel)]="app.modeStyle"></p-radioButton>
+        <p-radioButton name="menuMode" value="brightness(50%)" [(ngModel)]="app.modeStyle"></p-radioButton>
         <label for="@prevent">Brillo Bajo</label>
       </div>
       <div class="field-radiobutton">
-        <p-radioButton name="menuMode" value="img_style_color_contraste_alto" [(ngModel)]="app.modeStyle"></p-radioButton>
+        <p-radioButton name="menuMode" value="contrast(200%)" [(ngModel)]="app.modeStyle"></p-radioButton>
         <label for="@prevent">Contraste Alto</label>
       </div>
       <div class="field-radiobutton">
-        <p-radioButton name="menuMode" value="img_style_color_saturacion_elevada" [(ngModel)]="app.modeStyle"></p-radioButton>
+        <p-radioButton name="menuMode" value="saturate(250%)" [(ngModel)]="app.modeStyle"></p-radioButton>
         <label for="@prevent">Saturación Alta</label>
       </div>
       <!--      <h5>Tipo de Menú</h5>-->
