@@ -25,7 +25,6 @@ import {FieldsetModule} from 'primeng/fieldset';
 import {BadgeModule} from 'primeng/badge';
 
 
-
 //INICIO SERVICE
 import {CargarScriptsService} from "./services/cargar-scripts.service"
 // FIN SERVICES
@@ -78,6 +77,7 @@ import {TooltipModule} from "primeng/tooltip";
 import {ResourcesarComponent} from './pages/resourcesar/resourcesar.component';
 import {InputSwitchModule} from "primeng/inputswitch";
 import { UseradministrationComponent } from './pages/useradministration/useradministration.component';
+import {InputNumberModule} from "primeng/inputnumber";
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -149,7 +149,8 @@ FullCalendarModule.registerPlugins([
     SidebarModule,
     CarouselModule,
     TooltipModule,
-    InputSwitchModule
+    InputSwitchModule,
+    InputNumberModule
   ],
 
   providers: [

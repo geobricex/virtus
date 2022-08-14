@@ -2,9 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {BreadcrumbService} from "../../app.breadcrumb.service";
 import {ActivatedRoute} from "@angular/router";
 import {Utils} from "../../util/Utils";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Evaluation} from "../../models/Evaluation";
+import {Topic} from "../../models/topic";
 
 @Component({
   selector: 'app-resourcesar',
@@ -13,6 +15,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 })
 export class ResourcesarComponent implements OnInit {
 
+  evaluation: Evaluation;
   idCourse: string | null = "";
   idModule: string | null = "";
   idTopic: string | null = "";
@@ -74,6 +77,7 @@ export class ResourcesarComponent implements OnInit {
 
   ngOnInit(): void {
     this.tiempo = [
+      {label: "---:---", value: null},
       {label: "Si", value: true},
       {label: "No", value: false}
     ]
@@ -82,11 +86,52 @@ export class ResourcesarComponent implements OnInit {
   }
 
   saveEvaluation() {
+    if (!this.form['timeEvaluation'].value) {
+      this.form['timeminutesEvaluation'].setValue(0);
+    }
+
+    console.log(this.form['name'].value);
+    console.log(this.form['description'].value);
+    console.log(this.form['numberquestionEvaluation'].value);
     console.log(this.form['timeEvaluation'].value);
+    console.log(this.form['timeminutesEvaluation'].value);
+
+    this.evaluation = new Evaluation(
+      0,
+      this.form['name'].value,
+      this.form['description'].value,
+      "", "",
+      this.form['timeEvaluation'].value,
+      this.form['timeminutesEvaluation'].value,
+      this.form['numberquestionEvaluation'].value,
+      ""
+    )
+    let topicAux: Topic;
+    topicAux = new Topic(
+      parseInt(this.idTopic === null ? "0" : this.idTopic),
+      "", "", "", "",
+      "", "", "", "")
+    this.evaluation._levelsIdLevels = topicAux;
+    this.apiSaveEvaluation().subscribe(response => {
+      console.log(response);
+      this.utils.showMessages(response.status, response.information, "tst");
+      this.loadEvaluations();
+      this.resetEvaluation();
+    });
+  }
+
+  apiSaveEvaluation(): Observable<any> {
+    this.globalUri = this.utils.globalUrl + "evaluation/insertevaluation";
+    var headers = new HttpHeaders()
+      .set('Access-Control-Allow-Origin', '*')
+      .set('provider', 'native')
+      .set('token', this.utils.token);
+    return this._http.post(this.globalUri, this.evaluation, {headers: headers});
   }
 
   resetEvaluation() {
-
+    this.registerFormEvaluation.reset();
+    this.newEvaluationsDialog = false;
   }
 
   get form() {

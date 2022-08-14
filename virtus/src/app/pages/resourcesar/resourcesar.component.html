@@ -105,10 +105,22 @@
             *ngIf="form['timeEvaluation'].invalid && (form['timeEvaluation'].dirty && form['timeEvaluation'].touched)"
             class="p-error">Este campo es requerido.</small>
         </div>
+        <div class="field" *ngIf="form['timeEvaluation'].value">
+          <label for="tiempomin"> Tiempo (minmutos): </label>
+          <p-inputNumber id="tiempomin" formControlName="timeminutesEvaluation"
+                         [ngClass]="
+                 (form['timeminutesEvaluation'].invalid && (form['timeminutesEvaluation'].dirty && form['timeminutesEvaluation'].touched)) ?
+                 'ng-dirty ng-invalid' : ''"></p-inputNumber>
+        </div>
         <div class="field">
-          <label for="tiempomin"> Tiempo(minmutos): </label>
-          <input id="tiempomin" type="text" autocomplete="off" pInputText class="w-full"
-                 formControlName="timeminutesEvaluation"/>
+          <label for="cantpreguntas">Cantidad de preguntas:</label>
+          <p-inputNumber id="cantpreguntas" formControlName="numberquestionEvaluation"
+                         [ngClass]="
+                 (form['numberquestionEvaluation'].invalid && (form['numberquestionEvaluation'].dirty && form['numberquestionEvaluation'].touched)) ?
+                 'ng-dirty ng-invalid' : ''"></p-inputNumber>
+          <small
+            *ngIf="form['numberquestionEvaluation'].invalid && (form['numberquestionEvaluation'].dirty && form['numberquestionEvaluation'].touched)"
+            class="p-error">Este campo es requerido.</small>
         </div>
       </form>
     </ng-template>
