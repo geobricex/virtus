@@ -10,7 +10,7 @@ export class Evaluation {
   private timeminutesEvaluation: string;
   private numberquestionEvaluation: string;
   private state_evaluation: string;
-  private levelsIdLevels: Topic
+  private topicsIdTopic: Topic
 
 
   constructor(id: number, nameEvaluation: string, descriptionEvaluation: string, dateregEvaluation: string, dateupdateEvaluation: string, timeEvaluation: string, timeminutesEvaluation: string, numberquestionEvaluation: string, state_evaluation: string) {
@@ -97,11 +97,11 @@ export class Evaluation {
     this.state_evaluation = value;
   }
 
-  get _levelsIdLevels(): Topic {
-    return this.levelsIdLevels;
+  get _topicsIdTopic(): Topic {
+    return this.topicsIdTopic;
   }
 
-  set _levelsIdLevels(value: Topic) {
-    this.levelsIdLevels = value;
+  set _topicsIdTopic(value: Topic) {
+    this.topicsIdTopic = value;
   }
 }

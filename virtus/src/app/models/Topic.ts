@@ -9,10 +9,9 @@ export class Topic {
   private dateregTopic: string;
   private dateupdateTopic: string;
   private stateTopic: string;
-  private levelsTopic: string;
   private syllabuIdSyllabu: Modules;
 
-  constructor(id: number, nameTopic: string, descriptionTopic: string, keywordsTopic: string, pathimgTopic: string, dateregTopic: string, dateupdateTopic: string, stateTopic: string, levelsTopic: string) {
+  constructor(id: number, nameTopic: string, descriptionTopic: string, keywordsTopic: string, pathimgTopic: string, dateregTopic: string, dateupdateTopic: string, stateTopic: string) {
     this.id = id;
     this.nameTopic = nameTopic;
     this.descriptionTopic = descriptionTopic;
@@ -21,7 +20,6 @@ export class Topic {
     this.dateregTopic = dateregTopic;
     this.dateupdateTopic = dateupdateTopic;
     this.stateTopic = stateTopic;
-    this.levelsTopic = levelsTopic;
   }
 
   get _id(): number {
@@ -87,15 +85,6 @@ export class Topic {
   set_stateTopic(value: string) {
     this.stateTopic = value;
   }
-
-  get _levelsTopic(): string {
-    return this.levelsTopic;
-  }
-
-  set_levelsTopic(value: string) {
-    this.levelsTopic = value;
-  }
-
 
   get _syllabuIdSyllabu(): Modules {
     return this.syllabuIdSyllabu;

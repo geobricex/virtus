@@ -19,6 +19,10 @@ import java.time.LocalDateTime;
 @ToString
 
 public class Topic {
+    public Topic(Long id) {
+        this.id = id;
+    }
+
     @Id
     @SequenceGenerator(name="topics_id_topic_seq", sequenceName="topics_id_topic_seq", allocationSize=1)
     @GeneratedValue(generator="topics_id_topic_seq")
@@ -52,9 +56,6 @@ public class Topic {
 
     @Column(name = "state_topic", nullable = false, length = 1)
     private String stateTopic;
-
-    @Column(name = "levels_topic")
-    private Integer levelsTopic;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
 //    @Cascade(value={org.hibernate.annotations.CascadeType.ALL})

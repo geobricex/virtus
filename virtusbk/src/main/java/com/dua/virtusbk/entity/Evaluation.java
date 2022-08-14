@@ -17,8 +17,8 @@ import java.time.LocalDateTime;
 @ToString
 public class Evaluation {
     @Id
-    @SequenceGenerator(name="evaluaions_idevaluaion_seq", sequenceName="evaluaions_idevaluaion_seq", allocationSize=1)
-    @GeneratedValue(generator="evaluaions_idevaluaion_seq")
+    @SequenceGenerator(name="evaluaions_idevaluaion_seq", sequenceName="evaluaions_idevaluaion_seqqq", allocationSize=1)
+//    @GeneratedValue(generator="evaluaions_idevaluaion_seqq")
     @Column(name = "id_evaluation", nullable = false)
     private Long id;
 
@@ -49,7 +49,7 @@ public class Evaluation {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
 //    @Cascade(value={org.hibernate.annotations.CascadeType.ALL})
     @JoinColumn(name = "topics_id_topic", nullable = false)
-    @JsonIgnore// No traer toda la relación en una consulta
-    private Topic levelsIdLevels;
+//    @JsonIgnore// No traer toda la relación en una consulta
+    private Topic topicsIdTopic;
 
 }

@@ -110,8 +110,9 @@ export class ResourcesarComponent implements OnInit {
     topicAux = new Topic(
       parseInt(this.idTopic === null ? "0" : this.idTopic),
       "", "", "", "",
-      "", "", "", "")
-    this.evaluation._levelsIdLevels = topicAux;
+      "", "", "")
+    this.evaluation._topicsIdTopic = topicAux;
+    console.log(this.evaluation._topicsIdTopic)
     this.apiSaveEvaluation().subscribe(response => {
       console.log(response);
       this.utils.showMessages(response.status, response.information, "tst");

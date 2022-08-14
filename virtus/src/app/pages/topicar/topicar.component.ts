@@ -77,7 +77,7 @@ export class TopicarComponent implements OnInit {
         this.form['name'].value,
         this.form['description'].value,
         this.form['keywords'].value,
-        urlPhoto, "", "", "", "");
+        urlPhoto, "", "", "");
       let moduleAux = new Modules(
         parseInt(this.idModule === null ? "0" : this.idModule),
         "", "", "",

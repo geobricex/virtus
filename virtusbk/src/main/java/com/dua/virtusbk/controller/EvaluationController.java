@@ -26,11 +26,13 @@ public class EvaluationController {
     private EvaluationRepository evaluationDAO;
 
     public String[] saveEvaluation(Evaluation evaluation) {
+        System.out.println("saveEvaluation");
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
-
+//        evaluation.setTopicsIdTopic(new Topic(1L));
         evaluation.setDateregEvaluation(Methods.nowLocalDateTime());
         evaluation.setDateupdateEvaluation(Methods.nowLocalDateTime());
         evaluation.setState_evaluation("A");
+        System.out.println(evaluation);
         evaluation = evaluationDAO.save(evaluation);
 
         JsonObject jsonObject = new JsonObject();
@@ -81,7 +83,7 @@ public class EvaluationController {
     public String[] getEvaluation(String id_evaluation) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
 
-        List<Map<String, Object>>  evaluations = evaluationDAO.findIdEvaluation(Long.parseLong(id_evaluation));
+        List<Map<String, Object>> evaluations = evaluationDAO.findIdEvaluation(Long.parseLong(id_evaluation));
         if (evaluations.size() > 0) {
             Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();
             data = gson.toJson(evaluations);

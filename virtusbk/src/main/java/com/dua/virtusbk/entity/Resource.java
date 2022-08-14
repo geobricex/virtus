@@ -46,7 +46,7 @@ public class Resource {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
 //    @Cascade(value={org.hibernate.annotations.CascadeType.ALL})
     @JoinColumn(name = "topics_id_topic", nullable = false)
-    @JsonIgnore// No traer toda la relación en una consulta
+//    @JsonIgnore// No traer toda la relación en una consulta
     private Topic levelsIdLevels;
 
 }

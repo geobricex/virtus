@@ -32,7 +32,7 @@ public class CourseApi {
 
     @GetMapping
     public ResponseEntity<List<Course>> getCourse() {
-        List<Course> list = courseDAO.findAll();
+        List<Course> list = courseDAO.findAllByOrderByIdDesc();
         return ResponseEntity.ok(list);
     }
 

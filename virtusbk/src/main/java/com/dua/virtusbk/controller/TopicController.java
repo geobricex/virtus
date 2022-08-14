@@ -38,7 +38,7 @@ public class TopicController {
 
     public String[] saveTopic(Topic topic) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
-
+        System.out.println(topic);
         topic.setDateregTopic(Methods.nowLocalDateTime());
         topic.setDateupdateTopic(Methods.nowLocalDateTime());
         topic.setStateTopic("A");
