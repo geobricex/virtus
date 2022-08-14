@@ -75,6 +75,10 @@
           <i class="pi pi-cog topbar-icon-settings"></i>
           <span class="topbar-item-name">Configuración</span>
         </a>
+        <a (click)="showDialog()">
+          <i class="pi pi-cog topbar-icon-settings"></i>
+          <span class="topbar-item-name">Accesibilidad</span>
+        </a>
         <a (click)="logout()">
           <i class="topbar-icon pi pi-fw pi-sign-out"></i>
           <span class="topbar-item-name">Cerrar Sesion</span>
@@ -82,4 +86,7 @@
       </li>
     </ul>
   </div>
+  <p-dialog header="Title" [(visible)]="display">
+    Content
+  </p-dialog>
 </div>

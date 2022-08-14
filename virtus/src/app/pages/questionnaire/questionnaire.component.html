@@ -19,7 +19,8 @@
         </div>
         <div class="xl:col-1 md:col-2 sm:col-2 text-center border-right-1 line-height-3">
           <span>Tiempo</span> <br>
-          <span><strong>{{tiempoEvaluacion}}</strong></span>
+          <span
+            style="{{tiempoEvaluacion < 5*60?'color: red;':''}}"><strong>{{miliseguntos2Segundos(tiempoEvaluacion)}}</strong></span>
         </div>
         <div class="xl:col-1 md:col-2 sm:col-2 text-center">
           <button pButton pRipple label="Enviar" class="p-button-success mt-2"></button>
@@ -33,7 +34,16 @@
   <div class="col-12">
     <p-messages severity="warn" [enableService]="true" *ngIf="!voiceComandsSupport()">
       <ng-template pTemplate>
-        <img src="assets/imgresource/empty/notification.png" width="75"/>
+        <img src="assets/imgresource/empty/notification.png" width="75"
+             [ngClass]="{
+'img_style_color_none': app.modeStyle=='img_style_color_none',
+'img_style_color_B_N': app.modeStyle=='img_style_color_B_N',
+'img_style_color_sepia': app.modeStyle=='img_style_color_sepia',
+'img_style_color_brillo_bajo': app.modeStyle=='img_style_color_brillo_bajo',
+'img_style_color_contraste_alto': app.modeStyle=='img_style_color_contraste_alto',
+'img_style_color_saturacion_elevada': app.modeStyle=='img_style_color_saturacion_elevada'
+}"
+        />
         <div class="ml-2">Actualmente tenemos problemas de compatibilidad.<br/>En este navegador <strong>no podrás usar
           los comandos de voz</strong>.
         </div>
@@ -48,7 +58,7 @@
           <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
             <div *ngIf="question.name_questioncategory == tipoPregunta(2)"
                  class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
-                 (click)="cambiarPregunta(i2)" >
+                 (click)="cambiarPregunta(i2)">
               <span> {{"N°" + (i2 + 1)}} </span>
               <i class="pi pi-circle-on mt-1 text-sm {{question.resuelto?'text-green-600': 'text-pink-600'}}"
                  style="float: right"></i>
@@ -59,7 +69,7 @@
           <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
             <div *ngIf="question.name_questioncategory == tipoPregunta(3)"
                  class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
-                 (click)="cambiarPregunta(i2)" >
+                 (click)="cambiarPregunta(i2)">
               <span> {{"N°" + (i2 + 1)}} </span>
               <i class="pi pi-circle-on mt-1 text-sm {{question.resuelto?'text-green-600': 'text-pink-600'}}"
                  style="float: right"></i>
@@ -70,7 +80,7 @@
           <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
             <div *ngIf="question.name_questioncategory == tipoPregunta(1)"
                  class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
-                 (click)="cambiarPregunta(i2)" >
+                 (click)="cambiarPregunta(i2)">
               <span> {{"N°" + (i2 + 1)}} </span>
               <i class="pi pi-circle-on mt-1 text-sm {{question.resuelto?'text-green-600': 'text-pink-600'}}"
                  style="float: right"></i>
@@ -81,7 +91,7 @@
           <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
             <div *ngIf="question.name_questioncategory == tipoPregunta(4)"
                  class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
-                 (click)="cambiarPregunta(i2)" >
+                 (click)="cambiarPregunta(i2)">
               <span> {{"N°" + (i2 + 1)}} </span>
               <i class="pi pi-circle-on mt-1 text-sm {{question.resuelto?'text-green-600': 'text-pink-600'}}"
                  style="float: right"></i>
@@ -97,7 +107,7 @@
   </div>
   <div class="col-12 md:col-9">
     <div class="card">
-      <h4> {{'Pregunta N° ' + (indexQuestionObject + 1 || 0)}} </h4>
+      <h4> {{'Pregunta N° ' + (indexQuestionObject + 1 || 0) + ' : ' + questionObject.title_question}} </h4>
 
       <p-chip label="{{getNivelQuestion(questionObject.level_question || 1)}}"
               image="{{'assets/imgresource/emojis/lvl'+(questionObject.level_question|| 1)+'.png'}}"
@@ -128,15 +138,17 @@
       <h5>{{questionObject.description_question}}</h5>
       <!--Selección unica normal-->
       <div *ngIf="questionObject.name_questioncategory == tipoPregunta(2) && !questionObject.canResource">
-        <div *ngFor="let option of questionObject.answers_[0].options_answer; let i = index"
-             [attr.data-index]="i">
-          <div class="field-radiobutton">
-            <p-radioButton [inputId]="'option_rd_' + alphabet[i]" name="Simple_Option"
-                           (onClick)="changeRadio(i)" [(ngModel)]="option.miSelected"
-                           [value]="true"></p-radioButton>
-            <label [for]="'option_rd_' + alphabet[i]">{{alphabet[i].toUpperCase() + ")\t" + option.opcion}}</label>
+        <form novalidate>
+          <div *ngFor="let option of questionObject.answers_[0].options_answer; let i = index"
+               [attr.data-index]="i">
+            <div class="field-radiobutton">
+              <p-radioButton [inputId]="'option_rd_' + alphabet[i]" name="Simple_Option"
+                             (onClick)="changeRadio(i)" [(ngModel)]="option.miSelected"
+                             [value]="true"></p-radioButton>
+              <label [for]="'option_rd_' + alphabet[i]">{{alphabet[i].toUpperCase() + ")\t" + option.opcion}}</label>
+            </div>
           </div>
-        </div>
+        </form>
       </div>
       <!--Selección unica normal con imagenes-->
       <div *ngIf="questionObject.name_questioncategory == tipoPregunta(2) && questionObject.canResource"
@@ -145,7 +157,7 @@
         <p-card *ngFor="let option of questionObject.answers_[0].options_answer; let i = index"
                 [attr.data-index]="i" [style]="{width: '120px'}" styleClass="p-card-shadow">
           <ng-template pTemplate="header">
-            <img alt="Card" [src]="option.resource" width="100">
+            <img class="img-color" alt="Card" [src]="option.resource" width="100">
           </ng-template>
           <p>{{option.opcion}}</p>
           <ng-template pTemplate="footer">
@@ -165,8 +177,8 @@
              [attr.data-index]="i">
           <div class="field-radiobutton">
             <p-checkbox [inputId]="'option_ck_' + alphabet[i]" name="Simple_Option"
-                           (onClick)="changeRadio(i)" [(ngModel)]="option.miSelected"
-                           [value]="true"></p-checkbox>
+                        (onClick)="changeRadio(i)" [(ngModel)]="option.miSelected"
+                        [value]="true"></p-checkbox>
             <label [for]="'option_ck_' + alphabet[i]">{{alphabet[i].toUpperCase() + ")\t" + option.opcion}}</label>
           </div>
         </div>
@@ -184,14 +196,26 @@
           <ng-template pTemplate="footer">
             <div class="field-radiobutton">
               <p-checkbox [inputId]="'option_ck_2_' + alphabet[i]" name="Simple_Option"
-                             (onClick)="changeRadio(i)" [(ngModel)]="option.miSelected"
-                             [value]="true"></p-checkbox>
+                          (onClick)="changeRadio(i)" [(ngModel)]="option.miSelected"
+                          [value]="true"></p-checkbox>
               <label
                 [for]="'option_ck_2_' + alphabet[i]"><strong>{{'Literal ' + alphabet[i].toUpperCase()}}</strong></label>
             </div>
           </ng-template>
         </p-card>
-
+      </div>
+      <div *ngIf="questionObject.name_questioncategory == tipoPregunta(1) && !questionObject.canResource">
+        <div *ngFor="let option of questionObject.answers_[0].options_answer; let i = index"
+             [attr.data-index]="i">
+          <div class="field-radiobutton">
+            <p>
+              <span *ngFor="let wg of partirPreguntaComplete(option.description_question)">
+                {{wg != '$option$' ? wg : ''}}
+                <input type="text" pInputText *ngIf="wg == '$option$'"/>
+              </span>
+            </p>
+          </div>
+        </div>
       </div>
 
       <!--Recursos para dibujar-->
@@ -204,11 +228,10 @@
       <hr>
       <button pButton pRipple icon="pi pi-step-backward-alt" label="Anterior"
               *ngIf="indexQuestionObject > 0"
-              class="p-button-info mr-2 mb-2" (onClick)="siguientePregunta()"></button>
+              class="p-button-info mr-2 mb-2" (click)="siguientePregunta()"></button>
       <button pButton pRipple icon="pi pi-step-forward" label="Siguiente" class="p-button-info mr-2 mb-2"
               *ngIf="indexQuestionObject < evaluationObject.questions_.length"
-              style="float: right" (onClick)="anteriorPregunta()"></button>
+              style="float: right" (click)="anteriorPregunta()"></button>
     </div>
   </div>
 </div>
-

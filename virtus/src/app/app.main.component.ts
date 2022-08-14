@@ -189,4 +189,5 @@ export class AppMainComponent implements OnInit {
     this.overlayMenuActive = false;
     this.staticMenuMobileActive = false;
   }
+
 }

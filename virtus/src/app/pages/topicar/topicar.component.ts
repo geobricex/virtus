@@ -4,9 +4,10 @@ import {ActivatedRoute} from "@angular/router";
 import {Observable} from "rxjs";
 import {Utils} from "../../util/Utils";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Topic} from "../../models/topic";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Modules} from "../../models/Modules";
+import {Topic} from "../../models/Topic";
+
 
 @Component({
   selector: 'app-topicar',

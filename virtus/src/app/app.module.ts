@@ -23,7 +23,8 @@ import {TimelineModule} from 'primeng/timeline';
 import {CardModule} from 'primeng/card';
 import {FieldsetModule} from 'primeng/fieldset';
 import {BadgeModule} from 'primeng/badge';
-
+import {SpeedDialModule} from 'primeng/speeddial';
+import {TabViewModule} from 'primeng/tabview';
 
 //INICIO SERVICE
 import {CargarScriptsService} from "./services/cargar-scripts.service"
@@ -79,6 +80,7 @@ import {InputSwitchModule} from "primeng/inputswitch";
 import { UseradministrationComponent } from './pages/useradministration/useradministration.component';
 import {InputNumberModule} from "primeng/inputnumber";
 
+import {AppConfigComponent} from "./app.config.component";
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -114,7 +116,8 @@ FullCalendarModule.registerPlugins([
     TopicarComponent,
     ResourcesComponent,
     ResourcesarComponent,
-    UseradministrationComponent,
+    AppConfigComponent,
+    UseradministrationComponent
   ],
   imports: [
     HttpClientModule,
@@ -151,12 +154,16 @@ FullCalendarModule.registerPlugins([
     CarouselModule,
     TooltipModule,
     InputSwitchModule,
+    SpeedDialModule,
+    TabViewModule,
     InputNumberModule
   ],
 
   providers: [
     {provide: LocationStrategy, useClass: HashLocationStrategy},
-    MenuService, BreadcrumbService, CargarScriptsService, StorageService, MessageService, Utils, ConfirmationService],
+    MenuService, BreadcrumbService, CargarScriptsService, StorageService, MessageService,
+    Utils, ConfirmationService
+  ],
 
   bootstrap: [AppComponent]
 })
