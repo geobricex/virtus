@@ -10,21 +10,13 @@ import com.dua.virtusbk.util.WeEncoder;
 import com.google.gson.JsonObject;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -55,6 +47,14 @@ public class PersonController {
         } else {
             return null;
         }
+    }
+
+    public List<Person> getPersons(Long id_person) {
+        List<Person> listPerson = personDAO.findByIdNotOrderByDateregPerson(id_person);
+        if (listPerson.size() >= 0)
+            return listPerson;
+        else
+            return null;
     }
 
     public String[] signUp(Person person) {

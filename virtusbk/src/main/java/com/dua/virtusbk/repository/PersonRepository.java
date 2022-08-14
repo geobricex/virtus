@@ -24,4 +24,6 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
     List<Person> findByEmailList(String param);
 
     Optional<Person> findById(Long id);
+
+    List<Person> findByIdNotOrderByDateregPerson(Long id);
 }

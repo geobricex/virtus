@@ -22,6 +22,7 @@ import {ModuloarComponent} from "./pages/moduloar/moduloar.component";
 import {TopicarComponent} from "./pages/topicar/topicar.component";
 import {ResourcesComponent} from "./pages/resources/resources.component";
 import {ResourcesarComponent} from "./pages/resourcesar/resourcesar.component";
+import {UseradministrationComponent} from "./pages/useradministration/useradministration.component";
 
 @NgModule({
   imports: [
@@ -38,6 +39,7 @@ import {ResourcesarComponent} from "./pages/resourcesar/resourcesar.component";
           {path: 'myprofile', component: MyprofileComponent},
           {path: 'course', component: CursosComponent},
           {path: 'coursear', component: CursosArComponent},
+          {path: 'useradministration', component: UseradministrationComponent},
           {path: 'coursear/modulear/:idcourse', component: ModuloarComponent},
           {path: 'coursear/modulear/:idcourse/topicar/:idmodule', component: TopicarComponent},
           {path: 'coursear/modulear/:idcourse/topicar/:idmodule/resourcesar/:idTopic', component: ResourcesarComponent},

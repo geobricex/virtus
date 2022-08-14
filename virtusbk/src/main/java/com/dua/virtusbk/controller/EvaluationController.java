@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -80,8 +81,8 @@ public class EvaluationController {
     public String[] getEvaluation(String id_evaluation) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
 
-        Object[] evaluations = evaluationDAO.findIdEvaluation(Long.parseLong(id_evaluation));
-        if (evaluations.length > 0) {
+        List<Map<String, Object>>  evaluations = evaluationDAO.findIdEvaluation(Long.parseLong(id_evaluation));
+        if (evaluations.size() > 0) {
             Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();
             data = gson.toJson(evaluations);
             status = "2";

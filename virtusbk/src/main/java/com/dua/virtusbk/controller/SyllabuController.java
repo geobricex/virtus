@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -67,9 +68,10 @@ public class SyllabuController {
     }
 
     public String[] getSyllabus(String id_course) {
+        System.out.println("getSyllabus");
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
 
-        List<Syllabu> syllabus = syllabuDAO.findByIdCourseList(Long.parseLong(id_course));
+        List<Map<String, Object>> syllabus = syllabuDAO.findByIdCourseList(Long.parseLong(id_course));
         if (syllabus.size() > 0) {
             Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();
             data = gson.toJson(syllabus);
