@@ -1,6 +1,6 @@
 {
   "/virtusbk/*": {
-    "target": "https://aplicaciones.uteq.edu.ec/",
+    "target": "http://localhost:8888/",
     "secure": false,
     "logLevel": "debug"
   },

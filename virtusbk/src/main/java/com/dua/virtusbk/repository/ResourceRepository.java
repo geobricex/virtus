@@ -7,11 +7,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.validation.ObjectError;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ResourceRepository extends JpaRepository<Resource, Long> {
     @Query(value = "SELECT * FROM resources where topics_id_topic =?1", nativeQuery = true)
     List<Resource> findIdTopicResourceList(Long param);
 
     @Query(value = "SELECT * FROM resources where id_resource =?1", nativeQuery = true)
-    Object[] findIdResource(Long param);
+    List<Map<String, Object>>  findIdResource(Long param);
 }

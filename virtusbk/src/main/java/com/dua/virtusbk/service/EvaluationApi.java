@@ -40,6 +40,7 @@ public class EvaluationApi {
 
     @PostMapping("/insertevaluation")
     public ResponseEntity<String> insertEvaluation(@RequestBody @Validated Evaluation evaluation, @RequestHeader("token") String sessionToken) {
+        System.out.println("insertevaluation...");
         String message;
         String[] clains = Methods.getDataToJwt(sessionToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);

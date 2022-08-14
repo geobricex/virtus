@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Map;
 
 public interface TopicRepository extends JpaRepository<Topic, Long> {
     @Query(value = "SELECT * " +
@@ -14,5 +15,5 @@ public interface TopicRepository extends JpaRepository<Topic, Long> {
     List<Topic> findByIdTopicList(Long param);
 
     @Query(value = "SELECT * FROM topics where id_topic =?1", nativeQuery = true)
-    Object[] findIdTopic(Long param);
+    List<Map<String, Object>>  findIdTopic(Long param);
 }

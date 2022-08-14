@@ -7,13 +7,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.validation.ObjectError;
 
 import java.util.List;
+import java.util.Map;
 
 public interface EvaluationRepository extends JpaRepository<Evaluation, Long> {
     @Query(value = "SELECT * FROM evaluations where topics_id_topic =?1", nativeQuery = true)
     List<Evaluation> findIdTopicEvaluationList(Long param);
 
     @Query(value = "SELECT * FROM evaluations where id_evaluation =?1", nativeQuery = true)
-    Object[] findIdEvaluation(Long param);
+    List<Map<String, Object>> findIdEvaluation(Long param);
 
     @Query(value = "SELECT information FROM questions_select(?1,?2)", nativeQuery = true)
     String returnEvaluation(int id_evaluation, int id_person);

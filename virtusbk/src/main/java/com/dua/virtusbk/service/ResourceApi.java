@@ -41,6 +41,7 @@ public class ResourceApi {
 
     @PostMapping("/insertresource")
     public ResponseEntity<String> insertResource(@RequestBody @Validated Resource resource, @RequestHeader("token") String sessionToken) {
+        System.out.println("insertresource...");
         String message;
         String[] clains = Methods.getDataToJwt(sessionToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);

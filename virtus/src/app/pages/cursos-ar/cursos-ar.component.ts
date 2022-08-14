@@ -50,6 +50,7 @@ export class CursosArComponent implements OnInit {
 
   ngOnInit(): void {
     this.idiomas = [
+      {label: "---:---", value: null},
       {label: "Español", value: "es"},
       {label: "English", value: "en"}
     ]

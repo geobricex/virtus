@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -88,8 +89,8 @@ public class TopicController {
     public String[] getTopic(String id_syllabu) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
 
-        Object[] topics = topicDAO.findIdTopic(Long.parseLong(id_syllabu));
-        if (topics.length > 0) {
+        List<Map<String, Object>>  topics = topicDAO.findIdTopic(Long.parseLong(id_syllabu));
+        if (topics.size() > 0) {
             Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();
             data = gson.toJson(topics);
             status = "2";

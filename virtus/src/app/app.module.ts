@@ -26,7 +26,6 @@ import {BadgeModule} from 'primeng/badge';
 import {SpeedDialModule} from 'primeng/speeddial';
 import {TabViewModule} from 'primeng/tabview';
 
-
 //INICIO SERVICE
 import {CargarScriptsService} from "./services/cargar-scripts.service"
 // FIN SERVICES
@@ -78,6 +77,9 @@ import {CarouselModule} from "primeng/carousel";
 import {TooltipModule} from "primeng/tooltip";
 import {ResourcesarComponent} from './pages/resourcesar/resourcesar.component';
 import {InputSwitchModule} from "primeng/inputswitch";
+import { UseradministrationComponent } from './pages/useradministration/useradministration.component';
+import {InputNumberModule} from "primeng/inputnumber";
+
 import {AppConfigComponent} from "./app.config.component";
 
 FullCalendarModule.registerPlugins([
@@ -114,7 +116,8 @@ FullCalendarModule.registerPlugins([
     TopicarComponent,
     ResourcesComponent,
     ResourcesarComponent,
-    AppConfigComponent
+    AppConfigComponent,
+    UseradministrationComponent
   ],
   imports: [
     HttpClientModule,
@@ -152,7 +155,8 @@ FullCalendarModule.registerPlugins([
     TooltipModule,
     InputSwitchModule,
     SpeedDialModule,
-    TabViewModule
+    TabViewModule,
+    InputNumberModule
   ],
 
   providers: [
