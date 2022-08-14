@@ -80,7 +80,19 @@
     <ng-template pTemplate="content">
       <form [formGroup]="registerFormResources">
         <div class="field">
-          <label for="uploadPhotoNew" class="p-button p-button-info w-5"> Seleccionar archivo </label>
+
+          <label for="uploadPhotoNew" class="p-button p-button-secondary" (click)="typeFileGlobal='a'"> <i
+            class="pi pi-file"></i> Seleccionar
+            archivo
+          </label>
+          <label for="uploadPhotoNew" class="p-button p-button-success" (click)="typeFileGlobal='s'"> <i
+            class="pi pi-video"></i> Seleccionar video
+            con
+            lenguaje de señas </label>
+          <label for="uploadPhotoNew" class="p-button p-button-info" (click)="typeFileGlobal='v'"> <i
+            class="pi pi-video"></i> Seleeccionar video
+          </label>
+
           <input style="display: none" id="uploadPhotoNew" type="file"
                  (change)="onFileChange($event)">
           <input type="text" autocomplete="off" pInputText class="w-full" formControlName="fileName" readonly/>

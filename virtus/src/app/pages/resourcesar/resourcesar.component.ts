@@ -4,9 +4,10 @@ import {ActivatedRoute} from "@angular/router";
 import {Utils} from "../../util/Utils";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Evaluation} from "../../models/Evaluation";
 import {Topic} from "../../models/Topic";
+import {Resources} from "../../models/Resources";
 
 @Component({
   selector: 'app-resourcesar',
@@ -15,6 +16,7 @@ import {Topic} from "../../models/Topic";
 })
 export class ResourcesarComponent implements OnInit {
 
+  resource: Resources;
   evaluation: Evaluation;
   idCourse: string | null = "";
   idModule: string | null = "";
@@ -22,11 +24,15 @@ export class ResourcesarComponent implements OnInit {
   globalUri: string | null = "";
   resourcesData: any [];
   evaluationData: any [];
+  tmpFile: any;
 
   newEvaluationsDialog: boolean;
+  newResourseDialog: boolean;
   registerFormEvaluation: FormGroup;
+  registerFormResources: FormGroup;
   courseSuccessful = false;
   tiempo: any [];
+  typeFileGlobal: string;
 
   carouselResponsiveOptions: any[] = [
     {
@@ -73,6 +79,12 @@ export class ResourcesarComponent implements OnInit {
         timeminutesEvaluation: ["",]
       }
     );
+    this.registerFormResources = this.formBuilder.group(
+      {
+        fileName: ["", Validators.required],
+        nameResources: ["", Validators.required]
+      }
+    );
   }
 
   ngOnInit(): void {
@@ -83,6 +95,65 @@ export class ResourcesarComponent implements OnInit {
     ]
     this.loadResources();
     this.loadEvaluations();
+  }
+
+
+  saveResources() {
+    this.resource = new Resources(
+      0,
+      this.formR['nameResources'].value,
+      "", "", "",
+      "", "", "");
+    this.utils.changeImage(this.tmpFile).then(response => {
+      if (this.typeFileGlobal === "a")
+        this.resource._pathfileResource = response;
+      else if (this.typeFileGlobal === "s")
+        this.resource._pathurlsignResource = response;
+      else
+        this.resource._pathvideoResource = response;
+      let topicAux: Topic;
+      topicAux = new Topic(
+        parseInt(this.idTopic === null ? "0" : this.idTopic),
+        "", "", "", "",
+        "", "", "")
+      this.resource._topicsIdTopic = topicAux;
+      this.apiSaveResources().subscribe(response => {
+        this.utils.showMessages(response.status, response.information, "tst");
+        this.loadResources();
+        this.resetResources();
+      });
+
+    });
+
+  }
+
+  apiSaveResources(): Observable<any> {
+    this.globalUri = this.utils.globalUrl + "resource/insertresource";
+    var headers = new HttpHeaders()
+      .set('Access-Control-Allow-Origin', '*')
+      .set('provider', 'native')
+      .set('token', this.utils.token);
+    return this._http.post(this.globalUri, this.evaluation, {headers: headers});
+  }
+
+  resetResources() {
+    this.newResourseDialog = false;
+    this.registerFormResources.reset();
+  }
+
+  onFileChange(event: any) {
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      console.log(file);
+      if (file.type === "application/pdf" || file.type === "video/mp4" || file.type === "video/mp3") {
+        this.tmpFile = file;
+        this.formR['fileName'].setValue(file.name);
+        this.utils.showMessages(2, "Archivo: " + file.name + " cargado exitosamente.", "tst");
+      } else {
+        this.formR['fileName'].setValue("");
+        this.utils.showMessages(1, "Formato de archivo no permitido.", "tst");
+      }
+    }
   }
 
   saveEvaluation() {
@@ -137,6 +208,10 @@ export class ResourcesarComponent implements OnInit {
 
   get form() {
     return this.registerFormEvaluation.controls;
+  }
+
+  get formR() {
+    return this.registerFormResources.controls;
   }
 
   loadResources() {
