@@ -9,6 +9,8 @@ import {ActivatedRoute} from '@angular/router';
 
 import {Evaluation, EvaluationQuestionsResponse, Questions} from "../../models/evaluation_questionarie";
 import {FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule} from '@angular/forms';
+import {AppMainComponent} from '../../app.main.component';
+import {AppComponent} from "../../app.component";
 
 
 declare var Artyom: any;
@@ -43,7 +45,7 @@ export class QuestionnaireComponent implements OnInit {
   ];
   //
   public tiempoEvaluacion$: Subscription;
-  public tiempoEvaluacion: string = "--:--";
+  public tiempoEvaluacion: number = 0;
 
   public literalSeleccionado: any;
 
@@ -55,7 +57,9 @@ export class QuestionnaireComponent implements OnInit {
               private _http: HttpClient,
               private _route: ActivatedRoute,
               private utils: Utils,
-              private activatedRoute: ActivatedRoute) {
+              private activatedRoute: ActivatedRoute,
+              public app: AppComponent) {
+
     this.idCourse = this._route.snapshot.paramMap.get("idcourse");
     this.idModule = this._route.snapshot.paramMap.get("idmodule");
     this.idTopic = this._route.snapshot.paramMap.get("idTopic");
@@ -172,29 +176,41 @@ export class QuestionnaireComponent implements OnInit {
           this.evaluationObject = response.data[0];
 
           if (this.evaluationObject.time_evaluation) {
+            this.tiempoEvaluacion = this.evaluationObject.timeminutes_evaluation * 60;
             this.tiempoEvaluacion$ = timer(0, 1000)
               .subscribe((iter: any) => {
                 //this.time();
-                //console.log("tiempoEvaluacion: " + iter);
-                if (iter == (60 * 60)) {
+                // console.log("tiempoEvaluacion: " + iter);
+                if (this.tiempoEvaluacion <= 0) {
                   this.tiempoEvaluacion$.unsubscribe();
+                  /*Código para indicar que se terminó el tiempo*/
                 }
-                let m = Math.floor(iter % 3600 / 60).toString().padStart(2, '0');
-                let s = Math.floor(iter % 60).toString().padStart(2, '0');
-                //console.log("tiempoEvaluacion: " + m + ":" + s);
-                this.tiempoEvaluacion = m + ":" + s;
+                this.tiempoEvaluacion--;
               });
           }
           if (this.voiceComandsSupport()) {
-            this.startContinuousArtyom();
+            //this.startContinuousArtyom();
           }
           this.cambiarPregunta(0, true);
           //this.initCanvas(false);
-          this.autoClick("#silenciar_video");
+          setTimeout(() =>{
+            console.log("silenciar video")
+            this.autoClick("#silenciar_video");
+          }, 500);
         }
       }
     });
 
+  }
+
+  partirPreguntaComplete(quest :string):string[]{
+    return quest.split(/[\{\}]/);
+  }
+
+  miliseguntos2Segundos(tiempo:number):string{
+    let m = Math.floor(tiempo % 3600 / 60).toString().padStart(2, '0');
+    let s = Math.floor(tiempo % 60).toString().padStart(2, '0');
+    return m + ":" + s;
   }
 
   cambiarPregunta(indice: number, flag = false): void {
@@ -208,17 +224,20 @@ export class QuestionnaireComponent implements OnInit {
       console.log("pregunta: ", this.questionObject);
     }
     this.initCanvas(flag);
-    this.leerPregunta();
+    // this.leerPregunta();
   }
 
 
   obtenerPreguntasWS(idEvaluacion: number): Observable<EvaluationQuestionsResponse> {
     let urlServicio: string;
-    if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+    urlServicio = this.utils.globalUrl;
+    console.log("servicio: " , urlServicio);
+    urlServicio += "evaluation/getEvaluationQuestions";
+    /*if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
       urlServicio = "virtusbk/evaluation/getEvaluationQuestions";
     } else {
       urlServicio = "virtus_bk/evaluation/getEvaluationQuestions";
-    }
+    }*/
 
     let headers = new HttpHeaders()
       //.set('Content-Type', 'application/json')
@@ -501,4 +520,5 @@ export class QuestionnaireComponent implements OnInit {
       x: Math.round(x - ctxbox.left), y: Math.round(y - ctxbox.top)
     };
   }
+
 }

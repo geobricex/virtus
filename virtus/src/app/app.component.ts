@@ -1,25 +1,30 @@
-import { Component } from '@angular/core';
-import { PrimeNGConfig } from 'primeng/api';
+import {Component} from '@angular/core';
+import {PrimeNGConfig} from 'primeng/api';
 
 @Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html',
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
 
-    menuMode = 'static';
+  menuMode = 'static';
 
-    theme = 'absolution';
+  theme = 'absolution';
 
-    inputStyle = 'outlined';
+  inputStyle = 'filled';//outlined
 
-    ripple: boolean;
+  ripple: boolean;
 
-    constructor(private primengConfig: PrimeNGConfig) {
-    }
+  public modeStyle: string = 'img_style_color_none';
 
-    ngOnInit() {
-        this.primengConfig.ripple = true;
-        this.ripple = true;
-    }
+
+  constructor(private primengConfig: PrimeNGConfig) {
+  }
+
+  ngOnInit() {
+    this.primengConfig.ripple = true;
+    this.ripple = true;
+
+  }
 }

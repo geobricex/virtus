@@ -2,8 +2,6 @@ export interface EvaluationQuestionsResponse {
   data:        Evaluation[];
   information: string;
   status:      number;
-
-
 }
 
 export interface Evaluation {
@@ -12,6 +10,7 @@ export interface Evaluation {
   numberquestion_evaluation: number;
   questions_:                Questions[];
   time_evaluation:           boolean;
+  timeminutes_evaluation:    number;
 }
 
 export interface Questions {
@@ -33,8 +32,24 @@ export interface Answers {
 }
 
 export interface OptionsAnswer {
+  //selección simple y múltiple
   correct:  string;
   opcion:   string;
   resource?: string;
+  // yo he seleccionado?
   miSelected?: boolean;
+  //pregunta de complete
+  description_question: string; // pregunta con psudocadena
+  description_question_R: string; // respuesta para comparar
+  options: Options[] //literales
+  //Unir con línea
+  leftSide: string;
+  resourse_leftSide: string;
+  resourse_rightSide: string;
+  rightSide: string;
+}
+
+export interface Options {
+  option: string;
+  resource: string;
 }

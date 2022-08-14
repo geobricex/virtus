@@ -26,4 +26,10 @@ export class AppTopBarComponent implements OnInit {
   logout() {
     this.storageService.logout();
   }
+
+  display: boolean = false;
+
+  showDialog() {
+    this.display = true;
+  }
 }
