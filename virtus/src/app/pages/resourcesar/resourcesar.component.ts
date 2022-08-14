@@ -6,7 +6,8 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Evaluation} from "../../models/Evaluation";
-import {Topic} from "../../models/topic";
+import {Topic} from "../../models/Topic";
+
 
 @Component({
   selector: 'app-resourcesar',
