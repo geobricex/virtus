@@ -79,6 +79,7 @@ import {InputSwitchModule} from "primeng/inputswitch";
 import { UseradministrationComponent } from './pages/useradministration/useradministration.component';
 import {InputNumberModule} from "primeng/inputnumber";
 
+
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
   timeGridPlugin,
