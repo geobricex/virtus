@@ -1,9 +1,11 @@
+<p-toast key="tst" [baseZIndex]="99999"></p-toast>
 <div class="grid p-fluid">
 
   <div class="col-12">
     <div class="card">
       <h5>Recursos</h5>
-      <button pButton label="Nuevo" icon="pi pi-plus" class="p-button p-button-success w-8rem mt-2"></button>
+      <button pButton label="Nuevo" icon="pi pi-plus" class="p-button p-button-success w-8rem mt-2"
+              (click)="newResourseDialog=true"></button>
       <p-carousel [value]="resourcesData" [numVisible]="3" [numScroll]="3" [circular]="false"
                   [responsiveOptions]="carouselResponsiveOptions" [style]="{'margin-top':'1rem'}">
         <ng-template let-resource pTemplate="item">
@@ -72,6 +74,39 @@
     </div>
   </div>
 
+  <!--dialog para agregar un nuevo recurso-->
+  <p-dialog [(visible)]="newResourseDialog" [style]="{width: '450px'}" header="Nuevo recurso" [modal]="true"
+            class="p-fluid">
+    <ng-template pTemplate="content">
+      <form [formGroup]="registerFormResources">
+        <div class="field">
+          <label for="uploadPhotoNew" class="p-button p-button-info w-5"> Seleccionar archivo </label>
+          <input style="display: none" id="uploadPhotoNew" type="file"
+                 (change)="onFileChange($event)">
+          <input type="text" autocomplete="off" pInputText class="w-full" formControlName="fileName" readonly/>
+          <small class="text-blue-500">Solo se permiten archivos con extension .pdf y videos .mp3 o .mp4.</small>
+        </div>
+        <div class="field">
+          <label for="nombreRe"> Nombre del recurso: </label>
+          <input id="nombreRe" type="text" autocomplete="off" pInputText class="w-full" formControlName="nameResources"
+                 [ngClass]="
+                 (formR['nameResources'].invalid && (formR['nameResources'].dirty && formR['nameResources'].touched)) ?
+                 'ng-dirty ng-invalid' : ''"/>
+          <small
+            *ngIf="formR['nameResources'].invalid && (formR['nameResources'].dirty && formR['nameResources'].touched)"
+            class="p-error">Este campo es requerido.</small>
+        </div>
+      </form>
+    </ng-template>
+    <ng-template pTemplate="footer">
+      <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-warning"
+              (click)="resetResources()"></button>
+      <button pButton pRipple [disabled]="registerFormResources.invalid" label="Guardar cambios" icon="pi pi-check"
+              class="p-button-success" (click)="saveResources()"></button>
+    </ng-template>
+  </p-dialog>
+
+  <!--dialog para agreegar una nueva evaluacion-->
   <p-dialog [(visible)]="newEvaluationsDialog" [style]="{width: '450px'}" header="Nueva evaluación" [modal]="true"
             class="p-fluid">
     <ng-template pTemplate="content">
