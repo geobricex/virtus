@@ -77,6 +77,7 @@ import {CarouselModule} from "primeng/carousel";
 import {TooltipModule} from "primeng/tooltip";
 import {ResourcesarComponent} from './pages/resourcesar/resourcesar.component';
 import {InputSwitchModule} from "primeng/inputswitch";
+import { UseradministrationComponent } from './pages/useradministration/useradministration.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -112,6 +113,7 @@ FullCalendarModule.registerPlugins([
     TopicarComponent,
     ResourcesComponent,
     ResourcesarComponent,
+    UseradministrationComponent,
   ],
   imports: [
     HttpClientModule,

@@ -28,25 +28,31 @@ public class PersonApi {//implements UserDetailsService {
 
     //@RequestMapping(value = "", method = RequestMethod.GET)
     @GetMapping
-    public ResponseEntity<List<Person>> getPersons() {
+    public ResponseEntity<List<Person>> getAllPersons() {
         List<Person> listPerson = personDAO.findAll();
         return ResponseEntity.ok(listPerson);
     }
-
-    @GetMapping(value = "{id}")
-    public ResponseEntity<Person> getPersons(@PathVariable("token") String sessionToken) {
-        System.out.println("getPerson...");
-        JsonObject jso = Methods.stringToJSON(sessionToken);
-        String sToken = Methods.JsonToString(jso, "sessionToken", "");
-        String[] clains = Methods.getDataToJwt(sToken);
-        String[] res = Methods.validatePermit(clains[0], clains[1], 1);
-        if (res[0].equals("2")) {
-            return ResponseEntity.ok(personController.getPerson(Long.getLong(clains[0])));
-        } else {
-            return ResponseEntity.noContent().build();
-        }
-
-    }
+//
+//    @GetMapping("/getPersons")
+//    public ResponseEntity<List<Person>> getPersons(@PathVariable("id") Long id) {
+//        List<Person> listPerson = personDAO.findByIdNot(id);
+//        return ResponseEntity.ok(listPerson);
+//    }
+//
+//    @GetMapping(value = "{id}")
+//    public ResponseEntity<Person> getPersonsAll(@PathVariable("token") String sessionToken) {
+//        System.out.println("getPerson...");
+//        JsonObject jso = Methods.stringToJSON(sessionToken);
+//        String sToken = Methods.JsonToString(jso, "sessionToken", "");
+//        String[] clains = Methods.getDataToJwt(sToken);
+//        String[] res = Methods.validatePermit(clains[0], clains[1], 1);
+//        if (res[0].equals("2")) {
+//            return ResponseEntity.ok(personController.getPerson(Long.getLong(clains[0])));
+//        } else {
+//            return ResponseEntity.noContent().build();
+//        }
+//
+//    }
 
     @PostMapping("/getPerson")
     public ResponseEntity<Person> getPerson(@RequestBody String sessionToken) {
@@ -59,6 +65,26 @@ public class PersonApi {//implements UserDetailsService {
 
         if (res[0].equals("2")) {
             return ResponseEntity.ok(personController.getPerson(Long.parseLong(clains[0])));
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+
+    }
+
+    @PostMapping("/getPersons")
+    public ResponseEntity<List<Person>> getPersons(@RequestBody String sessionToken) {
+        System.out.println("getPerson...");
+        JsonObject jso = Methods.stringToJSON(sessionToken);
+        String sToken = Methods.JsonToString(jso, "sessionToken", "");
+        String[] clains = Methods.getDataToJwt(sToken);
+        String[] res = Methods.validatePermit(clains[0], clains[1], 1);
+
+        if (res[0].equals("2")) {
+            List<Person> personList = personController.getPersons(Long.parseLong(clains[0]));
+            if (personList != null)
+                return ResponseEntity.ok(personController.getPersons(Long.parseLong(clains[0])));
+            else
+                return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.noContent().build();
         }

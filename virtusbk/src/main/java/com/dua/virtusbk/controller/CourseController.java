@@ -26,6 +26,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -90,7 +91,7 @@ public class CourseController {
 
         data = gson.toJson(personsCours);
         status = "2";
-        message = "Se ha unido al curso correctamente." ;
+        message = "Se ha unido al curso correctamente.";
 
         return new String[]{status, message, data};
     }
@@ -100,8 +101,8 @@ public class CourseController {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
 
         String personsCours = personcourseDAO.findByPersonCourseF(Long.parseLong(id_person), state_course_person);
-
         JsonArray jso = Methods.stringToJsonArray(personsCours);
+
         if (!jso.toString().equals("[]")) {
             status = "2";
             message = "Información retornada con éxito.";
