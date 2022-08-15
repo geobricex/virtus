@@ -10,6 +10,10 @@ import javax.persistence.*;
 @NoArgsConstructor
 @ToString
 public class QuestionCategory {
+    public QuestionCategory(Long id) {
+        this.id = id;
+    }
+
     @Id
     @SequenceGenerator(name = "question_category_id_questioncategory_seq", sequenceName = "question_category_id_questioncategory_seq", allocationSize = 1)
     @GeneratedValue(generator = "question_category_id_questioncategory_seq")

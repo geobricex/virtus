@@ -2,6 +2,9 @@ package com.dua.virtusbk.service;
 
 import com.dua.virtusbk.ExcludeProxiedFields;
 import com.dua.virtusbk.entity.Evaluation;
+import com.dua.virtusbk.entity.EvaluationQuestionCategory;
+import com.dua.virtusbk.entity.QuestionCategory;
+import com.dua.virtusbk.repository.EvaluationQuestionCategoryRepository;
 import com.dua.virtusbk.repository.EvaluationRepository;
 import com.dua.virtusbk.util.Methods;
 import com.google.gson.Gson;
@@ -12,8 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Service
@@ -22,6 +24,9 @@ public class EvaluationService {
     @Autowired
     private EvaluationRepository evaluationDAO;
 
+    @Autowired
+    private EvaluationQuestionCategoryRepository evaluationQuestionCategoryDAO;
+
     public String[] saveEvaluation(Evaluation evaluation) {
         System.out.println("saveEvaluation");
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
@@ -29,8 +34,20 @@ public class EvaluationService {
         evaluation.setDateregEvaluation(Methods.nowLocalDateTime());
         evaluation.setDateupdateEvaluation(Methods.nowLocalDateTime());
         evaluation.setState_evaluation("A");
+        evaluation.setNumberquestionEvaluation(120);
         System.out.println(evaluation);
         evaluation = evaluationDAO.save(evaluation);
+
+        //*TABLA INTERMEDIA*//
+        //*1 EVLUACIÓN CON MUCHOS TIPOS DE PREGUNTA*//
+        List<EvaluationQuestionCategory> evaluationQuestionCategories = new ArrayList<>();
+        for (int typeQuestion = 1; typeQuestion <= 6; typeQuestion++) {
+            evaluationQuestionCategories.add
+                    (new EvaluationQuestionCategory
+                            (evaluation, new QuestionCategory((long) typeQuestion), 0));
+        }
+        evaluationQuestionCategories = evaluationQuestionCategoryDAO.saveAll(evaluationQuestionCategories);
+        //*FIN TABLA INTERMEDIA*//
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("id_evaluation", evaluation.getId());
@@ -47,6 +64,17 @@ public class EvaluationService {
         evaluation.setDateupdateEvaluation(Methods.nowLocalDateTime());
         evaluation.setState_evaluation("A");
         evaluation = evaluationDAO.save(evaluation);
+
+        //*TABLA INTERMEDIA*//
+        //*1 EVLUACIÓN CON MUCHOS TIPOS DE PREGUNTA*//
+        List<EvaluationQuestionCategory> evaluationQuestionCategories = new ArrayList<>();
+        for (int typeQuestion = 1; typeQuestion <= 6; typeQuestion++) {
+            evaluationQuestionCategories.add
+                    (new EvaluationQuestionCategory
+                            (evaluation, new QuestionCategory((long) typeQuestion), 0));
+        }
+        evaluationQuestionCategories = evaluationQuestionCategoryDAO.saveAll(evaluationQuestionCategories);
+        //*FIN TABLA INTERMEDIA*//
 
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("id_evaluation", evaluation.getId());

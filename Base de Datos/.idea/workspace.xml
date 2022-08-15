@@ -5,18 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bbc5533f-4237-4b82-99c8-ccd5e9e0c413" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/backups/virtus4.0.backup" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backups/virtus5.0.backup" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/routines.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/script_create_bd5.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/entity/EvaluationQuestionCategory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/repository/EvaluationQuestionCategoryRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/df8c8b86-2dab-4442-98ba-1fa49a5319ba.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/df8c8b86-2dab-4442-98ba-1fa49a5319ba.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/df8c8b86-2dab-4442-98ba-1fa49a5319ba/storage_v2/_src_/database/virtus.kxFZzw/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/df8c8b86-2dab-4442-98ba-1fa49a5319ba/storage_v2/_src_/database/virtus.kxFZzw/schema/public.abK9xQ.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/consults.sql" beforeDir="false" afterPath="$PROJECT_DIR$/consults.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model_bd_virtus/datatypes/Diagrams.local" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/datatypes/Diagrams.local" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model_bd_virtus/dl_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/dl_settings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model_bd_virtus/dmd_open.local" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/dmd_open.local" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model_bd_virtus/logical/Objects.local" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/logical/Objects.local" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model_bd_virtus/logical/entity/seg_0/306355EE-13C1-3B02-80A6-7C8B3AD2A2B7.xml" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/logical/entity/seg_0/306355EE-13C1-3B02-80A6-7C8B3AD2A2B7.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model_bd_virtus/logical/subviews/30C6B78F-2F85-5560-0373-9CE20245471A.xml" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/logical/subviews/30C6B78F-2F85-5560-0373-9CE20245471A.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/querys.sql" beforeDir="false" afterPath="$PROJECT_DIR$/querys.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtus/projects/virtus-app/src/app/home/home.component.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtus/projects/virtus-app/src/app/home/home.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtus/projects/virtus-app/src/app/home/home.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtus/projects/virtus-app/src/app/home/home.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtus/projects/virtus-app/src/app/testvoice/testvoice.component.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtus/projects/virtus-app/src/app/testvoice/testvoice.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtus/projects/virtus-app/src/app/testvoice/testvoice.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtus/projects/virtus-app/src/app/testvoice/testvoice.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/entity/Evaluation.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/entity/Evaluation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/entity/QuestionCategory.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/entity/QuestionCategory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/service/EvaluationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/service/EvaluationService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

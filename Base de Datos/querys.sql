@@ -4,7 +4,10 @@ select * from courses;
 select * from topics;
 select * from resources;
 select * from evaluations;
-select * from questions _category;
+select * from question_category;
+inner join question_category qc on questions.question_category_id_questioncategory = qc.id_questioncategory;
 select * from answers;
 select * from utils;
-select * from settings
+select * from settings;
+select  * from evaluation_question_category;
+

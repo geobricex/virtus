@@ -17,9 +17,9 @@ import java.time.LocalDateTime;
 @ToString
 public class Evaluation {
     @Id
-    @SequenceGenerator(name="evaluaions_idevaluaion_seq", sequenceName="evaluaions_idevaluaion_seqqq", allocationSize=1)
-//    @GeneratedValue(generator="evaluaions_idevaluaion_seqq")
-    @Column(name = "id_evaluation", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id_evaluation", unique = true, nullable = false)
     private Long id;
 
     @Column(name = "name_evaluation", nullable = false, length = 500)
