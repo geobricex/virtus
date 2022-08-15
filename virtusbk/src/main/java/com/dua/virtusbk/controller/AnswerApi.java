@@ -3,11 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dua.virtusbk.service;
+package com.dua.virtusbk.controller;
 
-import com.dua.virtusbk.controller.AnswerController;
+import com.dua.virtusbk.service.AnswerService;
 import com.dua.virtusbk.entity.Answer;
-import com.dua.virtusbk.entity.Question;
 import com.dua.virtusbk.repository.AnswerRepository;
 import com.dua.virtusbk.util.Methods;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ public class AnswerApi {
     private AnswerRepository answerDAO;
 
     @Autowired
-    private AnswerController answerController;
+    private AnswerService answerService;
 
     @GetMapping
     public ResponseEntity<List<Answer>> getAnswer() {
@@ -42,7 +41,7 @@ public class AnswerApi {
         String[] clains = Methods.getDataToJwt(sessionToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
         if (res[0].equals("2")) {
-            res = answerController.saveAnswers(answer);
+            res = answerService.saveAnswers(answer);
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
             if (res[0].equals("2")) {
                 return new ResponseEntity<>(message, HttpStatus.OK);
@@ -62,7 +61,7 @@ public class AnswerApi {
         String[] clains = Methods.getDataToJwt(sessionToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
         if (res[0].equals("2")) {
-            res = answerController.updateAnswers(answer);
+            res = answerService.updateAnswers(answer);
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
             if (res[0].equals("2")) {
                 return new ResponseEntity<>(message, HttpStatus.OK);

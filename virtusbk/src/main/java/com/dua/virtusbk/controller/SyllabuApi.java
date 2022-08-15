@@ -3,17 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dua.virtusbk.service;
+package com.dua.virtusbk.controller;
 
-import com.dua.virtusbk.ExcludeProxiedFields;
-import com.dua.virtusbk.controller.SyllabuController;
-import com.dua.virtusbk.entity.Course;
-import com.dua.virtusbk.entity.Person;
+import com.dua.virtusbk.service.SyllabuService;
 import com.dua.virtusbk.entity.Syllabu;
 import com.dua.virtusbk.repository.SyllabuRepository;
 import com.dua.virtusbk.util.Methods;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,7 +28,7 @@ public class SyllabuApi {
     private SyllabuRepository syllabuDAO;
 
     @Autowired
-    private SyllabuController syllabuController;
+    private SyllabuService syllabuService;
 
     @GetMapping
     public ResponseEntity<List<Syllabu>> getSyllabu() {
@@ -49,7 +44,7 @@ public class SyllabuApi {
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
 
         if (res[0].equals("2")) {
-            res = syllabuController.saveSyllabu(syllabu);
+            res = syllabuService.saveSyllabu(syllabu);
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
             if (res[0].equals("2")) {
                 return new ResponseEntity<>(message, HttpStatus.OK);
@@ -69,7 +64,7 @@ public class SyllabuApi {
         String[] clains = Methods.getDataToJwt(sessionToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
         if (res[0].equals("2")) {
-            res = syllabuController.updateSyllabu(syllabu);
+            res = syllabuService.updateSyllabu(syllabu);
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
             if (res[0].equals("2")) {
                 return new ResponseEntity<>(message, HttpStatus.OK);
@@ -111,7 +106,7 @@ public class SyllabuApi {
 //        if (res[0].equals("2")) {
         JsonObject jso = Methods.stringToJSON(id_course);
         String course_id_syllabu = Methods.JsonToString(jso, "course_id_syllabu", "");
-        String[] res = syllabuController.getSyllabus(course_id_syllabu);
+        String[] res = syllabuService.getSyllabus(course_id_syllabu);
         message = Methods.getJsonMessage(res[0], res[1], res[2]);
         if (res[0].equals("2")) {
             return new ResponseEntity<>(message, HttpStatus.OK);
@@ -134,7 +129,7 @@ public class SyllabuApi {
 //        if (res[0].equals("2")) {
         JsonObject jso = Methods.stringToJSON(id_syllabus);
         String id_syllabu = Methods.JsonToString(jso, "id_syllabu", "");
-        String[] res = syllabuController.getSyllabu(id_syllabu);
+        String[] res = syllabuService.getSyllabu(id_syllabu);
         message = Methods.getJsonMessage(res[0], res[1], res[2]);
         if (res[0].equals("2")) {
             return new ResponseEntity<>(message, HttpStatus.OK);

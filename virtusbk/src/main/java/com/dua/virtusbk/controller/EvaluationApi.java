@@ -3,12 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dua.virtusbk.service;
+package com.dua.virtusbk.controller;
 
-import com.dua.virtusbk.controller.EvaluationController;
-import com.dua.virtusbk.controller.TopicController;
+import com.dua.virtusbk.service.EvaluationService;
 import com.dua.virtusbk.entity.Evaluation;
-import com.dua.virtusbk.entity.Topic;
 import com.dua.virtusbk.repository.EvaluationRepository;
 import com.dua.virtusbk.util.Methods;
 import com.google.gson.JsonObject;
@@ -30,7 +28,7 @@ public class EvaluationApi {
     private EvaluationRepository evaluationDAO;
 
     @Autowired
-    private EvaluationController evaluationController;
+    private EvaluationService evaluationService;
 
     @GetMapping
     public ResponseEntity<List<Evaluation>> getEvaluation() {
@@ -45,7 +43,7 @@ public class EvaluationApi {
         String[] clains = Methods.getDataToJwt(sessionToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
         if (res[0].equals("2")) {
-            res = evaluationController.saveEvaluation(evaluation);
+            res = evaluationService.saveEvaluation(evaluation);
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
             if (res[0].equals("2")) {
                 return new ResponseEntity<>(message, HttpStatus.OK);
@@ -65,7 +63,7 @@ public class EvaluationApi {
         String[] clains = Methods.getDataToJwt(sessionToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
         if (res[0].equals("2")) {
-            res = evaluationController.updateEvaluation(evaluation);
+            res = evaluationService.updateEvaluation(evaluation);
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
             if (res[0].equals("2")) {
                 return new ResponseEntity<>(message, HttpStatus.OK);
@@ -91,7 +89,7 @@ public class EvaluationApi {
         JsonObject jso = Methods.stringToJSON(id_topic);
         String topic_id_evaluation = Methods.JsonToString(jso, "topic_id_evaluation", "");
         if (!topic_id_evaluation.equals("")) {
-            String[] res = evaluationController.getEvaluations(topic_id_evaluation);
+            String[] res = evaluationService.getEvaluations(topic_id_evaluation);
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
             if (res[0].equals("2")) {
                 return new ResponseEntity<>(message, HttpStatus.OK);
@@ -117,7 +115,7 @@ public class EvaluationApi {
 //        if (res[0].equals("2")) {
         JsonObject jso = Methods.stringToJSON(id_evaluations);
         String id_evaluation = Methods.JsonToString(jso, "id_evaluation", "");
-        String[] res = evaluationController.getEvaluation(id_evaluation);
+        String[] res = evaluationService.getEvaluation(id_evaluation);
         message = Methods.getJsonMessage(res[0], res[1], res[2]);
         if (res[0].equals("2")) {
             return new ResponseEntity<>(message, HttpStatus.OK);
@@ -143,7 +141,7 @@ public class EvaluationApi {
             JsonObject jso = Methods.stringToJSON(data);
             if (jso.size() > 0) {
                 String id_evaluation = Methods.JsonToString(jso, "id_evaluation", "");
-                res = evaluationController.getEvaluationQuestions(id_evaluation, clains[0]);
+                res = evaluationService.getEvaluationQuestions(id_evaluation, clains[0]);
                 message = Methods.getJsonMessage(res[0], res[1], res[2]);
                 if (res[0].equals("2")) {
                     return new ResponseEntity<>(message, HttpStatus.OK);

@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dua.virtusbk.service;
+package com.dua.virtusbk.controller;
 
-import com.dua.virtusbk.controller.CourseController;
+import com.dua.virtusbk.service.CourseService;
 import com.dua.virtusbk.entity.PersonsCours;
 import com.dua.virtusbk.repository.PersonsCourseRepository;
 import com.dua.virtusbk.util.Methods;
@@ -26,7 +26,7 @@ public class PersonsCoursApi {
     @Autowired
     private PersonsCourseRepository personscoursDAO;
     @Autowired
-    private CourseController courseController;
+    private CourseService courseService;
 
     @GetMapping
     public ResponseEntity<List<PersonsCours>> getPersonsCours() {
@@ -42,7 +42,7 @@ public class PersonsCoursApi {
         if (res[0].equals("2")) {
             JsonObject jso = Methods.stringToJSON(data);
             String id_course = Methods.JsonToString(jso, "id_course", "");
-            res = courseController.joinCourse(id_course, clains[0]);
+            res = courseService.joinCourse(id_course, clains[0]);
             if (res[0].equals("2")) {
                 message = Methods.getJsonMessage(res[0], res[1], res[2]);
                 return new ResponseEntity<>(message, HttpStatus.OK);
@@ -68,7 +68,7 @@ public class PersonsCoursApi {
         if (res[0].equals("2")) {
             JsonObject jso = Methods.stringToJSON(data);
             String state_course_person = Methods.JsonToString(jso, "state_course_person", "");
-            res = courseController.myCourseJoin(clains[0], state_course_person);
+            res = courseService.myCourseJoin(clains[0], state_course_person);
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
             if (res[0].equals("2")) {
                 return new ResponseEntity<>(message, HttpStatus.OK);
@@ -94,7 +94,7 @@ public class PersonsCoursApi {
         if (res[0].equals("2")) {
             JsonObject jso = Methods.stringToJSON(data);
             String state_course_person = Methods.JsonToString(jso, "state_course_person", "");
-            res = courseController.allCourseNoJoin(clains[0], state_course_person);
+            res = courseService.allCourseNoJoin(clains[0], state_course_person);
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
             if (res[0].equals("2")) {
                 return new ResponseEntity<>(message, HttpStatus.OK);

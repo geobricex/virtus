@@ -3,13 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dua.virtusbk.service;
+package com.dua.virtusbk.controller;
 
-import com.dua.virtusbk.controller.ResourceController;
-import com.dua.virtusbk.entity.Evaluation;
-import com.dua.virtusbk.entity.Question;
+import com.dua.virtusbk.service.ResourceService;
 import com.dua.virtusbk.entity.Resource;
-import com.dua.virtusbk.repository.QuestionRepository;
 import com.dua.virtusbk.repository.ResourceRepository;
 import com.dua.virtusbk.util.Methods;
 import com.google.gson.JsonObject;
@@ -31,7 +28,7 @@ public class ResourceApi {
     private ResourceRepository resourceDAO;
 
     @Autowired
-    private ResourceController resourceController;
+    private ResourceService resourceService;
 
     @GetMapping
     public ResponseEntity<List<Resource>> getResource() {
@@ -46,7 +43,7 @@ public class ResourceApi {
         String[] clains = Methods.getDataToJwt(sessionToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
         if (res[0].equals("2")) {
-            res = resourceController.saveResource(resource);
+            res = resourceService.saveResource(resource);
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
             if (res[0].equals("2")) {
                 return new ResponseEntity<>(message, HttpStatus.OK);
@@ -66,7 +63,7 @@ public class ResourceApi {
         String[] clains = Methods.getDataToJwt(sessionToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
         if (res[0].equals("2")) {
-            res = resourceController.updateResource(resource);
+            res = resourceService.updateResource(resource);
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
             if (res[0].equals("2")) {
                 return new ResponseEntity<>(message, HttpStatus.OK);
@@ -92,7 +89,7 @@ public class ResourceApi {
         JsonObject jso = Methods.stringToJSON(id_topic);
         String topic_id_resources = Methods.JsonToString(jso, "topic_id_resources", "");
         if (!topic_id_resources.equals("")) {
-            String[] res = resourceController.getResources(topic_id_resources);
+            String[] res = resourceService.getResources(topic_id_resources);
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
             if (res[0].equals("2")) {
                 return new ResponseEntity<>(message, HttpStatus.OK);
@@ -118,7 +115,7 @@ public class ResourceApi {
 //        if (res[0].equals("2")) {
         JsonObject jso = Methods.stringToJSON(id_resources);
         String id_resource = Methods.JsonToString(jso, "id_resource", "");
-        String[] res = resourceController.getResource(id_resource);
+        String[] res = resourceService.getResource(id_resource);
         message = Methods.getJsonMessage(res[0], res[1], res[2]);
         if (res[0].equals("2")) {
             return new ResponseEntity<>(message, HttpStatus.OK);

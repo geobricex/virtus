@@ -4,7 +4,7 @@
 <createdTime>2022-07-08 00:44:16 UTC</createdTime>
 <ownerDesignName>model_bd_virtus</ownerDesignName>
 <engineerTo>
-<item key="0016ACFC-8BFC-DD6B-8171-4FFB03CAD6C8" value="true"/>
+<item key="AA050666-575F-4F34-F7EE-3A860F24FD7B" value="true"/>
 </engineerTo>
 <adequatelyNormalized>NO</adequatelyNormalized>
 <expectedVolumes>0</expectedVolumes>
@@ -20,7 +20,7 @@
 <createdTime>2022-07-08 00:44:39 UTC</createdTime>
 <ownerDesignName>model_bd_virtus</ownerDesignName>
 <engineerTo>
-<item key="0016ACFC-8BFC-DD6B-8171-4FFB03CAD6C8" value="true"/>
+<item key="AA050666-575F-4F34-F7EE-3A860F24FD7B" value="true"/>
 </engineerTo>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
@@ -32,7 +32,7 @@
 <createdTime>2022-07-08 00:44:51 UTC</createdTime>
 <ownerDesignName>model_bd_virtus</ownerDesignName>
 <engineerTo>
-<item key="0016ACFC-8BFC-DD6B-8171-4FFB03CAD6C8" value="true"/>
+<item key="AA050666-575F-4F34-F7EE-3A860F24FD7B" value="true"/>
 </engineerTo>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
@@ -45,7 +45,7 @@
 <createdTime>2022-07-08 00:45:08 UTC</createdTime>
 <ownerDesignName>model_bd_virtus</ownerDesignName>
 <engineerTo>
-<item key="0016ACFC-8BFC-DD6B-8171-4FFB03CAD6C8" value="true"/>
+<item key="AA050666-575F-4F34-F7EE-3A860F24FD7B" value="true"/>
 </engineerTo>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
@@ -58,7 +58,7 @@
 <createdTime>2022-07-08 00:46:18 UTC</createdTime>
 <ownerDesignName>model_bd_virtus</ownerDesignName>
 <engineerTo>
-<item key="0016ACFC-8BFC-DD6B-8171-4FFB03CAD6C8" value="true"/>
+<item key="AA050666-575F-4F34-F7EE-3A860F24FD7B" value="true"/>
 </engineerTo>
 <nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>
@@ -71,7 +71,7 @@
 <createdTime>2022-07-08 02:04:16 UTC</createdTime>
 <ownerDesignName>model_bd_virtus</ownerDesignName>
 <engineerTo>
-<item key="0016ACFC-8BFC-DD6B-8171-4FFB03CAD6C8" value="true"/>
+<item key="AA050666-575F-4F34-F7EE-3A860F24FD7B" value="true"/>
 </engineerTo>
 <nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>
@@ -85,7 +85,7 @@
 <createdTime>2022-07-08 00:46:44 UTC</createdTime>
 <ownerDesignName>model_bd_virtus</ownerDesignName>
 <engineerTo>
-<item key="0016ACFC-8BFC-DD6B-8171-4FFB03CAD6C8" value="true"/>
+<item key="AA050666-575F-4F34-F7EE-3A860F24FD7B" value="true"/>
 </engineerTo>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
@@ -98,7 +98,7 @@
 <createdTime>2022-07-08 01:00:38 UTC</createdTime>
 <ownerDesignName>model_bd_virtus</ownerDesignName>
 <engineerTo>
-<item key="0016ACFC-8BFC-DD6B-8171-4FFB03CAD6C8" value="true"/>
+<item key="AA050666-575F-4F34-F7EE-3A860F24FD7B" value="true"/>
 </engineerTo>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
@@ -111,7 +111,7 @@
 <createdTime>2022-07-08 01:06:47 UTC</createdTime>
 <ownerDesignName>model_bd_virtus</ownerDesignName>
 <engineerTo>
-<item key="0016ACFC-8BFC-DD6B-8171-4FFB03CAD6C8" value="true"/>
+<item key="AA050666-575F-4F34-F7EE-3A860F24FD7B" value="true"/>
 </engineerTo>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
@@ -119,26 +119,13 @@
 <dataTypeSize>1</dataTypeSize>
 <ownDataTypeParameters>1,,</ownDataTypeParameters>
 </Attribute>
-<Attribute name="levels_topic" id="2AC7F051-AE87-C0B2-5D55-A4FE05BCF5CB">
-<createdBy>geova</createdBy>
-<createdTime>2022-07-19 03:25:05 UTC</createdTime>
-<ownerDesignName>model_bd_virtus</ownerDesignName>
-<engineerTo>
-<item key="0016ACFC-8BFC-DD6B-8171-4FFB03CAD6C8" value="true"/>
-</engineerTo>
-<nullsAllowed>true</nullsAllowed>
-<useDomainConstraints>false</useDomainConstraints>
-<use>1</use>
-<logicalDatatype>LOGDT011</logicalDatatype>
-<ownDataTypeParameters>,,</ownDataTypeParameters>
-</Attribute>
 <Attribute name="id_syllabu" id="71B30889-D5EB-BD64-C54E-715B3130E930">
 <createdBy>geova</createdBy>
 <createdTime>2022-07-08 01:56:50 UTC</createdTime>
 <generatorID>00287F47-4D75-36A7-B5AF-6A4F8AFDCC6B</generatorID>
 <ownerDesignName>model_bd_virtus</ownerDesignName>
 <engineerTo>
-<item key="0016ACFC-8BFC-DD6B-8171-4FFB03CAD6C8" value="true"/>
+<item key="AA050666-575F-4F34-F7EE-3A860F24FD7B" value="true"/>
 </engineerTo>
 <referedAttribute>3B26BDD2-4F72-5D11-7EEA-D48A535239F5</referedAttribute>
 <useDomainConstraints>false</useDomainConstraints>
@@ -153,7 +140,7 @@
 <createdTime>2022-07-08 00:44:46 UTC</createdTime>
 <ownerDesignName>model_bd_virtus</ownerDesignName>
 <engineerTo>
-<item key="0016ACFC-8BFC-DD6B-8171-4FFB03CAD6C8" value="true"/>
+<item key="AA050666-575F-4F34-F7EE-3A860F24FD7B" value="true"/>
 </engineerTo>
 <pk>true</pk>
 <usedAttributes>

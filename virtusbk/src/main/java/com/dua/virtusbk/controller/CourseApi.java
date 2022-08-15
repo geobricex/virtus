@@ -3,11 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dua.virtusbk.service;
+package com.dua.virtusbk.controller;
 
-import com.dua.virtusbk.controller.CourseController;
+import com.dua.virtusbk.service.CourseService;
 import com.dua.virtusbk.entity.Course;
-import com.dua.virtusbk.entity.Person;
 import com.dua.virtusbk.repository.CourseRepository;
 import com.dua.virtusbk.util.Methods;
 import com.google.gson.JsonObject;
@@ -28,7 +27,7 @@ public class CourseApi {
     @Autowired
     private CourseRepository courseDAO;
     @Autowired
-    private CourseController courseController;
+    private CourseService courseService;
 
     @GetMapping
     public ResponseEntity<List<Course>> getCourse() {
@@ -42,7 +41,7 @@ public class CourseApi {
         String[] clains = Methods.getDataToJwt(sessionToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
         if (res[0].equals("2")) {
-            res = courseController.saveCourse(course, clains[0]);
+            res = courseService.saveCourse(course, clains[0]);
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
             if (res[0].equals("2")) {
                 return new ResponseEntity<>(message, HttpStatus.OK);
@@ -62,7 +61,7 @@ public class CourseApi {
         String[] clains = Methods.getDataToJwt(sessionToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
         if (res[0].equals("2")) {
-            res = courseController.updateCourse(course, clains[0]);
+            res = courseService.updateCourse(course, clains[0]);
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
             if (res[0].equals("2")) {
                 return new ResponseEntity<>(message, HttpStatus.OK);
@@ -88,7 +87,7 @@ public class CourseApi {
 //        if (res[0].equals("2")) {
         JsonObject jso = Methods.stringToJSON(data);
         String id_course = Methods.JsonToString(jso, "id_course", "");
-        String[] res = courseController.selectCourseSyllabuTopic(id_course);
+        String[] res = courseService.selectCourseSyllabuTopic(id_course);
         message = Methods.getJsonMessage(res[0], res[1], res[2]);
         if (res[0].equals("2")) {
             return new ResponseEntity<>(message, HttpStatus.OK);

@@ -1,11 +1,8 @@
-package com.dua.virtusbk.service;
+package com.dua.virtusbk.controller;
 
 
-import com.dua.virtusbk.controller.CourseController;
-import com.dua.virtusbk.controller.UtilController;
-import com.dua.virtusbk.entity.Course;
+import com.dua.virtusbk.service.UtilService;
 import com.dua.virtusbk.entity.Util;
-import com.dua.virtusbk.repository.PersonRepository;
 import com.dua.virtusbk.repository.UtilRepository;
 import com.dua.virtusbk.util.Methods;
 import com.google.gson.JsonObject;
@@ -25,7 +22,7 @@ public class UtilApis {
     @Autowired
     private UtilRepository utilDAO;
     @Autowired
-    private UtilController utilController;
+    private UtilService utilService;
 
     //@RequestMapping(value = "", method = RequestMethod.GET)
     @GetMapping
@@ -79,7 +76,7 @@ public class UtilApis {
             if (jso.size() > 0) {
                 int id_type = Methods.JsonToInteger(jso, "id_type", 0);
 
-                res = utilController.getInformationHome(id_type, clains[0]);
+                res = utilService.getInformationHome(id_type, clains[0]);
                 message = Methods.getJsonMessage(res[0], res[1], res[2]);
                 if (res[0].equals("2")) {
                     return new ResponseEntity<>(message, HttpStatus.OK);

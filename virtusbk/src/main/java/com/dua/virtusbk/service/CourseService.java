@@ -1,4 +1,4 @@
-package com.dua.virtusbk.controller;
+package com.dua.virtusbk.service;
 
 import com.dua.virtusbk.ExcludeProxiedFields;
 import com.dua.virtusbk.entity.Course;
@@ -7,31 +7,19 @@ import com.dua.virtusbk.entity.PersonsCours;
 import com.dua.virtusbk.repository.CourseRepository;
 import com.dua.virtusbk.repository.PersonsCourseRepository;
 import com.dua.virtusbk.util.Methods;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import javax.xml.crypto.Data;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 
 @Service
 @Transactional
-public class CourseController {
+public class CourseService {
     @Autowired
     private CourseRepository courseDAO;
 

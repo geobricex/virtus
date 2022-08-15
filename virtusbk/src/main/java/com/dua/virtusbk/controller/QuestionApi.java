@@ -3,13 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dua.virtusbk.service;
+package com.dua.virtusbk.controller;
 
-import com.dua.virtusbk.controller.QuestionController;
-import com.dua.virtusbk.entity.Evaluation;
+import com.dua.virtusbk.service.QuestionService;
 import com.dua.virtusbk.entity.Question;
-import com.dua.virtusbk.entity.Resource;
-import com.dua.virtusbk.repository.EvaluationRepository;
 import com.dua.virtusbk.repository.QuestionRepository;
 import com.dua.virtusbk.util.Methods;
 import com.google.gson.JsonObject;
@@ -31,7 +28,7 @@ public class QuestionApi {
     private QuestionRepository questionDAO;
 
     @Autowired
-    private QuestionController questionController;
+    private QuestionService questionService;
 
     @GetMapping
     public ResponseEntity<List<Question>> getQuestion() {
@@ -45,7 +42,7 @@ public class QuestionApi {
         String[] clains = Methods.getDataToJwt(sessionToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
         if (res[0].equals("2")) {
-            res = questionController.saveQuestion(question);
+            res = questionService.saveQuestion(question);
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
             if (res[0].equals("2")) {
                 return new ResponseEntity<>(message, HttpStatus.OK);
@@ -65,7 +62,7 @@ public class QuestionApi {
         String[] clains = Methods.getDataToJwt(sessionToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
         if (res[0].equals("2")) {
-            res = questionController.updateQuestion(question);
+            res = questionService.updateQuestion(question);
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
             if (res[0].equals("2")) {
                 return new ResponseEntity<>(message, HttpStatus.OK);
@@ -91,7 +88,7 @@ public class QuestionApi {
             JsonObject jso = Methods.stringToJSON(data);
             if (jso.size() > 0) {
                 String id_evaluation = Methods.JsonToString(jso, "id_evaluation", "");
-                res = questionController.getQuestions(id_evaluation);
+                res = questionService.getQuestions(id_evaluation);
                 message = Methods.getJsonMessage(res[0], res[1], res[2]);
                 if (res[0].equals("2")) {
                     return new ResponseEntity<>(message, HttpStatus.OK);
@@ -121,7 +118,7 @@ public class QuestionApi {
             JsonObject jso = Methods.stringToJSON(data);
             if (jso.size() > 0) {
                 String id_question = Methods.JsonToString(jso, "id_question", "");
-                res = questionController.getQuestion(id_question);
+                res = questionService.getQuestion(id_question);
                 message = Methods.getJsonMessage(res[0], res[1], res[2]);
                 if (res[0].equals("2")) {
                     return new ResponseEntity<>(message, HttpStatus.OK);

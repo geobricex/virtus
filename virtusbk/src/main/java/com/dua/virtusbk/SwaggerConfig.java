@@ -21,7 +21,7 @@ public class SwaggerConfig {
     public Docket api(){
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.dua.virtusbk.service"))
+                .apis(RequestHandlerSelectors.basePackage("com.dua.virtusbk.controller"))
                 .paths(PathSelectors.any())
                 .build();
     }

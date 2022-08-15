@@ -3,13 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dua.virtusbk.service;
+package com.dua.virtusbk.controller;
 
-import com.dua.virtusbk.controller.TopicController;
-import com.dua.virtusbk.entity.Course;
-import com.dua.virtusbk.entity.Syllabu;
+import com.dua.virtusbk.service.TopicService;
 import com.dua.virtusbk.entity.Topic;
-import com.dua.virtusbk.repository.SyllabuRepository;
 import com.dua.virtusbk.repository.TopicRepository;
 import com.dua.virtusbk.util.Methods;
 import com.google.gson.JsonObject;
@@ -32,7 +29,7 @@ public class TopicApi {
     private TopicRepository topicDAO;
 
     @Autowired
-    private TopicController topicController;
+    private TopicService topicService;
 
     @RequestMapping(value = "/topics", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -47,7 +44,7 @@ public class TopicApi {
         String[] clains = Methods.getDataToJwt(sessionToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
         if (res[0].equals("2")) {
-            res = topicController.saveTopic(topic);
+            res = topicService.saveTopic(topic);
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
             if (res[0].equals("2")) {
                 return new ResponseEntity<>(message, HttpStatus.OK);
@@ -67,7 +64,7 @@ public class TopicApi {
         String[] clains = Methods.getDataToJwt(sessionToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
         if (res[0].equals("2")) {
-            res = topicController.updateTopic(topic);
+            res = topicService.updateTopic(topic);
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
             if (res[0].equals("2")) {
                 return new ResponseEntity<>(message, HttpStatus.OK);
@@ -92,7 +89,7 @@ public class TopicApi {
 //        if (res[0].equals("2")) {
         JsonObject jso = Methods.stringToJSON(id_syllabyu);
         String course_id_syllabu = Methods.JsonToString(jso, "syllabu_id_topic", "");
-        String[] res = topicController.getTopics(course_id_syllabu);
+        String[] res = topicService.getTopics(course_id_syllabu);
         message = Methods.getJsonMessage(res[0], res[1], res[2]);
         if (res[0].equals("2")) {
             return new ResponseEntity<>(message, HttpStatus.OK);
@@ -115,7 +112,7 @@ public class TopicApi {
 //        if (res[0].equals("2")) {
         JsonObject jso = Methods.stringToJSON(id_syllabyu);
         String course_id_syllabu = Methods.JsonToString(jso, "syllabu_id_topic", "");
-        String[] res = topicController.getTopic(course_id_syllabu);
+        String[] res = topicService.getTopic(course_id_syllabu);
         message = Methods.getJsonMessage(res[0], res[1], res[2]);
         if (res[0].equals("2")) {
             return new ResponseEntity<>(message, HttpStatus.OK);

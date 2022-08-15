@@ -1,11 +1,8 @@
-package com.dua.virtusbk.controller;
+package com.dua.virtusbk.service;
 
 import com.dua.virtusbk.ExcludeProxiedFields;
 import com.dua.virtusbk.entity.Evaluation;
-import com.dua.virtusbk.entity.Syllabu;
-import com.dua.virtusbk.entity.Topic;
 import com.dua.virtusbk.repository.EvaluationRepository;
-import com.dua.virtusbk.repository.TopicRepository;
 import com.dua.virtusbk.util.Methods;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -21,7 +18,7 @@ import java.util.Map;
 
 @Service
 @Transactional
-public class EvaluationController {
+public class EvaluationService {
     @Autowired
     private EvaluationRepository evaluationDAO;
 

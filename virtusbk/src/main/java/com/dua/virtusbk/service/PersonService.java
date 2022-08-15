@@ -1,11 +1,9 @@
-package com.dua.virtusbk.controller;
+package com.dua.virtusbk.service;
 
 import com.dua.virtusbk.entity.Person;
-import com.dua.virtusbk.entity.Util;
 import com.dua.virtusbk.repository.PersonRepository;
 import com.dua.virtusbk.util.DataStatic;
 import com.dua.virtusbk.util.Methods;
-import com.dua.virtusbk.util.TemplateEmail;
 import com.dua.virtusbk.util.WeEncoder;
 import com.google.gson.JsonObject;
 import io.jsonwebtoken.Jwts;
@@ -25,12 +23,12 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-public class PersonController {
+public class PersonService {
     @Autowired
     private PersonRepository personDAO;
 
     @Autowired
-    private UtilController utilController;
+    private UtilService utilService;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -67,9 +65,11 @@ public class PersonController {
             System.out.println("sigUp...");
             String sendEmailCode = weEncoder.getEmailCode();
 
+            person.setNamePerson(person.getNamePerson().toUpperCase().trim());
+            person.setLastnamePerson(person.getLastnamePerson().toUpperCase().trim());
             person.setCodeverificationPerson(sendEmailCode);
-            person.setEmailPerson(person.getEmailPerson().toLowerCase());
-            person.setPasswordPerson(bCryptPasswordEncoder.encode(person.getPasswordPerson()));
+            person.setEmailPerson(person.getEmailPerson().toLowerCase().trim());
+            person.setPasswordPerson(bCryptPasswordEncoder.encode(person.getPasswordPerson().trim()));
             person.setTypePerson("S");
             /*FECHA*/
             person.setDateregPerson(Methods.nowLocalDateTime());
@@ -83,7 +83,7 @@ public class PersonController {
             person = personDAO.save(person);
             if (person.getTypePerson().equals("S")) {
 
-                if (utilController.eInsertUser(person.getEmailPerson(), person.getNamePerson(), person.getLastnamePerson(), person.getCodeverificationPerson())) {
+                if (utilService.eInsertUser(person.getEmailPerson(), person.getNamePerson(), person.getLastnamePerson(), person.getCodeverificationPerson())) {
                     status = "2";
                     message = "Usuario registrado con éxito.";
                     data = personToJson(person).toString();
@@ -116,10 +116,14 @@ public class PersonController {
             System.out.println("updatePerson...");
 
             if (!person.getTypePerson().equals("S") && !person.getTypePerson().equals("I")) {
+
+                person.setNamePerson(person.getNamePerson().toUpperCase().trim());
+                person.setLastnamePerson(person.getLastnamePerson().toUpperCase().trim());
                 person.setDateupdatePerson(Methods.nowLocalDateTime());
+
                 person = personDAO.save(person);
                 String textMessage = "Sus datos se han actualizado de forma exitosa.";
-                utilController.eMessageUser(person.getEmailPerson(), person.getNamePerson(), person.getLastnamePerson(), textMessage);
+                utilService.eMessageUser(person.getEmailPerson(), person.getNamePerson(), person.getLastnamePerson(), textMessage);
                 status = "2";
                 message = "Datos del usuario actualizados.";
             } else {
@@ -157,7 +161,7 @@ public class PersonController {
                     Persons.get(0).setCodeverificationPerson(codeEmail);
                     Persons.get(0).setDateupdatePerson(Methods.nowLocalDateTime());
                     personDAO.save(Persons.get(0));
-                    if (utilController.eCodeUser(Persons.get(0).getEmailPerson(), Persons.get(0).getNamePerson(), Persons.get(0).getLastnamePerson(), Persons.get(0).getCodeverificationPerson())) {
+                    if (utilService.eCodeUser(Persons.get(0).getEmailPerson(), Persons.get(0).getNamePerson(), Persons.get(0).getLastnamePerson(), Persons.get(0).getCodeverificationPerson())) {
                         status = "2";
                         message = "Se ha enviado el código de verificación.";
                     } else {
@@ -178,15 +182,15 @@ public class PersonController {
     public String[] changePassword(String password, String newPassword, String id_person) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
         Optional<Person> Persons = personDAO.findById(Long.parseLong(id_person));
-        password = bCryptPasswordEncoder.encode(password);
-        newPassword = bCryptPasswordEncoder.encode(newPassword);
+        password = bCryptPasswordEncoder.encode(password.trim());
+        newPassword = bCryptPasswordEncoder.encode(newPassword.trim());
         if (Persons.isPresent()) {
             if (password.equals(Persons.get().getPasswordPerson()) && !password.equals(newPassword)) {
                 Persons.get().setPasswordPerson(newPassword);
                 Persons.get().setDateupdatePerson(Methods.nowLocalDateTime());
                 personDAO.save(Persons.get());
                 String textMessage = "Su contraseña ha sido actualizada con éxito.";
-                utilController.eMessageUser(Persons.get().getEmailPerson(), Persons.get().getNamePerson(), Persons.get().getLastnamePerson(), textMessage);
+                utilService.eMessageUser(Persons.get().getEmailPerson(), Persons.get().getNamePerson(), Persons.get().getLastnamePerson(), textMessage);
                 status = "2";
                 message = "Contraseña actualizada.";
             } else {
@@ -233,7 +237,7 @@ public class PersonController {
                 && provider.equals("native")))) {
             Person person = new Person();
             person.setEmailPerson(email.toLowerCase());
-            person.setPasswordPerson(password);
+            person.setPasswordPerson(password.trim());
 
             List<Person> Persons = personDAO.findByEmailList(person.getEmailPerson());
 

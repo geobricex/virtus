@@ -1,18 +1,12 @@
-package com.dua.virtusbk.controller;
+package com.dua.virtusbk.service;
 
-import com.dua.virtusbk.ExcludeProxiedFields;
-import com.dua.virtusbk.entity.Course;
 import com.dua.virtusbk.entity.Util;
-import com.dua.virtusbk.repository.CourseRepository;
 import com.dua.virtusbk.repository.UtilRepository;
 import com.dua.virtusbk.util.DataStatic;
 import com.dua.virtusbk.util.Email;
 import com.dua.virtusbk.util.Methods;
 import com.dua.virtusbk.util.WeEncoder;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +16,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class UtilController {
+public class UtilService {
     @Autowired
     private UtilRepository utilDAO;
 
