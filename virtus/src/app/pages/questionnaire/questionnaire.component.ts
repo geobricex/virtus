@@ -10,7 +10,8 @@ import {ActivatedRoute} from '@angular/router';
 import {Evaluation, EvaluationQuestionsResponse, Questions} from "../../models/evaluation_questionarie";
 import {FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule} from '@angular/forms';
 import {AppMainComponent} from '../../app.main.component';
-
+import {StorageService} from "../../authentication/StorageService";
+import {FormBuilder} from '@angular/forms';
 
 declare var Artyom: any;
 
@@ -25,7 +26,8 @@ export class QuestionnaireComponent implements OnInit {
   idTopic: string | null = "";
   idEvaluation: string | null = "";
   idResource: string | null = "";
-  valRadio: string;
+  //valRadio: string;
+
 
   private artyom: any = new Artyom();
 
@@ -56,7 +58,10 @@ export class QuestionnaireComponent implements OnInit {
               private _http: HttpClient,
               private _route: ActivatedRoute,
               private utils: Utils,
-              private activatedRoute: ActivatedRoute) {
+              private activatedRoute: ActivatedRoute,
+              private storageService: StorageService,
+              private fb: FormBuilder
+  ) {
 
     this.idCourse = this._route.snapshot.paramMap.get("idcourse");
     this.idModule = this._route.snapshot.paramMap.get("idmodule");
@@ -74,9 +79,10 @@ export class QuestionnaireComponent implements OnInit {
       },
       {
         label: 'Evaluación',
-        routerLink: ['/app/mycourse/modules/' + this.idCourse + '/themes/' + this.idModule  + '/resources/'+ this.idResource + '/questionnaire/'+ this.idEvaluation]
+        routerLink: ['/app/mycourse/modules/' + this.idCourse + '/themes/' + this.idModule + '/resources/' + this.idResource + '/questionnaire/' + this.idEvaluation]
       },
     ]);
+
 
     // this.breadcrumbService.setItems([
     //   {label: 'Cuestionario', routerLink: ['/app/questionnaire']}
@@ -137,7 +143,7 @@ export class QuestionnaireComponent implements OnInit {
     let total = this.evaluationObject.questions_.length;
     let respondidas = 0;
     for (let ind = 0; ind < total; ind++) {
-      if (this.evaluationObject.questions_[ind].resuelto) {
+      if (this.evaluationObject.questions_[ind].canResource != undefined) {
         respondidas++;
       }
     }
@@ -185,13 +191,15 @@ export class QuestionnaireComponent implements OnInit {
                 }
                 this.tiempoEvaluacion--;
               });
+            if (this.voiceComandsSupport()) {
+              if (this.storageService.getCurrentUser().email != "anthony.pachay2017@uteq.edu.ec") {
+                this.startContinuousArtyom();
+              }
+            }
+            this.cambiarPregunta(0, true);
           }
-          if (this.voiceComandsSupport()) {
-            //this.startContinuousArtyom();
-          }
-          this.cambiarPregunta(0, true);
           //this.initCanvas(false);
-          setTimeout(() =>{
+          setTimeout(() => {
             console.log("silenciar video")
             this.autoClick("#silenciar_video");
           }, 500);
@@ -201,11 +209,11 @@ export class QuestionnaireComponent implements OnInit {
 
   }
 
-  partirPreguntaComplete(quest :string):string[]{
+  partirPreguntaComplete(quest: string): string[] {
     return quest.split(/[\{\}]/);
   }
 
-  miliseguntos2Segundos(tiempo:number):string{
+  miliseguntos2Segundos(tiempo: number): string {
     let m = Math.floor(tiempo % 3600 / 60).toString().padStart(2, '0');
     let s = Math.floor(tiempo % 60).toString().padStart(2, '0');
     return m + ":" + s;
@@ -216,20 +224,23 @@ export class QuestionnaireComponent implements OnInit {
     if (indice != this.indexQuestionObject) {
       this.indexQuestionObject = indice;
       this.questionObject = this.evaluationObject.questions_[this.indexQuestionObject];
+      console.log("cambia a pregunta:" + this.questionObject);
       let rec: string = this.questionObject.answers_[0].options_answer[0].resource!;
       rec = rec != undefined ? rec : "";
       this.questionObject.canResource = (rec.length > 0);
       console.log("pregunta: ", this.questionObject);
     }
     this.initCanvas(flag);
-    // this.leerPregunta();
+    if (this.storageService.getCurrentUser().email != "anthony.pachay2017@uteq.edu.ec") {
+      this.leerPregunta();
+    }
   }
 
 
   obtenerPreguntasWS(idEvaluacion: number): Observable<EvaluationQuestionsResponse> {
     let urlServicio: string;
     urlServicio = this.utils.globalUrl;
-    console.log("servicio: " , urlServicio);
+    console.log("servicio: ", urlServicio);
     urlServicio += "evaluation/getEvaluationQuestions";
     /*if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
       urlServicio = "virtusbk/evaluation/getEvaluationQuestions";
@@ -260,22 +271,23 @@ export class QuestionnaireComponent implements OnInit {
 
   /*Paginar preguntas*/
   anteriorPregunta(): void {
-    this.indexQuestionObject = this.indexQuestionObject + 1;
-    if (this.indexQuestionObject >= this.evaluationObject.questions_.length) {
-      this.indexQuestionObject = this.evaluationObject.questions_.length - 1;
+    let ind = this.indexQuestionObject + 1;
+    if (ind >= this.evaluationObject.questions_.length) {
+      ind = this.evaluationObject.questions_.length - 1;
     }
     //this.questionObject = this.evaluationObject.questions_[this.indexQuestionObject];
-    this.cambiarPregunta(this.indexQuestionObject);
+    console.log("cambiarPregunta()", ind);
+    this.cambiarPregunta(ind);
   }
 
   siguientePregunta(): void {
     console.log("siguiente pregunta");
-    this.indexQuestionObject = this.indexQuestionObject - 1;
-    if (this.indexQuestionObject < 0) {
-      this.indexQuestionObject = 0;
+    let ind = this.indexQuestionObject - 1;
+    if (ind < 0) {
+      ind = 0;
     }
     //this.questionObject = this.evaluationObject.questions_[this.indexQuestionObject];
-    this.cambiarPregunta(this.indexQuestionObject);
+    this.cambiarPregunta(ind);
   }
 
   /*Video Player*/
@@ -356,14 +368,15 @@ export class QuestionnaireComponent implements OnInit {
   startContinuousArtyom(): void {
 
     this.artyom.fatality();
-
+    let local_this = this;
     let myGroup: any = [{
       description: "Si el usuario indica un literal que se encuentra en la lista",
       smart: true, // Activar comando como un comando smart para poder usar comodines
       indexes: ["literal *", "opción *"],
       action: function (i: number, wildcard: string) {
-        //let database: string[] = ["a", "b", "c", "d"];
-        this.evaluar(wildcard, i);
+        //let database: string[] = ["a", "b", "c", "d", "e", "f"];
+        local_this.evaluar(wildcard, i);
+
       }
     },
       {
@@ -375,8 +388,8 @@ export class QuestionnaireComponent implements OnInit {
           //reproducir_video
           //pausar_video
           //silenciar_video
-          // this.evaluar_control_video(wildcard, i, database);
-          console.log("wilcardOriginal:" + wildcard);
+          local_this.evaluar_control_video(wildcard, i, database);
+          /*console.log("wilcardOriginal:" + wildcard);
           wildcard = wildcard.trim().replace(/[^a-zA-Z]+/, "");
           console.log("wildcard:", wildcard, i, database.indexOf(wildcard.trim()));
           if (database.indexOf(wildcard.trim()) > -1) {
@@ -388,7 +401,7 @@ export class QuestionnaireComponent implements OnInit {
             if (btnStart) (btnStart as HTMLFormElement).click();
           } else {
             console.log("No se encuentra ese literal")
-          }
+          }*/
         }
       }
     ];

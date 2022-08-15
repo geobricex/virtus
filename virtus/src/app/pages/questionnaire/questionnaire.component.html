@@ -35,7 +35,7 @@
     <p-messages severity="warn" [enableService]="true" *ngIf="!voiceComandsSupport()">
       <ng-template pTemplate>
         <img src="assets/imgresource/empty/notification.png" width="75"
-             />
+        />
         <div class="ml-2">Actualmente tenemos problemas de compatibilidad.<br/>En este navegador <strong>no podrás usar
           los comandos de voz</strong>.
         </div>
@@ -52,7 +52,7 @@
                  class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
                  (click)="cambiarPregunta(i2)">
               <span> {{"N°" + (i2 + 1)}} </span>
-              <i class="pi pi-circle-on mt-1 text-sm {{question.resuelto?'text-green-600': 'text-pink-600'}}"
+              <i class="pi pi-circle-on mt-1 text-sm {{question.answers_[0].responses != undefined?'text-green-600': 'text-pink-600'}}"
                  style="float: right"></i>
             </div>
           </div>
@@ -63,7 +63,7 @@
                  class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
                  (click)="cambiarPregunta(i2)">
               <span> {{"N°" + (i2 + 1)}} </span>
-              <i class="pi pi-circle-on mt-1 text-sm {{question.resuelto?'text-green-600': 'text-pink-600'}}"
+              <i class="pi pi-circle-on mt-1 text-sm {{question.answers_[0].responses != undefined?'text-green-600': 'text-pink-600'}}"
                  style="float: right"></i>
             </div>
           </div>
@@ -74,7 +74,7 @@
                  class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
                  (click)="cambiarPregunta(i2)">
               <span> {{"N°" + (i2 + 1)}} </span>
-              <i class="pi pi-circle-on mt-1 text-sm {{question.resuelto?'text-green-600': 'text-pink-600'}}"
+              <i class="pi pi-circle-on mt-1 text-sm {{question.answers_[0].responses != undefined?'text-green-600': 'text-pink-600'}}"
                  style="float: right"></i>
             </div>
           </div>
@@ -85,7 +85,7 @@
                  class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
                  (click)="cambiarPregunta(i2)">
               <span> {{"N°" + (i2 + 1)}} </span>
-              <i class="pi pi-circle-on mt-1 text-sm {{question.resuelto?'text-green-600': 'text-pink-600'}}"
+              <i class="pi pi-circle-on mt-1 text-sm {{question.answers_[0].responses != undefined?'text-green-600': 'text-pink-600'}}"
                  style="float: right"></i>
             </div>
           </div>
@@ -108,9 +108,11 @@
               image="{{'assets/imgresource/empty/shield.png'}}"
       ></p-chip>
 
-      <div *ngIf="questionObject.pathurlsign_question != null" class="col-12 text-center">
+      <div *ngIf="questionObject.pathurlsign_question != null
+      || questionObject.pathurlsign_question!=undefined
+      || questionObject.pathurlsign_question == ''" class="col-12 text-center">
         <video id="pathurlsign_question" height="300" controls [src]="questionObject.pathurlsign_question"
-               [autoplay]="true" >
+               [autoplay]="true">
         </video>
       </div>
 
@@ -130,17 +132,14 @@
       <h5>{{questionObject.description_question}}</h5>
       <!--Selección unica normal-->
       <div *ngIf="questionObject.name_questioncategory == tipoPregunta(2) && !questionObject.canResource">
-        <form novalidate>
-          <div *ngFor="let option of questionObject.answers_[0].options_answer; let i = index"
-               [attr.data-index]="i">
-            <div class="field-radiobutton">
-              <p-radioButton [inputId]="'option_rd_' + alphabet[i]" name="Simple_Option"
-                             (onClick)="changeRadio(i)" [(ngModel)]="option.miSelected"
-                             [value]="true"></p-radioButton>
-              <label [for]="'option_rd_' + alphabet[i]">{{alphabet[i].toUpperCase() + ")\t" + option.opcion}}</label>
-            </div>
+        <div *ngFor="let option of questionObject.answers_[0].options_answer; let i = index" >
+          <div class="field-radiobutton">
+          <p-radioButton [inputId]="'option_rd_' + alphabet[i]" name="Simple_Option" [value]="option"
+                         [(ngModel)]="questionObject.answers_[0].responses"
+                         (onClick)="changeRadio(i)" ></p-radioButton>
+          <label [for]="'option_rd_' + alphabet[i]">{{alphabet[i].toUpperCase() + ")\t" + option.opcion}}</label>
           </div>
-        </form>
+        </div>
       </div>
       <!--Selección unica normal con imagenes-->
       <div *ngIf="questionObject.name_questioncategory == tipoPregunta(2) && questionObject.canResource"
@@ -149,14 +148,14 @@
         <p-card *ngFor="let option of questionObject.answers_[0].options_answer; let i = index"
                 [attr.data-index]="i" [style]="{width: '120px'}" styleClass="p-card-shadow">
           <ng-template pTemplate="header">
-            <img class="img-color" alt="Card" [src]="option.resource" width="100" >
+            <img class="img-color" alt="Card" [src]="option.resource" width="100">
           </ng-template>
           <p>{{option.opcion}}</p>
           <ng-template pTemplate="footer">
             <div class="field-radiobutton">
-              <p-radioButton [inputId]="'option_rd_2_' + alphabet[i]" name="Simple_Option"
-                             (onClick)="changeRadio(i)" [(ngModel)]="option.miSelected"
-                             [value]="true"></p-radioButton>
+              <p-radioButton [inputId]="'option_rd_2_' + alphabet[i]" name="Simple_Option_img" [value]="option"
+                             [(ngModel)]="questionObject.answers_[0].responses"
+                             (onClick)="changeRadio(i)"></p-radioButton>
               <label
                 [for]="'option_rd_2_' + alphabet[i]"><strong>{{'Literal ' + alphabet[i].toUpperCase()}}</strong></label>
             </div>
@@ -168,9 +167,9 @@
         <div *ngFor="let option of questionObject.answers_[0].options_answer; let i = index"
              [attr.data-index]="i">
           <div class="field-radiobutton">
-            <p-checkbox [inputId]="'option_ck_' + alphabet[i]" name="Simple_Option"
-                        (onClick)="changeRadio(i)" [(ngModel)]="option.miSelected"
-                        [value]="true"></p-checkbox>
+            <p-checkbox [inputId]="'option_ck_' + alphabet[i]" name="multiple_Option" [value]="option"
+                        [(ngModel)]="questionObject.answers_[0].responses"
+                        (onClick)="changeRadio(i)"></p-checkbox>
             <label [for]="'option_ck_' + alphabet[i]">{{alphabet[i].toUpperCase() + ")\t" + option.opcion}}</label>
           </div>
         </div>
@@ -182,14 +181,14 @@
         <p-card *ngFor="let option of questionObject.answers_[0].options_answer; let i = index"
                 [attr.data-index]="i" [style]="{width: '120px'}" styleClass="p-card-shadow">
           <ng-template pTemplate="header">
-            <img alt="Card" [src]="option.resource" width="100" >
+            <img alt="Card" [src]="option.resource" width="100">
           </ng-template>
           <p>{{option.opcion}}</p>
           <ng-template pTemplate="footer">
             <div class="field-radiobutton">
-              <p-checkbox [inputId]="'option_ck_2_' + alphabet[i]" name="Simple_Option"
-                          (onClick)="changeRadio(i)" [(ngModel)]="option.miSelected"
-                          [value]="true"></p-checkbox>
+              <p-checkbox [inputId]="'option_ck_2_' + alphabet[i]" name="multiple_Option_img" [value]="option"
+                          [(ngModel)]="questionObject.answers_[0].responses"
+                          (onClick)="changeRadio(i)"></p-checkbox>
               <label
                 [for]="'option_ck_2_' + alphabet[i]"><strong>{{'Literal ' + alphabet[i].toUpperCase()}}</strong></label>
             </div>

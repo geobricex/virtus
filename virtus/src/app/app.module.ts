@@ -25,6 +25,7 @@ import {FieldsetModule} from 'primeng/fieldset';
 import {BadgeModule} from 'primeng/badge';
 import {SpeedDialModule} from 'primeng/speeddial';
 import {TabViewModule} from 'primeng/tabview';
+import {ColorPickerModule} from 'primeng/colorpicker';
 
 //INICIO SERVICE
 import {CargarScriptsService} from "./services/cargar-scripts.service"
@@ -156,7 +157,8 @@ FullCalendarModule.registerPlugins([
     InputSwitchModule,
     SpeedDialModule,
     TabViewModule,
-    InputNumberModule
+    InputNumberModule,
+    ColorPickerModule
   ],
 
   providers: [
