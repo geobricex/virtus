@@ -35,7 +35,7 @@ public class Setting {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "persons_id_person", nullable = false)
-    @JsonIgnore// No traer toda la relación en una consulta
+//    @JsonIgnore// No traer toda la relación en una consulta
     private Person personsIdPerson;
 
 }

@@ -5,20 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bbc5533f-4237-4b82-99c8-ccd5e9e0c413" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/script_create_bd4.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/SettingApis.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/service/SettingService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/consults.sql" beforeDir="false" afterPath="$PROJECT_DIR$/consults.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/datatypes/Diagrams.local" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/datatypes/Diagrams.local" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/dl_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/dl_settings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/dmd_open.local" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/dmd_open.local" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/logical/Objects.local" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/logical/Objects.local" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/logical/entity/seg_0/003A7B61-9D5E-9A1A-A469-431CEDDC2AB6.xml" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/logical/entity/seg_0/003A7B61-9D5E-9A1A-A469-431CEDDC2AB6.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/logical/entity/seg_0/811BDB7C-1016-9E9B-F6E5-2FE761345273.xml" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/logical/entity/seg_0/811BDB7C-1016-9E9B-F6E5-2FE761345273.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/logical/entity/seg_0/8AF0B42B-3E60-090B-450F-081472A171AB.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/logical/subviews/30C6B78F-2F85-5560-0373-9CE20245471A.xml" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/logical/subviews/30C6B78F-2F85-5560-0373-9CE20245471A.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/mapping/ExtendedMap.xml" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/mapping/ExtendedMap.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/querys.sql" beforeDir="false" afterPath="$PROJECT_DIR$/querys.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/PersonController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/PersonController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/entity/Setting.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/entity/Setting.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/repository/SettingRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/repository/SettingRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/service/EvaluationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/service/EvaluationService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

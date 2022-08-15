@@ -25,7 +25,7 @@ public class EvaluationService {
     public String[] saveEvaluation(Evaluation evaluation) {
         System.out.println("saveEvaluation");
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
-//        evaluation.setTopicsIdTopic(new Topic(1L));
+
         evaluation.setDateregEvaluation(Methods.nowLocalDateTime());
         evaluation.setDateupdateEvaluation(Methods.nowLocalDateTime());
         evaluation.setState_evaluation("A");

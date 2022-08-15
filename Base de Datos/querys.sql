@@ -6,4 +6,4 @@ select * from resources;
 select * from evaluations;
 select * from questions _category;
 select * from utils;
-
+select * from settings

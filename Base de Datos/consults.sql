@@ -11,30 +11,5 @@ where state_syllabu = 'A' and courses_id_course =1;
 select infor from home_select(1,1)
 
 
-CREATE TABLE settings
-    (
-     id_setting BIGSERIAL NOT NULL ,
-     datereg_setting TIMESTAMP(3) NOT NULL ,
-     dateupdate_setting TIMESTAMP(3) NOT NULL ,
-     setting_configuration TEXT NOT NULL ,
-     persons_id_person BIGINT NOT NULL
-    );
-
-ALTER TABLE settings
-    ADD CONSTRAINT settings_persons_FK FOREIGN KEY
-    (
-     persons_id_person
-    )
-    REFERENCES persons
-    (
-     id_person
-    )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION;
-
-
-ALTER TABLE settings ADD CONSTRAINT settings_PK PRIMARY KEY (id_setting)
-     ;
-
 
 
