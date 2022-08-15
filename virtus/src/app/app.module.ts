@@ -159,7 +159,7 @@ FullCalendarModule.registerPlugins([
     SpeedDialModule,
     TabViewModule,
     InputNumberModule,
-    ColorPickerModule
+    ColorPickerModule,
     PdfViewerModule
   ],
 
