@@ -5,5 +5,6 @@ select * from topics;
 select * from resources;
 select * from evaluations;
 select * from questions _category;
+select * from answers;
 select * from utils;
 select * from settings
