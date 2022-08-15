@@ -26,6 +26,7 @@ import {BadgeModule} from 'primeng/badge';
 import {SpeedDialModule} from 'primeng/speeddial';
 import {TabViewModule} from 'primeng/tabview';
 import {ColorPickerModule} from 'primeng/colorpicker';
+import {PdfViewerModule} from 'ng2-pdf-viewer';
 
 //INICIO SERVICE
 import {CargarScriptsService} from "./services/cargar-scripts.service"
@@ -78,7 +79,7 @@ import {CarouselModule} from "primeng/carousel";
 import {TooltipModule} from "primeng/tooltip";
 import {ResourcesarComponent} from './pages/resourcesar/resourcesar.component';
 import {InputSwitchModule} from "primeng/inputswitch";
-import { UseradministrationComponent } from './pages/useradministration/useradministration.component';
+import {UseradministrationComponent} from './pages/useradministration/useradministration.component';
 import {InputNumberModule} from "primeng/inputnumber";
 
 import {AppConfigComponent} from "./app.config.component";
@@ -159,6 +160,7 @@ FullCalendarModule.registerPlugins([
     TabViewModule,
     InputNumberModule,
     ColorPickerModule
+    PdfViewerModule
   ],
 
   providers: [
