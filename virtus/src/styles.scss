@@ -21,8 +21,11 @@ and open the template in the editor.
 */
 
 
-span,strong,td,h1,h2,h3,h4,h5,h6{cursor: default;}
-span,strong,td,h1,h2,h3,h4,h5,h6,a,img,label,div{
+span, strong, td, h1, h2, h3, h4, h5, h6 {
+  cursor: default;
+}
+
+span, strong, td, h1, h2, h3, h4, h5, h6, a, img, label, div {
   -webkit-touch-callout: none !important; /* iOS Safari */
   -webkit-user-select: none !important; /* Safari */
   -khtml-user-select: none !important; /* ; Konqueror HTML */
@@ -31,15 +34,36 @@ span,strong,td,h1,h2,h3,h4,h5,h6,a,img,label,div{
   user-select: none !important; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
 }
 
-a{cursor: pointer;}
-a span{cursor: pointer;}
-.titleMenu span{cursor: pointer;}
+a {
+  cursor: pointer;
+}
+
+a span {
+  cursor: pointer;
+}
+
+.titleMenu span {
+  cursor: pointer;
+}
 
 
 :root {
   --image-video-style: sepia(100%);
+  --text-color-style:  none;
+  --document-zoom-style:  100%;
 }
-img, video {filter: var(--image-video-style, none);}
+
+img, video {
+  filter: var(--image-video-style, none);
+}
+
+span, strong, td, h1, h2, h3, h4, h5, h6, a, img, label, div, p, pre {
+  color: var(--text-color-style);
+}
+
+*{
+  zoom:  var(--document-zoom-style, 100%);
+}
 
 //.img_style_color_none{
 //  filter:none;

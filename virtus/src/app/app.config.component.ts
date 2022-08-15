@@ -12,31 +12,31 @@ import {AppMainComponent} from './app.main.component';
     <div class="layout-config" [ngClass]="{'layout-config-active': appMain.configActive}"
          (click)="appMain.onConfigClick($event)">
 
-      <h5>Estilos de imagen</h5>
-      <div class="field-radiobutton">
-        <p-radioButton name="menuMode" value="none" [(ngModel)]="app.modeStyle"></p-radioButton>
-        <label for="@prevent">Ninguno</label>
-      </div>
-      <div class="field-radiobutton">
-        <p-radioButton name="menuMode" value="grayscale(100%)" [(ngModel)]="app.modeStyle"></p-radioButton>
-        <label for="@prevent">Blanco y Negro</label>
-      </div>
-      <div class="field-radiobutton">
-        <p-radioButton name="menuMode" value="sepia(100%)" [(ngModel)]="app.modeStyle"></p-radioButton>
-        <label for="@prevent">Sepia</label>
-      </div>
-      <div class="field-radiobutton">
-        <p-radioButton name="menuMode" value="brightness(50%)" [(ngModel)]="app.modeStyle"></p-radioButton>
-        <label for="@prevent">Brillo Bajo</label>
-      </div>
-      <div class="field-radiobutton">
-        <p-radioButton name="menuMode" value="contrast(200%)" [(ngModel)]="app.modeStyle"></p-radioButton>
-        <label for="@prevent">Contraste Alto</label>
-      </div>
-      <div class="field-radiobutton">
-        <p-radioButton name="menuMode" value="saturate(250%)" [(ngModel)]="app.modeStyle"></p-radioButton>
-        <label for="@prevent">Saturación Alta</label>
-      </div>
+      <!--      <h5>Estilos de imagen</h5>-->
+      <!--      <div class="field-radiobutton">-->
+      <!--        <p-radioButton name="menuMode" value="none" [(ngModel)]="app.modeStyle"></p-radioButton>-->
+      <!--        <label for="@prevent">Ninguno</label>-->
+      <!--      </div>-->
+      <!--      <div class="field-radiobutton">-->
+      <!--        <p-radioButton name="menuMode" value="grayscale(100%)" [(ngModel)]="app.modeStyle"></p-radioButton>-->
+      <!--        <label for="@prevent">Blanco y Negro</label>-->
+      <!--      </div>-->
+      <!--      <div class="field-radiobutton">-->
+      <!--        <p-radioButton name="menuMode" value="sepia(100%)" [(ngModel)]="app.modeStyle"></p-radioButton>-->
+      <!--        <label for="@prevent">Sepia</label>-->
+      <!--      </div>-->
+      <!--      <div class="field-radiobutton">-->
+      <!--        <p-radioButton name="menuMode" value="brightness(50%)" [(ngModel)]="app.modeStyle"></p-radioButton>-->
+      <!--        <label for="@prevent">Brillo Bajo</label>-->
+      <!--      </div>-->
+      <!--      <div class="field-radiobutton">-->
+      <!--        <p-radioButton name="menuMode" value="contrast(200%)" [(ngModel)]="app.modeStyle"></p-radioButton>-->
+      <!--        <label for="@prevent">Contraste Alto</label>-->
+      <!--      </div>-->
+      <!--      <div class="field-radiobutton">-->
+      <!--        <p-radioButton name="menuMode" value="saturate(250%)" [(ngModel)]="app.modeStyle"></p-radioButton>-->
+      <!--        <label for="@prevent">Saturación Alta</label>-->
+      <!--      </div>-->
       <!--      <h5>Tipo de Menú</h5>-->
       <!--      <div class="field-radiobutton">-->
       <!--        <p-radioButton name="menuMode" value="static" [(ngModel)]="app.menuMode" inputId="mode1"></p-radioButton>-->
@@ -70,34 +70,149 @@ import {AppMainComponent} from './app.main.component';
       <!--      <h5>Ripple Effect</h5>-->
       <!--      <p-inputSwitch [ngModel]="app.ripple" (onChange)="appMain.onRippleChange($event)"></p-inputSwitch>-->
 
-      <h5>Temas de Imagen</h5>
-      <div class="layout-themes">
-        <div *ngFor="let i of imageThemes">
-          <a style="cursor: pointer" (click)="changeTheme(i.name)">
-            <img src="assets/layout/images/configurator/{{i.image}}" alt="{{i.name}}"/>
-            <i class="pi pi-check" *ngIf="app.theme === i.name"></i>
-          </a>
-        </div>
-      </div>
+      <!--      <h5>Temas de Imagen</h5>-->
+      <!--      <div class="layout-themes">-->
+      <!--        <div *ngFor="let i of imageThemes">-->
+      <!--          <a style="cursor: pointer" (click)="changeTheme(i.name)">-->
+      <!--            <img src="assets/layout/images/configurator/{{i.image}}" alt="{{i.name}}"/>-->
+      <!--            <i class="pi pi-check" *ngIf="app.theme === i.name"></i>-->
+      <!--          </a>-->
+      <!--        </div>-->
+      <!--      </div>-->
 
-      <h5>Temas de Degradado</h5>
-      <div class="layout-themes">
-        <div *ngFor="let g of gradientThemes">
-          <a style="cursor: pointer" (click)="changeTheme(g.name)"
-             [ngStyle]="{'background-image': 'linear-gradient(to right, ' + g.color1 +','+ g.color2+')'} ">
-            <i class="pi pi-check" *ngIf="app.theme === g.name"></i>
-          </a>
-        </div>
-      </div>
+      <!--      <h5>Temas de Degradado</h5>-->
+      <!--      <div class="layout-themes">-->
+      <!--        <div *ngFor="let g of gradientThemes">-->
+      <!--          <a style="cursor: pointer" (click)="changeTheme(g.name)"-->
+      <!--             [ngStyle]="{'background-image': 'linear-gradient(to right, ' + g.color1 +','+ g.color2+')'} ">-->
+      <!--            <i class="pi pi-check" *ngIf="app.theme === g.name"></i>-->
+      <!--          </a>-->
+      <!--        </div>-->
+      <!--      </div>-->
 
-      <h5>Temas Planos</h5>
-      <div class="layout-themes">
-        <div *ngFor="let f of flatThemes">
-          <a style="cursor: pointer" (click)="changeTheme(f.name)" [ngStyle]="{'background-color': f.color}">
-            <i class="pi pi-check" *ngIf="app.theme === f.name"></i>
-          </a>
-        </div>
-      </div>
+      <!--      <h5>Temas Planos</h5>-->
+      <!--      <div class="layout-themes">-->
+      <!--        <div *ngFor="let f of flatThemes">-->
+      <!--          <a style="cursor: pointer" (click)="changeTheme(f.name)" [ngStyle]="{'background-color': f.color}">-->
+      <!--            <i class="pi pi-check" *ngIf="app.theme === f.name"></i>-->
+      <!--          </a>-->
+      <!--        </div>-->
+      <!--      </div>-->
+      <!--      <h5>Extensiones de Accesibilidad</h5>-->
+      <!--      <div class="p-panel" >-->
+
+      <!--      </div>-->
+
+      <p-accordion>
+        <p-accordionTab header="Control de zoom">
+          <div class="col-12 text-center">
+            <div class="p-buttonset">
+              <button pButton pRipple icon="pi pi-minus"
+                      class="p-button-rounded p-button-warning mr-2 mb-2"
+                      (click)="app.controlZoom(-1)"></button>
+              <button  pButton pRipple icon="pi pi-window-maximize"
+                       class="p-button-rounded p-button-info mr-2 mb-2"
+                      (click)="app.controlZoom(0)"></button>
+              <button  pButton pRipple icon="pi pi-plus"
+                      class="p-button-rounded p-button-success mr-2 mb-2"
+                      (click)="app.controlZoom(1)"></button>
+            </div>
+          </div>
+        </p-accordionTab>
+        <p-accordionTab header="Color de Texto">
+          <div class="field-checkbox">
+            <p-inputSwitch class="p-inputswitch" (click)="app.switchTextColor()"
+                           [(ngModel)]="app.textColorChecked"></p-inputSwitch>
+            <label for="@prevent">Activar Control</label>
+          </div>
+          <div class="field-checkbox">
+            <p-colorPicker class="p-button-sm" (onChange)="app.textColorChange($event)"
+                           [disabled]="!app.textColorChecked"></p-colorPicker>
+            <label for="@prevent">Seleccione Color</label>
+          </div>
+        </p-accordionTab>
+        <p-accordionTab header="Estilos de imagen">
+          <div class="field-radiobutton">
+            <p-radioButton name="menuMode" value="none" [(ngModel)]="app.modeStyle"></p-radioButton>
+            <label for="@prevent">Ninguno</label>
+          </div>
+          <div class="field-radiobutton">
+            <p-radioButton name="menuMode" value="grayscale(100%)" [(ngModel)]="app.modeStyle"></p-radioButton>
+            <label for="@prevent">Blanco y Negro</label>
+          </div>
+          <div class="field-radiobutton">
+            <p-radioButton name="menuMode" value="sepia(100%)" [(ngModel)]="app.modeStyle"></p-radioButton>
+            <label for="@prevent">Sepia</label>
+          </div>
+          <div class="field-radiobutton">
+            <p-radioButton name="menuMode" value="brightness(50%)" [(ngModel)]="app.modeStyle"></p-radioButton>
+            <label for="@prevent">Brillo Bajo</label>
+          </div>
+          <div class="field-radiobutton">
+            <p-radioButton name="menuMode" value="contrast(200%)" [(ngModel)]="app.modeStyle"></p-radioButton>
+            <label for="@prevent">Contraste Alto</label>
+          </div>
+          <div class="field-radiobutton">
+            <p-radioButton name="menuMode" value="saturate(250%)" [(ngModel)]="app.modeStyle"></p-radioButton>
+            <label for="@prevent">Saturación Alta</label>
+          </div>
+        </p-accordionTab>
+        <p-accordionTab header="Temas de Imagen">
+          <div class="layout-themes">
+            <div *ngFor="let i of imageThemes">
+              <a style="cursor: pointer" (click)="changeTheme(i.name)">
+                <img src="assets/layout/images/configurator/{{i.image}}" alt="{{i.name}}"/>
+                <i class="pi pi-check" *ngIf="app.theme === i.name"></i>
+              </a>
+            </div>
+          </div>
+        </p-accordionTab>
+        <p-accordionTab header="Temas de Degradado">
+          <div class="layout-themes">
+            <div *ngFor="let g of gradientThemes">
+              <a style="cursor: pointer" (click)="changeTheme(g.name)"
+                 [ngStyle]="{'background-image': 'linear-gradient(to right, ' + g.color1 +','+ g.color2+')'} ">
+                <i class="pi pi-check" *ngIf="app.theme === g.name"></i>
+              </a>
+            </div>
+          </div>
+        </p-accordionTab>
+        <p-accordionTab header="Temas Planos">
+          <div class="layout-themes">
+            <div *ngFor="let f of flatThemes">
+              <a style="cursor: pointer" (click)="changeTheme(f.name)" [ngStyle]="{'background-color': f.color}">
+                <i class="pi pi-check" *ngIf="app.theme === f.name"></i>
+              </a>
+            </div>
+          </div>
+        </p-accordionTab>
+        <p-accordionTab header="Extensiones de Accesibilidad">
+          <div class="p-fieldset">
+            <a pButton class="p-button p-button-danger col-12" label="Read Aloud:Texto a Voz" target="_blank"
+               [href]="'https://chrome.google.com/webstore/detail/read-aloud-a-text-to-spee/hdhinadidafjejdhmfkjgnolgimiaplp'"></a>
+          </div>
+          <div class="p-fieldset">
+            <a pButton class="p-button p-button-secondary col-12" label="Speakit!: Texto a Voz" target="_blank"
+               [href]="'https://chrome.google.com/webstore/detail/speakit-text-to-speech-fo/aljmkoflmjkklddjideacgmofobfkhkd?hl=es'"></a>
+          </div>
+          <div class="p-fieldset">
+            <a pButton class="p-button p-button-success col-12" label="Traductor de Google" target="_blank"
+               [href]="'https://chrome.google.com/webstore/detail/google-translate/aapbdbdomjkkjkaonfhkkikfgjllcleb?hl=es'"></a>
+          </div>
+          <div class="p-fieldset">
+            <a pButton class="p-button p-button-info col-12" label="Cambiador de Fuente" target="_blank"
+               [href]="'https://chrome.google.com/webstore/detail/font-changer/obgkjikcnonokgaiablbenkgjcdbknna'"></a>
+          </div>
+          <div class="p-fieldset">
+            <a pButton class="p-button p-button-warning col-12" label="Potenciador de Color" target="_blank"
+               [href]="'https://chrome.google.com/webstore/detail/color-enhancer/ipkjmjaledkapilfdigkgfmpekpfnkih?hl=es'"></a>
+          </div>
+          <div class="p-fieldset">
+            <a pButton class="p-button p-button-help col-12" label="Modo Oscuro" target="_blank"
+               [href]="'https://chrome.google.com/webstore/detail/dark-mode/dmghijelimhndkbmpgbldicpogfkceaj?hl=es-419'"></a>
+          </div>
+        </p-accordionTab>
+      </p-accordion>
     </div>
   `
 })

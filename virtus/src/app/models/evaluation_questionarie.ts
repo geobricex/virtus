@@ -23,12 +23,12 @@ export interface Questions {
   pathurlsign_question:   string;
   points_question:        boolean;
   title_question:         string;
-  resuelto?:              boolean;
   canResource?:           boolean;
 }
 
 export interface Answers {
   options_answer: OptionsAnswer[];
+  responses?: OptionsAnswer[];
 }
 
 export interface OptionsAnswer {
