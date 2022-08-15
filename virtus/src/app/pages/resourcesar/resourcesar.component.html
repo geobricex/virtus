@@ -15,13 +15,15 @@
               <div class="my-3">
                 <button *ngIf="resource.pathfileResource !== ''" pButton pRipple icon="pi pi-file"
                         class="mr-2 p-button-rounded" pTooltip="Archivo"
-                        tooltipPosition="bottom"></button>
+                        tooltipPosition="bottom" (click)="viewFile(resource.pathfileResource)"></button>
                 <button *ngIf="resource.pathurlsignResource !== ''" pButton pRipple icon="pi pi-video"
                         class="mr-2 p-button-rounded p-button-success"
-                        pTooltip="Lengua de señas" tooltipPosition="bottom"></button>
+                        pTooltip="Lengua de señas" tooltipPosition="bottom"
+                        (click)="viewVideo(resource.pathurlsignResource)"></button>
                 <button *ngIf="resource.pathvideoResource !== ''" pButton pRipple icon="pi pi-video"
                         class="p-button-rounded p-button-info"
-                        pTooltip="Video" tooltipPosition="bottom"></button>
+                        pTooltip="Video" tooltipPosition="bottom"
+                        (click)="viewVideo(resource.pathvideoResource)"></button>
               </div>
               <hr>
               <div class="my-3">
@@ -179,4 +181,25 @@
     </ng-template>
   </p-dialog>
 
+  <p-dialog [(visible)]="viewPdf" [style]="{width: '890px'}" header="Visualizar pdf" [modal]="true"
+            class="p-fluid">
+    <ng-template pTemplate="content">
+      <div class="">
+        <pdf-viewer [src]="pdfUrl" [zoom-scale]="'page-width'"
+                    [page]=""
+                    [zoom]="1.1"
+        ></pdf-viewer>
+      </div>
+    </ng-template>
+  </p-dialog>
+
+  <p-dialog [(visible)]="viewVideoDialog" header="Visualizar video" [modal]="true"
+            class="p-fluid">
+    <ng-template pTemplate="content">
+      <video src="{{videoUrl}}" controls></video>
+    </ng-template>
+  </p-dialog>
+
 </div>
+
+

@@ -12,7 +12,7 @@ import {Resources} from "../../models/Resources";
 @Component({
   selector: 'app-resourcesar',
   templateUrl: './resourcesar.component.html',
-  styleUrls: ['./resourcesar.component.scss']
+  styleUrls: ['./resourcesar.component.css']
 })
 export class ResourcesarComponent implements OnInit {
 
@@ -25,6 +25,8 @@ export class ResourcesarComponent implements OnInit {
   resourcesData: any [];
   evaluationData: any [];
   tmpFile: any;
+  videoUrl: any;
+  viewVideoDialog: boolean;
 
   newEvaluationsDialog: boolean;
   newResourseDialog: boolean;
@@ -33,6 +35,8 @@ export class ResourcesarComponent implements OnInit {
   courseSuccessful = false;
   tiempo: any [];
   typeFileGlobal: string;
+  viewPdf: boolean;
+  pdfUrl: any;
 
   carouselResponsiveOptions: any[] = [
     {
@@ -98,6 +102,18 @@ export class ResourcesarComponent implements OnInit {
     this.loadEvaluations();
   }
 
+  viewFile(url: string) {
+    console.log(url);
+    if (url.includes(".pdf")) {
+      this.pdfUrl = url;
+      this.viewPdf = true;
+    }
+  }
+
+  viewVideo(url: string) {
+    this.videoUrl = url;
+    this.viewVideoDialog = true;
+  }
 
   saveResources() {
     this.resource = new Resources(
@@ -107,11 +123,11 @@ export class ResourcesarComponent implements OnInit {
       "", "", "");
     this.utils.changeImage(this.tmpFile).then(response => {
       if (this.typeFileGlobal === "a")
-        this.resource._pathfileResource = response;
+        this.resource._pathfileResource = this.utils.makePathRecurso(response);
       else if (this.typeFileGlobal === "s")
-        this.resource._pathurlsignResource = response;
+        this.resource._pathurlsignResource = this.utils.makePathRecurso(response);
       else
-        this.resource._pathvideoResource = response;
+        this.resource._pathvideoResource = this.utils.makePathRecurso(response);
       let topicAux: Topic;
       topicAux = new Topic(
         parseInt(this.idTopic === null ? "0" : this.idTopic),
@@ -124,7 +140,6 @@ export class ResourcesarComponent implements OnInit {
         this.loadResources();
         this.resetResources();
       });
-
     });
 
   }
