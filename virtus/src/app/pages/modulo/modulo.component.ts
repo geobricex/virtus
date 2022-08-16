@@ -28,7 +28,7 @@ export class ModuloComponent implements OnInit {
     this.breadcrumbService.setItems([
       {label: 'Cursos', routerLink: ['/']},
       {label: 'Mis cursos', routerLink: ['/app/mycourse']},
-      {label: 'Modulos', routerLink: ['/app/mycourse/modules']}
+      {label: 'Módulos', routerLink: ['/app/mycourse/modules']}
     ]);
   }
 

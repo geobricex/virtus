@@ -67,7 +67,7 @@ export class ResourcesarComponent implements OnInit {
     this.idTopic = this._route.snapshot.paramMap.get("idTopic");
     this.breadcrumbService.setItems([
       {label: 'Cursos', routerLink: ['/app/coursear']},
-      {label: 'Modulos', routerLink: ['/app/coursear/modulear/' + this.idCourse]},
+      {label: 'Módulos', routerLink: ['/app/coursear/modulear/' + this.idCourse]},
       {label: 'Temas', routerLink: ['/app/coursear/modulear/' + this.idCourse + '/topicar/' + this.idModule]},
       {
         label: 'Recursos y evaluaciones',

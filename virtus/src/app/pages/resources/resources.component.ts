@@ -47,7 +47,7 @@ export class ResourcesComponent implements OnInit {
     this.breadcrumbService.setItems([
       {label: 'Cursos', routerLink: ['/app']},
       {label: 'Mis cursos', routerLink: ['/app/mycourse']},
-      {label: 'Modulos', routerLink: ['/app/mycourse/modules/' + this.idCourse]},
+      {label: 'Módulos', routerLink: ['/app/mycourse/modules/' + this.idCourse]},
       {label: 'Temas', routerLink: ['/app/mycourse/modules/' + this.idCourse + '/themes/' + this.idModule]},
       {
         label: 'Recursos y evaluaciones',

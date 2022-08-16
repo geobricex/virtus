@@ -43,7 +43,7 @@ export class ModuloarComponent implements OnInit {
     this.idCourse = this._route.snapshot.paramMap.get("idcourse");
     this.breadcrumbService.setItems([
       {label: 'Cursos', routerLink: ['/app/coursear']},
-      {label: 'Modulos', routerLink: ['/app/coursear/modulear/' + this.idCourse]}
+      {label: 'Módulos', routerLink: ['/app/coursear/modulear/' + this.idCourse]}
     ]);
   }
 

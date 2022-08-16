@@ -44,7 +44,7 @@ export class TopicarComponent implements OnInit {
     this.idModule = this._route.snapshot.paramMap.get("idmodule");
     this.breadcrumbService.setItems([
       {label: 'Cursos', routerLink: ['/app/coursear']},
-      {label: 'Modulos', routerLink: ['/app/coursear/modulear/' + this.idCourse]},
+      {label: 'Módulos', routerLink: ['/app/coursear/modulear/' + this.idCourse]},
       {label: 'Temas', routerLink: ['/app/coursear/modulear/' + this.idCourse + '/topicar/' + this.idModule]}
     ]);
   }
