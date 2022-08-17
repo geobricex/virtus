@@ -62,7 +62,7 @@ export class AppComponent {
     if(valor == 0){
       this.valorDocumentZoom = 100;
     }else{
-      this.valorDocumentZoom = (this.valorDocumentZoom + ( 1 * valor));
+      this.valorDocumentZoom = (this.valorDocumentZoom + valor);
       //minimo de zoom
       if(this.valorDocumentZoom < 90 ){
         this.valorDocumentZoom = 0;

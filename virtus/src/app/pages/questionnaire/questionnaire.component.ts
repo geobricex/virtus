@@ -7,7 +7,11 @@ import {Person} from "../../models/Person";
 import {Utils} from "../../util/Utils";
 import {ActivatedRoute} from '@angular/router';
 
-import {Evaluation, EvaluationQuestionsResponse, Questions} from "../../models/evaluation_questionarie";
+import {
+  Evaluation,
+  EvaluationQuestionsResponse,
+  QuestionModel
+} from "../../models/evaluation_questionarie";
 import {FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule} from '@angular/forms';
 import {AppMainComponent} from '../../app.main.component';
 import {StorageService} from "../../authentication/StorageService";
@@ -35,7 +39,14 @@ export class QuestionnaireComponent implements OnInit {
 
   //objeto de la evaluación
   public evaluationObject: Evaluation;
-  public questionObject: Questions;
+  public questionObject: QuestionModel;
+
+  /*public questionObjectSimpleOption: PleOption;
+  public questionObjectMultileOption: PleOption;
+  public questionObjectComplete: Complete;
+  public questionObjectRelate: Relate;*/
+
+
   public indexQuestionObject: number;
 
   //abecedario
@@ -129,25 +140,144 @@ export class QuestionnaireComponent implements OnInit {
     return resp;
   }
 
-  totalPuntos(): number {
-    let tpuntos: number = 0;
-    for (let ind = 0; ind < this.evaluationObject.questions_.length; ind++) {
-      if (this.evaluationObject.questions_[ind].points_question) {
-        tpuntos += this.evaluationObject.questions_[ind].maximumpoints_question;
+  tipoPreguntajson(typo: number): string {
+    let resp: string = "";
+    if (typo == 1) {
+      resp = "trueorfalse";
+    }
+    if (typo == 2) {
+      resp = "simpleoption";
+    }
+    if (typo == 3) {
+      resp = "multipleoption";
+    }
+    if (typo == 4) {
+      resp = "complete";
+    }
+    if (typo == 5) {
+      resp = "relate";
+    }
+    if (typo == 6) {
+      resp = "puzzle";
+    }
+    return resp;
+  }
+
+  recuentosAnteriores(categoria: number, indice: number): number {
+    let quests: number[] = [
+      this.evaluationObject.trueorfalse.length,
+      this.evaluationObject.simpleoption.length,
+      this.evaluationObject.multipleoption.length,
+      this.evaluationObject.complete.length,
+      this.evaluationObject.relate.length,
+      this.evaluationObject.puzzle.length
+    ];
+    let total: number = 0;
+    //Todas las preguntas
+    for (let ind = 0; ind < quests.length; ind++) {
+      if (ind < categoria - 1) {
+        total += quests[ind];
       }
     }
+    return indice + total + 1;
+  }
+
+  totalPuntos(): number {
+    let quests: QuestionModel[] = [
+      ...this.evaluationObject.trueorfalse,
+      ...this.evaluationObject.simpleoption,
+      ...this.evaluationObject.multipleoption,
+      ...this.evaluationObject.complete,
+      ...this.evaluationObject.relate,
+      ...this.evaluationObject.puzzle
+    ];
+    let tpuntos: number = 0;
+    //Todas las preguntas
+    for (let ind = 0; ind < quests.length; ind++) {
+      if (quests[ind].points_question) {
+        tpuntos += quests[ind].maximumpoints_question;
+      }
+    }
+    // //preguntas de selección simple
+    // for (let ind = 0; ind < this.evaluationObject.simpleoption.length; ind++) {
+    //   if (this.evaluationObject.simpleoption[ind].points_question) {
+    //     tpuntos += this.evaluationObject.simpleoption[ind].maximumpoints_question;
+    //   }
+    // }
+    // // preguntas de selección múltiple
+    // for (let ind = 0; ind < this.evaluationObject.multipleoption.length; ind++) {
+    //   if (this.evaluationObject.multipleoption[ind].points_question) {
+    //     tpuntos += this.evaluationObject.multipleoption[ind].maximumpoints_question;
+    //   }
+    // }
+    // //Preguntas de complete
+    // for (let ind = 0; ind < this.evaluationObject.complete.length; ind++) {
+    //   if (this.evaluationObject.complete[ind].points_question) {
+    //     tpuntos += this.evaluationObject.complete[ind].maximumpoints_question;
+    //   }
+    // }
+    // //Preguntas de relacionar
+    // for (let ind = 0; ind < this.evaluationObject.relate.length; ind++) {
+    //   if (this.evaluationObject.relate[ind].points_question) {
+    //     tpuntos += this.evaluationObject.relate[ind].maximumpoints_question;
+    //   }
+    // }
     return tpuntos;
   }
 
+  cantidadPreguntas(): number {
+    let quests: QuestionModel[] = [
+      ...this.evaluationObject.trueorfalse,
+      ...this.evaluationObject.simpleoption,
+      ...this.evaluationObject.multipleoption,
+      ...this.evaluationObject.complete,
+      ...this.evaluationObject.relate,
+      ...this.evaluationObject.puzzle
+    ];
+    return quests.length;
+  }
+
   getCountResueltas(): string {
-    let total = this.evaluationObject.questions_.length;
-    let respondidas = 0;
-    for (let ind = 0; ind < total; ind++) {
-      if (this.evaluationObject.questions_[ind].canResource != undefined) {
+    let quests: QuestionModel[] = [
+      ...this.evaluationObject.trueorfalse,
+      ...this.evaluationObject.simpleoption,
+      ...this.evaluationObject.multipleoption,
+      ...this.evaluationObject.complete,
+      ...this.evaluationObject.relate,
+      ...this.evaluationObject.puzzle
+    ];
+    let respondidas: number = 0;
+    //Todas las preguntas
+    for (let ind = 0; ind < quests.length; ind++) {
+      if (quests[ind].canResource != undefined) {
         respondidas++;
       }
     }
-    return respondidas + " / " + total;
+    // //preguntas de selección simple
+    // for (let ind = 0; ind < this.evaluationObject.simpleoption.length; ind++) {
+    //   if (this.evaluationObject.simpleoption[ind].canResource != undefined) {
+    //     respondidas++;
+    //   }
+    // }
+    // // preguntas de selección múltiple
+    // for (let ind = 0; ind < this.evaluationObject.multipleoption.length; ind++) {
+    //   if (this.evaluationObject.multipleoption[ind].canResource != undefined) {
+    //     respondidas++;
+    //   }
+    // }
+    // //Preguntas de complete
+    // for (let ind = 0; ind < this.evaluationObject.complete.length; ind++) {
+    //   if (this.evaluationObject.complete[ind].canResource != undefined) {
+    //     respondidas++;
+    //   }
+    // }
+    // //Preguntas de relacionar
+    // for (let ind = 0; ind < this.evaluationObject.relate.length; ind++) {
+    //   if (this.evaluationObject.relate[ind].canResource != undefined) {
+    //     respondidas++;
+    //   }
+    // }
+    return respondidas + " / " + quests.length;
   }
 
   getNivelQuestion(level: number): string {
@@ -196,7 +326,7 @@ export class QuestionnaireComponent implements OnInit {
                 this.startContinuousArtyom();
               }
             }
-            this.cambiarPregunta(0, true);
+            this.cambiarPregunta(2, 0, true);
           }
           //this.initCanvas(false);
           setTimeout(() => {
@@ -219,17 +349,20 @@ export class QuestionnaireComponent implements OnInit {
     return m + ":" + s;
   }
 
-  cambiarPregunta(indice: number, flag = false): void {
-    console.log("cambia a pregunta:" + indice);
-    if (indice != this.indexQuestionObject) {
-      this.indexQuestionObject = indice;
-      this.questionObject = this.evaluationObject.questions_[this.indexQuestionObject];
-      console.log("cambia a pregunta:" + this.questionObject);
-      let rec: string = this.questionObject.answers_[0].options_answer[0].resource!;
-      rec = rec != undefined ? rec : "";
-      this.questionObject.canResource = (rec.length > 0);
-      console.log("pregunta: ", this.questionObject);
-    }
+  cambiarPregunta(typeQuestion: number, indice: number, flag: boolean = false): void {
+    console.log("cambia a pregunta:" + typeQuestion + " : " + indice);
+    // if (indice != this.indexQuestionObject) {
+    this.indexQuestionObject = indice;
+    let typeQuest = this.tipoPreguntajson(typeQuestion);
+    // @ts-ignore
+    this.questionObject = this.evaluationObject[typeQuest][this.indexQuestionObject];
+    console.log(typeQuest + " :cambia a pregunta:" + this.questionObject);
+    // @ts-ignore
+    let rec: string = this.questionObject.answers_[0].options_answer[0].resource!;
+    rec = rec != undefined ? rec : "";
+    this.questionObject.canResource = (rec.length > 0);
+    console.log("pregunta: ", this.questionObject);
+    // }
     this.initCanvas(flag);
     if (this.storageService.getCurrentUser().email != "anthony.pachay2017@uteq.edu.ec") {
       this.leerPregunta();
@@ -269,15 +402,36 @@ export class QuestionnaireComponent implements OnInit {
     if (btnStart) (btnStart as HTMLFormElement).click();
   }
 
+  obtenerIndicesPreguntas(indice: number): number {
+    let quests: number[] = [
+      this.evaluationObject.simpleoption.length,
+      this.evaluationObject.multipleoption.length,
+      this.evaluationObject.complete.length,
+      this.evaluationObject.relate.length
+    ];
+    let typoQuest: number = 0;
+    //Todas las preguntas
+    if (indice < 0) {
+      indice = 0;
+    }
+    for (let ind = 0; quests.length; ind++) {
+      if (indice < quests[ind]) {
+        typoQuest = (ind + 1);
+      }
+      indice = indice - quests[ind];
+    }
+    return indice;
+  }
+
   /*Paginar preguntas*/
   anteriorPregunta(): void {
     let ind = this.indexQuestionObject + 1;
-    if (ind >= this.evaluationObject.questions_.length) {
-      ind = this.evaluationObject.questions_.length - 1;
-    }
+    // if (ind >= this.evaluationObject.questions_.length) {
+    //   ind = this.evaluationObject.questions_.length - 1;
+    // }
     //this.questionObject = this.evaluationObject.questions_[this.indexQuestionObject];
     console.log("cambiarPregunta()", ind);
-    this.cambiarPregunta(ind);
+    this.obtenerIndicesPreguntas(ind);
   }
 
   siguientePregunta(): void {
@@ -287,7 +441,7 @@ export class QuestionnaireComponent implements OnInit {
       ind = 0;
     }
     //this.questionObject = this.evaluationObject.questions_[this.indexQuestionObject];
-    this.cambiarPregunta(ind);
+    this.obtenerIndicesPreguntas(ind);
   }
 
   /*Video Player*/
@@ -434,10 +588,16 @@ export class QuestionnaireComponent implements OnInit {
   leerPregunta(): void {
     let reader: string = "";
     reader += this.questionObject.description_question + " \n";
-    for (let i = 0; i < this.questionObject.answers_[0].options_answer.length; i++) {
-      reader += "literal " + this.alphabet[i] + " \n";
-      reader += this.questionObject.answers_[0].options_answer[i].opcion + " \n";
+    if (this.questionObject.name_questioncategory == "Simple Option"
+      || this.questionObject.name_questioncategory == "Multiple Option") {
+      for (let i = 0; i < this.questionObject.answers_[0].options_answer.length; i++) {
+        reader += "literal " + this.alphabet[i] + " \n";
+        let element = this.questionObject.answers_[0].options_answer[i];
+        // @ts-ignore
+        reader += element?.option + " \n";
+      }
     }
+
     //console.log(reader);
     this.artyom.say(reader);
   }
