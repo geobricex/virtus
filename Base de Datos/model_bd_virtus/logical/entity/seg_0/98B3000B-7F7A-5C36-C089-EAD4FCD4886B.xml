@@ -4,7 +4,9 @@
 <createdTime>2022-07-08 00:54:01 UTC</createdTime>
 <ownerDesignName>model_bd_virtus</ownerDesignName>
 <engineerTo>
-<item key="4A337B55-A865-FDD5-7A3F-871B1ABFF68D" value="true"/>
+<item key="33426F72-7E4A-1791-35F6-0B312EB2F1A8" value="true"/>
+<item key="AA050666-575F-4F34-F7EE-3A860F24FD7B" value="true"/>
+<item key="EBB1E3B1-5C7C-E6AB-C638-188E4B63BF86" value="true"/>
 </engineerTo>
 <adequatelyNormalized>NO</adequatelyNormalized>
 <expectedVolumes>0</expectedVolumes>
@@ -20,7 +22,9 @@
 <createdTime>2022-07-08 00:54:17 UTC</createdTime>
 <ownerDesignName>model_bd_virtus</ownerDesignName>
 <engineerTo>
-<item key="4A337B55-A865-FDD5-7A3F-871B1ABFF68D" value="true"/>
+<item key="33426F72-7E4A-1791-35F6-0B312EB2F1A8" value="true"/>
+<item key="AA050666-575F-4F34-F7EE-3A860F24FD7B" value="true"/>
+<item key="EBB1E3B1-5C7C-E6AB-C638-188E4B63BF86" value="true"/>
 </engineerTo>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
@@ -32,7 +36,9 @@
 <createdTime>2022-07-08 00:54:28 UTC</createdTime>
 <ownerDesignName>model_bd_virtus</ownerDesignName>
 <engineerTo>
-<item key="4A337B55-A865-FDD5-7A3F-871B1ABFF68D" value="true"/>
+<item key="33426F72-7E4A-1791-35F6-0B312EB2F1A8" value="true"/>
+<item key="AA050666-575F-4F34-F7EE-3A860F24FD7B" value="true"/>
+<item key="EBB1E3B1-5C7C-E6AB-C638-188E4B63BF86" value="true"/>
 </engineerTo>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
@@ -40,12 +46,30 @@
 <dataTypeSize>50</dataTypeSize>
 <ownDataTypeParameters>50,,</ownDataTypeParameters>
 </Attribute>
+<Attribute name="description_evaluation" id="1220C1E0-C5AF-F410-BDD2-248CD252F6BB">
+<createdBy>geova</createdBy>
+<createdTime>2022-08-17 02:48:53 UTC</createdTime>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<engineerTo>
+<item key="33426F72-7E4A-1791-35F6-0B312EB2F1A8" value="true"/>
+<item key="AA050666-575F-4F34-F7EE-3A860F24FD7B" value="true"/>
+<item key="EBB1E3B1-5C7C-E6AB-C638-188E4B63BF86" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>100</dataTypeSize>
+<ownDataTypeParameters>100,,</ownDataTypeParameters>
+</Attribute>
 <Attribute name="pathfile_resource" id="7163BA37-CEAC-2ADF-3223-E20D8DA2807B">
 <createdBy>geova</createdBy>
 <createdTime>2022-07-08 00:55:24 UTC</createdTime>
 <ownerDesignName>model_bd_virtus</ownerDesignName>
 <engineerTo>
-<item key="4A337B55-A865-FDD5-7A3F-871B1ABFF68D" value="true"/>
+<item key="33426F72-7E4A-1791-35F6-0B312EB2F1A8" value="true"/>
+<item key="AA050666-575F-4F34-F7EE-3A860F24FD7B" value="true"/>
+<item key="EBB1E3B1-5C7C-E6AB-C638-188E4B63BF86" value="true"/>
 </engineerTo>
 <nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>
@@ -59,7 +83,9 @@
 <createdTime>2022-07-08 00:57:16 UTC</createdTime>
 <ownerDesignName>model_bd_virtus</ownerDesignName>
 <engineerTo>
-<item key="4A337B55-A865-FDD5-7A3F-871B1ABFF68D" value="true"/>
+<item key="33426F72-7E4A-1791-35F6-0B312EB2F1A8" value="true"/>
+<item key="AA050666-575F-4F34-F7EE-3A860F24FD7B" value="true"/>
+<item key="EBB1E3B1-5C7C-E6AB-C638-188E4B63BF86" value="true"/>
 </engineerTo>
 <nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>
@@ -73,7 +99,9 @@
 <createdTime>2022-07-08 01:33:54 UTC</createdTime>
 <ownerDesignName>model_bd_virtus</ownerDesignName>
 <engineerTo>
-<item key="4A337B55-A865-FDD5-7A3F-871B1ABFF68D" value="true"/>
+<item key="33426F72-7E4A-1791-35F6-0B312EB2F1A8" value="true"/>
+<item key="AA050666-575F-4F34-F7EE-3A860F24FD7B" value="true"/>
+<item key="EBB1E3B1-5C7C-E6AB-C638-188E4B63BF86" value="true"/>
 </engineerTo>
 <nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>
@@ -82,12 +110,30 @@
 <dataTypeSize>200</dataTypeSize>
 <ownDataTypeParameters>200,,</ownDataTypeParameters>
 </Attribute>
+<Attribute name="pathurlremote_resource" id="70CA13F0-494D-4DD9-7248-3E415928269E">
+<createdBy>geova</createdBy>
+<createdTime>2022-08-17 03:32:34 UTC</createdTime>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<engineerTo>
+<item key="33426F72-7E4A-1791-35F6-0B312EB2F1A8" value="true"/>
+<item key="AA050666-575F-4F34-F7EE-3A860F24FD7B" value="true"/>
+<item key="EBB1E3B1-5C7C-E6AB-C638-188E4B63BF86" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>200</dataTypeSize>
+<ownDataTypeParameters>200,,</ownDataTypeParameters>
+</Attribute>
 <Attribute name="datereg_resource" id="3C62A8EB-5F96-D707-2132-2943AEB9A1F8">
 <createdBy>geova</createdBy>
 <createdTime>2022-07-08 00:58:08 UTC</createdTime>
 <ownerDesignName>model_bd_virtus</ownerDesignName>
 <engineerTo>
-<item key="4A337B55-A865-FDD5-7A3F-871B1ABFF68D" value="true"/>
+<item key="33426F72-7E4A-1791-35F6-0B312EB2F1A8" value="true"/>
+<item key="AA050666-575F-4F34-F7EE-3A860F24FD7B" value="true"/>
+<item key="EBB1E3B1-5C7C-E6AB-C638-188E4B63BF86" value="true"/>
 </engineerTo>
 <nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>
@@ -101,7 +147,9 @@
 <createdTime>2022-07-08 01:00:59 UTC</createdTime>
 <ownerDesignName>model_bd_virtus</ownerDesignName>
 <engineerTo>
-<item key="4A337B55-A865-FDD5-7A3F-871B1ABFF68D" value="true"/>
+<item key="33426F72-7E4A-1791-35F6-0B312EB2F1A8" value="true"/>
+<item key="AA050666-575F-4F34-F7EE-3A860F24FD7B" value="true"/>
+<item key="EBB1E3B1-5C7C-E6AB-C638-188E4B63BF86" value="true"/>
 </engineerTo>
 <nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>
@@ -115,7 +163,9 @@
 <createdTime>2022-07-08 01:07:26 UTC</createdTime>
 <ownerDesignName>model_bd_virtus</ownerDesignName>
 <engineerTo>
-<item key="4A337B55-A865-FDD5-7A3F-871B1ABFF68D" value="true"/>
+<item key="33426F72-7E4A-1791-35F6-0B312EB2F1A8" value="true"/>
+<item key="AA050666-575F-4F34-F7EE-3A860F24FD7B" value="true"/>
+<item key="EBB1E3B1-5C7C-E6AB-C638-188E4B63BF86" value="true"/>
 </engineerTo>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
@@ -129,7 +179,9 @@
 <generatorID>DCE907FE-0DC9-8F1A-45E5-60A02F38BE45</generatorID>
 <ownerDesignName>model_bd_virtus</ownerDesignName>
 <engineerTo>
-<item key="4A337B55-A865-FDD5-7A3F-871B1ABFF68D" value="true"/>
+<item key="33426F72-7E4A-1791-35F6-0B312EB2F1A8" value="true"/>
+<item key="AA050666-575F-4F34-F7EE-3A860F24FD7B" value="true"/>
+<item key="EBB1E3B1-5C7C-E6AB-C638-188E4B63BF86" value="true"/>
 </engineerTo>
 <referedAttribute>6C2C0444-DF6A-E5CF-7D8E-5490017826BA</referedAttribute>
 <useDomainConstraints>false</useDomainConstraints>
@@ -144,7 +196,9 @@
 <createdTime>2022-07-08 00:54:33 UTC</createdTime>
 <ownerDesignName>model_bd_virtus</ownerDesignName>
 <engineerTo>
-<item key="4A337B55-A865-FDD5-7A3F-871B1ABFF68D" value="true"/>
+<item key="33426F72-7E4A-1791-35F6-0B312EB2F1A8" value="true"/>
+<item key="AA050666-575F-4F34-F7EE-3A860F24FD7B" value="true"/>
+<item key="EBB1E3B1-5C7C-E6AB-C638-188E4B63BF86" value="true"/>
 </engineerTo>
 <pk>true</pk>
 <usedAttributes>

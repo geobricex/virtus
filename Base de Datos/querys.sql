@@ -10,10 +10,13 @@ select * from resources;
 
 select * from evaluations;
 
-select * from questions --_category;
+select * from questions--_category;
 inner join question_category qc on questions.question_category_id_questioncategory = qc.id_questioncategory;
 
 select * from answers;
+
+select * from answers
+inner join questions q on answers.questions_id_question = q.id_question;
 
 select * from utils;
 

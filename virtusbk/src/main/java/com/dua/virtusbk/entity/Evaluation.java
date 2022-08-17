@@ -22,11 +22,17 @@ public class Evaluation {
     @Column(name = "id_evaluation", unique = true, nullable = false)
     private Long id;
 
-    @Column(name = "name_evaluation", nullable = false, length = 500)
+    @Column(name = "name_evaluation", nullable = false, length = 100)
     private String nameEvaluation;
 
     @Column(name = "description_evaluation", nullable = false, length = 100)
     private String descriptionEvaluation;
+
+    @Column(name = "state_evaluation", nullable = false, length = 1)
+    private String state_evaluation;
+
+    @Column(name = "type_evaluation")
+    private Integer typeEvaluation;
 
     @Column(name = "datereg_evaluation", nullable = false)
     private LocalDateTime dateregEvaluation;
@@ -40,11 +46,14 @@ public class Evaluation {
     @Column(name = "timeminutes_evaluation")
     private Long timeminutesEvaluation;
 
+    @Column(name = "opportunity_evaluation", nullable = false)
+    private Boolean opportunityEvaluation = false;
+
+    @Column(name = "opportunities_evaluation")
+    private Long opportunitiesEvaluation;
+
     @Column(name = "numberquestion_evaluation")
     private Integer numberquestionEvaluation;
-
-    @Column(name = "state_evaluation", nullable = false, length = 1)
-    private String state_evaluation;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
 //    @Cascade(value={org.hibernate.annotations.CascadeType.ALL})

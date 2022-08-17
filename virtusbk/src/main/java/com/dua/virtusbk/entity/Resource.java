@@ -17,13 +17,16 @@ import java.time.LocalDateTime;
 @ToString
 public class Resource {
     @Id
-    @SequenceGenerator(name="resources_id_resource_seq", sequenceName="resources_id_resource_seq", allocationSize=1)
-    @GeneratedValue(generator="resources_id_resource_seq")
+    @SequenceGenerator(name = "resources_id_resource_seq", sequenceName = "resources_id_resource_seq", allocationSize = 1)
+    @GeneratedValue(generator = "resources_id_resource_seq")
     @Column(name = "id_resource", nullable = false)
     private Long id;
 
     @Column(name = "name_resource", nullable = false, length = 50)
     private String nameResource;
+
+    @Column(name = "description_resource", nullable = false, length = 100)
+    private String descriptionResource;
 
     @Column(name = "pathfile_resource", length = 200)
     private String pathfileResource;
@@ -33,6 +36,9 @@ public class Resource {
 
     @Column(name = "pathurlsign_resource", length = 200)
     private String pathurlsignResource;
+
+    @Column(name = "pathurlremote_resource", length = 200)
+    private String pathurlremoteResource;
 
     @Column(name = "datereg_resource")
     private LocalDateTime dateregResource;

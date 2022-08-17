@@ -23,4 +23,7 @@ public class QuestionCategory {
     @Column(name = "name_questioncategory", nullable = false, length = 30)
     private String nameQuestionCategory;
 
+    @Column(name = "state_questioncategory", nullable = false, length = 1)
+    private String stateQuestioncategory;
+
 }

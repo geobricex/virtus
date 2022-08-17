@@ -6,6 +6,7 @@
 <engineerTo>
 <item key="33426F72-7E4A-1791-35F6-0B312EB2F1A8" value="true"/>
 <item key="AA050666-575F-4F34-F7EE-3A860F24FD7B" value="true"/>
+<item key="EBB1E3B1-5C7C-E6AB-C638-188E4B63BF86" value="true"/>
 </engineerTo>
 <adequatelyNormalized>NO</adequatelyNormalized>
 <expectedVolumes>0</expectedVolumes>
@@ -23,6 +24,7 @@
 <engineerTo>
 <item key="33426F72-7E4A-1791-35F6-0B312EB2F1A8" value="true"/>
 <item key="AA050666-575F-4F34-F7EE-3A860F24FD7B" value="true"/>
+<item key="EBB1E3B1-5C7C-E6AB-C638-188E4B63BF86" value="true"/>
 </engineerTo>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
@@ -36,12 +38,13 @@
 <engineerTo>
 <item key="33426F72-7E4A-1791-35F6-0B312EB2F1A8" value="true"/>
 <item key="AA050666-575F-4F34-F7EE-3A860F24FD7B" value="true"/>
+<item key="EBB1E3B1-5C7C-E6AB-C638-188E4B63BF86" value="true"/>
 </engineerTo>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT037</logicalDatatype>
-<dataTypeSize>500</dataTypeSize>
-<ownDataTypeParameters>500,,</ownDataTypeParameters>
+<dataTypeSize>100</dataTypeSize>
+<ownDataTypeParameters>100,,</ownDataTypeParameters>
 </Attribute>
 <Attribute name="description_evaluation" id="7ED7477C-C7A6-D70A-DC3A-0EB74961ABA3">
 <createdBy>geova</createdBy>
@@ -50,12 +53,43 @@
 <engineerTo>
 <item key="33426F72-7E4A-1791-35F6-0B312EB2F1A8" value="true"/>
 <item key="AA050666-575F-4F34-F7EE-3A860F24FD7B" value="true"/>
+<item key="EBB1E3B1-5C7C-E6AB-C638-188E4B63BF86" value="true"/>
 </engineerTo>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT037</logicalDatatype>
 <dataTypeSize>100</dataTypeSize>
 <ownDataTypeParameters>100,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="state_evaluation" id="F02E5E73-6AB0-AAEF-69F1-FF90B7EB9333">
+<createdBy>geova</createdBy>
+<createdTime>2022-08-17 03:14:36 UTC</createdTime>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<engineerTo>
+<item key="33426F72-7E4A-1791-35F6-0B312EB2F1A8" value="true"/>
+<item key="AA050666-575F-4F34-F7EE-3A860F24FD7B" value="true"/>
+<item key="EBB1E3B1-5C7C-E6AB-C638-188E4B63BF86" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT025</logicalDatatype>
+<dataTypeSize>1</dataTypeSize>
+<ownDataTypeParameters>1,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="type_evaluation" id="1FE81F06-73BD-B3E5-82AB-08FB9A9286F8">
+<createdBy>geova</createdBy>
+<createdTime>2022-08-17 02:44:40 UTC</createdTime>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<engineerTo>
+<item key="33426F72-7E4A-1791-35F6-0B312EB2F1A8" value="true"/>
+<item key="AA050666-575F-4F34-F7EE-3A860F24FD7B" value="true"/>
+<item key="EBB1E3B1-5C7C-E6AB-C638-188E4B63BF86" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
 <Attribute name="datereg_evaluation" id="069DCF98-4AFE-C848-8D4E-855ECC181C8C">
 <createdBy>geova</createdBy>
@@ -64,6 +98,7 @@
 <engineerTo>
 <item key="33426F72-7E4A-1791-35F6-0B312EB2F1A8" value="true"/>
 <item key="AA050666-575F-4F34-F7EE-3A860F24FD7B" value="true"/>
+<item key="EBB1E3B1-5C7C-E6AB-C638-188E4B63BF86" value="true"/>
 </engineerTo>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
@@ -78,12 +113,43 @@
 <engineerTo>
 <item key="33426F72-7E4A-1791-35F6-0B312EB2F1A8" value="true"/>
 <item key="AA050666-575F-4F34-F7EE-3A860F24FD7B" value="true"/>
+<item key="EBB1E3B1-5C7C-E6AB-C638-188E4B63BF86" value="true"/>
 </engineerTo>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
 <logicalDatatype>LOGDT047</logicalDatatype>
 <dataTypePrecision>3</dataTypePrecision>
 <ownDataTypeParameters>,3,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="opportunity_evaluation" id="424E7437-4A9F-9E2B-6A4D-2E4118F064EB">
+<createdBy>geova</createdBy>
+<createdTime>2022-08-17 03:01:28 UTC</createdTime>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<engineerTo>
+<item key="33426F72-7E4A-1791-35F6-0B312EB2F1A8" value="true"/>
+<item key="AA050666-575F-4F34-F7EE-3A860F24FD7B" value="true"/>
+<item key="EBB1E3B1-5C7C-E6AB-C638-188E4B63BF86" value="true"/>
+</engineerTo>
+<nullsAllowed>true</nullsAllowed>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT006</logicalDatatype>
+<dataTypeSize>1</dataTypeSize>
+<ownDataTypeParameters>1,,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="opportunities_evaluation" id="C6C42C6F-F6A6-4A19-134F-887D5FA4D4DD">
+<createdBy>geova</createdBy>
+<createdTime>2022-08-17 02:58:49 UTC</createdTime>
+<ownerDesignName>model_bd_virtus</ownerDesignName>
+<engineerTo>
+<item key="33426F72-7E4A-1791-35F6-0B312EB2F1A8" value="true"/>
+<item key="AA050666-575F-4F34-F7EE-3A860F24FD7B" value="true"/>
+<item key="EBB1E3B1-5C7C-E6AB-C638-188E4B63BF86" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT011</logicalDatatype>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
 </Attribute>
 <Attribute name="time_evaluation" id="5E87CC21-AB25-19C8-9C61-0B913A1CBB30">
 <createdBy>geova</createdBy>
@@ -92,6 +158,7 @@
 <engineerTo>
 <item key="33426F72-7E4A-1791-35F6-0B312EB2F1A8" value="true"/>
 <item key="AA050666-575F-4F34-F7EE-3A860F24FD7B" value="true"/>
+<item key="EBB1E3B1-5C7C-E6AB-C638-188E4B63BF86" value="true"/>
 </engineerTo>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
@@ -106,6 +173,7 @@
 <engineerTo>
 <item key="33426F72-7E4A-1791-35F6-0B312EB2F1A8" value="true"/>
 <item key="AA050666-575F-4F34-F7EE-3A860F24FD7B" value="true"/>
+<item key="EBB1E3B1-5C7C-E6AB-C638-188E4B63BF86" value="true"/>
 </engineerTo>
 <nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>
@@ -120,7 +188,9 @@
 <engineerTo>
 <item key="33426F72-7E4A-1791-35F6-0B312EB2F1A8" value="true"/>
 <item key="AA050666-575F-4F34-F7EE-3A860F24FD7B" value="true"/>
+<item key="EBB1E3B1-5C7C-E6AB-C638-188E4B63BF86" value="true"/>
 </engineerTo>
+<deprecated>true</deprecated>
 <nullsAllowed>true</nullsAllowed>
 <useDomainConstraints>false</useDomainConstraints>
 <use>1</use>
@@ -135,6 +205,7 @@
 <engineerTo>
 <item key="33426F72-7E4A-1791-35F6-0B312EB2F1A8" value="true"/>
 <item key="AA050666-575F-4F34-F7EE-3A860F24FD7B" value="true"/>
+<item key="EBB1E3B1-5C7C-E6AB-C638-188E4B63BF86" value="true"/>
 </engineerTo>
 <referedAttribute>6C2C0444-DF6A-E5CF-7D8E-5490017826BA</referedAttribute>
 <useDomainConstraints>false</useDomainConstraints>
@@ -151,6 +222,7 @@
 <engineerTo>
 <item key="33426F72-7E4A-1791-35F6-0B312EB2F1A8" value="true"/>
 <item key="AA050666-575F-4F34-F7EE-3A860F24FD7B" value="true"/>
+<item key="EBB1E3B1-5C7C-E6AB-C638-188E4B63BF86" value="true"/>
 </engineerTo>
 <pk>true</pk>
 <usedAttributes>

@@ -8,8 +8,19 @@
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/df8c8b86-2dab-4442-98ba-1fa49a5319ba.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/df8c8b86-2dab-4442-98ba-1fa49a5319ba.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/df8c8b86-2dab-4442-98ba-1fa49a5319ba/storage_v2/_src_/database/virtus.kxFZzw/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/df8c8b86-2dab-4442-98ba-1fa49a5319ba/storage_v2/_src_/database/virtus.kxFZzw/schema/public.abK9xQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/consults.sql" beforeDir="false" afterPath="$PROJECT_DIR$/consults.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model_bd_virtus/datatypes/Diagrams.local" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/datatypes/Diagrams.local" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model_bd_virtus/dl_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/dl_settings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model_bd_virtus/logical/Objects.local" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/logical/Objects.local" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model_bd_virtus/logical/entity/seg_0/306355EE-13C1-3B02-80A6-7C8B3AD2A2B7.xml" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/logical/entity/seg_0/306355EE-13C1-3B02-80A6-7C8B3AD2A2B7.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model_bd_virtus/logical/entity/seg_0/6FEE5293-3ACB-B713-0723-839C8EF96655.xml" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/logical/entity/seg_0/6FEE5293-3ACB-B713-0723-839C8EF96655.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model_bd_virtus/logical/entity/seg_0/98B3000B-7F7A-5C36-C089-EAD4FCD4886B.xml" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/logical/entity/seg_0/98B3000B-7F7A-5C36-C089-EAD4FCD4886B.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model_bd_virtus/logical/subviews/30C6B78F-2F85-5560-0373-9CE20245471A.xml" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/logical/subviews/30C6B78F-2F85-5560-0373-9CE20245471A.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/querys.sql" beforeDir="false" afterPath="$PROJECT_DIR$/querys.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routines.sql" beforeDir="false" afterPath="$PROJECT_DIR$/routines.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/entity/Evaluation.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/entity/Evaluation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/entity/Question.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/entity/Question.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/entity/QuestionCategory.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/entity/QuestionCategory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/entity/Resource.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/entity/Resource.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,16 +54,11 @@
   }
 }</component>
   <component name="RunManager">
-    <configuration name="script_create_bd3.sql" type="DatabaseScript" editBeforeRun="true" temporary="true" nameIsGenerated="true">
+    <configuration name="script_create_bd3.sql" type="DatabaseScript" editBeforeRun="true" nameIsGenerated="true">
       <script-file value="$PROJECT_DIR$/script_create_bd3.sql" />
       <script-mode>FILE</script-mode>
       <method v="2" />
     </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Database Script.script_create_bd3.sql" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="Vcs.Log.Tabs.Properties">

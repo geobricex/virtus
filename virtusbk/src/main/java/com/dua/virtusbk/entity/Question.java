@@ -29,8 +29,17 @@ public class Question {
     @Column(name = "description_question", nullable = false, length = 500)
     private String descriptionQuestion;
 
+    @Column(name = "feedback_question", nullable = false, length = 100)
+    private String feedbackQuestion;
+
     @Column(name = "pathurlsign_question", length = 200)
     private String pathurlsignQuestion;
+
+    @Column(name = "pathurlvideo_question", length = 200)
+    private String pathurlvideoQuestion;
+
+    @Column(name = "pathurlfile_question", length = 200)
+    private String pathurlfileQuestion;
 
     @Column(name = "points_question")
     private Boolean pointsQuestion;
