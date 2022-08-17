@@ -6,25 +6,22 @@ import {Observable, Subscription, timer} from 'rxjs';
 import {Person} from "../../models/Person";
 import {Utils} from "../../util/Utils";
 import {ActivatedRoute} from '@angular/router';
-
 import {
   Evaluation,
   EvaluationQuestionsResponse,
   QuestionModel
 } from "../../models/evaluation_questionarie";
-import {FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule} from '@angular/forms';
-import {AppMainComponent} from '../../app.main.component';
 import {StorageService} from "../../authentication/StorageService";
-import {FormBuilder} from '@angular/forms';
+import {FormBuilder} from '@angular/forms'
 
 declare var Artyom: any;
 
 @Component({
-  selector: 'app-questionnaire',
-  templateUrl: './questionnaire.component.html',
-  styleUrls: ['./questionnaire.component.css']
+  selector: 'app-evaluation',
+  templateUrl: './evaluation.component.html',
+  styleUrls: ['./evaluation.component.scss']
 })
-export class QuestionnaireComponent implements OnInit {
+export class EvaluationComponent implements OnInit {
   idCourse: string | null = "";
   idModule: string | null = "";
   idTopic: string | null = "";
@@ -89,15 +86,10 @@ export class QuestionnaireComponent implements OnInit {
         routerLink: ['/app/mycourse/modules/' + this.idCourse + '/themes/' + this.idModule + '/resources/' + this.idTopic]
       },
       {
-        label: 'Cuestionario',
-        routerLink: ['/app/mycourse/modules/' + this.idCourse + '/themes/' + this.idModule + '/resources/' + this.idResource + '/questionnaire/' + this.idEvaluation]
+        label: 'Evaluación',
+        routerLink: ['/app/mycourse/modules/' + this.idCourse + '/themes/' + this.idModule + '/resources/' + this.idResource + '/evaluation/' + this.idEvaluation]
       },
     ]);
-
-
-    // this.breadcrumbService.setItems([
-    //   {label: 'Cuestionario', routerLink: ['/app/questionnaire']}
-    // ]);
   }
 
   ngOnInit(): void {
@@ -310,16 +302,16 @@ export class QuestionnaireComponent implements OnInit {
           this.evaluationObject = response.data[0];
 
           if (this.evaluationObject.time_evaluation) {
-            this.tiempoEvaluacion = 0;//this.evaluationObject.timeminutes_evaluation * 60;
+            this.tiempoEvaluacion = this.evaluationObject.timeminutes_evaluation * 60;
             this.tiempoEvaluacion$ = timer(0, 1000)
               .subscribe((iter: any) => {
                 //this.time();
                 // console.log("tiempoEvaluacion: " + iter);
-                // if (this.tiempoEvaluacion <= 0) {
-                //   this.tiempoEvaluacion$.unsubscribe();
-                //   /*Código para indicar que se terminó el tiempo*/
-                // }
-                this.tiempoEvaluacion++;
+                if (this.tiempoEvaluacion <= 0) {
+                  this.tiempoEvaluacion$.unsubscribe();
+                  /*Código para indicar que se terminó el tiempo*/
+                }
+                this.tiempoEvaluacion--;
               });
             if (this.voiceComandsSupport()) {
               if (this.storageService.getCurrentUser().email != "anthony.pachay2017@uteq.edu.ec") {

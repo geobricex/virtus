@@ -68,6 +68,7 @@ import {ChipModule} from "primeng/chip";
 import {TestpocketbaseComponent} from './testpocketbase/testpocketbase.component';
 import {MyprofileComponent} from './pages/myprofile/myprofile.component';
 import {QuestionnaireComponent} from './pages/questionnaire/questionnaire.component';
+import {EvaluationComponent} from './pages/evaluation/evaluation.component';
 import {AccordionModule} from "primeng/accordion";
 import {RadioButtonModule} from "primeng/radiobutton";
 import {ModuloarComponent} from './pages/moduloar/moduloar.component';
@@ -119,7 +120,8 @@ FullCalendarModule.registerPlugins([
     ResourcesComponent,
     ResourcesarComponent,
     AppConfigComponent,
-    UseradministrationComponent
+    UseradministrationComponent,
+    EvaluationComponent
   ],
   imports: [
     HttpClientModule,

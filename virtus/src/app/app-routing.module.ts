@@ -23,6 +23,7 @@ import {TopicarComponent} from "./pages/topicar/topicar.component";
 import {ResourcesComponent} from "./pages/resources/resources.component";
 import {ResourcesarComponent} from "./pages/resourcesar/resourcesar.component";
 import {UseradministrationComponent} from "./pages/useradministration/useradministration.component";
+import {EvaluationComponent} from "./pages/evaluation/evaluation.component";
 
 @NgModule({
   imports: [
@@ -46,6 +47,10 @@ import {UseradministrationComponent} from "./pages/useradministration/useradmini
           {path: 'mycourse', component: MiscursosComponent},
           {
             path: 'mycourse/modules/:idcourse/themes/:idmodule/resources/:idTopic/questionnaire/:ideva',
+            component: QuestionnaireComponent
+          },
+          {
+            path: 'mycourse/modules/:idcourse/themes/:idmodule/resources/:idTopic/evaluation/:ideva',
             component: QuestionnaireComponent
           },
           {path: 'mycourse/modules/:idcourse', component: ModuloComponent},

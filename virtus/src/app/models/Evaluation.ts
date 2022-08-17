@@ -10,10 +10,13 @@ export class Evaluation {
   private timeminutesEvaluation: string;
   private numberquestionEvaluation: string;
   private state_evaluation: string;
+  private typeEvaluation: string;
   private topicsIdTopic: Topic
 
 
-  constructor(id: number, nameEvaluation: string, descriptionEvaluation: string, dateregEvaluation: string, dateupdateEvaluation: string, timeEvaluation: string, timeminutesEvaluation: string, numberquestionEvaluation: string, state_evaluation: string) {
+  constructor(id: number, nameEvaluation: string, descriptionEvaluation: string, dateregEvaluation: string,
+              dateupdateEvaluation: string, timeEvaluation: string, timeminutesEvaluation: string,
+              numberquestionEvaluation: string, state_evaluation: string, typeEvaluation: string) {
     this.id = id;
     this.nameEvaluation = nameEvaluation;
     this.descriptionEvaluation = descriptionEvaluation;
@@ -23,6 +26,7 @@ export class Evaluation {
     this.timeminutesEvaluation = timeminutesEvaluation;
     this.numberquestionEvaluation = numberquestionEvaluation;
     this.state_evaluation = state_evaluation;
+    this.typeEvaluation = typeEvaluation;
   }
 
   get _id(): number {
@@ -95,6 +99,14 @@ export class Evaluation {
 
   set _state_evaluation(value: string) {
     this.state_evaluation = value;
+  }
+
+  get _typeEvaluation(): string {
+    return this.typeEvaluation;
+  }
+
+  set _typeEvaluation(value: string) {
+    this.typeEvaluation = value;
   }
 
   get _topicsIdTopic(): Topic {

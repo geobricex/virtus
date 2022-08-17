@@ -19,7 +19,8 @@
         </div>
         <div class="xl:col-1 md:col-2 sm:col-2 text-center border-right-1 line-height-3">
           <span>Tiempo</span> <br>
-          <span><strong>{{miliseguntos2Segundos(tiempoEvaluacion)}}</strong></span>
+          <span
+            style="{{tiempoEvaluacion < 5*60?'color: red;':''}}"><strong>{{miliseguntos2Segundos(tiempoEvaluacion)}}</strong></span>
         </div>
         <div class="xl:col-1 md:col-2 sm:col-2 text-center">
           <button pButton pRipple label="Enviar" class="p-button-success mt-2"></button>
@@ -49,7 +50,7 @@
                         *ngIf="evaluationObject.trueorfalse.length > 0">
           <div *ngFor="let question of evaluationObject.trueorfalse; let i2 = index">
             <div class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
-            >
+                 (click)="cambiarPregunta(1, i2)">
               <span> {{"N°" + recuentosAnteriores(1, i2)}} </span>
               <i
                 class="pi pi-circle-on mt-1 text-sm {{question.answers_[0].responses != undefined?'text-green-600': 'text-pink-600'}}"
@@ -60,7 +61,8 @@
         <p-accordionTab header="Opción única" [selected]="true" class="line-height-3 m-0"
                         *ngIf="evaluationObject.simpleoption.length > 0">
           <div *ngFor="let question of evaluationObject.simpleoption; let i2 = index">
-            <div class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2">
+            <div class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
+                 (click)="cambiarPregunta(2, i2)">
               <span> {{"N°" + recuentosAnteriores(2, i2)}} </span>
               <i
                 class="pi pi-circle-on mt-1 text-sm {{question.answers_[0].responses != undefined?'text-green-600': 'text-pink-600'}}"
@@ -71,7 +73,8 @@
         <p-accordionTab header="Opción multiples" [selected]="true" class="line-height-3 m-0"
                         *ngIf="evaluationObject.multipleoption.length > 0">
           <div *ngFor="let question of evaluationObject.multipleoption; let i2 = index">
-            <div class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2">
+            <div class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
+                 (click)="cambiarPregunta(3, i2)">
               <span> {{"N°" + recuentosAnteriores(3, i2)}} </span>
               <i
                 class="pi pi-circle-on mt-1 text-sm {{question.answers_[0].responses != undefined?'text-green-600': 'text-pink-600'}}"
@@ -83,7 +86,8 @@
                         *ngIf="evaluationObject.complete.length > 0">
           <div *ngFor="let question of evaluationObject.complete; let i2 = index">
             <div *ngIf="question.name_questioncategory == tipoPregunta(1)"
-                 class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2">
+                 class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
+                 (click)="cambiarPregunta(4, i2)">
               <span> {{"N°" + recuentosAnteriores(4, i2)}} </span>
               <i
                 class="pi pi-circle-on mt-1 text-sm {{question.answers_[0].responses != undefined?'text-green-600': 'text-pink-600'}}"
@@ -95,7 +99,7 @@
                         *ngIf="evaluationObject.relate.length > 0">
           <div *ngFor="let question of evaluationObject.relate; let i2 = index">
             <div class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
-            >
+                 (click)="cambiarPregunta(5, i2)">
               <span> {{"N°" + recuentosAnteriores(5, i2)}} </span>
               <i
                 class="pi pi-circle-on mt-1 text-sm {{question.answers_[0].responses != undefined?'text-green-600': 'text-pink-600'}}"
@@ -106,7 +110,8 @@
         <p-accordionTab header="Puzzle" [selected]="true" class="line-height-3 m-0"
                         *ngIf="evaluationObject.puzzle.length > 0">
           <div *ngFor="let question of evaluationObject.relate; let i2 = index">
-            <div class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2">
+            <div class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
+                 (click)="cambiarPregunta(6, i2)">
               <span> {{"N°" + recuentosAnteriores(6, i2)}} </span>
               <i
                 class="pi pi-circle-on mt-1 text-sm {{question.answers_[0].responses != undefined?'text-green-600': 'text-pink-600'}}"
@@ -240,9 +245,9 @@
         </div>
       </p-fieldset>
       <hr>
-      <!--      <button pButton pRipple icon="pi pi-step-backward-alt" label="Anterior"-->
-      <!--              *ngIf="indexQuestionObject > 0"-->
-      <!--              class="p-button-info mr-2 mb-2" (click)="siguientePregunta()"></button>-->
+      <button pButton pRipple icon="pi pi-step-backward-alt" label="Anterior"
+              *ngIf="indexQuestionObject > 0"
+              class="p-button-info mr-2 mb-2" (click)="siguientePregunta()"></button>
       <button pButton pRipple icon="pi pi-step-forward" label="Siguiente" class="p-button-info mr-2 mb-2"
               *ngIf="indexQuestionObject < cantidadPreguntas()"
               style="float: right" (click)="anteriorPregunta()"></button>

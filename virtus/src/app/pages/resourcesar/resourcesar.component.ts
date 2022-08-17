@@ -192,7 +192,8 @@ export class ResourcesarComponent implements OnInit {
       this.form['timeEvaluation'].value,
       this.form['timeminutesEvaluation'].value,
       this.form['numberquestionEvaluation'].value,
-      ""
+      "",
+      this.form[' typeEvaluation'].value,
     )
     let topicAux: Topic;
     topicAux = new Topic(
