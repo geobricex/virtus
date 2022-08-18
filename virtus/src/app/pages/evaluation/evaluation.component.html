@@ -52,7 +52,7 @@
                  class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
                  (click)="cambiarPregunta(i2)">
               <span> {{"N°" + (i2 + 1)}} </span>
-              <i class="pi pi-circle-on mt-1 text-sm {{question.answers_[0].responses != undefined?'text-green-600': 'text-pink-600'}}"
+              <i class="pi pi-circle-on mt-1 text-sm {{validarPreguntaResuelta(question)?'text-green-600': 'text-pink-600'}}"
                  style="float: right"></i>
             </div>
           </div>
@@ -63,7 +63,7 @@
                  class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
                  (click)="cambiarPregunta(i2)">
               <span> {{"N°" + (i2 + 1)}} </span>
-              <i class="pi pi-circle-on mt-1 text-sm {{question.answers_[0].responses != undefined?'text-green-600': 'text-pink-600'}}"
+              <i class="pi pi-circle-on mt-1 text-sm {{validarPreguntaResuelta(question)?'text-green-600': 'text-pink-600'}}"
                  style="float: right"></i>
             </div>
           </div>
@@ -74,7 +74,7 @@
                  class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
                  (click)="cambiarPregunta(i2)">
               <span> {{"N°" + (i2 + 1)}} </span>
-              <i class="pi pi-circle-on mt-1 text-sm {{question.answers_[0].responses != undefined?'text-green-600': 'text-pink-600'}}"
+              <i class="pi pi-circle-on mt-1 text-sm {{validarPreguntaResuelta(question)?'text-green-600': 'text-pink-600'}}"
                  style="float: right"></i>
             </div>
           </div>
@@ -85,7 +85,7 @@
                  class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
                  (click)="cambiarPregunta(i2)">
               <span> {{"N°" + (i2 + 1)}} </span>
-              <i class="pi pi-circle-on mt-1 text-sm {{question.answers_[0].responses != undefined?'text-green-600': 'text-pink-600'}}"
+              <i class="pi pi-circle-on mt-1 text-sm {{validarPreguntaResuelta(question)?'text-green-600': 'text-pink-600'}}"
                  style="float: right"></i>
             </div>
           </div>
