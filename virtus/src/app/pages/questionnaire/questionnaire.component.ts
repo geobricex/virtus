@@ -12,6 +12,7 @@ import {FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule} fr
 import {AppMainComponent} from '../../app.main.component';
 import {StorageService} from "../../authentication/StorageService";
 import {FormBuilder} from '@angular/forms';
+import {utils} from "protractor";
 
 declare var Artyom: any;
 
@@ -27,7 +28,7 @@ export class QuestionnaireComponent implements OnInit {
   idEvaluation: string | null = "";
   idResource: string | null = "";
   //valRadio: string;
-
+  public vistaVideoSenias: boolean = false;
 
   private artyom: any = new Artyom();
 
@@ -180,7 +181,7 @@ export class QuestionnaireComponent implements OnInit {
           this.evaluationObject = response.data[0];
 
           if (this.evaluationObject.time_evaluation) {
-            this.tiempoEvaluacion = 0;//this.evaluationObject.timeminutes_evaluation * 60;
+            this.tiempoEvaluacion = 60 * 60;//this.evaluationObject.timeminutes_evaluation * 60;
             this.tiempoEvaluacion$ = timer(0, 1000)
               .subscribe((iter: any) => {
                 //this.time();
@@ -196,8 +197,8 @@ export class QuestionnaireComponent implements OnInit {
                 this.startContinuousArtyom();
               }
             }
-            this.cambiarPregunta(0, true);
           }
+          this.cambiarPregunta(0, true);
           //this.initCanvas(false);
           setTimeout(() => {
             console.log("silenciar video")
@@ -209,25 +210,51 @@ export class QuestionnaireComponent implements OnInit {
 
   }
 
-  validarPreguntaResuelta(questionItem:Questions):boolean{
-    // @ts-ignore
-    if(questionItem.answers_[0].responses != undefined)
-      return (questionItem.answers_[0].responses.length > 0);
+  validarPreguntaResuelta(questionItem: Questions): boolean {
+    if (questionItem.answers_[0].responses != undefined)
+      return (questionItem.answers_[0].responses.length > 0
+        || Object.keys(questionItem.answers_[0].responses).length > 0);
     return false;
   }
+
+  validarPreguntaRecurso(elemt: string): boolean {
+    if (elemt != undefined && elemt != null)
+      return (elemt.length > 0);
+    return false;
+  }
+
 
   partirPreguntaComplete(quest: string): string[] {
     return quest.split(/[\{\}]/);
   }
 
   miliseguntos2Segundos(tiempo: number): string {
+    let h = Math.floor(tiempo / 3600).toString().padStart(2, '0');
     let m = Math.floor(tiempo % 3600 / 60).toString().padStart(2, '0');
     let s = Math.floor(tiempo % 60).toString().padStart(2, '0');
-    return m + ":" + s;
+    if (h == '00') {
+      return m + ":" + s;
+    } else {
+      return h + ":" + m + ":" + s;
+    }
   }
 
   cambiarPregunta(indice: number, flag = false): void {
     console.log("cambia a pregunta:" + indice);
+    console.log(this.questionObject != undefined && this.questionObject != null);
+    if (this.questionObject != null && this.questionObject != undefined) {
+      console.log(this.validarPreguntaResuelta(this.questionObject));
+      if (this.validarPreguntaResuelta(this.questionObject)) {
+        //La preguntaha sido contestada
+        //validar las respuestas que he dado
+        console.log("FeedBack: ", this.questionObject.feedback_question);
+        this.utils.showMessages(1, "FeedBack: " + this.questionObject.feedback_question);
+      } else {
+        console.log("Primero debes responder la pregunta");
+        this.utils.showMessages(3, "Primero debes responder la pregunta");
+        return;
+      }
+    }
     if (indice != this.indexQuestionObject) {
       this.indexQuestionObject = indice;
       this.questionObject = this.evaluationObject.questions_[this.indexQuestionObject];
@@ -462,7 +489,7 @@ export class QuestionnaireComponent implements OnInit {
     //this.contex = this.CanvasEl.nativeElement.getContext('2d');
     mecanvas.style['cursor'] = 'pointer';
     let cantidad: number = this.questionObject.answers_[0].options_answer.length;
-    mecanvas.width = (75 * cantidad);
+    mecanvas.width = (75 * cantidad) + (10 * (cantidad - 1));
     mecanvas.getContext('2d')!.clearRect(0, 0, mecanvas.width, mecanvas.height);
 
     for (let ind = 0; ind < cantidad; ind++) {
@@ -470,7 +497,7 @@ export class QuestionnaireComponent implements OnInit {
       img.onload = function () {
         img.width = 10;
         let ctx = mecanvas.getContext('2d')!;
-        ctx.drawImage(img, (ind * 75), 0, 75, 75);
+        ctx.drawImage(img, (ind * 75) + (10 * ind), 5, 75, 75);
       };
       img.src = 'assets/imgresource/alfabeto/' + this.alphabet[ind] + '.png';
     }
@@ -480,6 +507,7 @@ export class QuestionnaireComponent implements OnInit {
       }) => {
         this.onoff = true;
         this.lastLoc = this.windowCanvas(e.clientX, e.clientY);
+        this.initCanvas(false);
       };
       mecanvas.onmousemove = (e: any) => {
 
@@ -489,8 +517,8 @@ export class QuestionnaireComponent implements OnInit {
           ctx.beginPath();
           ctx.moveTo(this.lastLoc.x, this.lastLoc.y);
           ctx.lineTo(curLoc.x, curLoc.y);
-          ctx.strokeStyle = "#00a186";
-          ctx.lineWidth = 4;
+          ctx.strokeStyle = "rgba(0,0,0,0.25)";
+          ctx.lineWidth = 10;
           ctx.lineCap = "round";
           ctx.stroke();
           this.lastLoc = curLoc;
@@ -503,7 +531,7 @@ export class QuestionnaireComponent implements OnInit {
         preventDefault: () => void; pageX: any; pageY: any;
       }) => {
         this.onoff = false;
-        let indice = Math.trunc((this.lastLoc.x) / 75);
+        let indice = Math.trunc((this.lastLoc.x) / 80);
         console.log(this.lastLoc.x, indice);
         let wildcard: string = this.alphabet[indice];
         if (this.questionObject.name_questioncategory == this.tipoPregunta(2)) {

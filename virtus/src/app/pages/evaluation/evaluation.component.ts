@@ -194,8 +194,8 @@ export class EvaluationComponent implements OnInit {
                 this.startContinuousArtyom();
               }
             }
-            this.cambiarPregunta(0, true);
           }
+          this.cambiarPregunta(0, true);
           //this.initCanvas(false);
           setTimeout(() => {
             console.log("silenciar video")
@@ -207,14 +207,26 @@ export class EvaluationComponent implements OnInit {
 
   }
 
+  validarPreguntaResuelta(questionItem: Questions): boolean {
+    // @ts-ignore
+    if (questionItem.answers_[0].responses != undefined)
+      return (questionItem.answers_[0].responses.length > 0);
+    return false;
+  }
+
   partirPreguntaComplete(quest: string): string[] {
     return quest.split(/[\{\}]/);
   }
 
   miliseguntos2Segundos(tiempo: number): string {
+    let h = Math.floor(tiempo / 3600).toString().padStart(2, '0');
     let m = Math.floor(tiempo % 3600 / 60).toString().padStart(2, '0');
     let s = Math.floor(tiempo % 60).toString().padStart(2, '0');
-    return m + ":" + s;
+    if (h == '00') {
+      return m + ":" + s;
+    } else {
+      return h + ":" + m + ":" + s;
+    }
   }
 
   cambiarPregunta(indice: number, flag = false): void {

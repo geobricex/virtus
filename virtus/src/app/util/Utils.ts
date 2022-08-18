@@ -16,11 +16,11 @@ export class Utils {
     this._token = this.storageService.getCurrentSession().token;
   }
 
-  showMessages(status: number, info: string, key: string) {
+  showMessages(status: number, info: string, key: string = "grow_glb") {
     this.service.add({
       key: key,
-      severity: status === 1 ? "warn" : status === 2 ? "success" : status === 3 ? "error" : "info",
-      summary: 'Virtus',
+      severity: status === 1 ? "info" : status === 2 ? "success" : status === 3 ? "warn" : "error",
+      summary: status === 1 ? "Notificación" : status === 2 ? "Éxito" : status === 3 ? "Alerta" : "Error",
       detail: info
     });
   }

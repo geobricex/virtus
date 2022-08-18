@@ -111,24 +111,23 @@
               image="{{'assets/imgresource/empty/shield.png'}}"
       ></p-chip>
 
-      <div *ngIf="questionObject.pathurlsign_question != null
-      || questionObject.pathurlsign_question!=undefined
-      || questionObject.pathurlsign_question != ''" class="col-12 text-center">
-        <video id="pathurlsign_question" height="300" controls [src]="questionObject.pathurlsign_question"
-               [autoplay]="true">
-        </video>
-      </div>
-
-      <div *ngIf="questionObject.pathurlsign_question != null" class="col-12 text-center">
-        <div class="p-buttonset">
-          <button id="reproducir_video" pButton pRipple icon="pi pi-play"
-                  class="p-button-rounded p-button-warning mr-2 mb-2"
-                  (click)="playVideo()"></button>
-          <button id="pausar_video" pButton pRipple icon="pi pi-pause" class="p-button-rounded p-button-info mr-2 mb-2"
-                  (click)="pauseVideo()"></button>
-          <button id="silenciar_video" pButton pRipple icon="pi pi-volume-up"
-                  class="p-button-rounded p-button-success mr-2 mb-2"
-                  (click)="mutedVideo()"></button>
+      <div *ngIf="validarPreguntaRecurso(questionObject.pathurlvideo_question)" class="col-12">
+        <div  class="col-12 text-center">
+          <video id="pathurlsign_question" height="300" controls [src]="questionObject.pathurlvideo_question"
+                 [autoplay]="true">
+          </video>
+        </div>
+        <div class="col-12 text-center">
+          <div class="p-buttonset">
+            <button id="reproducir_video" pButton pRipple icon="pi pi-play"
+                    class="p-button-rounded p-button-warning mr-2 mb-2"
+                    (click)="playVideo()"></button>
+            <button id="pausar_video" pButton pRipple icon="pi pi-pause" class="p-button-rounded p-button-info mr-2 mb-2"
+                    (click)="pauseVideo()"></button>
+            <button id="silenciar_video" pButton pRipple icon="pi pi-volume-up"
+                    class="p-button-rounded p-button-success mr-2 mb-2"
+                    (click)="mutedVideo()"></button>
+          </div>
         </div>
       </div>
 
@@ -216,7 +215,7 @@
       <p-fieldset legend="Raya el correcto" [toggleable]="true">
         <div class="col-12" style="display: flex;align-items: center;justify-content: center;">
           <canvas #canvasEl id="canvasEl"
-                  width="450" height="75"></canvas>
+                  width="450" height="85"></canvas>
         </div>
       </p-fieldset>
       <hr>
@@ -226,6 +225,32 @@
       <button pButton pRipple icon="pi pi-step-forward" label="Siguiente" class="p-button-info mr-2 mb-2"
               *ngIf="indexQuestionObject < evaluationObject.questions_.length"
               style="float: right" (click)="anteriorPregunta()"></button>
+    </div>
+  </div>
+</div>
+<!--Componente de video para lenguaje de señas-->
+<div class="video_sign_float" *ngIf="validarPreguntaRecurso(questionObject.pathurlsign_question)"
+    [ngStyle]="{'background':vistaVideoSenias?'#2d3f47':'rgba(0,0,0,0)'}"
+>
+  <button  pButton pRipple icon="pi pi-window-maximize"
+           class="p-button-rounded p-button-info mr-2 mb-2"
+           *ngIf="!vistaVideoSenias" (click)="vistaVideoSenias = true;"
+           ></button>
+  <div *ngIf="vistaVideoSenias" class="col-12 text-center" >
+    <video height="150" controls [src]="questionObject.pathurlsign_question"
+           [autoplay]="true">
+    </video>
+  </div>
+  <div *ngIf="vistaVideoSenias" (click)="vistaVideoSenias = false;"  class="col-12 text-center">
+    <div class="p-buttonset">
+      <button id="reproducir_gestos" pButton pRipple icon="pi pi-play"
+              class="p-button-rounded p-button-warning mr-2 mb-2"
+              (click)="playVideo()"></button>
+      <button id="pausar_gestos" pButton pRipple icon="pi pi-pause" class="p-button-rounded p-button-info mr-2 mb-2"
+              (click)="pauseVideo()"></button>
+      <button id="silenciar_gestos" pButton pRipple icon="pi pi-window-minimize"
+              class="p-button-rounded p-button-success mr-2 mb-2"
+              (click)="mutedVideo()"></button>
     </div>
   </div>
 </div>
