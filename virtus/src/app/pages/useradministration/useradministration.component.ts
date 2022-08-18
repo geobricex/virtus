@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {BreadcrumbService} from "../../app.breadcrumb.service";
 
 @Component({
   selector: 'app-useradministration',
@@ -7,7 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UseradministrationComponent implements OnInit {
 
-  constructor() { }
+  constructor(private breadcrumbService: BreadcrumbService,) {
+    this.breadcrumbService.setItems([
+      {label: 'Gestión de Usuario', routerLink: ['/app/useradministration']},
+    ]);
+  }
 
   ngOnInit(): void {
   }

@@ -129,7 +129,7 @@ public class EvaluationApi {
 
     @PostMapping("/getEvaluationQuestions")
     public ResponseEntity<String> getEvaluationQuestions(@RequestBody @Validated String data, @RequestHeader("token") String sessionToken) {
-        System.out.println("getEvaluationQuestions...");
+        System.out.print("getEvaluationQuestions...");
         String message;
         /*TEMPORAL*/
 //        JsonObject jso = Methods.stringToJSON(data);
@@ -141,6 +141,7 @@ public class EvaluationApi {
             JsonObject jso = Methods.stringToJSON(data);
             if (jso.size() > 0) {
                 String id_evaluation = Methods.JsonToString(jso, "id_evaluation", "");
+                System.out.println(id_evaluation);
                 res = evaluationService.getEvaluationQuestions(id_evaluation, clains[0]);
                 message = Methods.getJsonMessage(res[0], res[1], res[2]);
                 if (res[0].equals("2")) {

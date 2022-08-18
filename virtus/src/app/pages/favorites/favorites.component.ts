@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import {BreadcrumbService} from '../../app.breadcrumb.service';
 import {Course} from "../../models/Course";
@@ -11,11 +11,11 @@ import {ConfirmationService} from "primeng/api";
 import {Router} from "@angular/router";
 
 @Component({
-  selector: 'app-cursos',
-  templateUrl: './cursos.component.html',
-  styleUrls: ['../../../assets/demo/badges.scss']
+  selector: 'app-favorites',
+  templateUrl: './favorites.component.html',
+  styleUrls: ['./favorites.component.scss']
 })
-export class CursosComponent implements OnInit {
+export class FavoritesComponent implements OnInit {
 
   courses: Course[];
   sortOrder: number;
@@ -35,7 +35,7 @@ export class CursosComponent implements OnInit {
     public router: Router) {
     this.breadcrumbService.setItems([
       {label: 'Cursos', routerLink: ['app/course']},
-      {label: 'Todos los cursos', routerLink: ['/app/course']}
+      {label: 'Favoritos', routerLink: ['/app/course/favorites']}
     ]);
   }
 
