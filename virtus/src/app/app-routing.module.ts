@@ -51,7 +51,7 @@ import {EvaluationComponent} from "./pages/evaluation/evaluation.component";
           },
           {
             path: 'mycourse/modules/:idcourse/themes/:idmodule/resources/:idTopic/evaluation/:ideva',
-            component: QuestionnaireComponent
+            component: EvaluationComponent
           },
           {path: 'mycourse/modules/:idcourse', component: ModuloComponent},
           {path: 'mycourse/modules/:idcourse/themes/:idmodule', component: TemasComponent},
