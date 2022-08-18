@@ -13,5 +13,7 @@ select * from answers
 inner join questions q on answers.questions_id_question = q.id_question
 inner join question_category qc on q.question_category_id_questioncategory = qc.id_questioncategory;
 
+Update questions set feedback_question = '¡Estudiar un poco más!' where feedback_question is null
+
 
 
