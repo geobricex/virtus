@@ -2,12 +2,12 @@ import {RouterModule} from '@angular/router';
 import {NgModule} from '@angular/core';
 
 import {DashboardDemoComponent} from "./pages/dashboarddemo.component";
-import {CursosComponent} from './pages/cursos/cursos.component';
-
 import {AppLoginComponent} from './pages/app.login.component';
 import {AppMainpageComponent} from "./pages/app.mainpage.component";
 import {AppMainComponent} from "./app.main.component";
 import {AppNotfoundComponent} from "./pages/app.notfound.component";
+import {CursosComponent} from './pages/cursos/cursos.component';
+import {FavoritesComponent} from './pages/favorites/favorites.component';
 import {MiscursosComponent} from "./pages/miscursos/miscursos.component";
 import {TemasComponent} from "./pages/temas/temas.component";
 import {SingupComponent} from "./pages/singup/singup.component";
@@ -39,6 +39,7 @@ import {EvaluationComponent} from "./pages/evaluation/evaluation.component";
           {path: '', component: DashboardDemoComponent},
           {path: 'myprofile', component: MyprofileComponent},
           {path: 'course', component: CursosComponent},
+          {path: 'favorites', component: FavoritesComponent},
           {path: 'coursear', component: CursosArComponent},
           {path: 'useradministration', component: UseradministrationComponent},
           {path: 'coursear/modulear/:idcourse', component: ModuloarComponent},

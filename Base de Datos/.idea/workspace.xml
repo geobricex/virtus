@@ -5,11 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bbc5533f-4237-4b82-99c8-ccd5e9e0c413" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../virtus/src/app/pages/favorites/favorites.component.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../virtus/src/app/pages/favorites/favorites.component.scss" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../virtus/src/app/pages/favorites/favorites.component.spec.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../virtus/src/app/pages/favorites/favorites.component.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/consults.sql" beforeDir="false" afterPath="$PROJECT_DIR$/consults.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtus/src/app/app-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/src/app/app-routing.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtus/src/app/app.menu.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/src/app/app.menu.component.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../virtus/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/src/app/app.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtus/src/app/pages/evaluation/evaluation.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/src/app/pages/evaluation/evaluation.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/EvaluationApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/EvaluationApi.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
