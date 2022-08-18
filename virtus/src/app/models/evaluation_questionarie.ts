@@ -16,11 +16,14 @@ export interface Evaluation {
 export interface Questions {
   answers_:               Answers[];
   description_question:   string;
+  feedback_question:      string;
   level_question:         number;
   maximumpoints_question: number;
   name_questioncategory:  string;
   order_question:         number;
-  pathurlsign_question:   string;
+  pathurlfile_question: string;
+  pathurlsign_question: string;
+  pathurlvideo_question: string;
   points_question:        boolean;
   title_question:         string;
   canResource?:           boolean;
@@ -33,11 +36,11 @@ export interface Answers {
 
 export interface OptionsAnswer {
   //selección simple y múltiple
-  correct:  string;
+  correct:  Correct;
   opcion:   string;
   resource?: string;
   // yo he seleccionado?
-  miSelected?: boolean;
+  //miSelected?: boolean;
   //pregunta de complete
   description_question: string; // pregunta con psudocadena
   description_question_R: string; // respuesta para comparar
@@ -47,6 +50,11 @@ export interface OptionsAnswer {
   resourse_leftSide: string;
   resourse_rightSide: string;
   rightSide: string;
+}
+
+export enum Correct {
+  No = "No",
+  Yes = "Yes",
 }
 
 export interface Options {

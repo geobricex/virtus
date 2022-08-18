@@ -52,7 +52,7 @@
             >
               <span> {{"N°" + (i2 + 1)}} </span>
               <i
-                class="pi pi-circle-on mt-1 text-sm {{question.answers_[0].responses != undefined?'text-green-600': 'text-pink-600'}}"
+                class="pi pi-circle-on mt-1 text-sm {{validarPreguntaResuelta(question)?'text-green-600': 'text-pink-600'}}"
                 style="float: right"></i>
             </div>
           </div>
@@ -64,7 +64,7 @@
             >
               <span> {{"N°" + (i2 + 1)}} </span>
               <i
-                class="pi pi-circle-on mt-1 text-sm {{question.answers_[0].responses != undefined?'text-green-600': 'text-pink-600'}}"
+                class="pi pi-circle-on mt-1 text-sm {{validarPreguntaResuelta(question)?'text-green-600': 'text-pink-600'}}"
                 style="float: right"></i>
             </div>
           </div>
@@ -76,7 +76,7 @@
             >
               <span> {{"N°" + (i2 + 1)}} </span>
               <i
-                class="pi pi-circle-on mt-1 text-sm {{question.answers_[0].responses != undefined?'text-green-600': 'text-pink-600'}}"
+                class="pi pi-circle-on mt-1 text-sm {{validarPreguntaResuelta(question)?'text-green-600': 'text-pink-600'}}"
                 style="float: right"></i>
             </div>
           </div>
@@ -88,7 +88,7 @@
             >
               <span> {{"N°" + (i2 + 1)}} </span>
               <i
-                class="pi pi-circle-on mt-1 text-sm {{question.answers_[0].responses != undefined?'text-green-600': 'text-pink-600'}}"
+                class="pi pi-circle-on mt-1 text-sm {{validarPreguntaResuelta(question)?'text-green-600': 'text-pink-600'}}"
                 style="float: right"></i>
             </div>
           </div>
@@ -113,7 +113,7 @@
 
       <div *ngIf="questionObject.pathurlsign_question != null
       || questionObject.pathurlsign_question!=undefined
-      || questionObject.pathurlsign_question == ''" class="col-12 text-center">
+      || questionObject.pathurlsign_question != ''" class="col-12 text-center">
         <video id="pathurlsign_question" height="300" controls [src]="questionObject.pathurlsign_question"
                [autoplay]="true">
         </video>

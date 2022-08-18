@@ -209,6 +209,13 @@ export class QuestionnaireComponent implements OnInit {
 
   }
 
+  validarPreguntaResuelta(questionItem:Questions):boolean{
+    // @ts-ignore
+    if(questionItem.answers_[0].responses != undefined)
+      return (questionItem.answers_[0].responses.length > 0);
+    return false;
+  }
+
   partirPreguntaComplete(quest: string): string[] {
     return quest.split(/[\{\}]/);
   }
