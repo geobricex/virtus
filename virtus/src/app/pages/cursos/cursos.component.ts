@@ -34,7 +34,7 @@ export class CursosComponent implements OnInit {
     private confirmationService: ConfirmationService,
     public router: Router) {
     this.breadcrumbService.setItems([
-      {label: 'Cursos', routerLink: ['/']},
+      {label: 'Cursos', routerLink: ['app/course']},
       {label: 'Todos los cursos', routerLink: ['/app/course']}
     ]);
   }

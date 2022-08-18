@@ -23,7 +23,7 @@ export interface Questions {
   pathurlsign_question:   string;
   points_question:        boolean;
   title_question:         string;
-  canResource?:           boolean;
+  canResource:           boolean;
 }
 
 export interface Answers {
