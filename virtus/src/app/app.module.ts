@@ -84,6 +84,9 @@ import {UseradministrationComponent} from './pages/useradministration/useradmini
 import {InputNumberModule} from "primeng/inputnumber";
 
 import {AppConfigComponent} from "./app.config.component";
+import {ScrollTopModule} from "primeng/scrolltop";
+import {ScrollPanelModule} from "primeng/scrollpanel";
+import { FavoritesComponent } from './pages/favorites/favorites.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -121,7 +124,8 @@ FullCalendarModule.registerPlugins([
     ResourcesarComponent,
     AppConfigComponent,
     UseradministrationComponent,
-    EvaluationComponent
+    EvaluationComponent,
+    FavoritesComponent
   ],
   imports: [
     HttpClientModule,
@@ -162,7 +166,9 @@ FullCalendarModule.registerPlugins([
     TabViewModule,
     InputNumberModule,
     ColorPickerModule,
-    PdfViewerModule
+    PdfViewerModule,
+    ScrollTopModule,
+    ScrollPanelModule
   ],
 
   providers: [

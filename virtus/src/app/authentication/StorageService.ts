@@ -31,6 +31,7 @@ export class StorageService {
       currentUser = new User(jsonsession._user._email, jsonsession._user._type_person, jsonsession._user._name_person,
         jsonsession._user._last_name, jsonsession._user._pathimg_person, jsonsession._user._provider_person);
       sessionAux = new Session(jsonsession._token, currentUser);
+      return sessionAux;
     }
 
     // @ts-ignore
@@ -39,12 +40,15 @@ export class StorageService {
 
   getCurrentSession(): Session {
     console.log(this.currentSession);
+    if (this.currentSession === undefined) {
+      this.currentSession = new Session("", new User("", "", "", "", "", ""));
+    }
     return this.currentSession;
   }
 
   removeCurrentSession(): void {
     this.localStorageService.removeItem('currentUser');
-    this.currentSession = new Session("", new User("", "", "", "", "", ""));
+    //this.currentSession = new Session("", new User("", "", "", "", "", ""));
   }
 
   getCurrentUser(): User {

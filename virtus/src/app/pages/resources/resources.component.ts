@@ -8,7 +8,7 @@ import {Observable} from "rxjs";
 @Component({
   selector: 'app-resources',
   templateUrl: './resources.component.html',
-  styleUrls: ['./resources.component.scss']
+  styleUrls: ['./resources.component.css']
 })
 export class ResourcesComponent implements OnInit {
 
@@ -35,6 +35,12 @@ export class ResourcesComponent implements OnInit {
       numScroll: 1
     }
   ];
+  tituloTopic: string;
+  descriptionTopic: string;
+  viewPdf: boolean;
+  pdfUrl: any;
+  viewVideoDialog: boolean;
+  videoUrl: any;
 
   constructor(
     private breadcrumbService: BreadcrumbService,
@@ -59,6 +65,20 @@ export class ResourcesComponent implements OnInit {
   ngOnInit(): void {
     this.loadResources();
     this.loadEvaluations();
+    this.enteredResources();
+  }
+
+  viewFile(url: string) {
+    console.log(url);
+    if (url.includes(".pdf")) {
+      this.pdfUrl = url;
+      this.viewPdf = true;
+    }
+  }
+
+  viewVideo(url: string) {
+    this.videoUrl = url;
+    this.viewVideoDialog = true;
   }
 
   loadResources() {
@@ -74,6 +94,22 @@ export class ResourcesComponent implements OnInit {
       console.log(response);
       this.evaluationData = response.data;
     });
+  }
+
+  enteredResources() {
+    this.topicData().subscribe(response => {
+      console.log(response);
+      this.tituloTopic = response.data[0].name_topic;
+      this.descriptionTopic = response.data[0].description_topic;
+    });
+  }
+
+  topicData(): Observable<any> {
+    this.globalUri = this.utils.globalUrl + "topic/gettopic";
+    console.log("ID DEL TOPIC: " + this.idTopic);
+    return this._http.post(this.globalUri,
+      {"id_topic": parseInt(typeof this.idTopic === "string" ? this.idTopic : "0")}
+      ,);
   }
 
   apiLoadResources(): Observable<any> {

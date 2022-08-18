@@ -1,8 +1,9 @@
 <p-toast key="tst" [baseZIndex]="99999"></p-toast>
 <div class="grid p-fluid">
-
   <div class="col-12">
-    <div class="card">
+    <h3> {{tituloTopic}} </h3>
+    <span> {{descriptionTopic}} </span>
+    <div class="card mt-3">
       <h5>Recursos</h5>
       <button pButton label="Nuevo" icon="pi pi-plus" class="p-button p-button-success w-8rem mt-2"
               (click)="newResourseDialog=true"></button>
@@ -110,6 +111,9 @@
             *ngIf="formR['nameResources'].invalid && (formR['nameResources'].dirty && formR['nameResources'].touched)"
             class="p-error">Este campo es requerido.</small>
         </div>
+        <div class="field">
+          <label for="nombreRe"> Descripción: </label>
+        </div>
       </form>
     </ng-template>
     <ng-template pTemplate="footer">
@@ -199,6 +203,7 @@
       <video src="{{videoUrl}}" controls></video>
     </ng-template>
   </p-dialog>
+  <p-scrollTop target="window" styleClass="custom-scrolltop" [threshold]="100" icon="pi pi-arrow-up"></p-scrollTop>
 
 </div>
 

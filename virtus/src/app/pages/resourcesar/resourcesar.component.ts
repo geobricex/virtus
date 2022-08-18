@@ -27,6 +27,8 @@ export class ResourcesarComponent implements OnInit {
   tmpFile: any;
   videoUrl: any;
   viewVideoDialog: boolean;
+  tituloTopic: string;
+  descriptionTopic: string;
 
   newEvaluationsDialog: boolean;
   newResourseDialog: boolean;
@@ -100,6 +102,7 @@ export class ResourcesarComponent implements OnInit {
     ]
     this.loadResources();
     this.loadEvaluations();
+    this.enteredResources();
   }
 
   viewFile(url: string) {
@@ -141,7 +144,14 @@ export class ResourcesarComponent implements OnInit {
         this.resetResources();
       });
     });
+  }
 
+  enteredResources() {
+    this.topicData().subscribe(response => {
+      console.log(response);
+      this.tituloTopic = response.data[0].name_topic;
+      this.descriptionTopic = response.data[0].description_topic;
+    });
   }
 
   apiSaveResources(): Observable<any> {
@@ -151,6 +161,14 @@ export class ResourcesarComponent implements OnInit {
       .set('provider', 'native')
       .set('token', this.utils.token);
     return this._http.post(this.globalUri, this.resource, {headers: headers});
+  }
+
+  topicData(): Observable<any> {
+    this.globalUri = this.utils.globalUrl + "topic/gettopic";
+    console.log("ID DEL TOPIC: " + this.idTopic);
+    return this._http.post(this.globalUri,
+      {"id_topic": parseInt(typeof this.idTopic === "string" ? this.idTopic : "0")}
+      ,);
   }
 
   resetResources() {

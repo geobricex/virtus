@@ -102,7 +102,7 @@ public class TopicApi {
     }
 
     @PostMapping("/gettopic")
-    public ResponseEntity<String> getTopic(@RequestBody String id_syllabyu) {
+    public ResponseEntity<String> getTopic(@RequestBody String id_topic) {
         System.out.println("getTopic...");
         String message;
 //        JsonObject jso = Methods.stringToJSON(sessionToken);
@@ -110,9 +110,9 @@ public class TopicApi {
 //        String[] clains = Methods.getDataToJwt(sToken);
 //        String[] res = Methods.validatePermit(clains[0], clains[1], 1);
 //        if (res[0].equals("2")) {
-        JsonObject jso = Methods.stringToJSON(id_syllabyu);
-        String course_id_syllabu = Methods.JsonToString(jso, "syllabu_id_topic", "");
-        String[] res = topicService.getTopic(course_id_syllabu);
+        JsonObject jso = Methods.stringToJSON(id_topic);
+        String id_topic_aux = Methods.JsonToString(jso, "id_topic", "");
+        String[] res = topicService.getTopic(id_topic_aux);
         message = Methods.getJsonMessage(res[0], res[1], res[2]);
         if (res[0].equals("2")) {
             return new ResponseEntity<>(message, HttpStatus.OK);

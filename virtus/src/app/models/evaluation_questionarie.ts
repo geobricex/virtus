@@ -26,7 +26,7 @@ export interface Questions {
   pathurlvideo_question: string;
   points_question:        boolean;
   title_question:         string;
-  canResource?:           boolean;
+  canResource:           boolean;
 }
 
 export interface Answers {

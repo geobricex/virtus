@@ -3,6 +3,7 @@ import {AppMainComponent} from './app.main.component';
 import {User} from './models/user';
 import {StorageService} from "./authentication/StorageService";
 import {Router} from "@angular/router";
+import {Utils} from "./util/Utils";
 
 @Component({
   selector: 'app-topbar',
@@ -12,7 +13,7 @@ export class AppTopBarComponent implements OnInit {
 
   public user: User;
 
-  constructor(public app: AppMainComponent, private storageService: StorageService, public router: Router) {
+  constructor(public app: AppMainComponent, private storageService: StorageService, public router: Router, private utils: Utils) {
   }
 
   ngOnInit(): void {
@@ -24,7 +25,9 @@ export class AppTopBarComponent implements OnInit {
   }
 
   logout() {
+    //location.reload();
     this.storageService.logout();
+    //this.utils.token = "";
   }
 
   display: boolean = false;

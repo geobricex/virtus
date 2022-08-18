@@ -16,6 +16,11 @@ export class Utils {
     this._token = this.storageService.getCurrentSession().token;
   }
 
+
+  getUserSession() {
+    return this.storageService.getCurrentSession().user;
+  }
+
   showMessages(status: number, info: string, key: string = "grow_glb") {
     this.service.add({
       key: key,
