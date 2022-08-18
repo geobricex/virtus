@@ -7,7 +7,8 @@ select * from courses;
 select * from topics;
 
 select * from resources;
-
+https://aplicaciones.uteq.edu.ec:9549/api/files/R0BDS4ixyAqvSUv/Czc3IJbUgLhUIzx/vINIsvtK61HjbUWWoyR1GrSTZ6swnyLX.docx
+    https://aplicaciones.uteq.edu.ec:9549/api/files/archivos/eJBzVX9CprMX9K6/hoQDoUpftwO8e5OOjHcACPtxrUid1ODr.pdf
 select * from evaluations;
 
 select * from questions--_category;

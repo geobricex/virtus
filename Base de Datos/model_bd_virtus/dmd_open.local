@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <design id="6B3172AC-1922-1CEC-0008-688A97C7B672">
 	<models>
-		<model id="33426F72-7E4A-1791-35F6-0B312EB2F1A8" open="true" open_d_pm="true"/>
+		<model id="33426F72-7E4A-1791-35F6-0B312EB2F1A8" open="true" open_d_pm="false"/>
 		<model id="AA050666-575F-4F34-F7EE-3A860F24FD7B" open="true" open_d_pm="false"/>
+		<model id="EBB1E3B1-5C7C-E6AB-C638-188E4B63BF86" open="true" open_d_pm="true"/>
 	</models>
 </design>

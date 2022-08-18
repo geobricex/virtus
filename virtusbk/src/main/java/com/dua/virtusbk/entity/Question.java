@@ -32,6 +32,9 @@ public class Question {
     @Column(name = "feedback_question", nullable = false, length = 100)
     private String feedbackQuestion;
 
+    @Column(name = "hint_question", length = 200)
+    private String hintQuestion;
+
     @Column(name = "pathurlsign_question", length = 200)
     private String pathurlsignQuestion;
 
