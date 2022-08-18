@@ -71,10 +71,10 @@ public class TopicService {
         return new String[]{status, message, data};
     }
 
-    public String[] getTopic(String id_syllabu) {
+    public String[] getTopic(String id_topic) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
 
-        List<Map<String, Object>>  topics = topicDAO.findIdTopic(Long.parseLong(id_syllabu));
+        List<Map<String, Object>>  topics = topicDAO.findIdTopic(Long.parseLong(id_topic));
         if (topics.size() > 0) {
             Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();
             data = gson.toJson(topics);

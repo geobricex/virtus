@@ -9,7 +9,7 @@ import {Message} from "primeng/api";
 @Component({
   selector: 'app-singup',
   templateUrl: './singup.component.html',
-  styleUrls: ['./singup.component.scss']
+  styleUrls: ['./singup.component.css']
 })
 export class SingupComponent implements OnInit {
 
@@ -58,7 +58,7 @@ export class SingupComponent implements OnInit {
   apirRegisterUser(person: Person): Observable<any> {
     if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
       this.globalUri = "virtus_bk/persons/signup";
-    }else{
+    } else {
       // this.globalUri = "virtusbk/persons/signup";
       this.globalUri = "virtusbk/persons/signup";
     }

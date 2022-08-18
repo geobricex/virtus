@@ -26,7 +26,7 @@ export class DashboardDemoComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log("ngOnInit Home")
+    console.log("ngOnInit Home");
     this.apiInformationHome().subscribe(response => {
       console.log(response);
       this.homedata = response.data[0];
@@ -42,7 +42,7 @@ export class DashboardDemoComponent implements OnInit {
       .set('Access-Control-Allow-Origin', '*')
       .set('token', this.utils.token);
     return this._http.post(this.globalUri, {
-      "id_type": 1
+      "id_type": this.utils.getUserSession().type_person === "A" || this.utils.getUserSession().type_person === "R" ? 2 : 1,
     }, {'headers': headers});
   }
 

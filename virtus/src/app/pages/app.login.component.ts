@@ -14,6 +14,7 @@ import {MessageService} from "primeng/api";
 @Component({
   selector: 'app-login',
   templateUrl: './app.login.component.html',
+  styleUrls: ['./app.login.component.css']
 })
 export class AppLoginComponent {
 
@@ -54,6 +55,9 @@ export class AppLoginComponent {
   login() {
     this.apiLogin().subscribe(response => {
       console.log(response);
+      this.sessionLog = new Session("", new User("", "", "", "", "", ""));
+      console.log("ANTES DE INGRESAR: ", this.sessionLog);
+      this.storageService.setCurrentSession(this.sessionLog);
       this.showMessages(response.status, response.information, "tst");
       if (response.status === 2) {
         let dataLogin = response.data[0];
