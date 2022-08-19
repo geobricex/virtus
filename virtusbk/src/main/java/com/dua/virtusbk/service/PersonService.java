@@ -1,10 +1,13 @@
 package com.dua.virtusbk.service;
 
+import com.dua.virtusbk.ExcludeProxiedFields;
 import com.dua.virtusbk.entity.Person;
 import com.dua.virtusbk.repository.PersonRepository;
 import com.dua.virtusbk.util.DataStatic;
 import com.dua.virtusbk.util.Methods;
 import com.dua.virtusbk.util.WeEncoder;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -47,12 +50,29 @@ public class PersonService {
         }
     }
 
-    public List<Person> getPersons(Long id_person) {
+//    public List<Person> getPersons(Long id_person) {
+//        List<Person> listPerson = personDAO.findByIdNotOrderByDateregPerson(id_person);
+//        if (listPerson.size() >= 0)
+//            return listPerson;
+//        else
+//            return null;
+//    }
+
+    public String[] getPersons(Long id_person) {
+        String status = "4", message = "Error en los parámetros introducidos", data = "[]";
+
         List<Person> listPerson = personDAO.findByIdNotOrderByDateregPerson(id_person);
-        if (listPerson.size() >= 0)
-            return listPerson;
-        else
-            return null;
+        if (listPerson.size() >= 0) {
+            Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();
+            data = gson.toJson(listPerson);
+            status = "2";
+            message = "Información obetnida con éxito.";
+            System.out.println(data);
+        } else {
+            status = "4";
+            message = "No se ha encontrado información.";
+        }
+        return new String[]{status, message, data};
     }
 
     public String[] signUp(Person person) {

@@ -1,38 +1,38 @@
 <div class="route-bar">
-    <div class="route-bar-breadcrumb">
-        <li>
-            <a routerLink="">
-                <i class="pi pi-home"></i>
-            </a>
-        </li>
-        <li>&nbsp;/</li>
-        <ng-template ngFor let-item let-last="last" [ngForOf]="items">
-            <li>
-                <a [routerLink]="item.routerLink" *ngIf="item.routerLink"> {{item.label}} </a>
-                <ng-container *ngIf="!item.routerLink"> {{item.label}} </ng-container>
-            </li>
-            <li *ngIf="!last">/</li>
-        </ng-template>
-    </div>
+  <div class="route-bar-breadcrumb">
+    <li>
+      <a routerLink="">
+        <i class="pi pi-home"></i>
+      </a>
+    </li>
+    <li>&nbsp;/</li>
+    <ng-template ngFor let-item let-last="last" [ngForOf]="items">
+      <li>
+        <a [routerLink]="item.routerLink" *ngIf="item.routerLink"> {{item.label}} </a>
+        <ng-container *ngIf="!item.routerLink"> {{item.label}} </ng-container>
+      </li>
+      <li *ngIf="!last">/</li>
+    </ng-template>
+  </div>
 
-    <ul class="route-bar-menu">
-        <li>
-            <a href="#">
-                <i class="pi pi-check-square"></i>
-                <span>Misión y visión</span>
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <i class="pi pi-file"></i>
-                <span>Documentación</span>
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <i class="pi pi-envelope"></i>
-                <span>Soporte</span>
-            </a>
-        </li>
-    </ul>
+  <ul class="route-bar-menu">
+    <!--        <li>-->
+    <!--            <a href="#">-->
+    <!--                <i class="pi pi-check-square"></i>-->
+    <!--                <span>Misión y visión</span>-->
+    <!--            </a>-->
+    <!--        </li>-->
+    <li>
+      <a href="#">
+        <i class="pi pi-envelope"></i>
+        <span>Buzón de sugerencias - soporte</span>
+      </a>
+    </li>
+    <li>
+      <a href="#">
+        <i class="pi pi-file"></i>
+        <span>Manual de usuario</span>
+      </a>
+    </li>
+  </ul>
 </div>

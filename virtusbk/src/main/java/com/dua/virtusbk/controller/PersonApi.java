@@ -33,7 +33,7 @@ public class PersonApi {//implements UserDetailsService {
         return ResponseEntity.ok(listPerson);
     }
 //
-//    @GetMapping("/getPersons")
+//    @GetMapping("/getpersons")
 //    public ResponseEntity<List<Person>> getPersons(@PathVariable("id") Long id) {
 //        List<Person> listPerson = personDAO.findByIdNot(id);
 //        return ResponseEntity.ok(listPerson);
@@ -54,7 +54,7 @@ public class PersonApi {//implements UserDetailsService {
 //
 //    }
 
-    @PostMapping("/getPerson")
+    @PostMapping("/getperson")
     public ResponseEntity<Person> getPerson(@RequestBody String sessionToken) {
         System.out.println("getPerson...");
         JsonObject jso = Methods.stringToJSON(sessionToken);
@@ -71,20 +71,44 @@ public class PersonApi {//implements UserDetailsService {
 
     }
 
-    @PostMapping("/getPersons")
-    public ResponseEntity<List<Person>> getPersons(@RequestBody String sessionToken) {
+//    @PostMapping("/getpersons")
+//    public ResponseEntity<List<Person>> getPersons(@RequestBody String sessionToken, @RequestHeader("token") String dataHeader) {
+//        System.out.println("getPerson...");
+//        String token = dataHeader;
+//        JsonObject jso = Methods.stringToJSON(sessionToken);
+//        String sToken = Methods.JsonToString(jso, "sessionToken", "");
+//        String[] clains = Methods.getDataToJwt(sToken);
+//        String[] res = Methods.validatePermit(clains[0], clains[1], 1);
+//
+//        if (res[0].equals("2")) {
+//            List<Person> personList = personService.getPersons(Long.parseLong(clains[0]));
+//            if (personList != null)
+//                return ResponseEntity.ok(personService.getPersons(Long.parseLong(clains[0])));
+//            else
+//                return ResponseEntity.noContent().build();
+//        } else {
+//            return ResponseEntity.noContent().build();
+//        }
+//
+//    }
+
+    @PostMapping("/getpersons")
+    public ResponseEntity<String> getPersons(@RequestBody String sessionToken, @RequestHeader("token") String dataHeader) {
         System.out.println("getPerson...");
+        String token = dataHeader;
+        String message;
         JsonObject jso = Methods.stringToJSON(sessionToken);
         String sToken = Methods.JsonToString(jso, "sessionToken", "");
-        String[] clains = Methods.getDataToJwt(sToken);
+        String[] clains = Methods.getDataToJwt(dataHeader);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
 
         if (res[0].equals("2")) {
-            List<Person> personList = personService.getPersons(Long.parseLong(clains[0]));
-            if (personList != null)
-                return ResponseEntity.ok(personService.getPersons(Long.parseLong(clains[0])));
+            res = personService.getPersons(Long.parseLong(clains[0]));
+            message = Methods.getJsonMessage(res[0], res[1], res[2]);
+            if (res[0].equals("2"))
+                return new ResponseEntity<>(message, HttpStatus.OK);
             else
-                return ResponseEntity.noContent().build();
+                return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
         } else {
             return ResponseEntity.noContent().build();
         }
