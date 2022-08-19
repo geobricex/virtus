@@ -25,6 +25,7 @@ export class MiscursosComponent implements OnInit {
 
   constructor(private breadcrumbService: BreadcrumbService, private utils: Utils, private _http: HttpClient) {
     this.breadcrumbService.setItems([
+      {label: '', routerLink: ['/app']},
       {label: 'Cursos', routerLink: ['/']},
       {label: 'Mis cursos', routerLink: ['/app/mycourse']}
     ]);

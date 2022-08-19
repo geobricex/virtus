@@ -44,6 +44,7 @@ export class CursosArComponent implements OnInit {
     private formBuilder: FormBuilder,
     private utils: Utils) {
     this.breadcrumbService.setItems([
+      {label: '', routerLink: ['/app']},
       {label: 'Cursos', routerLink: ['/app/coursear']}
     ]);
   }

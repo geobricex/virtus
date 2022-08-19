@@ -7,11 +7,11 @@
     </li>
     <li>&nbsp;/</li>
     <ng-template ngFor let-item let-last="last" [ngForOf]="items">
-      <li>
+      <li *ngIf="item.label !== ''">
         <a [routerLink]="item.routerLink" *ngIf="item.routerLink"> {{item.label}} </a>
         <ng-container *ngIf="!item.routerLink"> {{item.label}} </ng-container>
       </li>
-      <li *ngIf="!last">/</li>
+      <li *ngIf="!last && item.label !== ''">/</li>
     </ng-template>
   </div>
 
@@ -32,6 +32,12 @@
       <a href="#">
         <i class="pi pi-file"></i>
         <span>Manual de usuario</span>
+      </a>
+    </li>
+    <li>
+      <a [routerLink]="items[0].routerLink" class="bg-blue-300">
+        <i class="pi pi-angle-left"></i>
+        <span>Atras</span>
       </a>
     </li>
   </ul>
