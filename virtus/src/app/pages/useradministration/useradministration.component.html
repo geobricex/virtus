@@ -14,9 +14,9 @@
                 (click)="dt.exportCSV()"></button>
       </ng-template>
     </p-toolbar>
-    <p-table #dt responsiveLayout="scroll" [rows]="10"
-             [globalFilterFields]="['name','country.name','representative.name','status']" [rows]="10"
-             [paginator]="true" [rowsPerPageOptions]="[10,20,30]" [showCurrentPageReport]="true"
+    <p-table #dt responsiveLayout="scroll" [rows]="5" [value]="persons"
+             [globalFilterFields]="['Nombre','country.name','representative.name','status']"
+             [paginator]="true" [rowsPerPageOptions]="[5,10,20]" [showCurrentPageReport]="true"
              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
              selectionMode="multiple" [rowHover]="true" dataKey="id">
       <ng-template pTemplate="caption">
@@ -60,41 +60,41 @@
           </th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-product>
+      <ng-template pTemplate="body" let-person>
         <tr>
           <!--          <td>-->
           <!--            <p-tableCheckbox [value]="product"></p-tableCheckbox>-->
           <!--          </td>-->
           <td style="width:14%; min-width:10rem;"><span class="p-column-title">Nombre</span>
-            {{product.code || product.id}}
+            {{person.namePerson}}
           </td>
           <td style="width:14%; min-width:10rem;">
             <span class="p-column-title">Apellido</span>
-            {{product.name}}
+            {{person.lastnamePerson}}
           </td>
           <td style="width:14%; min-width:10rem;"><span class="p-column-title">Imagen</span>
-            <img [src]="'assets/demo/images/product/' + product.image" [alt]="product.name" width="100"
+            <img [src]="person.pathimgPerson" [alt]="person.namePerson" width="100"
                  class="shadow-4"/>
           </td>
           <td style="width:14%; min-width:8rem;">
             <span class="p-column-title">Email</span>
-            {{product.price}}
+            {{person.emailPerson}}
           </td>
           <td style="width:14%; min-width:10rem;">
             <span class="p-column-title">Fecha registro</span>
-            {{product.category}}
+            {{person.emailPerson}}
           </td>
           <td style="width:14%; min-width:10rem;">
             <span class="p-column-title">Fecha actualización</span>
-            {{product.category}}
+            {{person.emailPerson}}
           </td>
           <td style="width:14%; min-width:10rem;">
             <span class="p-column-title">Tipo de registro</span>
-            {{product.category}}
+            {{person.emailPerson}}
           </td>
           <td style="width:14%; min-width:10rem;">
             <span class="p-column-title">Tipo de usuario</span>
-            {{product.category}}
+            {{person.emailPerson}}
           </td>
         </tr>
       </ng-template>
