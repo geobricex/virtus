@@ -8,6 +8,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Evaluation} from "../../models/Evaluation";
 import {Topic} from "../../models/Topic";
 import {Resources} from "../../models/Resources";
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-resourcesar',
@@ -25,10 +26,14 @@ export class ResourcesarComponent implements OnInit {
   resourcesData: any [];
   evaluationData: any [];
   tmpFile: any;
+  tmpVideoSenia: any;
+  tmpVideo: any;
   videoUrl: any;
   viewVideoDialog: boolean;
   tituloTopic: string;
   descriptionTopic: string;
+  vieweRemoteUrl: boolean;
+  urlSafe: any;
 
   newEvaluationsDialog: boolean;
   newResourseDialog: boolean;
@@ -39,6 +44,7 @@ export class ResourcesarComponent implements OnInit {
   typeFileGlobal: string;
   viewPdf: boolean;
   pdfUrl: any;
+  typeEvalutionform: any[];
 
   carouselResponsiveOptions: any[] = [
     {
@@ -63,7 +69,9 @@ export class ResourcesarComponent implements OnInit {
     private _route: ActivatedRoute,
     private utils: Utils,
     private _http: HttpClient,
-    private formBuilder: FormBuilder) {
+    private formBuilder: FormBuilder,
+    public sanitizer: DomSanitizer
+  ) {
     this.idCourse = this._route.snapshot.paramMap.get("idcourse");
     this.idModule = this._route.snapshot.paramMap.get("idmodule");
     this.idTopic = this._route.snapshot.paramMap.get("idTopic");
@@ -80,29 +88,40 @@ export class ResourcesarComponent implements OnInit {
       {
         name: ["", Validators.required],
         description: ["", Validators.required],
-        numberquestionEvaluation: ["", Validators.required],
         timeEvaluation: ["", Validators.required],
-        timeminutesEvaluation: ["",]
+        timeminutesEvaluation: ["",],
+        typeEvaluation: ["", Validators.required],
+        opportunityEvaluation: ["", Validators.required],
+        opportunitiesEvaluation: [""]
       }
     );
     this.registerFormResources = this.formBuilder.group(
       {
-        fileName: ["", Validators.required],
-        nameResources: ["", Validators.required]
+        nameResources: ["", Validators.required],
+        descriptionRes: ["", Validators.required],
+        pathfileResource: [""],
+        pathurlsignResource: [""],
+        pathvideoResource: [""],
+        pathurlremote_resource: [""]
       }
     );
   }
 
   ngOnInit(): void {
     this.utils.initPocket();
-    this.tiempo = [
+    this.typeEvalutionform = [
       {label: "---:---", value: null},
-      {label: "Si", value: true},
-      {label: "No", value: false}
+      {label: "Evaluación", value: 1},
+      {label: "Cuestionario", value: 2},
     ]
     this.loadResources();
     this.loadEvaluations();
     this.enteredResources();
+  }
+
+  viewUrlRemot(remoteUrl: any) {
+    this.vieweRemoteUrl = true;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(remoteUrl);
   }
 
   viewFile(url: string) {
@@ -121,29 +140,144 @@ export class ResourcesarComponent implements OnInit {
   saveResources() {
     this.resource = new Resources(
       0,
-      this.formR['nameResources'].value,
-      "", "", "",
+      this.formR['nameResources'].value, this.formR["descriptionRes"].value,
+      "", "", "", this.formR["pathurlremote_resource"].value,
       "", "", "");
-    this.utils.changeImage(this.tmpFile).then(response => {
-      if (this.typeFileGlobal === "a")
-        this.resource._pathfileResource = this.utils.makePathRecurso(response);
-      else if (this.typeFileGlobal === "s")
-        this.resource._pathurlsignResource = this.utils.makePathRecurso(response);
-      else
-        this.resource._pathvideoResource = this.utils.makePathRecurso(response);
-      let topicAux: Topic;
-      topicAux = new Topic(
-        parseInt(this.idTopic === null ? "0" : this.idTopic),
-        "", "", "", "",
-        "", "", "")
-      this.resource._topicsIdTopic = topicAux;
+    let topicAux: Topic;
+    topicAux = new Topic(
+      parseInt(this.idTopic === null ? "0" : this.idTopic),
+      "", "", "", "",
+      "", "", "")
+    this.resource._topicsIdTopic = topicAux;
+
+    if (this.formR["pathfileResource"].value === "" && this.formR["pathurlsignResource"].value === "" &&
+      this.formR["pathvideoResource"].value === "") {
       console.log(this.resource);
       this.apiSaveResources().subscribe(response => {
         this.utils.showMessages(response.status, response.information, "tst");
         this.loadResources();
         this.resetResources();
       });
-    });
+    }
+
+    if (this.formR["pathfileResource"].value !== "" && this.formR["pathurlsignResource"].value === "" &&
+      this.formR["pathvideoResource"].value === "") {
+      this.utils.changeImage(this.tmpFile).then(response => {
+        this.formR["pathfileResource"].setValue(this.utils.makePathRecurso(response));
+        this.resource._pathfileResource = this.formR["pathfileResource"].value;
+        console.log(this.resource);
+        this.apiSaveResources().subscribe(response => {
+          this.utils.showMessages(response.status, response.information, "tst");
+          this.loadResources();
+          this.resetResources();
+        });
+      });
+    }
+
+    if (this.formR["pathfileResource"].value === "" && this.formR["pathurlsignResource"].value !== "" &&
+      this.formR["pathvideoResource"].value === "") {
+      this.utils.changeImage(this.tmpVideoSenia).then(response => {
+        this.formR["pathurlsignResource"].setValue(this.utils.makePathRecurso(response));
+        this.resource._pathurlsignResource = this.formR["pathurlsignResource"].value;
+        console.log(this.resource);
+        this.apiSaveResources().subscribe(response => {
+          this.utils.showMessages(response.status, response.information, "tst");
+          this.loadResources();
+          this.resetResources();
+        });
+      });
+    }
+
+    if (this.formR["pathfileResource"].value === "" && this.formR["pathurlsignResource"].value === "" &&
+      this.formR["pathvideoResource"].value !== "") {
+      this.utils.changeImage(this.tmpVideo).then(response => {
+        this.formR["pathvideoResource"].setValue(this.utils.makePathRecurso(response));
+        this.resource._pathvideoResource = this.formR["pathvideoResource"].value;
+        console.log(this.resource);
+        this.apiSaveResources().subscribe(response => {
+          this.utils.showMessages(response.status, response.information, "tst");
+          this.loadResources();
+          this.resetResources();
+        });
+      });
+    }
+
+    if (this.formR["pathfileResource"].value !== "" && this.formR["pathurlsignResource"].value !== "" &&
+      this.formR["pathvideoResource"].value === "") {
+      this.utils.changeImage(this.tmpFile).then(response => {
+        this.formR["pathfileResource"].setValue(this.utils.makePathRecurso(response));
+        this.resource._pathfileResource = this.formR["pathfileResource"].value;
+        this.utils.changeImage(this.tmpVideoSenia).then(response => {
+          this.formR["pathurlsignResource"].setValue(this.utils.makePathRecurso(response));
+          this.resource._pathurlsignResource = this.formR["pathurlsignResource"].value;
+          console.log(this.resource);
+          this.apiSaveResources().subscribe(response => {
+            this.utils.showMessages(response.status, response.information, "tst");
+            this.loadResources();
+            this.resetResources();
+          });
+        });
+      });
+    }
+
+    if (this.formR["pathfileResource"].value !== "" && this.formR["pathurlsignResource"].value === "" &&
+      this.formR["pathvideoResource"].value !== "") {
+      this.utils.changeImage(this.tmpFile).then(response => {
+        this.formR["pathfileResource"].setValue(this.utils.makePathRecurso(response));
+        this.resource._pathfileResource = this.formR["pathfileResource"].value;
+        this.utils.changeImage(this.tmpVideo).then(response => {
+          this.formR["pathvideoResource"].setValue(this.utils.makePathRecurso(response));
+          this.resource._pathvideoResource = this.formR["pathvideoResource"].value;
+          console.log(this.resource);
+          this.apiSaveResources().subscribe(response => {
+            this.utils.showMessages(response.status, response.information, "tst");
+            this.loadResources();
+            this.resetResources();
+          });
+        });
+      });
+    }
+
+    if (this.formR["pathfileResource"].value === "" && this.formR["pathurlsignResource"].value !== "" &&
+      this.formR["pathvideoResource"].value !== "") {
+      this.utils.changeImage(this.tmpVideoSenia).then(response => {
+        this.formR["pathurlsignResource"].setValue(this.utils.makePathRecurso(response));
+        this.resource._pathurlsignResource = this.formR["pathurlsignResource"].value;
+        this.utils.changeImage(this.tmpVideo).then(response => {
+          this.formR["pathvideoResource"].setValue(this.utils.makePathRecurso(response));
+          this.resource._pathvideoResource = this.formR["pathvideoResource"].value;
+          console.log(this.resource);
+          this.apiSaveResources().subscribe(response => {
+            this.utils.showMessages(response.status, response.information, "tst");
+            this.loadResources();
+            this.resetResources();
+          });
+        });
+      });
+    }
+
+    if (this.formR["pathfileResource"].value !== "" && this.formR["pathurlsignResource"].value !== "" &&
+      this.formR["pathvideoResource"].value !== "") {
+      this.utils.changeImage(this.tmpFile).then(response => {
+        this.formR["pathfileResource"].setValue(this.utils.makePathRecurso(response));
+        this.resource._pathfileResource = this.formR["pathfileResource"].value;
+        this.utils.changeImage(this.tmpVideoSenia).then(response => {
+          this.formR["pathurlsignResource"].setValue(this.utils.makePathRecurso(response));
+          this.resource._pathurlsignResource = this.formR["pathurlsignResource"].value;
+          this.utils.changeImage(this.tmpVideo).then(response => {
+            this.formR["pathvideoResource"].setValue(this.utils.makePathRecurso(response));
+            this.resource._pathvideoResource = this.formR["pathvideoResource"].value;
+            console.log(this.resource);
+            this.apiSaveResources().subscribe(response => {
+              this.utils.showMessages(response.status, response.information, "tst");
+              this.loadResources();
+              this.resetResources();
+            });
+          });
+        });
+      });
+    }
+
   }
 
   enteredResources() {
@@ -176,16 +310,48 @@ export class ResourcesarComponent implements OnInit {
     this.registerFormResources.reset();
   }
 
-  onFileChange(event: any) {
+  onUploadFile(event: any) {
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
       console.log(file);
-      if (file.type === "application/pdf" || file.type === "video/mp4" || file.type === "video/mp3") {
+      if (file.type === "application/pdf" || file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        || file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
         this.tmpFile = file;
-        this.formR['fileName'].setValue(file.name);
+        this.formR["pathfileResource"].setValue(file.name);
         this.utils.showMessages(2, "Archivo: " + file.name + " cargado exitosamente.", "tst");
       } else {
-        this.formR['fileName'].setValue("");
+        this.formR["pathfileResource"].setValue("");
+        this.utils.showMessages(1, "Formato de archivo no permitido.", "tst");
+      }
+    }
+  }
+
+  onUploadVideoSenia(event: any) {
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      console.log(file);
+      if (file.type === "video/mp4" || file.type === "video/mp3") {
+        this.tmpVideoSenia = file
+        this.formR["pathurlsignResource"].setValue(file.name);
+        this.utils.showMessages(2, "Archivo: " + file.name + " cargado exitosamente.", "tst");
+      } else {
+        this.formR["pathurlsignResource"].setValue("");
+        this.utils.showMessages(1, "Formato de archivo no permitido.", "tst");
+      }
+    }
+  }
+
+  onUploadVideo(event: any) {
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      console.log(file);
+      this.formR["pathvideoResource"].setValue(file.name);
+      if (file.type === "video/mp4" || file.type === "video/mp3") {
+        this.tmpVideo = file
+        this.formR["pathvideoResource"].setValue(file.name);
+        this.utils.showMessages(2, "Archivo: " + file.name + " cargado exitosamente.", "tst");
+      } else {
+        this.formR["pathvideoResource"].setValue("");
         this.utils.showMessages(1, "Formato de archivo no permitido.", "tst");
       }
     }
@@ -198,7 +364,6 @@ export class ResourcesarComponent implements OnInit {
 
     console.log(this.form['name'].value);
     console.log(this.form['description'].value);
-    console.log(this.form['numberquestionEvaluation'].value);
     console.log(this.form['timeEvaluation'].value);
     console.log(this.form['timeminutesEvaluation'].value);
 
@@ -208,10 +373,12 @@ export class ResourcesarComponent implements OnInit {
       this.form['description'].value,
       "", "",
       this.form['timeEvaluation'].value,
-      this.form['timeminutesEvaluation'].value,
-      this.form['numberquestionEvaluation'].value,
+      this.form['timeEvaluation'].value ? this.form['timeminutesEvaluation'].value : 0,
+      0,
       "",
-      this.form[' typeEvaluation'].value,
+      this.form['typeEvaluation'].value,
+      this.form['opportunityEvaluation'].value,
+      this.form['opportunityEvaluation'].value ? this.form['opportunitiesEvaluation'].value : 1
     )
     let topicAux: Topic;
     topicAux = new Topic(
@@ -219,6 +386,7 @@ export class ResourcesarComponent implements OnInit {
       "", "", "", "",
       "", "", "")
     this.evaluation._topicsIdTopic = topicAux;
+    console.log(this.evaluation)
     console.log(this.evaluation._topicsIdTopic)
     this.apiSaveEvaluation().subscribe(response => {
       console.log(response);

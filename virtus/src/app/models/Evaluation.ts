@@ -7,16 +7,19 @@ export class Evaluation {
   private dateregEvaluation: string;
   private dateupdateEvaluation: string;
   private timeEvaluation: string;
-  private timeminutesEvaluation: string;
-  private numberquestionEvaluation: string;
+  private timeminutesEvaluation: number;
+  private numberquestionEvaluation: number;
   private state_evaluation: string;
   private typeEvaluation: string;
+  private opportunityEvaluation: boolean;
+  private opportunitiesEvaluation: number;
   private topicsIdTopic: Topic
 
 
   constructor(id: number, nameEvaluation: string, descriptionEvaluation: string, dateregEvaluation: string,
-              dateupdateEvaluation: string, timeEvaluation: string, timeminutesEvaluation: string,
-              numberquestionEvaluation: string, state_evaluation: string, typeEvaluation: string) {
+              dateupdateEvaluation: string, timeEvaluation: string, timeminutesEvaluation: number,
+              numberquestionEvaluation: number, state_evaluation: string, typeEvaluation: string,
+              opportunityEvaluation: boolean, opportunitiesEvaluation: number) {
     this.id = id;
     this.nameEvaluation = nameEvaluation;
     this.descriptionEvaluation = descriptionEvaluation;
@@ -27,6 +30,8 @@ export class Evaluation {
     this.numberquestionEvaluation = numberquestionEvaluation;
     this.state_evaluation = state_evaluation;
     this.typeEvaluation = typeEvaluation;
+    this.opportunityEvaluation = opportunityEvaluation;
+    this.opportunitiesEvaluation = opportunitiesEvaluation;
   }
 
   get _id(): number {
@@ -77,19 +82,19 @@ export class Evaluation {
     this.timeEvaluation = value;
   }
 
-  get _timeminutesEvaluation(): string {
+  get _timeminutesEvaluation(): number {
     return this.timeminutesEvaluation;
   }
 
-  set _timeminutesEvaluation(value: string) {
+  set _timeminutesEvaluation(value: number) {
     this.timeminutesEvaluation = value;
   }
 
-  get _numberquestionEvaluation(): string {
+  get _numberquestionEvaluation(): number {
     return this.numberquestionEvaluation;
   }
 
-  set _numberquestionEvaluation(value: string) {
+  set _numberquestionEvaluation(value: number) {
     this.numberquestionEvaluation = value;
   }
 
@@ -115,5 +120,22 @@ export class Evaluation {
 
   set _topicsIdTopic(value: Topic) {
     this.topicsIdTopic = value;
+  }
+
+
+  get _opportunityEvaluation(): boolean {
+    return this.opportunityEvaluation;
+  }
+
+  set _opportunityEvaluation(value: boolean) {
+    this.opportunityEvaluation = value;
+  }
+
+  get _opportunitiesEvaluation(): number {
+    return this.opportunitiesEvaluation;
+  }
+
+  set _opportunitiesEvaluation(value: number) {
+    this.opportunitiesEvaluation = value;
   }
 }
