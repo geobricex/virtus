@@ -65,21 +65,22 @@ span, strong, td, h1, h2, h3, h4, h5, h6, a, img, label, div, p, pre {
   zoom:  var(--document-zoom-style, 100%);
 }
 
-//.img_style_color_none{
-//  filter:none;
-//}
-//.img_style_color_B_N{
-//  filter:grayscale(100%);;
-//}
-//.img_style_color_sepia{
-//  filter:sepia(100%);;
-//}
-//.img_style_color_brillo_bajo{
-//  filter:brightness(50%);;
-//}
-//.img_style_color_contraste_alto{
-//  filter:contrast(200%);;
-//}
-//.img_style_color_saturacion_elevada{
-//  filter:saturate(250%);;
-//}
+
+.video_sign_float {
+  display: block;
+  position: fixed;
+  min-width: 3rem;
+  min-height: 3rem;
+  line-height: 0rem;
+  text-align: center;
+  top: 15%;
+  right: 0;
+  margin-top: -1.5rem;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  transition: background-color 0.3s;
+  overflow: hidden;
+  cursor: pointer;
+  z-index: 999;
+  box-shadow: -0.25rem 0 1rem rgba(0, 0, 0, 0.0);
+}
