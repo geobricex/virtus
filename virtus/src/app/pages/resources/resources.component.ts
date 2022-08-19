@@ -76,6 +76,7 @@ export class ResourcesComponent implements OnInit {
     this.idModule = this._route.snapshot.paramMap.get("idmodule");
     this.idTopic = this._route.snapshot.paramMap.get("idTopic");
     this.breadcrumbService.setItems([
+      {label: '', routerLink: ['/app/mycourse/modules/' + this.idCourse + '/themes/' + this.idModule]},
       {label: 'Cursos', routerLink: ['app/course']},
       {label: 'Mis cursos', routerLink: ['/app/mycourse']},
       {label: 'Módulos', routerLink: ['/app/mycourse/modules/' + this.idCourse]},

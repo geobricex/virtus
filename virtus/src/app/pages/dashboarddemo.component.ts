@@ -21,6 +21,7 @@ export class DashboardDemoComponent implements OnInit {
     private utils: Utils
   ) {
     this.breadcrumbService.setItems([
+      {label: '', routerLink: ['/app']},
       {label: 'Inicio', routerLink: ['/app']}
     ]);
   }

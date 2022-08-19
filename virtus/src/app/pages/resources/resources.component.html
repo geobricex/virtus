@@ -5,8 +5,12 @@
     <span> {{descriptionTopic}} </span>
     <div class="card mt-3">
       <h5>Recursos</h5>
+      <div class="text-center" *ngIf="resourcesData === undefined">
+        <img src="assets/layout/images/imagesVirtus/sinDatos.svg" alt="" width="300" class="">
+      </div>
       <p-carousel [value]="resourcesData" [numVisible]="3" [numScroll]="3" [circular]="false"
-                  [responsiveOptions]="carouselResponsiveOptions" [style]="{'margin-top':'1rem'}">
+                  [responsiveOptions]="carouselResponsiveOptions" [style]="{'margin-top':'1rem'}"
+                  *ngIf="resourcesData !== undefined">
         <ng-template let-resource pTemplate="item">
           <div class="border-round m-2 text-center p-2" style="border: 1px solid var(--surface-d)">
             <div>
@@ -50,8 +54,12 @@
   <div class="col-12">
     <div class="card">
       <h5>Cuestionarios y evaluaciones</h5>
+      <div class="text-center" *ngIf="evaluationData === undefined">
+        <img src="assets/layout/images/imagesVirtus/sinDatos.svg" alt="" width="300" class="">
+      </div>
       <p-carousel [value]="evaluationData" [numVisible]="3" [numScroll]="3" [circular]="false"
-                  [responsiveOptions]="carouselResponsiveOptions" [style]="{'margin-top':'1rem'}">
+                  [responsiveOptions]="carouselResponsiveOptions" [style]="{'margin-top':'1rem'}"
+                  *ngIf="evaluationData !== undefined">
         <ng-template let-evaluation pTemplate="item">
           <div class="border-round m-2 text-center p-2"
                [ngClass]="evaluation.typeEvaluation === 1 ? 'bg-blue-50' : 'bg-green-50'"
