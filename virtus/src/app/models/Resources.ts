@@ -3,21 +3,25 @@ import {Topic} from "./Topic";
 export class Resources {
   private id: number;
   private nameResource: string;
+  private descriptionResource: string;
   private pathfileResource: string;
   private pathvideoResource: string;
   private pathurlsignResource: string;
+  private pathurlremoteResource: string;
   private dateregResource: string;
   private dateupdateResource: string;
   private stateResource: string;
   private topicsIdTopic: Topic;
 
 
-  constructor(id: number, nameResource: string, epathfileResource: string, pathvideoResource: string, pathurlsignResource: string, dateregResource: string, dateupdateResource: string, stateResource: string) {
+  constructor(id: number, nameResource: string, descriptionResource: string, epathfileResource: string, pathvideoResource: string, pathurlsignResource: string, pathurlremoteResource: string, dateregResource: string, dateupdateResource: string, stateResource: string) {
     this.id = id;
     this.nameResource = nameResource;
+    this.descriptionResource = descriptionResource;
     this.pathfileResource = epathfileResource;
     this.pathvideoResource = pathvideoResource;
     this.pathurlsignResource = pathurlsignResource;
+    this.pathurlremoteResource = pathurlremoteResource;
     this.dateregResource = dateregResource;
     this.dateupdateResource = dateupdateResource;
     this.stateResource = stateResource;
@@ -94,4 +98,23 @@ export class Resources {
   set _topicsIdTopic(value: Topic) {
     this.topicsIdTopic = value;
   }
+
+
+  get _pathurlremoteResource(): string {
+    return this.pathurlremoteResource;
+  }
+
+  set _pathurlremoteResource(value: string) {
+    this.pathurlremoteResource = value;
+  }
+
+
+  get _descriptionResource(): string {
+    return this.descriptionResource;
+  }
+
+  set _descriptionResource(value: string) {
+    this.descriptionResource = value;
+  }
 }
+

@@ -17,6 +17,7 @@ import {AppMenuitemComponent} from "./app.menuitem.component";
 import {AppBreadcrumbComponent} from "./app.breadcrumb.component";
 import {AppFooterComponent} from "./app.footer.component";
 import {RippleModule} from "primeng/ripple";
+import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 
 import {DividerModule} from 'primeng/divider';
 import {TimelineModule} from 'primeng/timeline';
@@ -86,9 +87,12 @@ import {InputNumberModule} from "primeng/inputnumber";
 import {AppConfigComponent} from "./app.config.component";
 import {ScrollTopModule} from "primeng/scrolltop";
 import {ScrollPanelModule} from "primeng/scrollpanel";
-import { FavoritesComponent } from './pages/favorites/favorites.component';
 import {FileUploadModule} from "primeng/fileupload";
 import {RatingModule} from "primeng/rating";
+import {FavoritesComponent} from './pages/favorites/favorites.component';
+import {FaIconLibrary} from '@fortawesome/angular-fontawesome';
+import {faHands} from '@fortawesome/free-solid-svg-icons';
+
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -173,6 +177,7 @@ FullCalendarModule.registerPlugins([
     ScrollPanelModule,
     FileUploadModule,
     RatingModule
+    FontAwesomeModule
   ],
 
   providers: [
@@ -185,4 +190,10 @@ FullCalendarModule.registerPlugins([
 })
 
 export class AppModule {
+
+  constructor(
+    private library: FaIconLibrary
+  ) {
+    library.addIcons(faHands);
+  }
 }

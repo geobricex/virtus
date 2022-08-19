@@ -13,18 +13,34 @@
           <div class="border-round m-2 text-center p-2" style="border: 1px solid var(--surface-d)">
             <div>
               <h5 class="mb-1">{{resource.nameResource}}</h5>
+              <span> {{resource.descriptionResource}} </span> <br>
               <div class="my-3">
-                <button *ngIf="resource.pathfileResource !== ''" pButton pRipple icon="pi pi-file"
+                <a [href]="resource.pathfileResource"
+                   target="_blank" pButton pRipple icon="xxx"
+                   class="mr-2 p-button-rounded p-button"
+                   [download]="resource.pathfileResource"
+                   *ngIf="!resource.pathfileResource.includes('.pdf') && resource.pathfileResource !== ''">
+                  <i class="pi pi-file"></i>
+                </a>
+                <button *ngIf="resource.pathfileResource !== '' && resource.pathfileResource.includes('.pdf')" pButton
+                        pRipple icon="pi pi-file"
                         class="mr-2 p-button-rounded" pTooltip="Archivo"
                         tooltipPosition="bottom" (click)="viewFile(resource.pathfileResource)"></button>
-                <button *ngIf="resource.pathurlsignResource !== ''" pButton pRipple icon="pi pi-video"
+                <button *ngIf="resource.pathurlsignResource !== ''" pButton pRipple icon="xxx"
                         class="mr-2 p-button-rounded p-button-success"
                         pTooltip="Lengua de señas" tooltipPosition="bottom"
-                        (click)="viewVideo(resource.pathurlsignResource)"></button>
+                        (click)="viewVideo(resource.pathurlsignResource)">
+                  <fa-icon [icon]="['fas', 'hands']"></fa-icon>
+                </button>
                 <button *ngIf="resource.pathvideoResource !== ''" pButton pRipple icon="pi pi-video"
-                        class="p-button-rounded p-button-info"
+                        class="mr-2 p-button-rounded p-button-info"
                         pTooltip="Video" tooltipPosition="bottom"
-                        (click)="viewVideo(resource.pathvideoResource)"></button>
+                        (click)="viewVideo(resource.pathvideoResource)">
+                </button>
+                <button *ngIf="resource.pathurlremoteResource !== ''" class="p-button-rounded p-button-help"
+                        pButton pRipple icon="pi pi-link" pTooltip="Enlace remoto" tooltipPosition="bottom"
+                        (click)="viewUrlRemot(resource.pathurlremoteResource)">
+                </button>
               </div>
               <hr>
               <div class="my-3">
@@ -42,16 +58,20 @@
 
   <div class="col-12">
     <div class="card">
-      <h5>Evaluaciones</h5>
+      <h5>Cuestionarios y evaluaciones</h5>
       <button pButton label="Nuevo" icon="pi pi-plus" class="p-button p-button-success w-8rem mt-2"
               (click)="newEvaluationsDialog=true"></button>
       <p-carousel [value]="evaluationData" [numVisible]="3" [numScroll]="3" [circular]="false"
                   [responsiveOptions]="carouselResponsiveOptions" [style]="{'margin-top':'1rem'}">
         <ng-template let-evaluation pTemplate="item">
-          <div class="border-round m-2 text-center p-2" style="border: 1px solid var(--surface-d)">
+          <div class="border-round m-2 text-center p-2"
+               [ngClass]="evaluation.typeEvaluation === 1 ? 'bg-blue-50' : 'bg-green-50'"
+               style="border: 1px solid var(--surface-d)">
             <div>
               <h5 class="mb-1">{{evaluation.nameEvaluation}}</h5>
               <span> {{evaluation.descriptionEvaluation}} </span> <br>
+              <span
+                class="text-pink-400 font-italic font-bold"> {{evaluation.typeEvaluation === 1 ? 'Evaluación' : 'Cuestionario'}} </span>
               <div class="mt-3">
                 <span class="p-badge p-badge-warning"> Preguntas: {{evaluation.numberquestionEvaluation}} </span> <br>
                 <span
@@ -84,25 +104,57 @@
       <form [formGroup]="registerFormResources">
         <div class="field">
 
-          <label for="uploadPhotoNew" class="p-button p-button-secondary" (click)="typeFileGlobal='a'"> <i
-            class="pi pi-file"></i> Seleccionar
-            archivo
-          </label>
-          <label for="uploadPhotoNew" class="p-button p-button-success" (click)="typeFileGlobal='s'"> <i
-            class="pi pi-video"></i> Seleccionar video
-            con
-            lenguaje de señas </label>
-          <label for="uploadPhotoNew" class="p-button p-button-info" (click)="typeFileGlobal='v'"> <i
-            class="pi pi-video"></i> Seleeccionar video
-          </label>
+          <div class="grid">
+            <div class="col">
+              <input type="text" autocomplete="off" pInputText class="w-full" formControlName="pathfileResource"
+                     readonly placeholder="Seleccionar archivo"/>
+              <small class="text-blue-500">Se permiten archivos .pdf .doc .xls .txt</small>
+            </div>
+            <div class="col-2">
+              <label for="uploadFile" class="p-button p-button-secondary" (click)="typeFileGlobal='a'">
+                <i class="pi pi-folder m-auto"></i>
+                <input style="display: none" id="uploadFile" type="file" (change)="onUploadFile($event)">
+              </label>
+            </div>
+          </div>
 
-          <input style="display: none" id="uploadPhotoNew" type="file"
-                 (change)="onFileChange($event)">
-          <input type="text" autocomplete="off" pInputText class="w-full" formControlName="fileName" readonly/>
-          <small class="text-blue-500">Solo se permiten archivos con extension .pdf y videos .mp3 o .mp4.</small>
+          <div class="grid">
+            <div class="col">
+              <input type="text" autocomplete="off" pInputText class="w-full" formControlName="pathurlsignResource"
+                     readonly
+                     placeholder="Seleccionar video con lenguaje de señas"/>
+              <small class="text-blue-500">Se permiten videos con formato .mp3 o .mp4.</small>
+            </div>
+            <div class="col-2">
+              <label for="uploadVideoSenia" class="p-button p-button-success" (click)="typeFileGlobal='s'"> <i
+                class="pi pi-folder m-auto"></i> </label>
+              <input style="display: none" id="uploadVideoSenia" type="file" (change)="onUploadVideoSenia($event)">
+            </div>
+          </div>
+
+          <div class="grid">
+            <div class="col">
+              <input type="text" autocomplete="off" pInputText class="w-full" formControlName="pathvideoResource"
+                     readonly
+                     placeholder="Seleccionar video"/>
+              <small class="text-blue-500">Se permiten videos con formato .mp3 o .mp4.</small>
+            </div>
+            <div class="col-2">
+              <label for="uploadVideo" class="p-button p-button-info" (click)="typeFileGlobal='v'"> <i
+                class="pi pi-folder m-auto"></i>
+              </label>
+              <input style="display: none" id="uploadVideo" type="file" (change)="onUploadVideo($event)">
+            </div>
+          </div>
         </div>
+
         <div class="field">
-          <label for="nombreRe"> Nombre del recurso: </label>
+          <label for="nombreRe"> Url del rescurso remoto: </label>
+          <input type="text" pInputText class="w-full" formControlName="pathurlremote_resource">
+        </div>
+
+        <div class="field">
+          <label for="nombreRe"> Nombre: </label>
           <input id="nombreRe" type="text" autocomplete="off" pInputText class="w-full" formControlName="nameResources"
                  [ngClass]="
                  (formR['nameResources'].invalid && (formR['nameResources'].dirty && formR['nameResources'].touched)) ?
@@ -112,7 +164,13 @@
             class="p-error">Este campo es requerido.</small>
         </div>
         <div class="field">
-          <label for="nombreRe"> Descripción: </label>
+          <label for="desres"> Descripción: </label>
+          <textarea pInputTextarea name="" id="desres" cols="30" rows="5" formControlName="descriptionRes" [ngClass]="
+                 (formR['descriptionRes'].invalid && (formR['descriptionRes'].dirty && formR['descriptionRes'].touched)) ?
+                 'ng-dirty ng-invalid' : ''"></textarea>
+          <small
+            *ngIf="formR['descriptionRes'].invalid && (formR['descriptionRes'].dirty && formR['descriptionRes'].touched)"
+            class="p-error">Este campo es requerido.</small>
         </div>
       </form>
     </ng-template>
@@ -125,7 +183,8 @@
   </p-dialog>
 
   <!--dialog para agreegar una nueva evaluacion-->
-  <p-dialog [(visible)]="newEvaluationsDialog" [style]="{width: '450px'}" header="Nueva evaluación" [modal]="true"
+  <p-dialog [(visible)]="newEvaluationsDialog" [style]="{width: '450px'}" header="Nueva evaluación"
+            [modal]="true"
             class="p-fluid">
     <ng-template pTemplate="content">
       <form [formGroup]="registerFormEvaluation" name="form">
@@ -149,31 +208,50 @@
             class="p-error">Este campo es requerido.</small>
         </div>
         <div class="field">
-          <label>Tiempo:</label>
-          <p-dropdown id="languagex" [options]="tiempo" optionLabel="label" optionValue="value"
-                      formControlName="timeEvaluation" [ngClass]="
-                 (form['timeEvaluation'].invalid && (form['timeEvaluation'].dirty && form['timeEvaluation'].touched)) ?
+          <label>Tipo:</label>
+          <p-dropdown id="type" [options]="typeEvalutionform" optionLabel="label" optionValue="value"
+                      formControlName="typeEvaluation" [ngClass]="
+                 (form['typeEvaluation'].invalid && (form['typeEvaluation'].dirty && form['typeEvaluation'].touched)) ?
                  'ng-dirty ng-invalid' : ''"></p-dropdown>
           <small
-            *ngIf="form['timeEvaluation'].invalid && (form['timeEvaluation'].dirty && form['timeEvaluation'].touched)"
+            *ngIf="form['typeEvaluation'].invalid && (form['typeEvaluation'].dirty && form['typeEvaluation'].touched)"
             class="p-error">Este campo es requerido.</small>
         </div>
-        <div class="field" *ngIf="form['timeEvaluation'].value">
-          <label for="tiempomin"> Tiempo (minmutos): </label>
-          <p-inputNumber id="tiempomin" formControlName="timeminutesEvaluation"
-                         [ngClass]="
+
+        <div class="grid">
+          <div class="col-2">
+            <div class="field" style="display: grid">
+              <label>Tiempo:</label>
+              <p-inputSwitch formControlName="timeEvaluation"></p-inputSwitch>
+            </div>
+          </div>
+          <div class="col" *ngIf="form['timeEvaluation'].value">
+            <div class="field">
+              <label for="tiempomin"> Tiempo (minmutos): </label>
+              <p-inputNumber id="tiempomin" formControlName="timeminutesEvaluation"
+                             [ngClass]="
                  (form['timeminutesEvaluation'].invalid && (form['timeminutesEvaluation'].dirty && form['timeminutesEvaluation'].touched)) ?
                  'ng-dirty ng-invalid' : ''"></p-inputNumber>
+            </div>
+          </div>
         </div>
-        <div class="field">
-          <label for="cantpreguntas">Cantidad de preguntas:</label>
-          <p-inputNumber id="cantpreguntas" formControlName="numberquestionEvaluation"
-                         [ngClass]="
-                 (form['numberquestionEvaluation'].invalid && (form['numberquestionEvaluation'].dirty && form['numberquestionEvaluation'].touched)) ?
+
+        <div class="grid">
+          <div class="col-2">
+            <div class="field" style="display: grid">
+              <label for="tiempomin"> Intentos: </label>
+              <p-inputSwitch formControlName="opportunityEvaluation"></p-inputSwitch>
+            </div>
+          </div>
+          <div class="col" *ngIf="form['opportunityEvaluation'].value">
+            <div class="field">
+              <label for="cantintentos"> Cantidad de intentos: </label>
+              <p-inputNumber id="cantintentos" formControlName="opportunitiesEvaluation"
+                             [ngClass]=" (form['opportunitiesEvaluation'].invalid && (form['opportunitiesEvaluation'].dirty
+                           && form['opportunitiesEvaluation'].touched)) ?
                  'ng-dirty ng-invalid' : ''"></p-inputNumber>
-          <small
-            *ngIf="form['numberquestionEvaluation'].invalid && (form['numberquestionEvaluation'].dirty && form['numberquestionEvaluation'].touched)"
-            class="p-error">Este campo es requerido.</small>
+            </div>
+          </div>
         </div>
       </form>
     </ng-template>
@@ -203,6 +281,13 @@
       <video src="{{videoUrl}}" controls></video>
     </ng-template>
   </p-dialog>
+
+  <p-dialog [(visible)]="vieweRemoteUrl" [style]="{width: '1000px', height: '600px'}" header="Visualizar recurso remoto"
+            [modal]="true"
+            class="p-fluid">
+    <iframe width="100%" height="100%" frameBorder="0" [src]="urlSafe"></iframe>
+  </p-dialog>
+
   <p-scrollTop target="window" styleClass="custom-scrolltop" [threshold]="100" icon="pi pi-arrow-up"></p-scrollTop>
 
 </div>
