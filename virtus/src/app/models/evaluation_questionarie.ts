@@ -17,6 +17,7 @@ export interface Questions {
   answers_:               Answers[];
   description_question:   string;
   feedback_question:      string;
+  hint_question:          string;
   level_question:         number;
   maximumpoints_question: number;
   name_questioncategory:  string;

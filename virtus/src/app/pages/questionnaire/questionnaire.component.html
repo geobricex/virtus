@@ -22,7 +22,7 @@
           <span><strong>{{miliseguntos2Segundos(tiempoEvaluacion)}}</strong></span>
         </div>
         <div class="xl:col-1 md:col-2 sm:col-2 text-center">
-          <button pButton pRipple label="Enviar" class="p-button-success mt-2"></button>
+          <button id="evt_control_enviar" pButton pRipple label="Enviar" class="p-button-success mt-2"></button>
         </div>
         <div class="col-12 p-fieldset-content">
           <p>{{evaluationObject.description_evaluation}}</p>
@@ -45,6 +45,18 @@
     <div class="card">
       <h5>Banco de preguntas</h5>
       <p-accordion>
+        <p-accordionTab header="Verdadero o Falso" [selected]="true" class="line-height-3 m-0">
+          <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
+            <div *ngIf="question.name_questioncategory == tipoPregunta(1)"
+                 class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
+            >
+              <span> {{"N°" + (i2 + 1)}} </span>
+              <i
+                class="pi pi-circle-on mt-1 text-sm {{validarPreguntaResuelta(question)?'text-green-600': 'text-pink-600'}}"
+                style="float: right"></i>
+            </div>
+          </div>
+        </p-accordionTab>
         <p-accordionTab header="Opción única" [selected]="true" class="line-height-3 m-0">
           <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
             <div *ngIf="question.name_questioncategory == tipoPregunta(2)"
@@ -71,7 +83,7 @@
         </p-accordionTab>
         <p-accordionTab header="Complete" [selected]="true" class="line-height-3 m-0">
           <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
-            <div *ngIf="question.name_questioncategory == tipoPregunta(1)"
+            <div *ngIf="question.name_questioncategory == tipoPregunta(4)"
                  class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
             >
               <span> {{"N°" + (i2 + 1)}} </span>
@@ -83,7 +95,7 @@
         </p-accordionTab>
         <p-accordionTab header="Relación" [selected]="true" class="line-height-3 m-0">
           <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
-            <div *ngIf="question.name_questioncategory == tipoPregunta(4)"
+            <div *ngIf="question.name_questioncategory == tipoPregunta(5)"
                  class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
             >
               <span> {{"N°" + (i2 + 1)}} </span>
@@ -95,9 +107,9 @@
         </p-accordionTab>
 
       </p-accordion>
-      <div class="xl:col-12 md:col-12 sm:col-12 text-center">
-        <span>Total Puntos: </span> <span><strong>{{totalPuntos()}}</strong></span>
-      </div>
+<!--      <div class="xl:col-12 md:col-12 sm:col-12 text-center">-->
+<!--        <span>Total Puntos: </span> <span><strong>{{totalPuntos()}}</strong></span>-->
+<!--      </div>-->
     </div>
   </div>
   <div class="col-12 md:col-9">
@@ -112,9 +124,9 @@
       ></p-chip>
 
       <div *ngIf="validarPreguntaRecurso(questionObject.pathurlvideo_question)" class="col-12">
-        <div  class="col-12 text-center">
-          <video id="pathurlsign_question" height="300" controls [src]="questionObject.pathurlvideo_question"
-                 [autoplay]="true">
+        <div class="col-12 text-center">
+          <video id="pathurlvideo_question" height="300" controls [src]="questionObject.pathurlvideo_question"
+                 [autoplay]="false">
           </video>
         </div>
         <div class="col-12 text-center">
@@ -122,7 +134,8 @@
             <button id="reproducir_video" pButton pRipple icon="pi pi-play"
                     class="p-button-rounded p-button-warning mr-2 mb-2"
                     (click)="playVideo()"></button>
-            <button id="pausar_video" pButton pRipple icon="pi pi-pause" class="p-button-rounded p-button-info mr-2 mb-2"
+            <button id="pausar_video" pButton pRipple icon="pi pi-pause"
+                    class="p-button-rounded p-button-info mr-2 mb-2"
                     (click)="pauseVideo()"></button>
             <button id="silenciar_video" pButton pRipple icon="pi pi-volume-up"
                     class="p-button-rounded p-button-success mr-2 mb-2"
@@ -132,6 +145,17 @@
       </div>
 
       <h5>{{questionObject.description_question}}</h5>
+      <!--verdadero o falso-->
+      <div *ngIf="questionObject.name_questioncategory == tipoPregunta(1) && !questionObject.canResource">
+        <div *ngFor="let option of questionObject.answers_[0].options_answer; let i = index">
+          <div class="field-radiobutton">
+            <p-radioButton [inputId]="'option_vf_' + alphabet[i]" name="Simple_Option" [value]="option"
+                           [(ngModel)]="questionObject.answers_[0].responses"
+                           (onClick)="changeRadio(i)"></p-radioButton>
+            <label [for]="'option_vf_' + alphabet[i]">{{alphabet[i].toUpperCase() + ")\t" + option.opcion}}</label>
+          </div>
+        </div>
+      </div>
       <!--Selección unica normal-->
       <div *ngIf="questionObject.name_questioncategory == tipoPregunta(2) && !questionObject.canResource">
         <div *ngFor="let option of questionObject.answers_[0].options_answer; let i = index">
@@ -197,7 +221,7 @@
           </ng-template>
         </p-card>
       </div>
-      <div *ngIf="questionObject.name_questioncategory == tipoPregunta(1) && !questionObject.canResource">
+      <div *ngIf="questionObject.name_questioncategory == tipoPregunta(4) && !questionObject.canResource">
         <div *ngFor="let option of questionObject.answers_[0].options_answer; let i = index"
              [attr.data-index]="i">
           <div class="field-radiobutton">
@@ -222,7 +246,8 @@
       <!--      <button pButton pRipple icon="pi pi-step-backward-alt" label="Anterior"-->
       <!--              *ngIf="indexQuestionObject > 0"-->
       <!--              class="p-button-info mr-2 mb-2" (click)="siguientePregunta()"></button>-->
-      <button pButton pRipple icon="pi pi-step-forward" label="Siguiente" class="p-button-info mr-2 mb-2"
+      <button pButton pRipple icon="pi pi-step-forward" id="evt_control_siguiente" label="Siguiente"
+              class="p-button-info mr-2 mb-2"
               *ngIf="indexQuestionObject < evaluationObject.questions_.length"
               style="float: right" (click)="anteriorPregunta()"></button>
     </div>
@@ -231,27 +256,47 @@
 </div>
 <!--Componente de video para lenguaje de señas-->
 <div class="video_sign_float" *ngIf="validarPreguntaRecurso(questionObject.pathurlsign_question)"
-    [ngStyle]="{'background':vistaVideoSenias?'#2d3f47':'rgba(0,0,0,0)'}"
+     [ngStyle]="{'background':vistaVideoSenias?'#2d3f47':'rgba(0,0,0,0)'}"
 >
-  <button  pButton pRipple icon="pi pi-window-maximize"
-           class="p-button-rounded p-button-info mr-2 mb-2"
-           *ngIf="!vistaVideoSenias" (click)="vistaVideoSenias = true;"
-           ></button>
-  <div *ngIf="vistaVideoSenias" class="col-12 text-center" >
-    <video height="150" controls [src]="questionObject.pathurlsign_question"
-           [autoplay]="true">
+  <button id="evt_control_señas" pButton pRipple icon="pi pi-window-maximize"
+          class="p-button-rounded p-button-info mr-2 mb-2"
+          *ngIf="!vistaVideoSenias" (click)="vistaVideoSenias = true"
+  ></button>
+  <div *ngIf="vistaVideoSenias" class="col-12 text-center">
+    <p class="text-white"><strong>Lenguaje de Señas</strong></p>
+    <video id="pathurlsign_question" height="150" controls [src]="questionObject.pathurlsign_question"
+           [autoplay]="true" [muted]="true" >
     </video>
   </div>
-  <div *ngIf="vistaVideoSenias" (click)="vistaVideoSenias = false;"  class="col-12 text-center">
+  <div *ngIf="vistaVideoSenias"  class="col-12 text-center">
     <div class="p-buttonset">
       <button id="reproducir_gestos" pButton pRipple icon="pi pi-play"
               class="p-button-rounded p-button-warning mr-2 mb-2"
-              (click)="playVideo()"></button>
+              (click)="playSignVideo()"></button>
       <button id="pausar_gestos" pButton pRipple icon="pi pi-pause" class="p-button-rounded p-button-info mr-2 mb-2"
-              (click)="pauseVideo()"></button>
+              (click)="pauseSignVideo()"></button>
       <button id="silenciar_gestos" pButton pRipple icon="pi pi-window-minimize"
               class="p-button-rounded p-button-success mr-2 mb-2"
-              (click)="mutedVideo()"></button>
+              (click)="vistaVideoSenias = false"></button>
     </div>
   </div>
 </div>
+<p-dialog header="{{sweetFakeAlert[1]?'¡Genial!':'¡Oh no...!'}}"
+          [(visible)]="sweetFakeAlert[0]" [modal]="true"
+          [draggable]="false" [resizable]="false" [style]="{width: '30vw'}"
+          [closable]="false">
+
+  <div class="col-12 text-center">
+    <img alt="Card"
+         src="{{sweetFakeAlert[1]?'assets/imgresource/empty/acierto.webp':'assets/imgresource/empty/pista.webp'}}"
+         width="250">
+    <p-tag styleClass="mr-2" severity="success"
+           value="{{sweetFakeAlert[1]?'¿Quieres saber porqué?':'Te daremos una pista'}}"></p-tag>
+    <br/>
+    <p class="justify-content-start">
+      {{sweetFakeAlert[1] ? questionObject.feedback_question : questionObject.hint_question}}
+    </p>
+
+  </div>
+
+</p-dialog>
