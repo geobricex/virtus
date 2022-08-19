@@ -22,7 +22,7 @@
 </p-dialog>
 
 <div style="width: 50%; margin: auto;">
-  <p-panel header="Datos personales" [toggleable]="true" class="line-height-3 m-0">
+  <p-panel header="Datos personales" [toggleable]="true" [collapsed]="false" class="line-height-3 m-0">
     <div class="p-3 text-center">
       <img [src]="person._pathimgPerson" alt="profile photo" class="topbar-profile"
            style="border-radius: 50%; border: 5px solid #2D3F47" width="150" height="150"/>
@@ -55,11 +55,93 @@
     </div>
     <hr>
     <h5>Contraseña</h5>
-    <button pButton label="Cambiar contraseña" class=" mt-2"></button>
+    <button pButton label="Cambiar contraseña" class="p-button-warning mt-2"></button>
     <hr>
     <h6>SUSPENSIÓN DE CUENTA</h6>
     <button pButton label="Deshabilitar cuenta" class="p-button-danger mt-2"></button>
-    <button pButton label="Eliminar cuenta" class="p-button-danger p-button-outlined mt-2 ml-2"></button>
+    <!--    <button pButton label="Eliminar cuenta" class="p-button-danger p-button-outlined mt-2 ml-2"></button>-->
+  </p-panel>
+
+</div>
+
+<div style="width: 50%; margin: auto;" *ngIf="person._typePerson != 'A' && person._typePerson != 'R'">
+  <p-panel header="Solicitud" [toggleable]="true" [collapsed]="true" class="line-height-3 m-0">
+    <p-panel *ngIf="person._typePerson != 'I'" header="¡Quiero ser instructor!" [toggleable]="true" [collapsed]="true"
+             class="line-height-3 m-0">
+      <p-scrollPanel [style]="{height: '150px'}">
+        <strong>¿QUIERES SER UN INSTRUCTOR EN LA APLICACIÓN?</strong>
+        <p style="text-align: justify">
+          Solicita ser un instructor, y envíe un mensaje con las razones por la cual le gustaría
+          tener este rol, revisaremos su solicitud para evaluar la actualización de su rol. En caso
+          de cualquier novedad, nos estaremos contactando con usted por medio de la información que nos ha
+          proporcionado.
+        </p>
+        <strong>BENEFICIOS</strong>
+        <p style="text-align: justify">
+          Las opciones que usted tendría siendo un INSTRUCTOR, es poder crear desde su cuenta a sus cursos con sus
+          respectivos módulos y temas, generando un código de invitación el cual podrá proporcionar a sus estudiantes,
+          y así poder llevar un control de ellos desde su perfil, y ellos puedan interactuar a la información que usted
+          registró,
+          además usted podrá acceder a los registros para realizar un seguimiento
+          y obtener reportes de sus estudiantes.
+        </p>
+        <strong>RECUERDA</strong>
+        <p style="text-align: justify">
+          Para poder realizar esta solicitud usted necesita tener toda su información completa.
+        </p>
+        <p-scrollTop target="parent" styleClass="custom-scrolltop" [threshold]="50"
+                     icon="pi pi-arrow-up"></p-scrollTop>
+      </p-scrollPanel>
+      <br>
+      <button pButton label="Quiero ser instructor" class="p-button-info mt-2"></button>
+    </p-panel>
+    <p-panel *ngIf="person._typePerson != 'E'" header="¡Quiero ser educador!" [toggleable]="true" [collapsed]="true"
+             class="line-height-3 m-0">
+      <p-scrollPanel [style]="{height: '100px'}">
+        <strong>¿QUIERES SER UN EDUCADOR EN LA APLICACIÓN?</strong>
+        <p style="text-align: justify">
+          Solicita ser un educador, y envíe un mensaje con las razones por la cual le gustaría
+          tener este rol, revisaremos su solicitud para evaluar la actualización de su rol. En caso
+          de cualquier novedad, nos estaremos contactando con usted por medio de la información que nos ha
+          proporcionado.
+        </p>
+        <strong>BENEFICIOS</strong>
+        <p style="text-align: justify">
+          Las opciones que usted tendría siendo un EDUCADOR, es poder registrar desde su cuenta a sus propios
+          estudiantes, y así poder llevar un control de ellos desde su perfil, y poder evaluarlos en los diferentes
+          cursos que poseemos, además usted podrá acceder a los registros para realizar un seguimiento
+          y obtener reportes de sus estudiantes.
+        </p>
+        <strong>RECUERDA</strong>
+        <p style="text-align: justify">
+          Para poder realizar esta solicitud usted necesita tener toda su información completa.
+        </p>
+        <p-scrollTop target="parent" styleClass="custom-scrolltop" [threshold]="50"
+                     icon="pi pi-arrow-up"></p-scrollTop>
+      </p-scrollPanel>
+      <br>
+      <button pButton label="Quiero ser educador" class="p-button-info mt-2 ml-2"></button>
+    </p-panel>
+    <p-panel *ngIf="person._typePerson != 'U'" header="Regresar rol a usuario"
+             [toggleable]="true" [collapsed]="true" class="line-height-3 m-0">
+      <p-scrollPanel [style]="{height: '100px'}">
+        <strong>¿QUIERES REGRESAR A SER UN USUARIO GENERAL EN LA APLICACIÓN?</strong>
+        <p style="text-align: justify">
+          Solicita regresar a ser un usuario general, y envíe un mensaje con las razones por la cual le gustaría
+          volver a tener este rol, revisaremos su solicitud para evaluar la actualización de su rol. En caso
+          de cualquier novedad, nos estaremos contactando con usted por medio de la información que nos ha
+          proporcionado.
+        </p>
+        <strong>RECUERDA</strong>
+        <p style="text-align: justify">
+          Se deshabilitará todo tus avances.
+        </p>
+        <p-scrollTop target="parent" styleClass="custom-scrolltop" [threshold]="50"
+                     icon="pi pi-arrow-up"></p-scrollTop>
+      </p-scrollPanel>
+      <br>
+      <button pButton label="Quiero ser usuario general" class="p-button-info mt-2 ml-2"></button>
+    </p-panel>
   </p-panel>
   <p-scrollTop target="window" styleClass="custom-scrolltop" [threshold]="100" icon="pi pi-arrow-up"></p-scrollTop>
 

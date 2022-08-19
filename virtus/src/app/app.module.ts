@@ -87,11 +87,15 @@ import {InputNumberModule} from "primeng/inputnumber";
 import {AppConfigComponent} from "./app.config.component";
 import {ScrollTopModule} from "primeng/scrolltop";
 import {ScrollPanelModule} from "primeng/scrollpanel";
-import {FavoritesComponent} from './pages/favorites/favorites.component';
 
 import {FaIconLibrary} from '@fortawesome/angular-fontawesome';
 // ----- ICONOS DE FONTAWSOME ------
 import {faHands} from '@fortawesome/free-solid-svg-icons';
+
+import { FavoritesComponent } from './pages/favorites/favorites.component';
+import {FileUploadModule} from "primeng/fileupload";
+import {RatingModule} from "primeng/rating";
+
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -174,7 +178,9 @@ FullCalendarModule.registerPlugins([
     PdfViewerModule,
     ScrollTopModule,
     ScrollPanelModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    FileUploadModule,
+    RatingModule
   ],
 
   providers: [

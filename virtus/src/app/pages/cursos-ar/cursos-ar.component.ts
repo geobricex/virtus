@@ -103,6 +103,10 @@ export class CursosArComponent implements OnInit {
     });
   }
 
+  apiLoadCourses(): Observable<Course[]> {
+    this.globalUri = this.utils.globalUrl + "course";
+    return this._http.get<Course[]>(this.globalUri, {});
+  }
 
   saveCourse() {
     this.courseSuccessful = true;
@@ -179,10 +183,6 @@ export class CursosArComponent implements OnInit {
     this.newcourse_dialog = true;
   }
 
-  apiLoadCourses(): Observable<Course[]> {
-    this.globalUri = this.utils.globalUrl + "course";
-    return this._http.get<Course[]>(this.globalUri, {});
-  }
 
   onSortChange(event: any) {
     let value = event.value;

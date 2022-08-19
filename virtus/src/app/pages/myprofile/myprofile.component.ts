@@ -10,6 +10,7 @@ import {Session} from "../../models/session";
 import {FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule} from '@angular/forms';
 import PocketBase from "pocketbase";
 import {Message} from "primeng/api";
+import {BreadcrumbService} from "../../app.breadcrumb.service";
 
 @Component({
   selector: 'app-myprofile',
@@ -34,10 +35,15 @@ export class MyprofileComponent implements OnInit {
   });
 
   constructor(
+    private breadcrumbService: BreadcrumbService,
     private utils: Utils,
     private _http: HttpClient,
     private storageService: StorageService
   ) {
+    this.breadcrumbService.setItems([
+      {label: 'Perfil', routerLink: ['/app/myprofile']},
+    ]);
+
   }
 
   ngOnInit(): void {

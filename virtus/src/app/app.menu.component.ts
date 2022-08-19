@@ -33,13 +33,43 @@ export class AppMenuComponent implements OnInit {
       this.model = [
         {label: 'Inicio', icon: 'pi pi-fw pi-home', routerLink: ['/app']},
         {label: 'Cursos', icon: 'pi pi-fw pi-book', routerLink: ['/app/coursear']},
-        {label: 'Gestión de usuarios', icon: 'pi pi-fw pi-users', routerLink: ['/app/useradministration']}
+        {label: 'Gestión de usuarios', icon: 'pi pi-fw pi-users', routerLink: ['/app/useradministration']},
+        {label: 'Solicitudes', icon: 'pi pi-comments', routerLink: ['/app/requestssuggestions']},
       ];
     } else if (this.user.type_person === "A") {
       this.model = [
         {label: 'Inicio', icon: 'pi pi-fw pi-home', routerLink: ['/app']},
         {label: 'Cursos', icon: 'pi pi-fw pi-book', routerLink: ['/app/coursear']},
         {label: 'Gestión de usuarios', icon: 'pi pi-fw pi-users', routerLink: ['/app/useradministration']},
+        {label: 'Solicitudes', icon: 'pi pi-comments', routerLink: ['/app/requestssuggestions']},
+        {
+          label: 'Reportes', icon: 'pi pi-fw pi-chart-pie', routerLink: ['/app/r'],
+          items: [
+            {label: 'Tiempo', icon: 'pi pi-fw pi-clock', routerLink: ['/app/t']},
+            {label: 'Puntaje', icon: 'pi pi-fw pi-th-large', routerLink: ['/app/p']}
+          ]
+        }
+      ];
+    } else if (this.user.type_person === "I") {
+      this.model = [
+        {label: 'Inicio', icon: 'pi pi-fw pi-home', routerLink: ['/app']},
+        {label: 'Cursos', icon: 'pi pi-fw pi-book', routerLink: ['/app/coursear']},
+        {label: 'Gestión de usuarios', icon: 'pi pi-fw pi-users', routerLink: ['/app/useradministration']},
+        {label: 'Solicitudes', icon: 'pi pi-comments', routerLink: ['/app/requestssuggestions']},
+        {
+          label: 'Reportes', icon: 'pi pi-fw pi-chart-pie', routerLink: ['/app/r'],
+          items: [
+            {label: 'Tiempo', icon: 'pi pi-fw pi-clock', routerLink: ['/app/t']},
+            {label: 'Puntaje', icon: 'pi pi-fw pi-th-large', routerLink: ['/app/p']}
+          ]
+        }
+      ];
+    } else if (this.user.type_person === "E") {
+      this.model = [
+        {label: 'Inicio', icon: 'pi pi-fw pi-home', routerLink: ['/app']},
+        {label: 'Cursos', icon: 'pi pi-fw pi-book', routerLink: ['/app/coursear']},
+        {label: 'Gestión de usuarios', icon: 'pi pi-fw pi-users', routerLink: ['/app/useradministration']},
+        {label: 'Solicitudes', icon: 'pi pi-comments', routerLink: ['/app/requestssuggestions']},
         {
           label: 'Reportes', icon: 'pi pi-fw pi-chart-pie', routerLink: ['/app/r'],
           items: [
