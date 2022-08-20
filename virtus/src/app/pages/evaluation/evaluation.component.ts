@@ -6,7 +6,7 @@ import {Observable, Subscription, timer} from 'rxjs';
 import {Person} from "../../models/Person";
 import {Utils} from "../../util/Utils";
 import {ActivatedRoute} from '@angular/router';
-import {Evaluation, EvaluationQuestionsResponse, Questions} from  "../../models/evaluation_questionarie";
+import {Evaluation, EvaluationQuestionsResponse, Questions} from "../../models/evaluation_questionarie";
 import {StorageService} from "../../authentication/StorageService";
 import {FormBuilder} from '@angular/forms'
 
@@ -67,6 +67,10 @@ export class EvaluationComponent implements OnInit {
     this.idEvaluation = this._route.snapshot.paramMap.get("idEvaluation");
     this.idResource = this._route.snapshot.paramMap.get("idResource");
     this.breadcrumbService.setItems([
+      {
+        label: '',
+        routerLink: ['/app/mycourse/modules/' + this.idCourse + '/themes/' + this.idModule + '/resources/' + this.idTopic]
+      },
       {label: 'Cursos', routerLink: ['/app']},
       {label: 'Mis cursos', routerLink: ['/app/mycourse']},
       {label: 'Modulos', routerLink: ['/app/mycourse/modules/' + this.idCourse]},
@@ -163,7 +167,7 @@ export class EvaluationComponent implements OnInit {
       resp = "Difícil";
     }
     if (level == 5) {
-      resp = "Imposible";
+      resp = "Extremo";
     }
     return resp;
   }
@@ -185,7 +189,7 @@ export class EvaluationComponent implements OnInit {
                 // console.log("tiempoEvaluacion: " + iter);
                 if (this.tiempoEvaluacion <= 0) {
                   this.tiempoEvaluacion$.unsubscribe();
-                  /Código para indicar que se terminó el tiempo/
+                  /*Código para indicar que se terminó el tiempo*/
                 }
                 this.tiempoEvaluacion--;
               });
@@ -465,7 +469,7 @@ export class EvaluationComponent implements OnInit {
     //this.contex = this.CanvasEl.nativeElement.getContext('2d');
     mecanvas.style['cursor'] = 'pointer';
     let cantidad: number = this.questionObject.answers_[0].options_answer.length;
-    mecanvas.width = (75 * cantidad);
+    mecanvas.width = (85 * cantidad);
     mecanvas.getContext('2d')!.clearRect(0, 0, mecanvas.width, mecanvas.height);
 
     for (let ind = 0; ind < cantidad; ind++) {
@@ -473,9 +477,9 @@ export class EvaluationComponent implements OnInit {
       img.onload = function () {
         img.width = 10;
         let ctx = mecanvas.getContext('2d')!;
-        ctx.drawImage(img, (ind * 75), 0, 75, 75);
+        ctx.drawImage(img, (ind * 85), 0, 85, 85);
       };
-      img.src = 'assets/imgresource/alfabeto/' + this.alphabet[ind] + '.png';
+      img.src = 'assets/imgresource/alfabeto/propio/' + this.alphabet[ind] + '.png';
     }
     if (nuevo) {
       mecanvas.onmousedown = (e: {

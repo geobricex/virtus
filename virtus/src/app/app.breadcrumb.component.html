@@ -5,13 +5,17 @@
         <i class="pi pi-home"></i>
       </a>
     </li>
-    <li>&nbsp;/</li>
+    <li>&nbsp;
+      <i style="color: #0f0f0f" class="pi pi-angle-right"></i>
+    </li>
     <ng-template ngFor let-item let-last="last" [ngForOf]="items">
       <li *ngIf="item.label !== ''">
         <a [routerLink]="item.routerLink" *ngIf="item.routerLink"> {{item.label}} </a>
         <ng-container *ngIf="!item.routerLink"> {{item.label}} </ng-container>
       </li>
-      <li *ngIf="!last && item.label !== ''">/</li>
+      <li *ngIf="!last && item.label !== ''">
+        <i style="color: #0f0f0f" class="pi pi-angle-right"></i>
+      </li>
     </ng-template>
   </div>
 

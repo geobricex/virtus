@@ -118,6 +118,7 @@ export class ResourcesComponent implements OnInit {
     ]
     this.loadResources();
     this.loadEvaluations();
+    this.enteredResources();
   }
 
   viewUrlRemot(remoteUrl: any) {
@@ -181,4 +182,11 @@ export class ResourcesComponent implements OnInit {
     return this._http.post<any>(this.globalUri, {topic_id_evaluation: this.idTopic});
   }
 
+  enteredResources() {
+    this.topicData().subscribe(response => {
+      console.log(response);
+      this.tituloTopic = response.data[0].name_topic;
+      this.descriptionTopic = response.data[0].description_topic;
+    });
+  }
 }

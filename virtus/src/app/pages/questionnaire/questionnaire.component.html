@@ -41,6 +41,7 @@
       </ng-template>
     </p-messages>
   </div>
+
   <div class="col-6 md:col-3">
     <div class="card">
       <h5>Banco de preguntas</h5>
@@ -112,8 +113,12 @@
 <!--      </div>-->
     </div>
   </div>
+
   <div class="col-12 md:col-9">
     <div class="card">
+      <div class="col">
+        <p-progressBar [value]="valueProgress" [showValue]="false"></p-progressBar>
+      </div>
       <h4> {{'Pregunta N° ' + (indexQuestionObject + 1 || 0) + ' : ' + questionObject.title_question}} </h4>
 
       <p-chip label="{{getNivelQuestion(questionObject.level_question || 1)}}"
@@ -284,7 +289,7 @@
 <p-dialog header="{{sweetFakeAlert[1]?'¡Genial!':'¡Oh no...!'}}"
           [(visible)]="sweetFakeAlert[0]" [modal]="true"
           [draggable]="false" [resizable]="false" [style]="{width: '30vw'}"
-          [closable]="false">
+          [closable]="true">
 
   <div class="col-12 text-center">
     <img alt="Card"
