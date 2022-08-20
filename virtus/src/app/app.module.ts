@@ -28,7 +28,7 @@ import {SpeedDialModule} from 'primeng/speeddial';
 import {TabViewModule} from 'primeng/tabview';
 import {ColorPickerModule} from 'primeng/colorpicker';
 import {PdfViewerModule} from 'ng2-pdf-viewer';
-
+import { TagModule } from 'primeng/tag'
 //INICIO SERVICE
 import {CargarScriptsService} from "./services/cargar-scripts.service"
 // FIN SERVICES
@@ -180,7 +180,8 @@ FullCalendarModule.registerPlugins([
     ScrollPanelModule,
     FontAwesomeModule,
     FileUploadModule,
-    RatingModule
+    RatingModule,
+    TagModule
   ],
 
   providers: [

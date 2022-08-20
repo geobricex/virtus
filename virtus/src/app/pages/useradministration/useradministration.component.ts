@@ -16,7 +16,7 @@ export class UseradministrationComponent implements OnInit {
   globalUri: string | null = "";
   person: Person;
   persons: Person[];
-
+  cols: any[];
 
   constructor(
     private breadcrumbService: BreadcrumbService,
@@ -31,6 +31,14 @@ export class UseradministrationComponent implements OnInit {
   ngOnInit(): void {
     console.log(this.utils.token);
     this.loadgetPersons();
+
+    this.cols = [
+      {field: 'Nombre', header: 'Nombre'},
+      {field: 'Apellido', header: 'Apellido'},
+      {field: 'Email', header: 'Email'},
+      {field: 'Tipodeusuario', header: 'Tipo de usuario'},
+      {field: 'Tipoderegistro', header: 'Tipo de registro'}
+    ];
   }
 
   loadgetPersons() {

@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {BreadcrumbService} from "../../app.breadcrumb.service";
 
 import {HttpClient, HttpHeaders} from '@angular/common/http';
@@ -14,6 +14,7 @@ import {StorageService} from "../../authentication/StorageService";
 import {FormBuilder} from '@angular/forms';
 import {utils} from "protractor";
 
+
 declare var Artyom: any;
 
 @Component({
@@ -28,7 +29,7 @@ export class QuestionnaireComponent implements OnInit {
   idEvaluation: string | null = "";
   idResource: string | null = "";
   //valRadio: string;
-  public vistaVideoSenias: boolean = false;
+  public vistaVideoSenias: boolean = true;
 
   private artyom: any = new Artyom();
 
@@ -51,6 +52,10 @@ export class QuestionnaireComponent implements OnInit {
 
   public literalSeleccionado: any;
 
+  valueProgress = 0;
+
+  public sweetFakeAlert: boolean[] = [false, true];
+
   @ViewChild('canvasEl', {static: true}) CanvasEl: ElementRef<HTMLCanvasElement>;
   private contex: CanvasRenderingContext2D | null;
 
@@ -61,7 +66,8 @@ export class QuestionnaireComponent implements OnInit {
               private utils: Utils,
               private activatedRoute: ActivatedRoute,
               private storageService: StorageService,
-              private fb: FormBuilder
+              private fb: FormBuilder,
+              private changeDetector: ChangeDetectorRef
   ) {
 
     this.idCourse = this._route.snapshot.paramMap.get("idcourse");
@@ -70,6 +76,10 @@ export class QuestionnaireComponent implements OnInit {
     this.idEvaluation = this._route.snapshot.paramMap.get("idEvaluation");
     this.idResource = this._route.snapshot.paramMap.get("idResource");
     this.breadcrumbService.setItems([
+      {
+        label: '',
+        routerLink: ['/app/mycourse/modules/' + this.idCourse + '/themes/' + this.idModule + '/resources/' + this.idTopic]
+      },
       {label: 'Cursos', routerLink: ['/app']},
       {label: 'Mis cursos', routerLink: ['/app/mycourse']},
       {label: 'Modulos', routerLink: ['/app/mycourse/modules/' + this.idCourse]},
@@ -103,11 +113,10 @@ export class QuestionnaireComponent implements OnInit {
 
   }
 
-  /*ngAfterViewInit(): void {
-    // Call the method creating a child component of class 'ComponentA' inside the template
-    console.log("ejecutar despues de terminar carga");
-    this.startContinuousArtyom();
-  }*/
+  ngAfterViewInit(): void {
+    //this.showSwal(true);
+    //this.changeDetector.detectChanges();
+  }
 
   ngOnDestroy() {
     this.tiempoEvaluacion$.unsubscribe();
@@ -116,7 +125,7 @@ export class QuestionnaireComponent implements OnInit {
   tipoPregunta(typo: number): string {
     let resp: string = "";
     if (typo == 1) {
-      resp = "Complete";
+      resp = "True or False";
     }
     if (typo == 2) {
       resp = "Simple Option";
@@ -125,7 +134,13 @@ export class QuestionnaireComponent implements OnInit {
       resp = "Multiple Option";
     }
     if (typo == 4) {
+      resp = "Complete";
+    }
+    if (typo == 5) {
       resp = "Relate";
+    }
+    if (typo == 6) {
+      resp = "puzzle";
     }
     return resp;
   }
@@ -181,7 +196,7 @@ export class QuestionnaireComponent implements OnInit {
           this.evaluationObject = response.data[0];
 
           if (this.evaluationObject.time_evaluation) {
-            this.tiempoEvaluacion = 60 * 60;//this.evaluationObject.timeminutes_evaluation * 60;
+            this.tiempoEvaluacion = 0;//60 * 60;//this.evaluationObject.timeminutes_evaluation * 60;
             this.tiempoEvaluacion$ = timer(0, 1000)
               .subscribe((iter: any) => {
                 //this.time();
@@ -208,6 +223,35 @@ export class QuestionnaireComponent implements OnInit {
       }
     });
 
+  }
+
+
+  verificarRespuestasCorrectas(questionItem: Questions): boolean {
+    if (questionItem.answers_[0].responses != undefined)
+      //verdadero o falso O unica seleccion
+      if (questionItem.name_questioncategory == this.tipoPregunta(2)
+        || questionItem.name_questioncategory == this.tipoPregunta(1)) {
+        // @ts-ignore
+        return questionItem.answers_[0].responses.correct == "Yes";
+      } else {
+        let flagAlltrue: boolean = true;
+        let indT = 0;
+        let indTS = 0;
+        for (let ind = 0; ind < questionItem.answers_[0].responses.length; ind++) {
+          if (questionItem.answers_[0].responses[ind].correct == "Yes") {
+            indTS++;
+          } else {
+            flagAlltrue = false;
+          }
+        }
+        for (let ind = 0; ind < questionItem.answers_[0].responses.length; ind++) {
+          if (questionItem.answers_[0].options_answer[ind].correct == "Yes") {
+            indT++;
+          }
+        }
+        return indTS == indT;
+      }
+    return false;
   }
 
   validarPreguntaResuelta(questionItem: Questions): boolean {
@@ -248,7 +292,16 @@ export class QuestionnaireComponent implements OnInit {
         //La preguntaha sido contestada
         //validar las respuestas que he dado
         console.log("FeedBack: ", this.questionObject.feedback_question);
-        this.utils.showMessages(1, "FeedBack: " + this.questionObject.feedback_question);
+        //this.utils.showMessages(1, "FeedBack: " + this.questionObject.feedback_question);
+        let flagCorrect = this.verificarRespuestasCorrectas(this.questionObject);
+        this.showSwal(flagCorrect);
+        if (!flagCorrect) {
+          return;
+        } else {
+          if (this.valueProgress < 100) {
+            this.valueProgress = this.valueProgress + ((100) / this.evaluationObject.questions_.length);
+          }
+        }
       } else {
         console.log("Primero debes responder la pregunta");
         this.utils.showMessages(3, "Primero debes responder la pregunta");
@@ -303,8 +356,22 @@ export class QuestionnaireComponent implements OnInit {
     if (btnStart) (btnStart as HTMLFormElement).click();
   }
 
+  showSwal(correcta: boolean): void {
+    this.sweetFakeAlert[0] = true;
+    this.sweetFakeAlert[1] = correcta;
+    let tiempoSwal$ = timer(0, 1000)
+      .subscribe((iter: any) => {
+        if (iter >= 10) {
+          tiempoSwal$.unsubscribe();
+          this.sweetFakeAlert[0] = false;
+        }
+      });
+  }
+
+
   /*Paginar preguntas*/
   anteriorPregunta(): void {
+
     let ind = this.indexQuestionObject + 1;
     if (ind >= this.evaluationObject.questions_.length) {
       ind = this.evaluationObject.questions_.length - 1;
@@ -327,9 +394,24 @@ export class QuestionnaireComponent implements OnInit {
   /*Video Player*/
 
   public btnVideoControl: any;
+  public btnVideoSignControl: any;
 
   initVideoControls(): void {
-    this.btnVideoControl = document.querySelector("#pathurlsign_question");
+    this.btnVideoControl = document.querySelector("#pathurlvideo_question");
+  }
+
+  initVideoSignControls(): void {
+    this.btnVideoSignControl = document.querySelector("#pathurlsign_question");
+  }
+
+  playSignVideo() {
+    this.initVideoSignControls()
+    if (this.btnVideoSignControl) (this.btnVideoSignControl as HTMLFormElement)['play']();
+  }
+
+  pauseSignVideo() {
+    this.initVideoSignControls();
+    if (this.btnVideoSignControl) (this.btnVideoSignControl as HTMLFormElement)['pause']();
   }
 
   playVideo() {
@@ -392,6 +474,20 @@ export class QuestionnaireComponent implements OnInit {
     }
   }
 
+  evaluar_control_evaluacion(wildcard: string, i: number, database: string[]): void {
+    console.log("wilcardOriginal:" + wildcard);
+    wildcard = wildcard.trim().replace(/[^a-zA-Z]+/, "");
+    console.log("wildcard:", wildcard, i, database.indexOf(wildcard.trim()));
+    if (database.indexOf(wildcard.trim()) > -1) {
+      //this.artyom.say("Ha indicado la selección del literal " + wildcard);
+      console.log("Ha indicado la selección del literal " + wildcard);
+      console.log("#video_" + wildcard.trim() + ": => click")
+      this.autoClick("#evt_control_" + wildcard.trim());
+    } else {
+      console.log("No se encuentra ese literal")
+    }
+  }
+
   /*Comandos de voz*/
 
   voiceComandsSupport(): boolean {
@@ -436,6 +532,14 @@ export class QuestionnaireComponent implements OnInit {
           } else {
             console.log("No se encuentra ese literal")
           }*/
+        }
+      }, {
+        description: "controles del contexto evaluativo",
+        smart: true, // Activar comando como un comando smart para poder usar comodines
+        indexes: ["comando *"],
+        action: function (i: number, wildcard: string) {
+          let database: string[] = ["siguiente", "anterior", "enviar"];
+          local_this.evaluar_control_evaluacion(wildcard, i, database);
         }
       }
     ];
@@ -489,7 +593,7 @@ export class QuestionnaireComponent implements OnInit {
     //this.contex = this.CanvasEl.nativeElement.getContext('2d');
     mecanvas.style['cursor'] = 'pointer';
     let cantidad: number = this.questionObject.answers_[0].options_answer.length;
-    mecanvas.width = (75 * cantidad) + (10 * (cantidad - 1));
+    mecanvas.width = (85 * cantidad) + (10 * (cantidad - 1));
     mecanvas.getContext('2d')!.clearRect(0, 0, mecanvas.width, mecanvas.height);
 
     for (let ind = 0; ind < cantidad; ind++) {
@@ -497,9 +601,9 @@ export class QuestionnaireComponent implements OnInit {
       img.onload = function () {
         img.width = 10;
         let ctx = mecanvas.getContext('2d')!;
-        ctx.drawImage(img, (ind * 75) + (10 * ind), 5, 75, 75);
+        ctx.drawImage(img, (ind * 85) + (10 * ind), 5, 85, 85);
       };
-      img.src = 'assets/imgresource/alfabeto/' + this.alphabet[ind] + '.png';
+      img.src = 'assets/imgresource/alfabeto/propio/' + this.alphabet[ind] + '.png';
     }
     if (nuevo) {
       mecanvas.onmousedown = (e: {
@@ -534,7 +638,9 @@ export class QuestionnaireComponent implements OnInit {
         let indice = Math.trunc((this.lastLoc.x) / 80);
         console.log(this.lastLoc.x, indice);
         let wildcard: string = this.alphabet[indice];
-        if (this.questionObject.name_questioncategory == this.tipoPregunta(2)) {
+        if (this.questionObject.name_questioncategory == this.tipoPregunta(1)) {
+          this.autoClick("#option_vf_" + wildcard.trim());
+        } else if (this.questionObject.name_questioncategory == this.tipoPregunta(2)) {
           if (this.questionObject.canResource) {
             this.autoClick("#option_rd_2_" + wildcard.trim());
           } else {

@@ -74,7 +74,7 @@ export class MyprofileComponent implements OnInit {
   }
 
   apiGetPerson(): Observable<any> {
-    this.globalUri = "virtusbk/persons/getPerson";
+    this.globalUri = "virtusbk/persons/getperson";
     return this._http.post(this.globalUri, {
       "sessionToken": this.session.token,
     },);
