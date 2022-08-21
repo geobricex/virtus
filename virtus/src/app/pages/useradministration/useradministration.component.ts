@@ -13,10 +13,10 @@ import {Person} from "../../models/Person";
 })
 export class UseradministrationComponent implements OnInit {
 
-  globalUri: string = "";
+  globalUri: string | null = "";
   person: Person;
   persons: Person[];
-
+  cols: any[];
 
   constructor(
     private breadcrumbService: BreadcrumbService,
@@ -29,41 +29,38 @@ export class UseradministrationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log(this.utils.token);
     this.loadgetPersons();
-  }
 
-
-
-  loadPersons() {
-    this.apiLoadPersons().subscribe(response => {
-      this.persons = response;
-      console.log(this.persons);
-    });
-  }
-
-  apiLoadPersons(): Observable<Person[]> {
-    this.globalUri = this.utils.globalUrl + "persons/getpersons";
-    var headers = new HttpHeaders()
-      .set('Access-Control-Allow-Origin', '*')
-      .set('token', this.utils.token);
-    return this._http.post<Person[]>(this.globalUri,
-      {sessionToken: this.utils.token},
-      {headers: headers});
+    this.cols = [
+      {field: 'Nombre', header: 'Nombre'},
+      {field: 'Apellido', header: 'Apellido'},
+      {field: 'Email', header: 'Email'},
+      {field: 'Tipodeusuario', header: 'Tipo de usuario'},
+      {field: 'Tipoderegistro', header: 'Tipo de registro'}
+    ];
   }
 
   loadgetPersons() {
     this.apiLoadGetPersons().subscribe(response => {
       this.persons = response.data;
-      console.log(this.persons);
+      console.log(response);
     });
   }
 
   apiLoadGetPersons(): Observable<any> {
-    this.globalUri = this.utils.globalUrl + "personscours/getpersons";
+    this.globalUri = this.utils.globalUrl + "persons/personsget";
     var headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
       .set('token', this.utils.token);
-    return this._http.post(this.globalUri, {sessionToken: this.utils.token}, {headers: headers});
+    return this._http.post(this.globalUri, {}, {headers: headers});
   }
+
+  apiLoadTopics(): Observable<any> {
+    this.globalUri = this.utils.globalUrl + "topic/gettopics";
+    return this._http.post<any>(this.globalUri,
+      {syllabu_id_topic: 1});
+  }
+
 }

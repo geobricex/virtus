@@ -14,6 +14,7 @@ import {StorageService} from "../../authentication/StorageService";
 import {FormBuilder} from '@angular/forms';
 import {utils} from "protractor";
 
+
 declare var Artyom: any;
 
 @Component({
@@ -29,6 +30,7 @@ export class QuestionnaireComponent implements OnInit {
   idResource: string | null = "";
   //valRadio: string;
   public vistaVideoSenias: boolean = true;
+  viewQuestionBank: boolean = true;
 
   private artyom: any = new Artyom();
 
@@ -46,11 +48,12 @@ export class QuestionnaireComponent implements OnInit {
     "t", "u", "v", "w", "x", "y", "z"
   ];
   //
-  public tiempoEvaluacion$: Subscription;
+  public tiempoEvaluacion$: Subscription | any;
   public tiempoEvaluacion: number = 0;
 
   public literalSeleccionado: any;
 
+  valueProgress = 0;
 
   public sweetFakeAlert: boolean[] = [false, true];
 
@@ -74,6 +77,10 @@ export class QuestionnaireComponent implements OnInit {
     this.idEvaluation = this._route.snapshot.paramMap.get("idEvaluation");
     this.idResource = this._route.snapshot.paramMap.get("idResource");
     this.breadcrumbService.setItems([
+      {
+        label: '',
+        routerLink: ['/app/mycourse/modules/' + this.idCourse + '/themes/' + this.idModule + '/resources/' + this.idTopic]
+      },
       {label: 'Cursos', routerLink: ['/app']},
       {label: 'Mis cursos', routerLink: ['/app/mycourse']},
       {label: 'Modulos', routerLink: ['/app/mycourse/modules/' + this.idCourse]},
@@ -104,7 +111,10 @@ export class QuestionnaireComponent implements OnInit {
       }
     });
     console.log("canvas, ", this.CanvasEl);
+  }
 
+  openClose() {
+    this.viewQuestionBank = !this.viewQuestionBank;
   }
 
   ngAfterViewInit(): void {
@@ -113,12 +123,19 @@ export class QuestionnaireComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.tiempoEvaluacion$.unsubscribe();
-    this.artyom.shutUp();
+    if (this.tiempoEvaluacion$ !== undefined) {
+      this.tiempoEvaluacion$.unsubscribe();
+    }
+    if(this.text2SpeakSupport() && this.artyom.isSpeaking())
+    {
+      this.artyom.shutUp();
+    }
     //Quitar el reconocimiento de voz
-    this.artyom.fatality().then(() => {
-      this.artyom.clearGarbageCollection();
-    });
+    if(this.voiceComandsSupport()){
+      this.artyom.fatality().then(() => {
+        this.artyom.clearGarbageCollection();
+      });
+    }
   }
 
   tipoPregunta(typo: number): string {
@@ -195,7 +212,7 @@ export class QuestionnaireComponent implements OnInit {
           this.evaluationObject = response.data[0];
 
           if (this.evaluationObject.time_evaluation) {
-            this.tiempoEvaluacion = 60 * 60;//this.evaluationObject.timeminutes_evaluation * 60;
+            this.tiempoEvaluacion = 0;//60 * 60;//this.evaluationObject.timeminutes_evaluation * 60;
             this.tiempoEvaluacion$ = timer(0, 1000)
               .subscribe((iter: any) => {
                 //this.time();
@@ -249,6 +266,7 @@ export class QuestionnaireComponent implements OnInit {
           }
         }
         return flagAlltrue && indTS == indT;
+      } else {
       }
     return false;
   }
@@ -294,7 +312,13 @@ export class QuestionnaireComponent implements OnInit {
         //this.utils.showMessages(1, "FeedBack: " + this.questionObject.feedback_question);
         let flagCorrect = this.verificarRespuestasCorrectas(this.questionObject);
         this.showSwal(flagCorrect);
-        if (!flagCorrect) return;
+        if (!flagCorrect) {
+          return;
+        } else {
+          if (this.valueProgress < 100) {
+            this.valueProgress = this.valueProgress + ((100) / this.evaluationObject.questions_.length);
+          }
+        }
       } else {
         console.log("Primero debes responder la pregunta");
         this.utils.showMessages(3, "Primero debes responder la pregunta");
@@ -368,6 +392,7 @@ export class QuestionnaireComponent implements OnInit {
 
   /*Paginar preguntas*/
   anteriorPregunta(): void {
+
     let ind = this.indexQuestionObject + 1;
     if (ind >= this.evaluationObject.questions_.length) {
       ind = this.evaluationObject.questions_.length - 1;
@@ -613,7 +638,7 @@ export class QuestionnaireComponent implements OnInit {
     //this.contex = this.CanvasEl.nativeElement.getContext('2d');
     mecanvas.style['cursor'] = 'pointer';
     let cantidad: number = this.questionObject.answers_[0].options_answer.length;
-    mecanvas.width = (75 * cantidad) + (10 * (cantidad - 1));
+    mecanvas.width = (85 * cantidad) + (10 * (cantidad - 1));
     mecanvas.getContext('2d')!.clearRect(0, 0, mecanvas.width, mecanvas.height);
 
     for (let ind = 0; ind < cantidad; ind++) {
@@ -621,9 +646,9 @@ export class QuestionnaireComponent implements OnInit {
       img.onload = function () {
         img.width = 10;
         let ctx = mecanvas.getContext('2d')!;
-        ctx.drawImage(img, (ind * 75) + (10 * ind), 5, 75, 75);
+        ctx.drawImage(img, (ind * 85) + (10 * ind), 5, 85, 85);
       };
-      img.src = 'assets/imgresource/alfabeto/' + this.alphabet[ind] + '.png';
+      img.src = 'assets/imgresource/alfabeto/propio/' + this.alphabet[ind] + '.png';
     }
     if (nuevo) {
       mecanvas.onmousedown = (e: {

@@ -4,6 +4,11 @@ import {ActivatedRoute} from "@angular/router";
 import {Utils} from "../../util/Utils";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {Resources} from "../../models/Resources";
+import {Evaluation} from "../../models/Evaluation";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {DomSanitizer} from "@angular/platform-browser";
+import {Topic} from "../../models/Topic";
 
 @Component({
   selector: 'app-resources',
@@ -12,12 +17,30 @@ import {Observable} from "rxjs";
 })
 export class ResourcesComponent implements OnInit {
 
+  resource: Resources;
+  evaluation: Evaluation;
   idCourse: string | null = "";
   idModule: string | null = "";
   idTopic: string | null = "";
   globalUri: string | null = "";
   resourcesData: any [];
   evaluationData: any [];
+  tmpFile: any;
+  videoUrl: any;
+  viewVideoDialog: boolean;
+  tituloTopic: string;
+  descriptionTopic: string;
+  vieweRemoteUrl: boolean;
+  urlSafe: any;
+
+  newResourseDialog: boolean;
+  registerFormEvaluation: FormGroup;
+  registerFormResources: FormGroup;
+  typeFileGlobal: string;
+  viewPdf: boolean;
+  pdfUrl: any;
+  typeEvalutionform: any[];
+
   carouselResponsiveOptions: any[] = [
     {
       breakpoint: '1024px',
@@ -35,23 +58,20 @@ export class ResourcesComponent implements OnInit {
       numScroll: 1
     }
   ];
-  tituloTopic: string;
-  descriptionTopic: string;
-  viewPdf: boolean;
-  pdfUrl: any;
-  viewVideoDialog: boolean;
-  videoUrl: any;
 
   constructor(
     private breadcrumbService: BreadcrumbService,
     private _route: ActivatedRoute,
     private utils: Utils,
-    private _http: HttpClient) {
+    private _http: HttpClient,
+    public sanitizer: DomSanitizer
+  ) {
     this.idCourse = this._route.snapshot.paramMap.get("idcourse");
     this.idModule = this._route.snapshot.paramMap.get("idmodule");
     this.idTopic = this._route.snapshot.paramMap.get("idTopic");
     this.breadcrumbService.setItems([
-      {label: 'Cursos', routerLink: ['/app']},
+      {label: '', routerLink: ['/app/mycourse/modules/' + this.idCourse + '/themes/' + this.idModule]},
+      {label: 'Cursos', routerLink: ['app/course']},
       {label: 'Mis cursos', routerLink: ['/app/mycourse']},
       {label: 'Módulos', routerLink: ['/app/mycourse/modules/' + this.idCourse]},
       {label: 'Temas', routerLink: ['/app/mycourse/modules/' + this.idCourse + '/themes/' + this.idModule]},
@@ -63,9 +83,20 @@ export class ResourcesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.utils.initPocket();
+    this.typeEvalutionform = [
+      {label: "---:---", value: null},
+      {label: "Evaluación", value: 1},
+      {label: "Cuestionario", value: 2},
+    ]
     this.loadResources();
     this.loadEvaluations();
     this.enteredResources();
+  }
+
+  viewUrlRemot(remoteUrl: any) {
+    this.vieweRemoteUrl = true;
+    this.urlSafe = this.sanitizer.bypassSecurityTrustResourceUrl(remoteUrl);
   }
 
   viewFile(url: string) {
@@ -79,6 +110,24 @@ export class ResourcesComponent implements OnInit {
   viewVideo(url: string) {
     this.videoUrl = url;
     this.viewVideoDialog = true;
+  }
+
+
+  topicData(): Observable<any> {
+    this.globalUri = this.utils.globalUrl + "topic/gettopic";
+    console.log("ID DEL TOPIC: " + this.idTopic);
+    return this._http.post(this.globalUri,
+      {"id_topic": parseInt(typeof this.idTopic === "string" ? this.idTopic : "0")}
+      ,);
+  }
+
+
+  get form() {
+    return this.registerFormEvaluation.controls;
+  }
+
+  get formR() {
+    return this.registerFormResources.controls;
   }
 
   loadResources() {
@@ -96,22 +145,6 @@ export class ResourcesComponent implements OnInit {
     });
   }
 
-  enteredResources() {
-    this.topicData().subscribe(response => {
-      console.log(response);
-      this.tituloTopic = response.data[0].name_topic;
-      this.descriptionTopic = response.data[0].description_topic;
-    });
-  }
-
-  topicData(): Observable<any> {
-    this.globalUri = this.utils.globalUrl + "topic/gettopic";
-    console.log("ID DEL TOPIC: " + this.idTopic);
-    return this._http.post(this.globalUri,
-      {"id_topic": parseInt(typeof this.idTopic === "string" ? this.idTopic : "0")}
-      ,);
-  }
-
   apiLoadResources(): Observable<any> {
     this.globalUri = this.utils.globalUrl + "resource/getresources";
     return this._http.post<any>(this.globalUri, {topic_id_resources: this.idTopic});
@@ -122,4 +155,11 @@ export class ResourcesComponent implements OnInit {
     return this._http.post<any>(this.globalUri, {topic_id_evaluation: this.idTopic});
   }
 
+  enteredResources() {
+    this.topicData().subscribe(response => {
+      console.log(response);
+      this.tituloTopic = response.data[0].name_topic;
+      this.descriptionTopic = response.data[0].description_topic;
+    });
+  }
 }

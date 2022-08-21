@@ -42,62 +42,74 @@
       </ng-template>
     </p-messages>
   </div>
-  <div class="col-6 md:col-3">
-    <div class="card">
-      <h5>Banco de preguntas</h5>
-      <p-accordion>
-        <p-accordionTab header="Opción única" [selected]="true" class="line-height-3 m-0">
-          <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
-            <div *ngIf="question.name_questioncategory == tipoPregunta(2)"
-                 class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
-                 (click)="cambiarPregunta(i2)">
-              <span> {{"N°" + (i2 + 1)}} </span>
-              <i class="pi pi-circle-on mt-1 text-sm {{validarPreguntaResuelta(question)?'text-green-600': 'text-pink-600'}}"
-                 style="float: right"></i>
+  <div [ngClass]="!viewQuestionBank ? 'col-6 md:col-1' : 'col-6 md:col-3'">
+    <div class="card" style="height: 100%">
+      <div class="text-center" *ngIf="!viewQuestionBank">
+        <button pButton icon="pi pi-angle-right" class="p-button p-button-rounded p-button-outlined"
+                (click)="openClose()"></button>
+      </div>
+      <div *ngIf="viewQuestionBank">
+        <button pButton icon="pi pi-angle-left" class="p-button p-button-rounded p-button-outlined"
+                (click)="openClose()" style="float: right; margin-top: -5px"></button>
+        <h5>Banco de preguntas</h5>
+        <p-accordion>
+          <p-accordionTab header="Opción única" [selected]="true" class="line-height-3 m-0">
+            <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
+              <div *ngIf="question.name_questioncategory == tipoPregunta(2)"
+                   class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
+                   (click)="cambiarPregunta(i2)">
+                <span> {{"N°" + (i2 + 1)}} </span>
+                <i
+                  class="pi pi-circle-on mt-1 text-sm {{validarPreguntaResuelta(question)?'text-green-600': 'text-pink-600'}}"
+                  style="float: right"></i>
+              </div>
             </div>
-          </div>
-        </p-accordionTab>
-        <p-accordionTab header="Opción multiples" [selected]="true" class="line-height-3 m-0">
-          <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
-            <div *ngIf="question.name_questioncategory == tipoPregunta(3)"
-                 class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
-                 (click)="cambiarPregunta(i2)">
-              <span> {{"N°" + (i2 + 1)}} </span>
-              <i class="pi pi-circle-on mt-1 text-sm {{validarPreguntaResuelta(question)?'text-green-600': 'text-pink-600'}}"
-                 style="float: right"></i>
+          </p-accordionTab>
+          <p-accordionTab header="Opción multiples" [selected]="true" class="line-height-3 m-0">
+            <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
+              <div *ngIf="question.name_questioncategory == tipoPregunta(3)"
+                   class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
+                   (click)="cambiarPregunta(i2)">
+                <span> {{"N°" + (i2 + 1)}} </span>
+                <i
+                  class="pi pi-circle-on mt-1 text-sm {{validarPreguntaResuelta(question)?'text-green-600': 'text-pink-600'}}"
+                  style="float: right"></i>
+              </div>
             </div>
-          </div>
-        </p-accordionTab>
-        <p-accordionTab header="Complete" [selected]="true" class="line-height-3 m-0">
-          <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
-            <div *ngIf="question.name_questioncategory == tipoPregunta(1)"
-                 class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
-                 (click)="cambiarPregunta(i2)">
-              <span> {{"N°" + (i2 + 1)}} </span>
-              <i class="pi pi-circle-on mt-1 text-sm {{validarPreguntaResuelta(question)?'text-green-600': 'text-pink-600'}}"
-                 style="float: right"></i>
+          </p-accordionTab>
+          <p-accordionTab header="Complete" [selected]="true" class="line-height-3 m-0">
+            <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
+              <div *ngIf="question.name_questioncategory == tipoPregunta(1)"
+                   class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
+                   (click)="cambiarPregunta(i2)">
+                <span> {{"N°" + (i2 + 1)}} </span>
+                <i
+                  class="pi pi-circle-on mt-1 text-sm {{validarPreguntaResuelta(question)?'text-green-600': 'text-pink-600'}}"
+                  style="float: right"></i>
+              </div>
             </div>
-          </div>
-        </p-accordionTab>
-        <p-accordionTab header="Relación" [selected]="true" class="line-height-3 m-0">
-          <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
-            <div *ngIf="question.name_questioncategory == tipoPregunta(4)"
-                 class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
-                 (click)="cambiarPregunta(i2)">
-              <span> {{"N°" + (i2 + 1)}} </span>
-              <i class="pi pi-circle-on mt-1 text-sm {{validarPreguntaResuelta(question)?'text-green-600': 'text-pink-600'}}"
-                 style="float: right"></i>
+          </p-accordionTab>
+          <p-accordionTab header="Relación" [selected]="true" class="line-height-3 m-0">
+            <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
+              <div *ngIf="question.name_questioncategory == tipoPregunta(4)"
+                   class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
+                   (click)="cambiarPregunta(i2)">
+                <span> {{"N°" + (i2 + 1)}} </span>
+                <i
+                  class="pi pi-circle-on mt-1 text-sm {{validarPreguntaResuelta(question)?'text-green-600': 'text-pink-600'}}"
+                  style="float: right"></i>
+              </div>
             </div>
-          </div>
-        </p-accordionTab>
+          </p-accordionTab>
 
-      </p-accordion>
-      <div class="xl:col-12 md:col-12 sm:col-12 text-center">
-        <span>Total Puntos: </span> <span><strong>{{totalPuntos()}}</strong></span>
+        </p-accordion>
+        <div class="xl:col-12 md:col-12 sm:col-12 text-center">
+          <span>Total Puntos: </span> <span><strong>{{totalPuntos()}}</strong></span>
+        </div>
       </div>
     </div>
   </div>
-  <div class="col-12 md:col-9">
+  <div [ngClass]="viewQuestionBank ? 'col-12 md:col-9' : 'col-12 md:col-11'">
     <div class="card">
       <h4> {{'Pregunta N° ' + (indexQuestionObject + 1 || 0) + ' : ' + questionObject.title_question}} </h4>
 
@@ -132,11 +144,11 @@
       <h5>{{questionObject.description_question}}</h5>
       <!--Selección unica normal-->
       <div *ngIf="questionObject.name_questioncategory == tipoPregunta(2) && !questionObject.canResource">
-        <div *ngFor="let option of questionObject.answers_[0].options_answer; let i = index" >
+        <div *ngFor="let option of questionObject.answers_[0].options_answer; let i = index">
           <div class="field-radiobutton">
             <p-radioButton [inputId]="'option_rd_' + alphabet[i]" name="Simple_Option" [value]="option"
                            [(ngModel)]="questionObject.answers_[0].responses"
-                           (onClick)="changeRadio(i)" ></p-radioButton>
+                           (onClick)="changeRadio(i)"></p-radioButton>
             <label [for]="'option_rd_' + alphabet[i]">{{alphabet[i].toUpperCase() + ")\t" + option.opcion}}</label>
           </div>
         </div>

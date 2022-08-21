@@ -19,12 +19,14 @@ export class MiscursosComponent implements OnInit {
   globalUri: string = "";
   infoCourseSelected: any = {};
   informationCourse: boolean;
+  loading: boolean = false;
 
   expandedRows: any = {};
   isExpanded: boolean = false;
 
   constructor(private breadcrumbService: BreadcrumbService, private utils: Utils, private _http: HttpClient) {
     this.breadcrumbService.setItems([
+      {label: '', routerLink: ['/app']},
       {label: 'Cursos', routerLink: ['/']},
       {label: 'Mis cursos', routerLink: ['/app/mycourse']}
     ]);

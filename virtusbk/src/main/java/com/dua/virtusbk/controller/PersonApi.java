@@ -8,6 +8,7 @@ import com.dua.virtusbk.util.Methods;
 import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -55,7 +56,7 @@ public class PersonApi {//implements UserDetailsService {
 //    }
 
     @PostMapping("/getperson")
-    public ResponseEntity<Person> getPerson(@RequestBody String sessionToken) {
+    public ResponseEntity<Person> getPerson(@RequestBody @Validated String sessionToken) {
         System.out.println("getPerson...");
         JsonObject jso = Methods.stringToJSON(sessionToken);
         String sToken = Methods.JsonToString(jso, "sessionToken", "");
@@ -92,14 +93,14 @@ public class PersonApi {//implements UserDetailsService {
 //
 //    }
 
-    @PostMapping("/getpersons")
-    public ResponseEntity<String> getPersons(@RequestBody String sessionToken, @RequestHeader("token") String dataHeader) {
+    @PostMapping("/personsget")
+    public ResponseEntity<String> getPersonsPro(@RequestHeader("token") String sessionToken) {
         System.out.println("getPerson...");
-        String token = dataHeader;
+        //String token = dataHeader;
         String message;
-        JsonObject jso = Methods.stringToJSON(sessionToken);
-        String sToken = Methods.JsonToString(jso, "sessionToken", "");
-        String[] clains = Methods.getDataToJwt(dataHeader);
+        //JsonObject jso = Methods.stringToJSON(sessionToken);
+        //String sToken = Methods.JsonToString(jso, "sessionToken", "");
+        String[] clains = Methods.getDataToJwt(sessionToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
 
         if (res[0].equals("2")) {
@@ -110,9 +111,10 @@ public class PersonApi {//implements UserDetailsService {
             else
                 return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
         } else {
-            return ResponseEntity.noContent().build();
+            message = Methods.getJsonMessage("4", "Credenciales de sesión inválidas, vuelve a iniciar sesión "
+                    + "e intentalo de nuevo.", "[]");
+            return new ResponseEntity<>(message, HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
         }
-
     }
 
     @GetMapping("/byemail/{email}")

@@ -18,11 +18,13 @@ import {Router} from "@angular/router";
 export class CursosComponent implements OnInit {
 
   courses: Course[];
+  sortOptions: any[];
   sortOrder: number;
   sortField: string;
   globalUri: string = "";
   informationCourse: boolean;
   infoCourseSelected: any = {};
+  loading: boolean = false;
 
   expandedRows: any = {};
   isExpanded: boolean = false;
@@ -34,6 +36,7 @@ export class CursosComponent implements OnInit {
     private confirmationService: ConfirmationService,
     public router: Router) {
     this.breadcrumbService.setItems([
+      {label: '', routerLink: ['/app']},
       {label: 'Cursos', routerLink: ['app/course']},
       {label: 'Todos los cursos', routerLink: ['/app/course']}
     ]);
@@ -41,7 +44,19 @@ export class CursosComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadCoruse();
+    this.sortOptions = [
+      {label: 'Nombre curso A-Z', value: 'name_course'},
+      {label: 'Nombre curso Z-A', value: '!name_course'},
+      {label: 'Mas antiguos', value: 'datereg_course'},
+      {label: 'Ultimos agregados', value: '!datereg_course'}
+
+    ];
   }
+
+  get getUtils() {
+    return this.utils
+  }
+
 
   expandAll() {
     if (!this.isExpanded) {
@@ -70,8 +85,12 @@ export class CursosComponent implements OnInit {
   }
 
   loadCoruse() {
+    this.loading = true;
     this.apiLoadCourses().subscribe(response => {
-      this.courses = response.data;
+      if (response.status === 2) {
+        this.courses = response.data;
+        this.loading = false;
+      }
       console.log(this.courses);
     });
   }
@@ -117,7 +136,7 @@ export class CursosComponent implements OnInit {
 
   onSortChange(event: any) {
     let value = event.value;
-
+    console.log(value);
     if (value.indexOf('!') === 0) {
       this.sortOrder = -1;
       this.sortField = value.substring(1, value.length);
