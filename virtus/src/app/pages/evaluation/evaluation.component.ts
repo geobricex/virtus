@@ -46,6 +46,8 @@ export class EvaluationComponent implements OnInit {
   public tiempoEvaluacion$: Subscription;
   public tiempoEvaluacion: number = 0;
 
+  viewQuestionBank: boolean = true;
+
   public literalSeleccionado: any;
 
   @ViewChild('canvasEl', {static: true}) CanvasEl: ElementRef<HTMLCanvasElement>;
@@ -102,6 +104,10 @@ export class EvaluationComponent implements OnInit {
     });
     console.log("canvas, ", this.CanvasEl);
 
+  }
+
+  openClose() {
+    this.viewQuestionBank = !this.viewQuestionBank;
   }
 
   /*ngAfterViewInit(): void {

@@ -26,8 +26,6 @@ export class ResourcesComponent implements OnInit {
   resourcesData: any [];
   evaluationData: any [];
   tmpFile: any;
-  tmpVideoSenia: any;
-  tmpVideo: any;
   videoUrl: any;
   viewVideoDialog: boolean;
   tituloTopic: string;
@@ -35,12 +33,9 @@ export class ResourcesComponent implements OnInit {
   vieweRemoteUrl: boolean;
   urlSafe: any;
 
-  newEvaluationsDialog: boolean;
   newResourseDialog: boolean;
   registerFormEvaluation: FormGroup;
   registerFormResources: FormGroup;
-  courseSuccessful = false;
-  tiempo: any [];
   typeFileGlobal: string;
   viewPdf: boolean;
   pdfUrl: any;
@@ -69,7 +64,6 @@ export class ResourcesComponent implements OnInit {
     private _route: ActivatedRoute,
     private utils: Utils,
     private _http: HttpClient,
-    private formBuilder: FormBuilder,
     public sanitizer: DomSanitizer
   ) {
     this.idCourse = this._route.snapshot.paramMap.get("idcourse");
@@ -86,27 +80,6 @@ export class ResourcesComponent implements OnInit {
         routerLink: ['/app/mycourse/modules/' + this.idCourse + '/themes/' + this.idModule + '/resources/' + this.idTopic]
       }
     ]);
-    this.registerFormEvaluation = this.formBuilder.group(
-      {
-        name: ["", Validators.required],
-        description: ["", Validators.required],
-        timeEvaluation: ["", Validators.required],
-        timeminutesEvaluation: ["",],
-        typeEvaluation: ["", Validators.required],
-        opportunityEvaluation: ["", Validators.required],
-        opportunitiesEvaluation: [""]
-      }
-    );
-    this.registerFormResources = this.formBuilder.group(
-      {
-        nameResources: ["", Validators.required],
-        descriptionRes: ["", Validators.required],
-        pathfileResource: [""],
-        pathurlsignResource: [""],
-        pathvideoResource: [""],
-        pathurlremote_resource: [""]
-      }
-    );
   }
 
   ngOnInit(): void {

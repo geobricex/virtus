@@ -30,6 +30,7 @@ export class QuestionnaireComponent implements OnInit {
   idResource: string | null = "";
   //valRadio: string;
   public vistaVideoSenias: boolean = true;
+  viewQuestionBank: boolean = true;
 
   private artyom: any = new Artyom();
 
@@ -47,7 +48,7 @@ export class QuestionnaireComponent implements OnInit {
     "t", "u", "v", "w", "x", "y", "z"
   ];
   //
-  public tiempoEvaluacion$: Subscription;
+  public tiempoEvaluacion$: Subscription | any;
   public tiempoEvaluacion: number = 0;
 
   public literalSeleccionado: any;
@@ -110,7 +111,10 @@ export class QuestionnaireComponent implements OnInit {
       }
     });
     console.log("canvas, ", this.CanvasEl);
+  }
 
+  openClose() {
+    this.viewQuestionBank = !this.viewQuestionBank;
   }
 
   ngAfterViewInit(): void {
@@ -119,7 +123,9 @@ export class QuestionnaireComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.tiempoEvaluacion$.unsubscribe();
+    if (this.tiempoEvaluacion$ !== undefined) {
+      this.tiempoEvaluacion$.unsubscribe();
+    }
   }
 
   tipoPregunta(typo: number): string {
