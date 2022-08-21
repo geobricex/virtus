@@ -1,5 +1,5 @@
 select * from persons order by id_person;
-
+select * from questions;
 -- delete from courses where name_course = 'bronco';
 -- delete from persons_courses
 

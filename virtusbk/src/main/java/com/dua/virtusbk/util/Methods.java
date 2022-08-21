@@ -16,6 +16,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 
@@ -23,9 +25,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -720,4 +720,22 @@ public final class Methods {
         LocalDateTime fechaOutput = LocalDateTime.parse(timeStamp, formatter); //parsea a LocalDateTime , la fecha de entrada con el respectivo formato indicado
         return fechaOutput;
     }
+
+    public static JSONArray sortJsonArray(JSONArray array, String paramkey) {
+        List<JSONObject> jsons = new ArrayList<JSONObject>();
+        for (int i = 0; i < array.length(); i++) {
+            jsons.add(array.getJSONObject(i));
+        }
+        Collections.sort(jsons, new Comparator<JSONObject>() {
+            @Override
+            public int compare(JSONObject lhs, JSONObject rhs) {
+                String lid = lhs.getString(paramkey);
+                String rid = rhs.getString(paramkey);
+                // Here you could parse string id to integer and then compare.
+                return lid.compareTo(rid);
+            }
+        });
+        return new JSONArray(jsons);
+    }
+
 }

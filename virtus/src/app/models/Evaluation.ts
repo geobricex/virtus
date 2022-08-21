@@ -14,12 +14,12 @@ export class Evaluation {
   private opportunityEvaluation: boolean;
   private opportunitiesEvaluation: number;
   private topicsIdTopic: Topic
-
+  private orderCategory: boolean;
 
   constructor(id: number, nameEvaluation: string, descriptionEvaluation: string, dateregEvaluation: string,
               dateupdateEvaluation: string, timeEvaluation: string, timeminutesEvaluation: number,
               numberquestionEvaluation: number, state_evaluation: string, typeEvaluation: string,
-              opportunityEvaluation: boolean, opportunitiesEvaluation: number) {
+              opportunityEvaluation: boolean, opportunitiesEvaluation: number, orderCategory: boolean) {
     this.id = id;
     this.nameEvaluation = nameEvaluation;
     this.descriptionEvaluation = descriptionEvaluation;
@@ -32,6 +32,7 @@ export class Evaluation {
     this.typeEvaluation = typeEvaluation;
     this.opportunityEvaluation = opportunityEvaluation;
     this.opportunitiesEvaluation = opportunitiesEvaluation;
+    this.orderCategory = orderCategory;
   }
 
   get _id(): number {
@@ -137,5 +138,14 @@ export class Evaluation {
 
   set _opportunitiesEvaluation(value: number) {
     this.opportunitiesEvaluation = value;
+  }
+
+
+  get _orderCategory(): boolean {
+    return this.orderCategory;
+  }
+
+  set _orderCategory(value: boolean) {
+    this.orderCategory = value;
   }
 }
