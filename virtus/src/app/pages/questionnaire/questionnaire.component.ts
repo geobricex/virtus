@@ -65,7 +65,7 @@ export class QuestionnaireComponent implements OnInit {
               private activatedRoute: ActivatedRoute,
               private storageService: StorageService,
               private fb: FormBuilder,
-              private changeDetector : ChangeDetectorRef
+              private changeDetector: ChangeDetectorRef
   ) {
 
     this.idCourse = this._route.snapshot.paramMap.get("idcourse");
@@ -114,6 +114,11 @@ export class QuestionnaireComponent implements OnInit {
 
   ngOnDestroy() {
     this.tiempoEvaluacion$.unsubscribe();
+    this.artyom.shutUp();
+    //Quitar el reconocimiento de voz
+    this.artyom.fatality().then(() => {
+      this.artyom.clearGarbageCollection();
+    });
   }
 
   tipoPregunta(typo: number): string {
@@ -223,30 +228,27 @@ export class QuestionnaireComponent implements OnInit {
   verificarRespuestasCorrectas(questionItem: Questions): boolean {
     if (questionItem.answers_[0].responses != undefined)
       //verdadero o falso O unica seleccion
-      if(questionItem.name_questioncategory == this.tipoPregunta(2)
-        || questionItem.name_questioncategory == this.tipoPregunta(1))
-      {
+      if (questionItem.name_questioncategory == this.tipoPregunta(2)
+        || questionItem.name_questioncategory == this.tipoPregunta(1)) {
         // @ts-ignore
         return questionItem.answers_[0].responses.correct == "Yes";
-      }else{
+      } else if (questionItem.name_questioncategory == this.tipoPregunta(1)) {
         let flagAlltrue: boolean = true;
         let indT = 0;
         let indTS = 0;
-        for(let ind = 0; ind < questionItem.answers_[0].responses.length; ind++){
-          if(questionItem.answers_[0].responses[ind].correct == "Yes")
-          {
+        for (let ind = 0; ind < questionItem.answers_[0].responses.length; ind++) {
+          if (questionItem.answers_[0].responses[ind].correct == "Yes") {
             indTS++;
-          }else{
-          flagAlltrue = false;
+          } else {
+            flagAlltrue = false;
           }
         }
-        for(let ind = 0; ind < questionItem.answers_[0].responses.length; ind++){
-          if(questionItem.answers_[0].options_answer[ind].correct == "Yes")
-          {
+        for (let ind = 0; ind < questionItem.answers_[0].options_answer.length; ind++) {
+          if (questionItem.answers_[0].options_answer[ind].correct == "Yes") {
             indT++;
           }
         }
-        return indTS == indT;
+        return flagAlltrue && indTS == indT;
       }
     return false;
   }
@@ -292,7 +294,7 @@ export class QuestionnaireComponent implements OnInit {
         //this.utils.showMessages(1, "FeedBack: " + this.questionObject.feedback_question);
         let flagCorrect = this.verificarRespuestasCorrectas(this.questionObject);
         this.showSwal(flagCorrect);
-        if(!flagCorrect) return;
+        if (!flagCorrect) return;
       } else {
         console.log("Primero debes responder la pregunta");
         this.utils.showMessages(3, "Primero debes responder la pregunta");
@@ -309,8 +311,12 @@ export class QuestionnaireComponent implements OnInit {
       console.log("pregunta: ", this.questionObject);
     }
     this.initCanvas(flag);
-    if (this.storageService.getCurrentUser().email != "anthony.pachay2017@uteq.edu.ec") {
-      this.leerPregunta();
+    // el browser es comantible con el speaker?
+    if(this.text2SpeakSupport())
+    {
+      if (this.storageService.getCurrentUser().email != "anthony.pachay2017@uteq.edu.ec") {
+        this.leerPregunta();
+      }
     }
   }
 
@@ -347,7 +353,7 @@ export class QuestionnaireComponent implements OnInit {
     if (btnStart) (btnStart as HTMLFormElement).click();
   }
 
-  showSwal(correcta:boolean):void{
+  showSwal(correcta: boolean): void {
     this.sweetFakeAlert[0] = true;
     this.sweetFakeAlert[1] = correcta;
     let tiempoSwal$ = timer(0, 1000)
@@ -389,6 +395,7 @@ export class QuestionnaireComponent implements OnInit {
   initVideoControls(): void {
     this.btnVideoControl = document.querySelector("#pathurlvideo_question");
   }
+
   initVideoSignControls(): void {
     this.btnVideoSignControl = document.querySelector("#pathurlsign_question");
   }
@@ -480,8 +487,18 @@ export class QuestionnaireComponent implements OnInit {
   /*Comandos de voz*/
 
   voiceComandsSupport(): boolean {
-    let microphoneApi: boolean = window.hasOwnProperty('webkitSpeechRecognition') && window.hasOwnProperty('speechSynthesis');
+    //let microphoneApi: boolean = window.hasOwnProperty('webkitSpeechRecognition') && window.hasOwnProperty('speechSynthesis');
+    let microphoneApi: boolean = this.artyom.recognizingSupported();
     return microphoneApi;
+  }
+
+  text2SpeakSupport(): boolean {
+    let microphoneApi: boolean = this.artyom.speechSupported();
+    return microphoneApi;
+  }
+
+  isDesktopDevice(): boolean {
+    return this.artyom.Device.isMobile();
   }
 
   startContinuousArtyom(): void {
@@ -522,7 +539,7 @@ export class QuestionnaireComponent implements OnInit {
             console.log("No se encuentra ese literal")
           }*/
         }
-      },{
+      }, {
         description: "controles del contexto evaluativo",
         smart: true, // Activar comando como un comando smart para poder usar comodines
         indexes: ["comando *"],
@@ -565,8 +582,22 @@ export class QuestionnaireComponent implements OnInit {
       reader += "literal " + this.alphabet[i] + " \n";
       reader += this.questionObject.answers_[0].options_answer[i].opcion + " \n";
     }
-    //console.log(reader);
-    this.artyom.say(reader);
+    //si están hablando, callarlos
+    if (this.artyom.isSpeaking()) {
+      this.artyom.shutUp();
+    }
+
+    //Desactivar el reconocimiento de comandos cuando empiece la lectura
+    this.artyom.dontObey();
+    let local_artyom = this.artyom;
+    this.artyom.say(reader, {
+      onStart: function () {
+      },
+      onEnd: function () {
+        //activar el reconocimiento de los comandos
+        local_artyom.obey();
+      }
+    });
   }
 
   /*Operaciones en canvas*/
@@ -629,8 +660,7 @@ export class QuestionnaireComponent implements OnInit {
         let wildcard: string = this.alphabet[indice];
         if (this.questionObject.name_questioncategory == this.tipoPregunta(1)) {
           this.autoClick("#option_vf_" + wildcard.trim());
-        }
-        else if (this.questionObject.name_questioncategory == this.tipoPregunta(2)) {
+        } else if (this.questionObject.name_questioncategory == this.tipoPregunta(2)) {
           if (this.questionObject.canResource) {
             this.autoClick("#option_rd_2_" + wildcard.trim());
           } else {

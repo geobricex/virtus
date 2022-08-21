@@ -41,7 +41,7 @@
       </ng-template>
     </p-messages>
   </div>
-  <div class="col-6 md:col-3">
+  <div class="col-6 md:col-3" *ngIf="false">
     <div class="card">
       <h5>Banco de preguntas</h5>
       <p-accordion>
@@ -57,7 +57,7 @@
             </div>
           </div>
         </p-accordionTab>
-        <p-accordionTab header="Opción única" [selected]="true" class="line-height-3 m-0">
+        <p-accordionTab header="Opción única" [selected]="false" class="line-height-3 m-0">
           <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
             <div *ngIf="question.name_questioncategory == tipoPregunta(2)"
                  class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
@@ -69,7 +69,7 @@
             </div>
           </div>
         </p-accordionTab>
-        <p-accordionTab header="Opción multiples" [selected]="true" class="line-height-3 m-0">
+        <p-accordionTab header="Opción multiples" [selected]="false" class="line-height-3 m-0">
           <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
             <div *ngIf="question.name_questioncategory == tipoPregunta(3)"
                  class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
@@ -81,7 +81,7 @@
             </div>
           </div>
         </p-accordionTab>
-        <p-accordionTab header="Complete" [selected]="true" class="line-height-3 m-0">
+        <p-accordionTab header="Complete" [selected]="false" class="line-height-3 m-0">
           <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
             <div *ngIf="question.name_questioncategory == tipoPregunta(4)"
                  class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
@@ -93,7 +93,7 @@
             </div>
           </div>
         </p-accordionTab>
-        <p-accordionTab header="Relación" [selected]="true" class="line-height-3 m-0">
+        <p-accordionTab header="Relación" [selected]="false" class="line-height-3 m-0">
           <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
             <div *ngIf="question.name_questioncategory == tipoPregunta(5)"
                  class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
@@ -107,12 +107,12 @@
         </p-accordionTab>
 
       </p-accordion>
-<!--      <div class="xl:col-12 md:col-12 sm:col-12 text-center">-->
-<!--        <span>Total Puntos: </span> <span><strong>{{totalPuntos()}}</strong></span>-->
-<!--      </div>-->
+      <!--      <div class="xl:col-12 md:col-12 sm:col-12 text-center">-->
+      <!--        <span>Total Puntos: </span> <span><strong>{{totalPuntos()}}</strong></span>-->
+      <!--      </div>-->
     </div>
   </div>
-  <div class="col-12 md:col-9">
+  <div class="col-12 md:col-12">
     <div class="card">
       <h4> {{'Pregunta N° ' + (indexQuestionObject + 1 || 0) + ' : ' + questionObject.title_question}} </h4>
 
@@ -258,17 +258,16 @@
 <div class="video_sign_float" *ngIf="validarPreguntaRecurso(questionObject.pathurlsign_question)"
      [ngStyle]="{'background':vistaVideoSenias?'#2d3f47':'rgba(0,0,0,0)'}"
 >
-  <button id="evt_control_señas" pButton pRipple icon="pi pi-window-maximize"
-          class="p-button-rounded p-button-info mr-2 mb-2"
-          *ngIf="!vistaVideoSenias" (click)="vistaVideoSenias = true"
-  ></button>
+
+  <p-avatar id="evt_control_señas" *ngIf="!vistaVideoSenias" (click)="vistaVideoSenias = true"
+            icon="pi pi-window-maximize" [style]="{'background-color':'#2196F3', 'color': '#ffffff'}" size="large" shape="circle"></p-avatar>
   <div *ngIf="vistaVideoSenias" class="col-12 text-center">
     <p class="text-white"><strong>Lenguaje de Señas</strong></p>
     <video id="pathurlsign_question" height="150" controls [src]="questionObject.pathurlsign_question"
-           [autoplay]="true" [muted]="true" >
+           [autoplay]="true" [muted]="true">
     </video>
   </div>
-  <div *ngIf="vistaVideoSenias"  class="col-12 text-center">
+  <div *ngIf="vistaVideoSenias" class="col-12 text-center">
     <div class="p-buttonset">
       <button id="reproducir_gestos" pButton pRipple icon="pi pi-play"
               class="p-button-rounded p-button-warning mr-2 mb-2"

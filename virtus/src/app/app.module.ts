@@ -29,6 +29,7 @@ import {TabViewModule} from 'primeng/tabview';
 import {ColorPickerModule} from 'primeng/colorpicker';
 import {PdfViewerModule} from 'ng2-pdf-viewer';
 import { TagModule } from 'primeng/tag'
+import {AvatarModule} from 'primeng/avatar';
 //INICIO SERVICE
 import {CargarScriptsService} from "./services/cargar-scripts.service"
 // FIN SERVICES
@@ -181,7 +182,8 @@ FullCalendarModule.registerPlugins([
     FontAwesomeModule,
     FileUploadModule,
     RatingModule,
-    TagModule
+    TagModule,
+    AvatarModule
   ],
 
   providers: [
