@@ -19,6 +19,7 @@ export class MiscursosComponent implements OnInit {
   globalUri: string = "";
   infoCourseSelected: any = {};
   informationCourse: boolean;
+  loading: boolean = false;
 
   expandedRows: any = {};
   isExpanded: boolean = false;
