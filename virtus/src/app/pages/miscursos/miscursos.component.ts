@@ -21,7 +21,9 @@ export class MiscursosComponent implements OnInit {
   globalUri: string = "";
   infoCourseSelected: any = {};
   informationCourse: boolean;
-  loading: boolean = false;
+  loading: boolean = true;
+  sortOptions: any[];
+  statusApi: number = 0;
 
   expandedRows: any = {};
   isExpanded: boolean = false;
@@ -37,6 +39,12 @@ export class MiscursosComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadMyCourse();
+    this.sortOptions = [
+      {label: 'Nombre curso A-Z', value: 'name_course'},
+      {label: 'Nombre curso Z-A', value: '!name_course'},
+      {label: 'Mas antiguos', value: 'datereg_course'},
+      {label: 'Ultimos agregados', value: '!datereg_course'}
+    ];
   }
 
   expandAll() {
@@ -73,11 +81,15 @@ export class MiscursosComponent implements OnInit {
         {
           next: response => {
             console.log(response);
-            this.courses = response.data;
+            this.statusApi = response.status;
+            if (response.status === 2) {
+              this.courses = response.data;
+            }
+            this.loading = false;
           }
           , error: err => {
             console.log(err);
-            console.log("error cometido gravemente");
+            console.log("Error interno de servidor");
           }
         });
   }
