@@ -44,7 +44,7 @@ import {CheckboxModule} from "primeng/checkbox";
 import {InputTextareaModule} from "primeng/inputtextarea";
 import {TableModule} from "primeng/table";
 import {FullCalendarModule} from "@fullcalendar/angular";
-import {TestvoiceComponent} from './testvoice/testvoice.component';
+import {TestvoiceComponent} from './tests/testvoice/testvoice.component';
 
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -66,7 +66,7 @@ import {Utils} from "./util/Utils";
 import {CursosArComponent} from './pages/cursos-ar/cursos-ar.component';
 import {ToolbarModule} from "primeng/toolbar";
 import {ChipModule} from "primeng/chip";
-import {TestpocketbaseComponent} from './testpocketbase/testpocketbase.component';
+import {TestpocketbaseComponent} from './tests/testpocketbase/testpocketbase.component';
 import {MyprofileComponent} from './pages/myprofile/myprofile.component';
 import {QuestionnaireComponent} from './pages/questionnaire/questionnaire.component';
 import {EvaluationComponent} from './pages/evaluation/evaluation.component';
@@ -81,7 +81,7 @@ import {CarouselModule} from "primeng/carousel";
 import {TooltipModule} from "primeng/tooltip";
 import {ResourcesarComponent} from './pages/resourcesar/resourcesar.component';
 import {InputSwitchModule} from "primeng/inputswitch";
-import {UseradministrationComponent} from './pages/useradministration/useradministration.component';
+import {UseradministrationComponent} from './pages/admins/useradministration/useradministration.component';
 import {InputNumberModule} from "primeng/inputnumber";
 
 import {AppConfigComponent} from "./app.config.component";
@@ -92,10 +92,15 @@ import {FaIconLibrary} from '@fortawesome/angular-fontawesome';
 // ----- ICONOS DE FONTAWSOME ------
 import {faHands,} from '@fortawesome/free-solid-svg-icons';
 
-import {FavoritesComponent} from './pages/favorites/favorites.component';
+import {FavoritesComponent} from './pages/general/favorites/favorites.component';
 import {FileUploadModule} from "primeng/fileupload";
 import {RatingModule} from "primeng/rating";
 import {SkeletonModule} from "primeng/skeleton";
+import { IntentreviewComponent } from './pages/reports/intentreview/intentreview.component';
+import { TimereportComponent } from './pages/reports/timereport/timereport.component';
+import { ScorereportComponent } from './pages/reports/scorereport/scorereport.component';
+import { RequestssuggestionsComponent } from './pages/admins/requestssuggestions/requestssuggestions.component';
+import {ChartModule} from "primeng/chart";
 
 
 FullCalendarModule.registerPlugins([
@@ -135,7 +140,11 @@ FullCalendarModule.registerPlugins([
     AppConfigComponent,
     UseradministrationComponent,
     EvaluationComponent,
-    FavoritesComponent
+    FavoritesComponent,
+    IntentreviewComponent,
+    TimereportComponent,
+    ScorereportComponent,
+    RequestssuggestionsComponent
   ],
   imports: [
     HttpClientModule,
@@ -183,7 +192,8 @@ FullCalendarModule.registerPlugins([
     FileUploadModule,
     RatingModule,
     TagModule,
-    SkeletonModule
+    SkeletonModule,
+    ChartModule
   ],
 
   providers: [

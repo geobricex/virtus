@@ -90,7 +90,7 @@ public class QuestionApi {
                 String id_evaluation = Methods.JsonToString(jso, "id_evaluation", "");
                 res = questionService.getQuestions(id_evaluation);
                 message = Methods.getJsonMessage(res[0], res[1], res[2]);
-                if (res[0].equals("2")) {
+                if (res[0].equals("2")|| res[0].equals("3")) {
                     return new ResponseEntity<>(message, HttpStatus.OK);
                 } else {
                     return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
@@ -120,7 +120,7 @@ public class QuestionApi {
                 String id_question = Methods.JsonToString(jso, "id_question", "");
                 res = questionService.getQuestion(id_question);
                 message = Methods.getJsonMessage(res[0], res[1], res[2]);
-                if (res[0].equals("2")) {
+                if (res[0].equals("2")|| res[0].equals("3")) {
                     return new ResponseEntity<>(message, HttpStatus.OK);
                 } else {
                     return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);

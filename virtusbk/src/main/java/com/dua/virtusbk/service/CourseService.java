@@ -95,6 +95,9 @@ public class CourseService {
             status = "2";
             message = "Información retornada con éxito.";
             data = jso.toString();
+        } else {
+            status = "3";
+            message = "No se ha encontrado datos.";
         }
 
         System.out.println(data);
@@ -111,8 +114,10 @@ public class CourseService {
             status = "2";
             message = "Información retornada con éxito.";
             data = jso.toString();
+        } else {
+            status = "3";
+            message = "No se ha encontrado datos.";
         }
-
         System.out.println(data);
         return new String[]{status, message, data};
     }
@@ -127,6 +132,9 @@ public class CourseService {
             status = "2";
             message = "Información retornada con éxito.";
             data = jso.toString();
+        } else {
+            status = "3";
+            message = "No se ha encontrado datos.";
         }
 
         System.out.println(data);
