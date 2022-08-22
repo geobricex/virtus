@@ -5,6 +5,7 @@
  */
 package com.dua.virtusbk.controller;
 
+import com.dua.virtusbk.entity.Util;
 import com.dua.virtusbk.service.CourseService;
 import com.dua.virtusbk.entity.Course;
 import com.dua.virtusbk.repository.CourseRepository;
@@ -17,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Geovanny Brito.
@@ -34,6 +36,17 @@ public class CourseApi {
         List<Course> list = courseDAO.findAllByOrderByIdDesc();
         return ResponseEntity.ok(list);
     }
+
+    @GetMapping(value = "{id}")
+    public ResponseEntity<Course> getCourse(@PathVariable("id") Long id_course) {
+        Optional<Course> courseOptional = courseDAO.findById(id_course);
+        if (courseOptional.isPresent()) {
+            return ResponseEntity.ok(courseOptional.get());
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    }
+
 
     @PostMapping("/insertcourse")
     public ResponseEntity<String> insertCourse(@RequestBody @Validated Course course, @RequestHeader("token") String sessionToken) {
