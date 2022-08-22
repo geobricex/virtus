@@ -105,6 +105,7 @@ import { ScorereportComponent } from './pages/reports/scorereport/scorereport.co
 import { RequestssuggestionsComponent } from './pages/admins/requestssuggestions/requestssuggestions.component';
 import {ChartModule} from "primeng/chart";
 import { CursosArInactiveComponent } from './pages/cursos-ar-inactive/cursos-ar-inactive.component';
+import { GamesComponent } from './pages/games/games.component';
 
 
 FullCalendarModule.registerPlugins([
@@ -149,7 +150,8 @@ FullCalendarModule.registerPlugins([
     TimereportComponent,
     ScorereportComponent,
     RequestssuggestionsComponent,
-    CursosArInactiveComponent
+    CursosArInactiveComponent,
+    GamesComponent
   ],
   imports: [
     HttpClientModule,

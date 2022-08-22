@@ -29,6 +29,7 @@ import {EvaluationComponent} from "./pages/evaluation/evaluation.component";
 import {IntentreviewComponent} from "./pages/reports/intentreview/intentreview.component";
 import {ScorereportComponent} from "./pages/reports/scorereport/scorereport.component";
 import {TimereportComponent} from "./pages/reports/timereport/timereport.component";
+import {GamesComponent} from "./pages/games/games.component";
 
 @NgModule({
   imports: [
@@ -42,6 +43,7 @@ import {TimereportComponent} from "./pages/reports/timereport/timereport.compone
         path: 'app', component: AppMainComponent,
         children: [
           {path: '', component: DashboardDemoComponent},
+          {path: 'games', component: GamesComponent},
           {path: 'myprofile', component: MyprofileComponent},
           {path: 'course', component: CursosComponent},
           {path: 'general/favorites', component: FavoritesComponent},
