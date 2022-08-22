@@ -23,6 +23,7 @@ public interface EvaluationRepository extends JpaRepository<Evaluation, Long> {
             "       opportunity_evaluation, " +
             "       opportunities_evaluation, " +
             "       order_category, " +
+            "       allows_review, " +
             "       sum(eqc.number_question) as numberquestion_evaluation " +
             "FROM evaluations " +
             "         INNER JOIN evaluation_question_category eqc on evaluations.id_evaluation = eqc.evaluations_id_evaluation " +

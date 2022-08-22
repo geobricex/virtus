@@ -37,3 +37,5 @@ from evaluation_question_category;
 
 select * from question_category;
 
+select * from persons_answers;
+

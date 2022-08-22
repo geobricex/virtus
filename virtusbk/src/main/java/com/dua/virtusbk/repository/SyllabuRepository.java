@@ -20,5 +20,5 @@ public interface SyllabuRepository extends JpaRepository<Syllabu, Long> {
     List<Map<String, Object>> findByIdCourseList(Long param);
 
     @Query(value = "SELECT * FROM syllabus where id_syllabu =?1", nativeQuery = true)
-    Object[] findIdSyllabu(Long param);
+    List<Map<String, Object>> findIdSyllabu(Long param);
 }

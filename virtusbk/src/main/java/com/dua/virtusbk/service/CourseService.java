@@ -123,7 +123,7 @@ public class CourseService {
     }
 
     public String[] selectCourseSyllabuTopic(String id_course) {
-        System.out.println("allCourseNoJoin");
+        System.out.println("selectCourseSyllabuTopic");
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
 
         String personsCours = personcourseDAO.finSelectCourseSyllabuTopic(Long.parseLong(id_course));

@@ -15,13 +15,13 @@
       </ng-template>
     </p-toolbar>
     <p-table #dt [value]="persons" responsiveLayout="scroll" [rows]="5" [columns]="cols"
-             [globalFilterFields]="['Nombre','Apellido']"
+             [globalFilterFields]="['Tipodeprueba','Calificación']"
              [paginator]="true" [rowsPerPageOptions]="[5,10,20,30]" [showCurrentPageReport]="true"
              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
              selectionMode="multiple" [rowHover]="true" dataKey="id">
       <ng-template pTemplate="caption">
         <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-          <h5 class="m-0">Usuarios de la aplicación</h5>
+          <h5 class="m-0">Registro de pruebas dadas</h5>
           <span class="block mt-2 md:mt-0 p-input-icon-left">
                             <i class="pi pi-search"></i>
                             <input pInputText type="text" placeholder="Buscar..."/>
@@ -32,102 +32,71 @@
       </ng-template>
       <ng-template pTemplate="header">
         <tr>
-          <!--          <th style="width: 3rem">-->
-          <!--            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>-->
-          <!--          </th>-->
-          <th>Imagen</th>
-
-          <th pSortableColumn="Nombre">Nombre
-            <p-sortIcon field="Nombre"></p-sortIcon>
+          <th pSortableColumn="Fechadeevaluación">Fecha de evaluación
+            <p-sortIcon field="Fechadeevaluación"></p-sortIcon>
           </th>
-          <th pSortableColumn="Apellido">Apellido
-            <p-sortIcon field="Apellido"></p-sortIcon>
+          <th pSortableColumn="Curso">Curso
+            <p-sortIcon field="Curso"></p-sortIcon>
           </th>
-          <th pSortableColumn="Email">Email
-            <p-sortIcon field="Email"></p-sortIcon>
+          <th pSortableColumn="Módulo">Módulo
+            <p-sortIcon field="Módulo"></p-sortIcon>
           </th>
-          <th pSortableColumn="Tipodeusuario">Tipo de usuario
-            <p-sortIcon field="Tipodeusuario"></p-sortIcon>
+          <th pSortableColumn="Tema">Tema
+            <p-sortIcon field="Tema"></p-sortIcon>
           </th>
-          <th pSortableColumn="Tipoderegistro">Tipo de registro
-            <p-sortIcon field="Tipoderegistro"></p-sortIcon>
+          <th pSortableColumn="Tipodeprueba">Tipo de prueba
+            <p-sortIcon field="Tipodeprueba"></p-sortIcon>
           </th>
-          <th pSortableColumn="Fecharegistro">Fecha registro
-            <p-sortIcon field="Fecharegistro"></p-sortIcon>
+          <th pSortableColumn="Nombredelaprueba">Nombre de la prueba
+            <p-sortIcon field="Nombredelaprueba"></p-sortIcon>
           </th>
-          <th pSortableColumn="Fechaactualización">Fecha actualización
-            <p-sortIcon field="inventoryStatus"></p-sortIcon>
+          <th pSortableColumn="Tiempoempleado">Tiempo empleado
+            <p-sortIcon field="Tiempoempleado"></p-sortIcon>
+          </th>
+          <th pSortableColumn="Calificación">Calificación
+            <p-sortIcon field="Calificación"></p-sortIcon>
           </th>
           <th></th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-person>
         <tr>
-          <!--          <td>-->
-          <!--            <p-tableCheckbox [value]="product"></p-tableCheckbox>-->
-          <!--          </td>-->
-          <td style="width:14%; min-width:10rem;"><span class="p-column-title">Imagen</span>
-            <img [src]="person.pathimgPerson" [alt]="person.namePerson" width="100"
-                 class="shadow-4"/>
-          </td>
-          <td style="width:14%; min-width:10rem;"><span class="p-column-title">Nombre</span>
-            {{person.namePerson}}
+          <td style="width:14%; min-width:10rem;"><span class="p-column-title">Fecha de evaluación</span>
+            {{person.dateregPerson.date.day + '/' + person.dateregPerson.date.month + '/' + person.dateregPerson.date.year + ' ' +
+            person.dateregPerson.time.hour + ':' + person.dateregPerson.time.minute + ':' + person.dateregPerson.time.second}}
           </td>
           <td style="width:14%; min-width:10rem;">
-            <span class="p-column-title">Apellido</span>
-            {{person.lastnamePerson}}
+            <span class="p-column-title">Curso</span>
+            {{person.providerPerson}}
           </td>
 
           <td style="width:14%; min-width:8rem;">
-            <span class="p-column-title">Email</span>
-            {{person.emailPerson}}
-          </td>
-          <td style="width:14%; min-width:10rem;">
-            <span class="p-column-title">Tipo de usuario</span>
-            <span *ngIf="person.typePerson=='A'"
-                  class="p-badge p-badge-primary mt-3"> Administrador </span>
-            <span *ngIf="person.typePerson=='U'"
-                  class="p-badge p-badge-success mt-3"> Usuario </span>
-            <span *ngIf="person.typePerson=='I'"
-                  class="p-badge p-badge-secondary mt-3"> Instructor </span>
-            <span *ngIf="person.typePerson=='E'"
-                  class="p-badge p-badge-info mt-3"> Educador </span>
-            <span *ngIf="person.typePerson=='S'"
-                  class="p-badge p-badge-warning mt-3"> No activa </span>
-            <span *ngIf="person.typePerson=='D'"
-                  class="p-badge p-badge-danger mt-3"> Deshabilitada </span>
-          </td>
-          <td style="width:14%; min-width:10rem;">
-            <span class="p-column-title">Tipo de registro</span>
+            <span class="p-column-title">Módulo</span>
             {{person.providerPerson}}
           </td>
           <td style="width:14%; min-width:10rem;">
-            <span class="p-column-title">Fecha registro</span>
-            {{person.dateregPerson.date.day + '/' + person.dateregPerson.date.month + '/' + person.dateregPerson.date.year + ' ' +
-          person.dateregPerson.time.hour + ':' + person.dateregPerson.time.minute + ':' + person.dateregPerson.time.second}}
+            <span class="p-column-title">Tema</span>
+            {{person.providerPerson}}
           </td>
           <td style="width:14%; min-width:10rem;">
-            <span class="p-column-title">Fecha actualización</span>
-            {{person.dateupdatePerson.date.day + '/' + person.dateupdatePerson.date.month + '/' + person.dateupdatePerson.date.year + ' ' +
-          person.dateupdatePerson.time.hour + ':' + person.dateupdatePerson.time.minute + ':' + person.dateupdatePerson.time.second}}
+            <span class="p-column-title">Tipo de prueba</span>
+            {{person.providerPerson}}
           </td>
-          <div class="flex">
-            <button pButton pRipple icon="pi pi-angle-double-up"
-                    class="p-button-rounded p-button-success mr-2"></button>
-            <button pButton pRipple icon="pi pi-angle-double-down"
-                    class="p-button-rounded p-button-warning mr-2"></button>
-            <button pButton pRipple icon="pi pi-exclamation-triangle"
-                    class="p-button-rounded p-button-danger mr-2"></button>
-            <button pButton pRipple icon="pi pi-user-plus"
-                    class="p-button-rounded p-button-help mr-2"></button>
-            <button pButton pRipple class="p-button-rounded p-button-info mr-2">
-              <fa-icon [icon]="['fas', 'hands']"></fa-icon>
-            </button>
-            <button pButton pRipple class="p-button-rounded p-button-info mr-2">
-              <fa-icon [icon]="['fas', 'hands']"></fa-icon>
-            </button>
-
-          </div>
+          <td style="width:14%; min-width:10rem;">
+            <span class="p-column-title">Nombre de la prueba</span>
+            {{person.providerPerson}}
+          </td>
+          <td style="width:14%; min-width:10rem;">
+            <span class="p-column-title">Tiempo empleado</span>
+            {{person.providerPerson}}
+          </td>
+          <td style="width:14%; min-width:10rem;">
+            <span class="p-column-title">Calificación</span>
+            {{person.providerPerson}}
+          </td>
+          <td style="width:14%; min-width:10rem;">
+            {{person.providerPerson}}
+          </td>
         </tr>
       </ng-template>
     </p-table>

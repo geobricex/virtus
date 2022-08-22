@@ -15,6 +15,7 @@ import {ModuloComponent} from "./pages/modulo/modulo.component";
 import {TestvoiceComponent} from './tests/testvoice/testvoice.component'
 import {TestpocketbaseComponent} from './tests/testpocketbase/testpocketbase.component'
 import {CursosArComponent} from "./pages/cursos-ar/cursos-ar.component";
+import {CursosArInactiveComponent} from "./pages/cursos-ar-inactive/cursos-ar-inactive.component";
 import {VerifyAccountComponent} from "./pages/verify-account/verify-account.component";
 import {MyprofileComponent} from "./pages/myprofile/myprofile.component";
 import {QuestionnaireComponent} from "./pages/questionnaire/questionnaire.component";
@@ -45,6 +46,7 @@ import {TimereportComponent} from "./pages/reports/timereport/timereport.compone
           {path: 'course', component: CursosComponent},
           {path: 'general/favorites', component: FavoritesComponent},
           {path: 'coursear', component: CursosArComponent},
+          {path: 'courseinactivear', component: CursosArInactiveComponent},
           {path: 'admins/useradministration', component: UseradministrationComponent},
           {path: 'admins/requestssuggestions', component: RequestssuggestionsComponent},
           {path: 'reports/timereport', component: TimereportComponent},

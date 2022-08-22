@@ -46,7 +46,15 @@ export class AppMenuComponent implements OnInit {
     } else if (this.user.type_person === "A") {
       this.model = [
         {label: 'Inicio', icon: 'pi pi-fw pi-home', routerLink: ['/app']},
-        {label: 'Cursos', icon: 'pi pi-fw pi-book', routerLink: ['/app/coursear']},
+        // {label: 'Cursos', icon: 'pi pi-fw pi-book', routerLink: ['/app/coursear']},
+        {
+          label: 'Cursos', icon: 'pi pi-fw pi-book', routerLink: ['/javascript;'],
+          items: [
+            {label: 'Todos los cursos activos', icon: 'pi pi-fw pi-box', routerLink: ['/app/coursear']},
+            {label: 'Todos los cursos inactivos', icon: 'pi pi-fw pi-file-excel', routerLink: ['/app/courseinactivear']},
+            // {label: 'Mis cursos agregados', icon: 'pi pi-fw pi-folder-open', routerLink: ['/app/coursear']},
+          ]
+        },
         {label: 'Gestión de usuarios', icon: 'pi pi-fw pi-users', routerLink: ['/app/admins/useradministration']},
         {label: 'Solicitudes', icon: 'pi pi-comments', routerLink: ['/app/admins/requestssuggestions']},
         {

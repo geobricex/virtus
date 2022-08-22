@@ -3,7 +3,7 @@
   <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.39">
     <root id="1">
       <DateStyle>dmy</DateStyle>
-      <IntrospectionStateNumber>145506</IntrospectionStateNumber>
+      <IntrospectionStateNumber>145543</IntrospectionStateNumber>
       <ServerVersion>13.4</ServerVersion>
       <StartupTime>1658975013</StartupTime>
       <TimeZones>true ACDT
@@ -1451,7 +1451,7 @@ true posixrules
 13890||10|C|G
 13890||-9223372036854775808|U|G
 13890||10|U|G</Grants>
-      <IntrospectionStateNumber>145506</IntrospectionStateNumber>
+      <IntrospectionStateNumber>145543</IntrospectionStateNumber>
       <ObjectId>76116</ObjectId>
       <Relations>sequence|table|76840|76842|1
 sequence|table|76862|76864|1
@@ -4813,7 +4813,7 @@ sequence|table|77440|77442|1
     <schema id="270" parent="16" name="public">
       <Comment>standard public schema</Comment>
       <Current>1</Current>
-      <IntrospectionStateNumber>145506</IntrospectionStateNumber>
+      <IntrospectionStateNumber>145543</IntrospectionStateNumber>
       <ObjectId>2200</ObjectId>
       <StateNumber>287</StateNumber>
       <OwnerName>postgres</OwnerName>
@@ -4830,21 +4830,21 @@ sequence|table|77440|77442|1
     </routine>
     <routine id="272" parent="270" name="course_syllabu_topic_select">
       <ArgumentsDefinition>id_parameter_course bigint</ArgumentsDefinition>
-      <ObjectId>77439</ObjectId>
+      <ObjectId>77590</ObjectId>
       <ResultsDefinition>TABLE(information text)</ResultsDefinition>
       <ReturnsSet>1</ReturnsSet>
-      <SourceTextLength>1559</SourceTextLength>
-      <StateNumber>144101</StateNumber>
+      <SourceTextLength>1707</SourceTextLength>
+      <StateNumber>145539</StateNumber>
       <LanguageName>plpgsql</LanguageName>
       <OwnerName>postgres</OwnerName>
     </routine>
     <routine id="273" parent="270" name="home_select">
       <ArgumentsDefinition>id_type integer, id_parameter integer</ArgumentsDefinition>
-      <ObjectId>77493</ObjectId>
+      <ObjectId>77591</ObjectId>
       <ResultsDefinition>TABLE(status integer, infor text)</ResultsDefinition>
       <ReturnsSet>1</ReturnsSet>
-      <SourceTextLength>1098</SourceTextLength>
-      <StateNumber>144308</StateNumber>
+      <SourceTextLength>1270</SourceTextLength>
+      <StateNumber>145542</StateNumber>
       <LanguageName>plpgsql</LanguageName>
       <OwnerName>postgres</OwnerName>
     </routine>

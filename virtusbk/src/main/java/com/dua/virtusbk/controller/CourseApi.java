@@ -36,6 +36,11 @@ public class CourseApi {
         List<Course> list = courseDAO.findAllByOrderByIdDesc();
         return ResponseEntity.ok(list);
     }
+    @GetMapping(path = "getcoursestatus")
+    public ResponseEntity<List<Course>> getCourseStatus(@RequestParam(name = "status_course") String status_course) {
+        List<Course> list = courseDAO.findAllByStateCourseOrdOrderByIdDesc(status_course);
+        return ResponseEntity.ok(list);
+    }
 
     @GetMapping(value = "{id}")
     public ResponseEntity<Course> getCourse(@PathVariable("id") Long id_course) {

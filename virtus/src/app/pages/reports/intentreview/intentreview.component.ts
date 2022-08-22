@@ -31,11 +31,8 @@ export class IntentreviewComponent implements OnInit {
     this.loadgetPersons();
 
     this.cols = [
-      {field: 'Nombre', header: 'Nombre'},
-      {field: 'Apellido', header: 'Apellido'},
-      {field: 'Email', header: 'Email'},
-      {field: 'Tipodeusuario', header: 'Tipo de usuario'},
-      {field: 'Tipoderegistro', header: 'Tipo de registro'}
+      {field: 'Calificación', header: 'Calificación'},
+      {field: 'Calificación', header: 'Calificación'},
     ];
   }
 
