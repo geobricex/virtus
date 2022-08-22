@@ -7,7 +7,13 @@ import {Person} from "../../models/Person";
 import {Utils} from "../../util/Utils";
 import {ActivatedRoute} from '@angular/router';
 
-import {Evaluation, EvaluationQuestionsResponse, Options, Questions} from "../../models/evaluation_questionarie";
+import {
+  Evaluation,
+  EvaluationQuestionsResponse,
+  Options,
+  OptionsAnswer,
+  Questions
+} from "../../models/evaluation_questionarie";
 import {FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule} from '@angular/forms';
 import {AppMainComponent} from '../../app.main.component';
 import {StorageService} from "../../authentication/StorageService";
@@ -214,21 +220,24 @@ export class QuestionnaireComponent implements OnInit {
             this.tiempoEvaluacion = 0;//60 * 60;//this.evaluationObject.timeminutes_evaluation * 60;
             this.tiempoEvaluacion$ = timer(0, 1000)
               .subscribe((iter: any) => {
-                //this.time();
-                // console.log("tiempoEvaluacion: " + iter);
-                // if (this.tiempoEvaluacion <= 0) {
-                //   this.tiempoEvaluacion$.unsubscribe();
-                //   /Código para indicar que se terminó el tiempo/
-                // }
+                console.log("tiempoEvaluacion: " + iter);
+                if (this.tiempoEvaluacion >= this.evaluationObject.timeminutes_evaluation) {
+                  this.tiempoEvaluacion$.unsubscribe();
+                  /*Código para indicar que se terminó el tiempo*/
+                }
                 this.tiempoEvaluacion++;
               });
-            if (this.voiceComandsSupport()) {
-              if (this.storageService.getCurrentUser().email != "anthony.pachay2017@uteq.edu.ec") {
-                this.startContinuousArtyom();
-              }
+          }
+          if (this.voiceComandsSupport()) {
+            if (this.storageService.getCurrentUser().email != "anthony.pachay2017@uteq.edu.ec") {
+              this.startContinuousArtyom();
             }
           }
-          this.cambiarPregunta(0, true);
+          if (this.storageService.getCurrentUser().email != "anthony.pachay2017@uteq.edu.ec") {
+            this.cambiarPregunta(13, true);
+          }else {
+            this.cambiarPregunta(0, true);
+          }
           //this.initCanvas(false);
           setTimeout(() => {
             console.log("silenciar video")
@@ -335,6 +344,7 @@ export class QuestionnaireComponent implements OnInit {
         for (let i = 0; i < this.questionObject.answers_[0].options_answer.length; i++) {
           this.questionObject.answers_[0].complete_parts = this.partirPreguntaComplete(this.questionObject.answers_[0].options_answer[i].description_question);
         }
+        this.questionObject.answers_[0].responses = Array<OptionsAnswer>(this.questionObject.answers_[0].complete_parts!.length - 1);
       }
       console.log("pregunta: ", this.questionObject);
     }
@@ -539,8 +549,8 @@ export class QuestionnaireComponent implements OnInit {
       indexes: ["literal *", "opción *"],
       action: function (i: number, wildcard: string) {
         //let database: string[] = ["a", "b", "c", "d", "e", "f"];
+        console.log("literal_wilcardOriginal:" + wildcard);
         local_this.evaluar(wildcard, i);
-
       }
     },
       {
@@ -553,8 +563,8 @@ export class QuestionnaireComponent implements OnInit {
           //pausar_video
           //silenciar_video
           local_this.evaluar_control_video(wildcard, i, database);
-          /*console.log("wilcardOriginal:" + wildcard);
-          wildcard = wildcard.trim().replace(/[^a-zA-Z]+/, "");
+
+          /*wildcard = wildcard.trim().replace(/[^a-zA-Z]+/, "");
           console.log("wildcard:", wildcard, i, database.indexOf(wildcard.trim()));
           if (database.indexOf(wildcard.trim()) > -1) {
             //this.artyom.say("Ha indicado la selección del literal " + wildcard);
@@ -581,14 +591,6 @@ export class QuestionnaireComponent implements OnInit {
     this.artyom.addCommands(myGroup);
 
 
-    //setTimeout(() => {
-    //this.probarcomando();
-    //let btnStart = document.querySelector("#btnStart");
-    //if (btnStart) (btnStart as HTMLFormElement).click();
-    //this.autoClick("#btnStart");
-
-    //}, 5000);
-
     this.artyom.initialize({
       lang: "es-ES",
       continuous: true, // Artyom will listen foreversilenciar
@@ -601,6 +603,14 @@ export class QuestionnaireComponent implements OnInit {
       console.log("artyom configurado...");
     });
 
+  }
+
+  cancelarEscuchaComandosVoz():void{
+    if(this.artyom.isObeying()){
+      this.artyom.dontObey();
+    } else{
+      this.artyom.obey();
+    }
   }
 
   leerPregunta(): void {
@@ -624,6 +634,7 @@ export class QuestionnaireComponent implements OnInit {
       onEnd: function () {
         //activar el reconocimiento de los comandos
         local_artyom.obey();
+        console.log("vuelve a hablar");
       }
     });
   }
@@ -767,23 +778,25 @@ export class QuestionnaireComponent implements OnInit {
           saltosBaseOp = (mayor == this.questionObject.answers_[0].options_answer[0].options!.length)? 0 : saltosBaseOp;
           let saltosBasePr = (((mayor / this.questionObject.answers_[0].complete_parts!.length)) / 2 );
           saltosBasePr = (mayor == this.questionObject.answers_[0].complete_parts!.length)? 0 : saltosBasePr;
-          let c_alto = 95;
+          let c_alto = 85;
+
           if(this.firstLoc.x < c_alto && this.lastLoc.x > c_alto + 150){
             origen = 1;
             console.log("izquierda a derecha ");
-            if(this.questionObject.answers_[0].options_answer[0].options!.length == mayor){
+            if(this.questionObject.answers_[0].options_answer[0].options!.length != mayor){
               saltosBaseOp = 0;
             }else{
               saltosBasePr = 0;
             }
-            console.log("("+ this.firstLoc.y + ") / " + c_alto  + " - " + saltosBaseOp + "===?" + ((this.firstLoc.y) / c_alto) + " -- >"+ ((this.firstLoc.y) / c_alto - saltosBaseOp));
-            console.log("("+ this.lastLoc.y + ") / " + c_alto  + " - " + saltosBasePr + "===?" + ((this.lastLoc.y) / c_alto) + " -- >" + ((this.lastLoc.y) / c_alto - saltosBasePr));
-            console.log("Indices seleccionados", Math.trunc((this.firstLoc.y) / c_alto - saltosBasePr),
-              Math.trunc((this.lastLoc.y) / c_alto - saltosBaseOp));
+            //((saltosBaseOp * c_tamanio) + (ssaltosBaseOp * c_margen))
+            console.log("Indices seleccionados",
+              Math.trunc((this.firstLoc.y) / c_alto - ((saltosBasePr * c_tamanio) + (saltosBasePr * c_margen)) / c_alto ),
+              Math.trunc((this.lastLoc.y) / c_alto - ((saltosBaseOp * c_tamanio) + (saltosBaseOp * c_margen)) / c_alto));
           } else if(this.lastLoc.x < 90 && this.firstLoc.x > c_alto + 150){
             destino = 1;
             console.log("derecha a izquierda= " + "("+ this.firstLoc.y + ") / " + c_alto  + " - " + saltosBasePr);
-            console.log("Indices seleccionados", Math.trunc((this.firstLoc.y) / c_alto - saltosBasePr), Math.trunc((this.lastLoc.y) / c_alto - saltosBaseOp));
+            console.log("Indices seleccionados", Math.trunc((this.firstLoc.y) / c_alto - saltosBasePr),
+              Math.trunc((this.lastLoc.y) / c_alto - saltosBaseOp));
           }
         }
       }

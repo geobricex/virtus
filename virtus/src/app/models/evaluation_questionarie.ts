@@ -11,6 +11,7 @@ export interface Evaluation {
   questions_:                Questions[];
   time_evaluation:           boolean;
   timeminutes_evaluation:    number;
+  order_category:            boolean;
 }
 
 export interface Questions {
