@@ -220,7 +220,7 @@ export class QuestionnaireComponent implements OnInit {
             this.tiempoEvaluacion = 0;//60 * 60;//this.evaluationObject.timeminutes_evaluation * 60;
             this.tiempoEvaluacion$ = timer(0, 1000)
               .subscribe((iter: any) => {
-                console.log("tiempoEvaluacion: " + iter);
+                //console.log("tiempoEvaluacion: " + iter);
                 //if (this.tiempoEvaluacion >= 60 * 60) {
                   //this.tiempoEvaluacion$.unsubscribe();
                   /*Código para indicar que se terminó el tiempo*/
@@ -475,7 +475,13 @@ export class QuestionnaireComponent implements OnInit {
       //this.artyom.say("Ha indicado la selección del literal " + wildcard);
       console.log("Ha indicado la selección del literal " + wildcard);
 
-      if (this.questionObject.name_questioncategory == this.tipoPregunta(2)) {
+      if (this.questionObject.name_questioncategory == this.tipoPregunta(1)) {
+        if (this.questionObject.canResource) {
+          this.autoClick("#option_vf_" + wildcard.trim());
+        } else {
+          this.autoClick("#option_vf_" + wildcard.trim());
+        }
+      } else if (this.questionObject.name_questioncategory == this.tipoPregunta(2)) {
         if (this.questionObject.canResource) {
           this.autoClick("#option_rd_2_" + wildcard.trim());
         } else {
