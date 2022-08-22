@@ -5,12 +5,27 @@
     <span> {{descriptionTopic}} </span>
     <div class="card mt-3">
       <h5>Recursos</h5>
-      <div class="text-center" *ngIf="resourcesData === undefined">
+      <div *ngIf="statusResources === 0">
+        <div class="grid">
+          <div class="col">
+            <p-skeleton height="10rem" styleClass="mb-2"></p-skeleton>
+          </div>
+          <div class="col">
+            <p-skeleton height="10rem" styleClass="mb-2"></p-skeleton>
+          </div>
+          <div class="col">
+            <p-skeleton height="10rem" styleClass="mb-2"></p-skeleton>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center" *ngIf="statusResources === 3">
         <img src="assets/layout/images/imagesVirtus/sinDatos.svg" alt="" width="300" class="">
       </div>
+
       <p-carousel [value]="resourcesData" [numVisible]="3" [numScroll]="3" [circular]="false"
                   [responsiveOptions]="carouselResponsiveOptions" [style]="{'margin-top':'1rem'}"
-                  *ngIf="resourcesData !== undefined">
+                  *ngIf="statusResources === 2">
         <ng-template let-resource pTemplate="item">
           <div class="border-round m-2 text-center p-2" style="border: 1px solid var(--surface-d)">
             <div>
@@ -54,12 +69,27 @@
   <div class="col-12">
     <div class="card">
       <h5>Cuestionarios y evaluaciones</h5>
-      <div class="text-center" *ngIf="evaluationData === undefined">
+
+      <div *ngIf="statusEvaluations === 0">
+        <div class="grid">
+          <div class="col">
+            <p-skeleton height="10rem" styleClass="mb-2"></p-skeleton>
+          </div>
+          <div class="col">
+            <p-skeleton height="10rem" styleClass="mb-2"></p-skeleton>
+          </div>
+          <div class="col">
+            <p-skeleton height="10rem" styleClass="mb-2"></p-skeleton>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center" *ngIf="statusEvaluations === 3">
         <img src="assets/layout/images/imagesVirtus/sinDatos.svg" alt="" width="300" class="">
       </div>
       <p-carousel [value]="evaluationData" [numVisible]="3" [numScroll]="3" [circular]="false"
                   [responsiveOptions]="carouselResponsiveOptions" [style]="{'margin-top':'1rem'}"
-                  *ngIf="evaluationData !== undefined">
+                  *ngIf="statusEvaluations === 2">
         <ng-template let-evaluation pTemplate="item">
           <div class="border-round m-2 text-center p-2"
                [ngClass]="evaluation.typeEvaluation === 1 ? 'bg-blue-50' : 'bg-green-50'"

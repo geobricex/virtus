@@ -86,7 +86,7 @@ export class TemasComponent implements OnInit {
     this.apiGetDataModule().subscribe({
       next: response => {
         console.log(response);
-        this.dataModule = response;
+        this.dataModule = response.data[0];
         this.loadingDataCourse = false;
       }
     })

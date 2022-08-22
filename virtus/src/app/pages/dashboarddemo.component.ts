@@ -14,6 +14,7 @@ export class DashboardDemoComponent implements OnInit {
 
   globalUri: string = "";
   homedata: any = [];
+  statusApi: number = 0;
 
   constructor(
     private breadcrumbService: BreadcrumbService,
@@ -28,9 +29,12 @@ export class DashboardDemoComponent implements OnInit {
 
   ngOnInit() {
     console.log("ngOnInit Home");
-    this.apiInformationHome().subscribe(response => {
-      console.log(response);
-      this.homedata = response.data[0];
+    this.apiInformationHome().subscribe({
+      next: response => {
+        console.log(response);
+        this.statusApi = response.status;
+        this.homedata = response.data[0];
+      }
     })
   }
 
