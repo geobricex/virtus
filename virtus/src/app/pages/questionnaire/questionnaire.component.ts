@@ -346,6 +346,11 @@ export class QuestionnaireComponent implements OnInit {
         }
         this.questionObject.answers_[0].responses = Array<OptionsAnswer>(this.questionObject.answers_[0].complete_parts!.length - 1);
       }
+      if (this.questionObject.name_questioncategory == this.tipoPregunta(5)) {
+        this.questionObject.answers_[0].right_parts = [...this.questionObject.answers_[0].options_answer];
+        console.log("tipo pregujnta 5" , this.questionObject.answers_[0].right_parts);
+        this.questionObject.answers_[0].responses = Array<OptionsAnswer>(this.questionObject.answers_[0].options_answer.length - 1);
+      }
       console.log("pregunta: ", this.questionObject);
     }
     this.initCanvas(flag);
@@ -661,7 +666,7 @@ export class QuestionnaireComponent implements OnInit {
 
 
     let c_tamanio = 85, c_margen = 10;
-    if (this.questionObject.name_questioncategory == this.tipoPregunta(4)) {
+     if (this.questionObject.name_questioncategory == this.tipoPregunta(4)) {
       let parts_p_tmp: string[] = this.questionObject.answers_[0].complete_parts!;
       let parts_p: string[] = [];
       for (let ind = 0; ind < parts_p_tmp.length; ind++) {
@@ -681,40 +686,21 @@ export class QuestionnaireComponent implements OnInit {
         , true, "-");
       this.dibujaFilaItemsCanvas(ctx, c_tamanio, c_margen, cantidad, parts_o
         , false, "option");
-      /*for (let ind = 0; ind < parts_p.length; ind++) {
-        ctx.fillStyle = colorPan[ind >= colorPan.length ? Math.trunc(ind / colorPan.length) : ind];
-        let tmp_y;
-        if (ind == 0) {
-          tmp_y = Math.trunc((c_tamanio / 2) + 7);
-        } else {
-          tmp_y = ((ind) * c_tamanio) + (c_margen * ind) + Math.trunc((c_tamanio / 2) + 7);
-        }
-        //ctx.fillRect((c_tamanio + 150), tmp_y, c_tamanio, c_tamanio);
-        ctx.fillRect(Math.trunc(c_margen / 2), ((ind) * c_tamanio) + (c_margen * ind), c_tamanio, c_tamanio);
-        ctx.fillStyle = "black";
-        ctx.strokeStyle = "black";
-        ctx.font = "15px Arial";
-        ctx.fillText("Literal " + this.alphabet[ind] + ".", (Math.trunc(c_margen / 2) + 7), tmp_y);
-        ctx.stroke();
-      }
-      for (let ind = 0; ind < parts_o.length; ind++) {
-        ctx.fillStyle = colorPan[colorPan.length - 1 - ind < 0 ? 0 : colorPan.length - ind - 1];
-        let tmp_y;
-        if (ind == 0) {
-          tmp_y = Math.trunc((c_tamanio / 2) + 7);
-        } else {
-          tmp_y = ((ind) * c_tamanio) + (c_margen * ind) + Math.trunc((c_tamanio / 2) + 7);
-        }
-        //ctx.fillRect((c_tamanio + 150), tmp_y, c_tamanio, c_tamanio);
-        ctx.fillRect((c_tamanio + 150) + Math.trunc(c_margen / 2), ((ind) * c_tamanio) + (c_margen * ind), c_tamanio, c_tamanio);
-        ctx.fillStyle = "black";
-        ctx.strokeStyle = "black";
-        ctx.font = "15px Arial";
-        ctx.fillText(parts_o[ind].option, (c_tamanio + 150), tmp_y);
-        ctx.stroke();
-      }*/
+    }else if (this.questionObject.name_questioncategory == this.tipoPregunta(5)) {
+       let parts_o: OptionsAnswer[] = this.questionObject.answers_[0].options_answer;
+       let cantidad: number = parts_o.length;
+       mecanvas.height = (c_tamanio * cantidad) + (c_margen * (cantidad - 1));
+       mecanvas.width = (c_tamanio * 2) + 150;
+       mecanvas.getContext('2d')!.clearRect(0, 0, mecanvas.width, mecanvas.height);
+       let ctx = mecanvas.getContext('2d')!;
+       let colorPan = ["#E3FFFF", "#BFFFC4", "#F6FFA1", "#C5AEFE", "#FDBDB1", "#BEACFF", "#E9CEBB", "#EFA0E7"];
 
-    } else {
+       this.dibujaFilaItemsCanvas(ctx, c_tamanio, c_margen, cantidad, parts_o
+         , true, "leftSide");
+       this.dibujaFilaItemsCanvas(ctx, c_tamanio, c_margen, cantidad, parts_o
+         , false, "rightSide");
+     }
+     else {
       let cantidad: number = this.questionObject.answers_[0].options_answer.length;
       mecanvas.width = (c_tamanio * cantidad) + (c_margen * (cantidad - 1));
       mecanvas.getContext('2d')!.clearRect(0, 0, mecanvas.width, mecanvas.height);
@@ -817,7 +803,7 @@ export class QuestionnaireComponent implements OnInit {
 
   //this.alphabet.subarray(parts.length);
   dibujaFilaItemsCanvas(ctx: CanvasRenderingContext2D, c_tamanio: number, c_margen: number, maxElements: number
-    , parts: any[], isleft: boolean, subProperty: string): void {
+    , parts: any[], isleft: boolean, subProperty: string, subPropertyImg:  string = "-"): void {
     let colorPan = ["#E3FFFF", "#BFFFC4", "#F6FFA1", "#C5AEFE", "#FDBDB1", "#BEACFF", "#E9CEBB", "#EFA0E7"];
     //console.log("cantidades", maxElements, parts.length, (maxElements / parts.length));
     let saltosBase = (((maxElements / parts.length)) / 2 );
@@ -843,6 +829,15 @@ export class QuestionnaireComponent implements OnInit {
       ctx.fillText(subProperty === "-" ? ("Literal " + parts[ind] + ".") : parts[ind][subProperty],
         isleft ? (Math.trunc(c_margen / 2) + 7) : (c_tamanio + 150) + Math.trunc(c_margen / 2), tmp_y + Math.trunc((c_tamanio / 2) + 7));
       ctx.stroke();
+
+      /*let imgTamanio = c_tamanio * 0.75;
+      let img = new Image();
+      img.onload = function () {
+        img.width = 10;
+        ctx.drawImage(img, (ind * c_tamanio) + (c_margen * ind), 5, c_tamanio * 0.75, c_tamanio);
+      };
+      img.src = 'assets/imgresource/alfabeto/propio/' + this.alphabet[ind] + '.png';*/
+
     }
   }
 
