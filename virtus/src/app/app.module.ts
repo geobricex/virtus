@@ -28,9 +28,12 @@ import {SpeedDialModule} from 'primeng/speeddial';
 import {TabViewModule} from 'primeng/tabview';
 import {ColorPickerModule} from 'primeng/colorpicker';
 import {PdfViewerModule} from 'ng2-pdf-viewer';
-import {TagModule} from 'primeng/tag'
+
+import { TagModule } from 'primeng/tag';
+import {AvatarModule} from 'primeng/avatar';
+
 //INICIO SERVICE
-import {CargarScriptsService} from "./services/cargar-scripts.service"
+import {CargarScriptsService} from "./services/cargar-scripts.service";
 // FIN SERVICES
 
 import {AppComponent} from './app.component';
@@ -195,7 +198,9 @@ FullCalendarModule.registerPlugins([
     RatingModule,
     TagModule,
     SkeletonModule,
-    ChartModule
+    ChartModule,
+    AvatarModule
+
   ],
 
   providers: [

@@ -41,7 +41,6 @@
       </ng-template>
     </p-messages>
   </div>
-
   <div [ngClass]="viewQuestionBank ? 'col-6 md:col-1' : 'col-6 md:col-3'">
     <div class="card animated fadeInDown" style="height: 100%">
       <div class="text-center" *ngIf="viewQuestionBank">
@@ -90,7 +89,8 @@
           <p-accordionTab header="Complete" [selected]="true" class="line-height-3 m-0">
             <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
               <div *ngIf="question.name_questioncategory == tipoPregunta(4)"
-                   class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2">
+                   class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
+                   (click)="cambiarPregunta(i2)">
                 <span> {{"N°" + (i2 + 1)}} </span>
                 <i
                   class="pi pi-circle-on mt-1 text-sm {{validarPreguntaResuelta(question)?'text-green-600': 'text-pink-600'}}"
@@ -102,6 +102,7 @@
             <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
               <div *ngIf="question.name_questioncategory == tipoPregunta(5)"
                    class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
+                   (click)="cambiarPregunta(i2)"
               >
                 <span> {{"N°" + (i2 + 1)}} </span>
                 <i
@@ -179,7 +180,7 @@
       </div>
       <!--Selección unica normal con imagenes-->
       <div *ngIf="questionObject.name_questioncategory == tipoPregunta(2) && questionObject.canResource"
-           class="flex align-items-center justify-content-between">
+           class="flex align-items-center justify-content-center">
 
         <p-card *ngFor="let option of questionObject.answers_[0].options_answer; let i = index"
                 [attr.data-index]="i" [style]="{width: '120px'}" styleClass="p-card-shadow">
@@ -236,14 +237,23 @@
              [attr.data-index]="i">
           <div class="field-radiobutton">
             <p>
-              <span *ngFor="let wg of partirPreguntaComplete(option.description_question)">
-                {{wg != '$option$' ? wg : ''}}
-                <input type="text" pInputText *ngIf="wg == '$option$'"/>
-              </span>
+              <span *ngFor="let wg of questionObject.answers_[0].complete_parts; let ic = index"
+                    [attr.data-index]="ic"
+                    [style]="{color: (wg == '$option$'?'#FF0000':'#000'), 'font-weight': (wg == '$option$'?'bold;':'normal;')}">
+                {{wg != '$option$' ? wg : '(' + alphabet[0] + '. '}}
+                <!--                <input type="text" pInputText *ngIf="wg == '$option$'"/>-->
+                <!--                no tiene imagenes-->
+                <p-dropdown [options]="option.options" [(ngModel)]="questionObject.answers_[0].responses"
+                            optionLabel="option" placeholder=" -- Seleccione una opcíón --"
+                            *ngIf="wg == '$option$'"></p-dropdown>
+                <!--                Tiene imagenes-->
+                {{wg != '$option$' ? wg : ') '}}
+            </span>
             </p>
           </div>
         </div>
       </div>
+
 
       <!--Recursos para dibujar-->
       <p-fieldset legend="Raya el correcto" [toggleable]="true">
@@ -270,10 +280,10 @@
 <div class="video_sign_float" *ngIf="validarPreguntaRecurso(questionObject.pathurlsign_question)"
      [ngStyle]="{'background':vistaVideoSenias?'#2d3f47':'rgba(0,0,0,0)'}"
 >
-  <button id="evt_control_señas" pButton pRipple icon="pi pi-window-maximize"
-          class="p-button-rounded p-button-info mr-2 mb-2"
-          *ngIf="!vistaVideoSenias" (click)="vistaVideoSenias = true"
-  ></button>
+
+  <p-avatar id="evt_control_señas" *ngIf="!vistaVideoSenias" (click)="vistaVideoSenias = true"
+            icon="pi pi-window-maximize" [style]="{'background-color':'#2196F3', 'color': '#ffffff'}" size="large"
+            shape="circle"></p-avatar>
   <div *ngIf="vistaVideoSenias" class="col-12 text-center">
     <p class="text-white"><strong>Lenguaje de Señas</strong></p>
     <video id="pathurlsign_question" height="150" controls [src]="questionObject.pathurlsign_question"
@@ -302,13 +312,17 @@
     <img alt="Card"
          src="{{sweetFakeAlert[1]?'assets/imgresource/empty/acierto.webp':'assets/imgresource/empty/pista.webp'}}"
          width="250">
+  </div>
+  <div class="col-12 text-center">
     <p-tag styleClass="mr-2" severity="success"
            value="{{sweetFakeAlert[1]?'¿Quieres saber porqué?':'Te daremos una pista'}}"></p-tag>
-    <br/>
+  </div>
+  <div class="col-12 text-center">
     <p class="justify-content-start">
       {{sweetFakeAlert[1] ? questionObject.feedback_question : questionObject.hint_question}}
     </p>
-
   </div>
+
+
 
 </p-dialog>

@@ -7,7 +7,7 @@ import {Person} from "../../models/Person";
 import {Utils} from "../../util/Utils";
 import {ActivatedRoute} from '@angular/router';
 
-import {Evaluation, EvaluationQuestionsResponse, Questions} from "../../models/evaluation_questionarie";
+import {Evaluation, EvaluationQuestionsResponse, Options, Questions} from "../../models/evaluation_questionarie";
 import {FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule} from '@angular/forms';
 import {AppMainComponent} from '../../app.main.component';
 import {StorageService} from "../../authentication/StorageService";
@@ -126,6 +126,15 @@ export class QuestionnaireComponent implements OnInit {
     if (this.tiempoEvaluacion$ !== undefined) {
       this.tiempoEvaluacion$.unsubscribe();
     }
+    if (this.text2SpeakSupport() && this.artyom.isSpeaking()) {
+      this.artyom.shutUp();
+    }
+    //Quitar el reconocimiento de voz
+    if (this.voiceComandsSupport()) {
+      this.artyom.fatality().then(() => {
+        this.artyom.clearGarbageCollection();
+      });
+    }
   }
 
   tipoPregunta(typo: number): string {
@@ -239,7 +248,7 @@ export class QuestionnaireComponent implements OnInit {
         || questionItem.name_questioncategory == this.tipoPregunta(1)) {
         // @ts-ignore
         return questionItem.answers_[0].responses.correct == "Yes";
-      } else {
+      } else if (questionItem.name_questioncategory == this.tipoPregunta(1)) {
         let flagAlltrue: boolean = true;
         let indT = 0;
         let indTS = 0;
@@ -250,12 +259,13 @@ export class QuestionnaireComponent implements OnInit {
             flagAlltrue = false;
           }
         }
-        for (let ind = 0; ind < questionItem.answers_[0].responses.length; ind++) {
+        for (let ind = 0; ind < questionItem.answers_[0].options_answer.length; ind++) {
           if (questionItem.answers_[0].options_answer[ind].correct == "Yes") {
             indT++;
           }
         }
-        return indTS == indT;
+        return flagAlltrue && indTS == indT;
+      } else {
       }
     return false;
   }
@@ -321,11 +331,19 @@ export class QuestionnaireComponent implements OnInit {
       let rec: string = this.questionObject.answers_[0].options_answer[0].resource!;
       rec = rec != undefined ? rec : "";
       this.questionObject.canResource = (rec.length > 0);
+      if (this.questionObject.name_questioncategory == this.tipoPregunta(4)) {
+        for (let i = 0; i < this.questionObject.answers_[0].options_answer.length; i++) {
+          this.questionObject.answers_[0].complete_parts = this.partirPreguntaComplete(this.questionObject.answers_[0].options_answer[i].description_question);
+        }
+      }
       console.log("pregunta: ", this.questionObject);
     }
     this.initCanvas(flag);
-    if (this.storageService.getCurrentUser().email != "anthony.pachay2017@uteq.edu.ec") {
-      this.leerPregunta();
+    // el browser es comantible con el speaker?
+    if (this.text2SpeakSupport()) {
+      if (this.storageService.getCurrentUser().email != "anthony.pachay2017@uteq.edu.ec") {
+        this.leerPregunta();
+      }
     }
   }
 
@@ -497,8 +515,18 @@ export class QuestionnaireComponent implements OnInit {
   /*Comandos de voz*/
 
   voiceComandsSupport(): boolean {
-    let microphoneApi: boolean = window.hasOwnProperty('webkitSpeechRecognition') && window.hasOwnProperty('speechSynthesis');
+    //let microphoneApi: boolean = window.hasOwnProperty('webkitSpeechRecognition') && window.hasOwnProperty('speechSynthesis');
+    let microphoneApi: boolean = this.artyom.recognizingSupported();
     return microphoneApi;
+  }
+
+  text2SpeakSupport(): boolean {
+    let microphoneApi: boolean = this.artyom.speechSupported();
+    return microphoneApi;
+  }
+
+  isDesktopDevice(): boolean {
+    return this.artyom.Device.isMobile();
   }
 
   startContinuousArtyom(): void {
@@ -582,13 +610,28 @@ export class QuestionnaireComponent implements OnInit {
       reader += "literal " + this.alphabet[i] + " \n";
       reader += this.questionObject.answers_[0].options_answer[i].opcion + " \n";
     }
-    //console.log(reader);
-    this.artyom.say(reader);
+    //si están hablando, callarlos
+    if (this.artyom.isSpeaking()) {
+      this.artyom.shutUp();
+    }
+
+    //Desactivar el reconocimiento de comandos cuando empiece la lectura
+    this.artyom.dontObey();
+    let local_artyom = this.artyom;
+    this.artyom.say(reader, {
+      onStart: function () {
+      },
+      onEnd: function () {
+        //activar el reconocimiento de los comandos
+        local_artyom.obey();
+      }
+    });
   }
 
   /*Operaciones en canvas*/
 
   public onoff: boolean;
+  public firstLoc = {x: 0, y: 0};
   public lastLoc = {x: 0, y: 0};
 
   initCanvas(nuevo: boolean): void {
@@ -598,18 +641,75 @@ export class QuestionnaireComponent implements OnInit {
     //this.contex = (this.CanvasEl.nativeElement as HTMLCanvasElement).getContext("2d");
     //this.contex = this.CanvasEl.nativeElement.getContext('2d');
     mecanvas.style['cursor'] = 'pointer';
-    let cantidad: number = this.questionObject.answers_[0].options_answer.length;
-    mecanvas.width = (85 * cantidad) + (10 * (cantidad - 1));
-    mecanvas.getContext('2d')!.clearRect(0, 0, mecanvas.width, mecanvas.height);
 
-    for (let ind = 0; ind < cantidad; ind++) {
-      let img = new Image();
-      img.onload = function () {
-        img.width = 10;
-        let ctx = mecanvas.getContext('2d')!;
-        ctx.drawImage(img, (ind * 85) + (10 * ind), 5, 85, 85);
-      };
-      img.src = 'assets/imgresource/alfabeto/propio/' + this.alphabet[ind] + '.png';
+
+    let c_tamanio = 85, c_margen = 10;
+    if (this.questionObject.name_questioncategory == this.tipoPregunta(4)) {
+      let parts_p_tmp: string[] = this.questionObject.answers_[0].complete_parts!;
+      let parts_p: string[] = [];
+      for (let ind = 0; ind < parts_p_tmp.length; ind++) {
+        if (parts_p_tmp[ind] == "$option$") {
+          parts_p.push(parts_p_tmp[ind]);
+        }
+      }
+      let parts_o: Options[] = this.questionObject.answers_[0].options_answer[0].options!;
+      let cantidad: number = parts_p.length > parts_o.length ? parts_p.length : parts_o.length;
+      mecanvas.height = (c_tamanio * cantidad) + (c_margen * (cantidad - 1));
+      mecanvas.width = (c_tamanio * 2) + 150;
+      mecanvas.getContext('2d')!.clearRect(0, 0, mecanvas.width, mecanvas.height);
+      let ctx = mecanvas.getContext('2d')!;
+      let colorPan = ["#E3FFFF", "#BFFFC4", "#F6FFA1", "#C5AEFE", "#FDBDB1", "#BEACFF", "#E9CEBB", "#EFA0E7"];
+
+      this.dibujaFilaItemsCanvas(ctx, c_tamanio, c_margen, cantidad, this.alphabet.slice(0, parts_p.length)
+        , true, "-");
+      this.dibujaFilaItemsCanvas(ctx, c_tamanio, c_margen, cantidad, parts_o
+        , false, "option");
+      /*for (let ind = 0; ind < parts_p.length; ind++) {
+        ctx.fillStyle = colorPan[ind >= colorPan.length ? Math.trunc(ind / colorPan.length) : ind];
+        let tmp_y;
+        if (ind == 0) {
+          tmp_y = Math.trunc((c_tamanio / 2) + 7);
+        } else {
+          tmp_y = ((ind) * c_tamanio) + (c_margen * ind) + Math.trunc((c_tamanio / 2) + 7);
+        }
+        //ctx.fillRect((c_tamanio + 150), tmp_y, c_tamanio, c_tamanio);
+        ctx.fillRect(Math.trunc(c_margen / 2), ((ind) * c_tamanio) + (c_margen * ind), c_tamanio, c_tamanio);
+        ctx.fillStyle = "black";
+        ctx.strokeStyle = "black";
+        ctx.font = "15px Arial";
+        ctx.fillText("Literal " + this.alphabet[ind] + ".", (Math.trunc(c_margen / 2) + 7), tmp_y);
+        ctx.stroke();
+      }
+      for (let ind = 0; ind < parts_o.length; ind++) {
+        ctx.fillStyle = colorPan[colorPan.length - 1 - ind < 0 ? 0 : colorPan.length - ind - 1];
+        let tmp_y;
+        if (ind == 0) {
+          tmp_y = Math.trunc((c_tamanio / 2) + 7);
+        } else {
+          tmp_y = ((ind) * c_tamanio) + (c_margen * ind) + Math.trunc((c_tamanio / 2) + 7);
+        }
+        //ctx.fillRect((c_tamanio + 150), tmp_y, c_tamanio, c_tamanio);
+        ctx.fillRect((c_tamanio + 150) + Math.trunc(c_margen / 2), ((ind) * c_tamanio) + (c_margen * ind), c_tamanio, c_tamanio);
+        ctx.fillStyle = "black";
+        ctx.strokeStyle = "black";
+        ctx.font = "15px Arial";
+        ctx.fillText(parts_o[ind].option, (c_tamanio + 150), tmp_y);
+        ctx.stroke();
+      }*/
+
+    } else {
+      let cantidad: number = this.questionObject.answers_[0].options_answer.length;
+      mecanvas.width = (c_tamanio * cantidad) + (c_margen * (cantidad - 1));
+      mecanvas.getContext('2d')!.clearRect(0, 0, mecanvas.width, mecanvas.height);
+      for (let ind = 0; ind < cantidad; ind++) {
+        let img = new Image();
+        img.onload = function () {
+          img.width = 10;
+          let ctx = mecanvas.getContext('2d')!;
+          ctx.drawImage(img, (ind * c_tamanio) + (c_margen * ind), 5, c_tamanio, c_tamanio);
+        };
+        img.src = 'assets/imgresource/alfabeto/propio/' + this.alphabet[ind] + '.png';
+      }
     }
     if (nuevo) {
       mecanvas.onmousedown = (e: {
@@ -617,6 +717,7 @@ export class QuestionnaireComponent implements OnInit {
       }) => {
         this.onoff = true;
         this.lastLoc = this.windowCanvas(e.clientX, e.clientY);
+        this.firstLoc = this.windowCanvas(e.clientX, e.clientY);
         this.initCanvas(false);
       };
       mecanvas.onmousemove = (e: any) => {
@@ -641,7 +742,7 @@ export class QuestionnaireComponent implements OnInit {
         preventDefault: () => void; pageX: any; pageY: any;
       }) => {
         this.onoff = false;
-        let indice = Math.trunc((this.lastLoc.x) / 80);
+        let indice = Math.trunc((this.lastLoc.x) / 90);
         console.log(this.lastLoc.x, indice);
         let wildcard: string = this.alphabet[indice];
         if (this.questionObject.name_questioncategory == this.tipoPregunta(1)) {
@@ -658,6 +759,32 @@ export class QuestionnaireComponent implements OnInit {
           } else {
             this.autoClick("#option_ck_" + wildcard.trim());
           }
+        } else if (this.questionObject.name_questioncategory == this.tipoPregunta(4)) {
+          let mayor:number = Math.max(this.questionObject.answers_[0].options_answer[0].options!.length,
+                    this.questionObject.answers_[0].complete_parts!.length);
+          let origen = -1, destino = -1;
+          let saltosBaseOp = (((mayor / this.questionObject.answers_[0].options_answer[0].options!.length)) / 2 );
+          saltosBaseOp = (mayor == this.questionObject.answers_[0].options_answer[0].options!.length)? 0 : saltosBaseOp;
+          let saltosBasePr = (((mayor / this.questionObject.answers_[0].complete_parts!.length)) / 2 );
+          saltosBasePr = (mayor == this.questionObject.answers_[0].complete_parts!.length)? 0 : saltosBasePr;
+          let c_alto = 95;
+          if(this.firstLoc.x < c_alto && this.lastLoc.x > c_alto + 150){
+            origen = 1;
+            console.log("izquierda a derecha ");
+            if(this.questionObject.answers_[0].options_answer[0].options!.length == mayor){
+              saltosBaseOp = 0;
+            }else{
+              saltosBasePr = 0;
+            }
+            console.log("("+ this.firstLoc.y + ") / " + c_alto  + " - " + saltosBaseOp + "===?" + ((this.firstLoc.y) / c_alto) + " -- >"+ ((this.firstLoc.y) / c_alto - saltosBaseOp));
+            console.log("("+ this.lastLoc.y + ") / " + c_alto  + " - " + saltosBasePr + "===?" + ((this.lastLoc.y) / c_alto) + " -- >" + ((this.lastLoc.y) / c_alto - saltosBasePr));
+            console.log("Indices seleccionados", Math.trunc((this.firstLoc.y) / c_alto - saltosBasePr),
+              Math.trunc((this.lastLoc.y) / c_alto - saltosBaseOp));
+          } else if(this.lastLoc.x < 90 && this.firstLoc.x > c_alto + 150){
+            destino = 1;
+            console.log("derecha a izquierda= " + "("+ this.firstLoc.y + ") / " + c_alto  + " - " + saltosBasePr);
+            console.log("Indices seleccionados", Math.trunc((this.firstLoc.y) / c_alto - saltosBasePr), Math.trunc((this.lastLoc.y) / c_alto - saltosBaseOp));
+          }
         }
       }
       mecanvas.onmouseout = (e: {
@@ -666,6 +793,37 @@ export class QuestionnaireComponent implements OnInit {
 
         this.onoff = false;
       };
+    }
+  }
+
+  //this.alphabet.subarray(parts.length);
+  dibujaFilaItemsCanvas(ctx: CanvasRenderingContext2D, c_tamanio: number, c_margen: number, maxElements: number
+    , parts: any[], isleft: boolean, subProperty: string): void {
+    let colorPan = ["#E3FFFF", "#BFFFC4", "#F6FFA1", "#C5AEFE", "#FDBDB1", "#BEACFF", "#E9CEBB", "#EFA0E7"];
+    //console.log("cantidades", maxElements, parts.length, (maxElements / parts.length));
+    let saltosBase = (((maxElements / parts.length)) / 2 );
+    saltosBase = (maxElements == parts.length)? 0 : saltosBase;
+    //console.log("salto base:" + saltosBase);
+    for (let ind = 0; ind < parts.length; ind++) {
+      if (isleft) {
+        ctx.fillStyle = colorPan[ind >= colorPan.length ? Math.trunc(ind / colorPan.length) : ind];
+      } else {
+        ctx.fillStyle = colorPan[colorPan.length - 1 - ind < 0 ? 0 : colorPan.length - ind - 1];
+      }
+      let tmp_y = 0;
+      // if (ind == 0) {
+      //   tmp_y = (maxElements / parts.length) + Math.trunc((c_tamanio / 2) + 7);
+      // } else {
+      tmp_y = ((saltosBase + ind) * c_tamanio) + ((saltosBase + ind) * c_margen);
+      //console.log("cantidades", "((" + maxElements + " / " + parts.length + ") /" + 2 + " + " + ind + "- 0.5)", "= " + ((maxElements / parts.length) / 2 + ind - 0.5));
+      // }
+      ctx.fillRect(isleft ? Math.trunc(c_margen / 2) : (c_tamanio + 150), tmp_y, c_tamanio, c_tamanio);
+      ctx.fillStyle = "black";
+      ctx.strokeStyle = "black";
+      ctx.font = "15px Arial";
+      ctx.fillText(subProperty === "-" ? ("Literal " + parts[ind] + ".") : parts[ind][subProperty],
+        isleft ? (Math.trunc(c_margen / 2) + 7) : (c_tamanio + 150) + Math.trunc(c_margen / 2), tmp_y + Math.trunc((c_tamanio / 2) + 7));
+      ctx.stroke();
     }
   }
 
@@ -678,5 +836,4 @@ export class QuestionnaireComponent implements OnInit {
       x: Math.round(x - ctxbox.left), y: Math.round(y - ctxbox.top)
     };
   }
-
 }
