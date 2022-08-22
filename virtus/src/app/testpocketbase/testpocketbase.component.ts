@@ -6,6 +6,7 @@ import PocketBase from 'pocketbase';
 import {FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule} from '@angular/forms';
 
 //require('cross-fetch/polyfill');
+declare const armadillo: any;
 
 @Component({
   selector: 'app-testpocketbase',
@@ -16,6 +17,7 @@ export class TestpocketbaseComponent implements OnInit {
 
   tokenAccess: string;
   elementsImg: any;
+  testArmadillo: any;
 
   tmpFile: any;
 
@@ -41,7 +43,13 @@ export class TestpocketbaseComponent implements OnInit {
   client: any;
 
   ngOnInit(): void {
+    // @ts-ignore
+    this.testArmadillo = getHackDiagram("This use case starts when a person *(person &-id=int) wants to register as a tutor *(tutor &-id=int [+userRegistration=Tutor]) user in the system. *¡(tutor)<>*(Person)¡")
 
+    console.log(
+      // @ts-ignore
+      this.testArmadillo[1]
+    )
     this.client = new PocketBase(this.globalUri);
     console.log(" -- -- ");
     let resp = this.initPocket();
@@ -157,4 +165,9 @@ export class TestpocketbaseComponent implements OnInit {
     });
     return this._http.post(urlServicio, objectJson, {headers: headers});
   }
+
+  interpreteTest() {
+
+  }
+
 }
