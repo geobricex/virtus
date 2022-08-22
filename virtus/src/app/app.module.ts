@@ -187,7 +187,7 @@ FullCalendarModule.registerPlugins([
     RatingModule,
     TagModule,
     AvatarModule,
-    Module
+    SkeletonModule,
   ],
 
   providers: [
