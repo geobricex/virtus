@@ -3,8 +3,9 @@ import {BreadcrumbService} from "../../app.breadcrumb.service";
 import {Modulo} from "../../models/modulo";
 import {Observable} from "rxjs";
 import {Utils} from "../../util/Utils";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {ActivatedRoute} from "@angular/router";
+import {Course} from "../../models/Course";
 
 @Component({
   selector: 'app-modulo',
@@ -21,6 +22,8 @@ export class ModuloComponent implements OnInit {
   statusApi: number = 0;
   loading: boolean = true;
   sortOptions: any [];
+  dataCourse: any;
+  loadingDataCourse: boolean = true;
 
   constructor(
     private breadcrumbService: BreadcrumbService,
@@ -44,6 +47,19 @@ export class ModuloComponent implements OnInit {
       {label: 'Mas antiguos', value: 'datereg_syllabu'},
       {label: 'Ultimos agregados', value: '!datereg_syllabu'}
     ];
+    this.loadDataCourse();
+  }
+
+  loadDataCourse() {
+    this.loadingDataCourse = true;
+    this.apiGetDataCourse(this.idCourse).subscribe({
+      next: response => {
+        console.log(response);
+        this.dataCourse = response;
+        console.log(this.dataCourse);
+        this.loadingDataCourse = false;
+      }
+    })
   }
 
   get getUtils() {
@@ -72,6 +88,13 @@ export class ModuloComponent implements OnInit {
     this.globalUri = this.utils.globalUrl + "syllabu/getsyllabus";
     return this._http.post<any>(this.globalUri,
       {course_id_syllabu: this.idCourse});
+  }
+
+  apiGetDataCourse(id: any): Observable<any> {
+    this.globalUri = this.utils.globalUrl + "course/getCourseData";
+    let queryParams = new HttpParams();
+    queryParams = queryParams.append("id", id);
+    return this._http.get<any>(this.globalUri, {params: queryParams});
   }
 
   onSortChange(event: any) {

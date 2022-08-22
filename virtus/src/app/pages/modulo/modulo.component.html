@@ -2,52 +2,52 @@
 
 <div class="card">
 
-  <div class="grid mb-2">
-    <div class="col-6 ">
-      <p-skeleton height="1rem" styleClass="mb-2"></p-skeleton>
+  <div class="" *ngIf="loadingDataCourse">
+    <div class="grid mb-2">
+      <div class="col-6 ">
+        <p-skeleton height="1rem" styleClass="mb-2"></p-skeleton>
+      </div>
     </div>
-  </div>
-  <div class="grid mb-2">
-    <div class="col-1 ">
-      <p-skeleton height="1rem" styleClass="mb-2"></p-skeleton>
+    <div class="grid mb-2">
+      <div class="col-1 ">
+        <p-skeleton height="1rem" styleClass="mb-2"></p-skeleton>
+      </div>
+      <div class="col-5 ">
+        <p-skeleton height="1rem" styleClass="mb-2"></p-skeleton>
+      </div>
     </div>
-    <div class="col-5 ">
-      <p-skeleton height="1rem" styleClass="mb-2"></p-skeleton>
-    </div>
-  </div>
-  <div class="grid">
-    <div class="col-1 ">
-      <p-skeleton height="1rem" styleClass="mb-2"></p-skeleton>
-    </div>
-    <div class="col-11 ">
-      <p-skeleton height="1rem" styleClass="mb-2"></p-skeleton>
+    <div class="grid">
+      <div class="col-1 ">
+        <p-skeleton height="1rem" styleClass="mb-2"></p-skeleton>
+      </div>
+      <div class="col-11 ">
+        <p-skeleton height="1rem" styleClass="mb-2"></p-skeleton>
+      </div>
     </div>
   </div>
 
-  <div class="grid mb-2">
-    <div class="col-6 ">
-      <strong> Datos del curso seleccionado </strong>
+  <div *ngIf="!loadingDataCourse">
+    <div class="grid">
+      <div class="col-12">
+        <strong> Datos del curso seleccionado </strong>
+        <hr>
+      </div>
     </div>
-  </div>
-  <div class="grid mb-2">
-    <div class="col-1 ">
-      <strong> Titulo: </strong>
+    <div class="grid mb-2">
+      <div class="col-1">
+        <strong> Titulo: </strong>
+      </div>
+      <div class="col-5">
+        {{dataCourse.nameCourse}}
+      </div>
     </div>
-    <div class="col-5 ">
-      Movie Information
-    </div>
-  </div>
-  <div class="grid">
-    <div class="col-1 ">
-      <strong> Descripcion: </strong>
-    </div>
-    <div class="col-11 ">
-      Morbi tristique blandit turpis. In viverra ligula id nulla hendrerit rutrum.
-      Morbi tristique blandit turpis. In viverra ligula id nulla hendrerit rutrum.
-      Morbi tristique blandit turpis. In viverra ligula id nulla hendrerit rutrum.
-      Morbi tristique blandit turpis. In viverra ligula id nulla hendrerit rutrum.
-      Morbi tristique blandit turpis. In viverra ligula id nulla hendrerit rutrum.
-      Morbi tristique blandit turpis. In viverra ligula id nulla hendrerit rutrum.
+    <div class="grid">
+      <div class="col-1 ">
+        <strong> Descripcion: </strong>
+      </div>
+      <div class="col-11 ">
+        {{dataCourse.descriptionCourse}}
+      </div>
     </div>
   </div>
 </div>

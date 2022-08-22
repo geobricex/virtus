@@ -1,4 +1,88 @@
 <div class="card">
+
+  <div class="" *ngIf="loadingDataCourse">
+    <div class="grid mb-2">
+      <div class="col-6">
+        <p-skeleton height="1rem" styleClass="mb-2"></p-skeleton>
+      </div>
+      <div class="col-6">
+        <p-skeleton height="1rem" styleClass="mb-2"></p-skeleton>
+      </div>
+    </div>
+    <div class="grid mb-2">
+      <div class="col-1 ">
+        <p-skeleton height="1rem" styleClass="mb-2"></p-skeleton>
+      </div>
+      <div class="col-5 ">
+        <p-skeleton height="1rem" styleClass="mb-2"></p-skeleton>
+      </div>
+      <div class="col-1 ">
+        <p-skeleton height="1rem" styleClass="mb-2"></p-skeleton>
+      </div>
+      <div class="col-5 ">
+        <p-skeleton height="1rem" styleClass="mb-2"></p-skeleton>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="col-1 ">
+        <p-skeleton height="1rem" styleClass="mb-2"></p-skeleton>
+      </div>
+      <div class="col-5">
+        <p-skeleton height="1rem" styleClass="mb-2"></p-skeleton>
+      </div>
+      <div class="col-1 ">
+        <p-skeleton height="1rem" styleClass="mb-2"></p-skeleton>
+      </div>
+      <div class="col-5">
+        <p-skeleton height="1rem" styleClass="mb-2"></p-skeleton>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!loadingDataCourse">
+    <div class="grid">
+      <div class="col-6">
+        <strong> Datos del curso seleccionado </strong>
+        <hr>
+      </div>
+      <div class="col-6">
+        <strong> Datos del módulo seleccionado </strong>
+        <hr>
+      </div>
+    </div>
+    <div class="grid mb-2">
+      <div class="col-1">
+        <strong> Titulo: </strong>
+      </div>
+      <div class="col-5">
+        {{dataCourse.nameCourse}}
+      </div>
+      <div class="col-1">
+        <strong> Titulo: </strong>
+      </div>
+      <div class="col-5">
+        {{dataModule}}
+      </div>
+    </div>
+    <div class="grid">
+      <div class="col-1 ">
+        <strong> Descripcion: </strong>
+      </div>
+      <div class="col-5 ">
+        {{dataCourse.descriptionCourse}}
+      </div>
+      <div class="col-1 ">
+        <strong> Descripcion: </strong>
+      </div>
+      <div class="col-5 ">
+        {{dataModule}}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+
   <div *ngIf="loading">
     <p-skeleton height="5rem" styleClass="mb-2"></p-skeleton>
     <div class="grid">
@@ -59,7 +143,7 @@
           </div>
           <div class="text-center">
             <img [src]="tema.pathimgTopic" [alt]="tema.nameTopic" width="200" height="200"
-                 class="w-9 shadow-2 my-3 mx-0" routerLink="resources/{{tema.id}}"/>
+                 class="w-full shadow-2 my-3 mx-0" routerLink="resources/{{tema.id}}"/>
             <div class="text-2xl font-bold">{{tema.nameTopic}}</div>
             <div class="mb-3">{{tema.descriptionTopic}}</div>
             <!--<p-rating [ngModel]="product.rating" [readonly]="true" [cancel]="false"></p-rating>-->
