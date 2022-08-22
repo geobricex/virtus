@@ -223,7 +223,7 @@
       </div>
       <!--Selección múltiple normal con imagenes-->
       <div *ngIf="questionObject.name_questioncategory == tipoPregunta(3) && questionObject.canResource"
-           class="flex align-items-center justify-content-between">
+           class="flex align-items-center justify-content-center">
 
         <p-card *ngFor="let option of questionObject.answers_[0].options_answer; let i = index"
                 [attr.data-index]="i" [style]="{width: '120px'}" styleClass="p-card-shadow">
@@ -263,8 +263,26 @@
           </div>
         </div>
       </div>
-
-
+      <div *ngIf="questionObject.name_questioncategory == tipoPregunta(5) && !questionObject.canResource">
+        <div class="flex align-items-center justify-content-center">
+          <p-card *ngFor="let option of questionObject.answers_[0].options_answer; let i = index"
+                  [attr.data-index]="i" [style]="{width: '120px'}" styleClass="p-card-shadow">
+            <ng-template pTemplate="header" >
+              <img class="img-color" alt="Card"  *ngIf="option.resourse_leftSide.length > 0"
+                   [src]="option.resourse_leftSide" height="100">
+              <div class="field-radiobutton"  *ngIf="option.leftSide.length > 0" >
+                <p>{{option.leftSide}}</p>
+              </div>
+              <div class="field-radiobutton">
+                <p-dropdown [options]="questionObject.answers_[0].right_parts!"
+                            [(ngModel)]="questionObject.answers_[0].responses[i]"
+                            optionLabel="rightSide" placeholder=" -- - --"
+                ></p-dropdown>
+              </div>
+            </ng-template>
+          </p-card>
+        </div>
+      </div>
       <!--Recursos para dibujar-->
       <p-fieldset legend="Raya el correcto" [toggleable]="true">
         <div class="col-12" style="display: flex;align-items: center;justify-content: center;">
@@ -332,6 +350,4 @@
       {{sweetFakeAlert[1] ? questionObject.feedback_question : questionObject.hint_question}}
     </p>
   </div>
-
-
 </p-dialog>

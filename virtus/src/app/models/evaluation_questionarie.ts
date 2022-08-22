@@ -34,7 +34,8 @@ export interface Questions {
 export interface Answers {
   options_answer: OptionsAnswer[];
   responses: OptionsAnswer[];
-  complete_parts?: string[]
+  complete_parts?: string[];
+  right_parts?: OptionsAnswer[];
 }
 
 export interface OptionsAnswer {
