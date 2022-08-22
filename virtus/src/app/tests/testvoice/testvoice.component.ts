@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {CargarScriptsService} from '../services/cargar-scripts.service';
+import {CargarScriptsService} from '../../services/cargar-scripts.service';
 import {PrimeIcons} from 'primeng/api';
 
 declare var Artyom: any;

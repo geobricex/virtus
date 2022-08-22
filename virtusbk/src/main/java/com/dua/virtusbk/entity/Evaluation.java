@@ -55,6 +55,9 @@ public class Evaluation {
     @Column(name = "numberquestion_evaluation")
     private Integer numberquestionEvaluation;
 
+    @Column(name = "order_category")
+    private Boolean orderCategory = true;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
 //    @Cascade(value={org.hibernate.annotations.CascadeType.ALL})
     @JoinColumn(name = "topics_id_topic", nullable = false)

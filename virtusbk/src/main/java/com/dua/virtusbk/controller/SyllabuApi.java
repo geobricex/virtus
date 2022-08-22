@@ -88,7 +88,7 @@ public class SyllabuApi {
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
         message = Methods.getJsonMessage(res[0], res[1], res[2]);
 
-        if (res[0].equals("2")) {
+        if (res[0].equals("2") || res[0].equals("3")) {
             return new ResponseEntity<>(message, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
@@ -108,7 +108,7 @@ public class SyllabuApi {
         String course_id_syllabu = Methods.JsonToString(jso, "course_id_syllabu", "");
         String[] res = syllabuService.getSyllabus(course_id_syllabu);
         message = Methods.getJsonMessage(res[0], res[1], res[2]);
-        if (res[0].equals("2")) {
+        if (res[0].equals("2")|| res[0].equals("3")) {
             return new ResponseEntity<>(message, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(message, HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
@@ -131,7 +131,7 @@ public class SyllabuApi {
         String id_syllabu = Methods.JsonToString(jso, "id_syllabu", "");
         String[] res = syllabuService.getSyllabu(id_syllabu);
         message = Methods.getJsonMessage(res[0], res[1], res[2]);
-        if (res[0].equals("2")) {
+        if (res[0].equals("2") || res[0].equals("3")) {
             return new ResponseEntity<>(message, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(message, HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);

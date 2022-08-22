@@ -89,7 +89,7 @@ public class CourseApi {
         String id_course = Methods.JsonToString(jso, "id_course", "");
         String[] res = courseService.selectCourseSyllabuTopic(id_course);
         message = Methods.getJsonMessage(res[0], res[1], res[2]);
-        if (res[0].equals("2")) {
+        if (res[0].equals("2") || res[0].equals("3")) {
             return new ResponseEntity<>(message, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);

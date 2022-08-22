@@ -16,7 +16,7 @@ import {DomSanitizer} from "@angular/platform-browser";
   styleUrls: ['./resourcesar.component.css']
 })
 export class ResourcesarComponent implements OnInit {
-
+  checked: boolean = true;
   resource: Resources;
   evaluation: Evaluation;
   idCourse: string | null = "";
@@ -367,6 +367,7 @@ export class ResourcesarComponent implements OnInit {
     console.log(this.form['description'].value);
     console.log(this.form['timeEvaluation'].value);
     console.log(this.form['timeminutesEvaluation'].value);
+    console.log(this.form['orderByCategory'].value);
 
     this.evaluation = new Evaluation(
       0,
@@ -379,7 +380,8 @@ export class ResourcesarComponent implements OnInit {
       "",
       this.form['typeEvaluation'].value,
       this.form['opportunityEvaluation'].value,
-      this.form['opportunityEvaluation'].value ? this.form['opportunitiesEvaluation'].value : 1
+      this.form['opportunityEvaluation'].value ? this.form['opportunitiesEvaluation'].value : 1,
+      this.form['orderByCategory'].value
     )
     let topicAux: Topic;
     topicAux = new Topic(

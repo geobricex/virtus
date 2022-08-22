@@ -7,10 +7,9 @@ import com.dua.virtusbk.entity.QuestionCategory;
 import com.dua.virtusbk.repository.EvaluationQuestionCategoryRepository;
 import com.dua.virtusbk.repository.EvaluationRepository;
 import com.dua.virtusbk.util.Methods;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.google.gson.*;
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -98,7 +97,7 @@ public class EvaluationService {
             System.out.println(data);
 
         } else {
-            status = "4";
+            status = "3";
             message = "No se ha encontrado información.";
         }
 
@@ -117,7 +116,7 @@ public class EvaluationService {
             System.out.println(data);
 
         } else {
-            status = "4";
+            status = "3";
             message = "No se ha encontrado información.";
         }
 
@@ -133,9 +132,26 @@ public class EvaluationService {
         if (!jso.toString().equals("[]")) {
             status = "2";
             message = "Información retornada con éxito.";
-            data = jso.toString();
-        }
 
+            if (!jso.get(0).getAsJsonObject().get("order_category").getAsBoolean()) {
+                JSONArray jsonArrayOrder = new JSONArray((jso.get(0).getAsJsonObject().get("questions_")).toString());
+                jsonArrayOrder = Methods.sortJsonArray(jsonArrayOrder, "order_question");
+//                System.out.println(jsonArrayOrder);
+                /*Volver a cargar los datos*/
+                JSONArray newjsonArray = new JSONArray((jso.toString()));
+                newjsonArray.getJSONObject(0).put("questions_", jsonArrayOrder);
+//                System.out.println(newjsonArray);
+                status = "2";
+                message = "Información retornada con éxito.";
+                data = newjsonArray.toString();
+                return new String[]{status, message, data};
+            } else {
+                data = jso.toString();
+            }
+        } else {
+            status = "3";
+            message = "No se ha encontrado datos.";
+        }
         return new String[]{status, message, data};
     }
 

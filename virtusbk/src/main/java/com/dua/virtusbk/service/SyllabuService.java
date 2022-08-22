@@ -66,7 +66,7 @@ public class SyllabuService {
             System.out.println(data);
 
         } else {
-            status = "4";
+            status = "3";
             message = "No se ha encontrado información.";
         }
 
@@ -85,7 +85,7 @@ public class SyllabuService {
             System.out.println(data);
 
         } else {
-            status = "4";
+            status = "3";
             message = "No se ha encontrado información.";
         }
 

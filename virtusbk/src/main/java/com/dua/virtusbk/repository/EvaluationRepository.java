@@ -10,7 +10,24 @@ import java.util.List;
 import java.util.Map;
 
 public interface EvaluationRepository extends JpaRepository<Evaluation, Long> {
-    @Query(value = "SELECT * FROM evaluations where topics_id_topic =?1", nativeQuery = true)
+    @Query(value = "SELECT id_evaluation, " +
+            "       name_evaluation, " +
+            "       description_evaluation, " +
+            "       datereg_evaluation, " +
+            "       dateupdate_evaluation, " +
+            "       time_evaluation, " +
+            "       timeminutes_evaluation, " +
+            "       topics_id_topic, " +
+            "       state_evaluation, " +
+            "       type_evaluation, " +
+            "       opportunity_evaluation, " +
+            "       opportunities_evaluation, " +
+            "       order_category, " +
+            "       sum(eqc.number_question) as numberquestion_evaluation " +
+            "FROM evaluations " +
+            "         INNER JOIN evaluation_question_category eqc on evaluations.id_evaluation = eqc.evaluations_id_evaluation " +
+            "WHERE topics_id_topic=?1 " +
+            "GROUP BY id_evaluation ", nativeQuery = true)
     List<Evaluation> findIdTopicEvaluationList(Long param);
 
     @Query(value = "SELECT * FROM evaluations where id_evaluation =?1", nativeQuery = true)

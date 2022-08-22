@@ -65,7 +65,7 @@ public class ResourceService {
             System.out.println(data);
 
         } else {
-            status = "4";
+            status = "3";
             message = "No se ha encontrado información.";
         }
         return new String[]{status, message, data};
@@ -82,7 +82,7 @@ public class ResourceService {
             System.out.println(data);
 
         } else {
-            status = "4";
+            status = "3";
             message = "No se ha encontrado información.";
         }
         return new String[]{status, message, data};
