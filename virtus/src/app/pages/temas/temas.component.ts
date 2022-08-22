@@ -19,6 +19,9 @@ export class TemasComponent implements OnInit {
   idCourse: string | null = "";
   idModule: string | null = "";
   globalUri: string | null = "";
+  loading: boolean = false;
+  statusApi: number = 0;
+  sortOptions: any[];
 
   constructor(
     private breadcrumbService: BreadcrumbService,
@@ -38,12 +41,27 @@ export class TemasComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadTopics();
+    this.sortOptions = [
+      {label: 'Nombre curso A-Z', value: 'nameTopic'},
+      {label: 'Nombre curso Z-A', value: '!nameTopic'},
+      {label: 'Mas antiguos', value: 'dateregTopic'},
+      {label: 'Ultimos agregados', value: '!dateregTopic'}
+    ];
   }
 
   loadTopics() {
-    this.apiLoadTopics().subscribe(response => {
-      console.log(response);
-      this.temas = response.data;
+    this.loading = true;
+    this.apiLoadTopics().subscribe({
+      next: response => {
+        console.log(response);
+        this.statusApi = response.status;
+        if (response.status === 2)
+          this.temas = response.data;
+        this.loading = false;
+      }, error: err => {
+        console.log(err);
+        console.log("Error interno de servidor");
+      }
     });
   }
 

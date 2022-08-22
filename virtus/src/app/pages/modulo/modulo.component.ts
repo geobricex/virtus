@@ -9,7 +9,7 @@ import {ActivatedRoute} from "@angular/router";
 @Component({
   selector: 'app-modulo',
   templateUrl: './modulo.component.html',
-  styleUrls: ['./modulo.component.scss']
+  styleUrls: ['../../../assets/demo/badges.scss']
 })
 export class ModuloComponent implements OnInit {
 
@@ -18,6 +18,9 @@ export class ModuloComponent implements OnInit {
   sortField: string;
   globalUri: string = "";
   idCourse: string | null = "";
+  statusApi: number = 0;
+  loading: boolean = true;
+  sortOptions: any [];
 
   constructor(
     private breadcrumbService: BreadcrumbService,
@@ -35,13 +38,33 @@ export class ModuloComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadModule();
+    this.sortOptions = [
+      {label: 'Nombre curso A-Z', value: 'name_syllabu'},
+      {label: 'Nombre curso Z-A', value: '!name_syllabu'},
+      {label: 'Mas antiguos', value: 'datereg_syllabu'},
+      {label: 'Ultimos agregados', value: '!datereg_syllabu'}
+    ];
+  }
+
+  get getUtils() {
+    return this.utils
   }
 
   loadModule() {
-    this.apiLoadModule().subscribe(response => {
-      console.log(response);
-      this.modules = response.data;
-      console.log(this.modules)
+    this.loading = true;
+    this.apiLoadModule().subscribe({
+      next: response => {
+        console.log(response);
+        this.statusApi = response.status;
+        if (response.status == 2)
+          this.modules = response.data;
+        console.log(this.modules);
+        this.loading = false;
+      },
+      error: err => {
+        console.log(err);
+        console.log("Error interno de servidor");
+      }
     });
   }
 
