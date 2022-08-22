@@ -216,24 +216,24 @@ export class QuestionnaireComponent implements OnInit {
         if (response.data.length > 0) {
           this.evaluationObject = response.data[0];
 
-          if (this.evaluationObject.time_evaluation) {
+          //if (this.evaluationObject.time_evaluation) {
             this.tiempoEvaluacion = 0;//60 * 60;//this.evaluationObject.timeminutes_evaluation * 60;
             this.tiempoEvaluacion$ = timer(0, 1000)
               .subscribe((iter: any) => {
                 console.log("tiempoEvaluacion: " + iter);
-                if (this.tiempoEvaluacion >= this.evaluationObject.timeminutes_evaluation) {
-                  this.tiempoEvaluacion$.unsubscribe();
+                //if (this.tiempoEvaluacion >= 60 * 60) {
+                  //this.tiempoEvaluacion$.unsubscribe();
                   /*Código para indicar que se terminó el tiempo*/
-                }
+                //}
                 this.tiempoEvaluacion++;
               });
-          }
+          //}
           if (this.voiceComandsSupport()) {
             if (this.storageService.getCurrentUser().email != "anthony.pachay2017@uteq.edu.ec") {
               this.startContinuousArtyom();
             }
           }
-          if (this.storageService.getCurrentUser().email != "anthony.pachay2017@uteq.edu.ec") {
+          if (this.storageService.getCurrentUser().email == "anthony.pachay2017@uteq.edu.ec") {
             this.cambiarPregunta(13, true);
           }else {
             this.cambiarPregunta(0, true);
