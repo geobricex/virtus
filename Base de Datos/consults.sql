@@ -13,24 +13,19 @@ select * from answers
 inner join questions q on answers.questions_id_question = q.id_question
 inner join question_category qc on q.question_category_id_questioncategory = qc.id_questioncategory;
 
-SELECT id_evaluation,
-       name_evaluation,
-       description_evaluation,
-       datereg_evaluation,
-       dateupdate_evaluation,
-       time_evaluation,
-       timeminutes_evaluation,
-       topics_id_topic,
-       state_evaluation,
-       type_evaluation,
-       opportunities_evaluation,
-       order_category,
-       sum(eqc.number_question) as numberquestion_evaluation
-FROM evaluations
-         INNER JOIN evaluation_question_category eqc on evaluations.id_evaluation = eqc.evaluations_id_evaluation
-WHERE topics_id_topic=1
-group by id_evaluation
+select * from persons_courses;
+delete from persons_courses where persons_id_person = 7;
+
+select * from courses;
 
 
 
+SELECT id_syllabu,  count(t.id_topic) as cant_topic,
+           courses_id_course, datereg_syllabu::date, dateupdate_syllabu,
+             name_syllabu, description_syllabu, keywords_syllabu, pathimg_syllabus, state_syllabu
+            FROM syllabus
+            LEFT JOIN topics t on syllabus.id_syllabu = t.syllabus_id_syllabu
+            WHERE state_syllabu = 'A' AND courses_id_course =1
+            GROUP BY syllabus.id_syllabu
+            ORDER BY syllabus.id_syllabu
 

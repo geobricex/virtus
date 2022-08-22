@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface ResourceRepository extends JpaRepository<Resource, Long> {
-    @Query(value = "SELECT * FROM resources where topics_id_topic =?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM resources where topics_id_topic =?1 order by id_resource asc ", nativeQuery = true)
     List<Resource> findIdTopicResourceList(Long param);
 
     @Query(value = "SELECT * FROM resources where id_resource =?1", nativeQuery = true)

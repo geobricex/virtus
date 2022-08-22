@@ -58,6 +58,9 @@ public class Evaluation {
     @Column(name = "order_category")
     private Boolean orderCategory = true;
 
+    @Column(name = "allows_review")
+    private Boolean allowsReview = false;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
 //    @Cascade(value={org.hibernate.annotations.CascadeType.ALL})
     @JoinColumn(name = "topics_id_topic", nullable = false)

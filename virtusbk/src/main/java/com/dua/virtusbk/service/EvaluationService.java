@@ -40,7 +40,7 @@ public class EvaluationService {
         //*TABLA INTERMEDIA*//
         //*1 EVLUACIÓN CON MUCHOS TIPOS DE PREGUNTA*//
         List<EvaluationQuestionCategory> evaluationQuestionCategories = new ArrayList<>();
-        for (int typeQuestion = 1; typeQuestion <= 6; typeQuestion++) {
+        for (int typeQuestion = 1; typeQuestion <= 7; typeQuestion++) {
             evaluationQuestionCategories.add
                     (new EvaluationQuestionCategory
                             (evaluation, new QuestionCategory((long) typeQuestion), 0));
