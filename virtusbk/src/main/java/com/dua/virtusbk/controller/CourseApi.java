@@ -5,6 +5,7 @@
  */
 package com.dua.virtusbk.controller;
 
+import com.dua.virtusbk.entity.Util;
 import com.dua.virtusbk.service.CourseService;
 import com.dua.virtusbk.entity.Course;
 import com.dua.virtusbk.repository.CourseRepository;
@@ -17,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Geovanny Brito.
@@ -34,6 +36,17 @@ public class CourseApi {
         List<Course> list = courseDAO.findAllByOrderByIdDesc();
         return ResponseEntity.ok(list);
     }
+
+    @GetMapping(path = "/getCourseData")
+    public ResponseEntity<Course> getCourse(@RequestParam(name = "id") Long id_course) {
+        Optional<Course> courseOptional = courseDAO.findById(id_course);
+        if (courseOptional.isPresent()) {
+            return ResponseEntity.ok(courseOptional.get());
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    }
+
 
     @PostMapping("/insertcourse")
     public ResponseEntity<String> insertCourse(@RequestBody @Validated Course course, @RequestHeader("token") String sessionToken) {
@@ -89,7 +102,7 @@ public class CourseApi {
         String id_course = Methods.JsonToString(jso, "id_course", "");
         String[] res = courseService.selectCourseSyllabuTopic(id_course);
         message = Methods.getJsonMessage(res[0], res[1], res[2]);
-        if (res[0].equals("2")) {
+        if (res[0].equals("2") || res[0].equals("3")) {
             return new ResponseEntity<>(message, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);

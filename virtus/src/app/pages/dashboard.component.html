@@ -1,4 +1,29 @@
-<div class="grid layout-dashboard">
+<div *ngIf="statusApi === 0">
+  <div class="grid">
+    <div class="col-6">
+      <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+    </div>
+    <div class="col-6">
+      <p-skeleton height="2rem" styleClass="mb-2"></p-skeleton>
+    </div>
+  </div>
+  <div class="grid">
+    <div class="col">
+      <p-skeleton height="8rem" styleClass="mb-2"></p-skeleton>
+    </div>
+    <div class="col">
+      <p-skeleton height="8rem" styleClass="mb-2"></p-skeleton>
+    </div>
+    <div class="col">
+      <p-skeleton height="8rem" styleClass="mb-2"></p-skeleton>
+    </div>
+    <div class="col">
+      <p-skeleton height="8rem" styleClass="mb-2"></p-skeleton>
+    </div>
+  </div>
+</div>
+
+<div class="grid layout-dashboard" *ngIf="statusApi === 2">
   <div class="col-6 intro-text">
     <img src="../../assets/layout/images/dashboard/shape.svg" alt="harmony-layout"/>
     <span>Datos Generales</span>
@@ -6,6 +31,8 @@
   <div class="col-6 intro-calendar">
     <p-calendar placeholder="Date" [showIcon]="true"></p-calendar>
   </div>
+
+
   <div class="col-12 md:col-6 lg:col-3">
     <div class="stats-box views">
       <span class="statistics-header">MIS CURSOS</span>

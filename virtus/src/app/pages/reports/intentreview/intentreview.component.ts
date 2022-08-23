@@ -1,30 +1,28 @@
 import {Component, OnInit} from '@angular/core';
-import {BreadcrumbService} from "../../app.breadcrumb.service";
-import {ConfirmationService, MessageService} from "primeng/api";
+import {BreadcrumbService} from "../../../app.breadcrumb.service";
+import {Person} from "../../../models/Person";
 import {Observable} from "rxjs";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Utils} from "../../util/Utils";
-import {Person} from "../../models/Person";
+import {Utils} from "../../../util/Utils";
 
 @Component({
-  selector: 'app-useradministration',
-  templateUrl: './useradministration.component.html',
-  styleUrls: ['./useradministration.component.scss']
+  selector: 'app-intentreview',
+  templateUrl: './intentreview.component.html',
+  styleUrls: ['./intentreview.component.scss']
 })
-export class UseradministrationComponent implements OnInit {
-
+export class IntentreviewComponent implements OnInit {
   globalUri: string | null = "";
   person: Person;
   persons: Person[];
   cols: any[];
 
-  constructor(
-    private breadcrumbService: BreadcrumbService,
-    private _http: HttpClient,
-    private utils: Utils,
+  constructor(private breadcrumbService: BreadcrumbService,
+              private _http: HttpClient,
+              private utils: Utils,
   ) {
     this.breadcrumbService.setItems([
-      {label: 'Gestión de Usuario', routerLink: ['/app/useradministration']},
+      {label: '', routerLink: ['/app/']},
+      {label: 'Revisión de intento', routerLink: ['/app/reports/intentreview']},
     ]);
   }
 
@@ -33,11 +31,8 @@ export class UseradministrationComponent implements OnInit {
     this.loadgetPersons();
 
     this.cols = [
-      {field: 'Nombre', header: 'Nombre'},
-      {field: 'Apellido', header: 'Apellido'},
-      {field: 'Email', header: 'Email'},
-      {field: 'Tipodeusuario', header: 'Tipo de usuario'},
-      {field: 'Tipoderegistro', header: 'Tipo de registro'}
+      {field: 'Calificación', header: 'Calificación'},
+      {field: 'Calificación', header: 'Calificación'},
     ];
   }
 
@@ -64,3 +59,4 @@ export class UseradministrationComponent implements OnInit {
   }
 
 }
+

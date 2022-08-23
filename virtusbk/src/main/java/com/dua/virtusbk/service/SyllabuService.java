@@ -76,8 +76,8 @@ public class SyllabuService {
     public String[] getSyllabu(String id_syllabu) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
 
-        Object[] syllabus = syllabuDAO.findIdSyllabu(Long.parseLong(id_syllabu));
-        if (syllabus.length > 0) {
+        List<Map<String, Object>> syllabus = syllabuDAO.findIdSyllabu(Long.parseLong(id_syllabu));
+        if (syllabus.size() > 0) {
             Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();
             data = gson.toJson(syllabus);
             status = "2";
@@ -85,7 +85,7 @@ public class SyllabuService {
             System.out.println(data);
 
         } else {
-            status = "4";
+            status = "3";
             message = "No se ha encontrado información.";
         }
 

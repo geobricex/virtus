@@ -41,6 +41,7 @@ export class MyprofileComponent implements OnInit {
     private storageService: StorageService
   ) {
     this.breadcrumbService.setItems([
+      {label: '', routerLink: ['/app/']},
       {label: 'Perfil', routerLink: ['/app/myprofile']},
     ]);
 

@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 
-import {BreadcrumbService} from '../../app.breadcrumb.service';
-import {Course} from "../../models/Course";
+import {BreadcrumbService} from '../../../app.breadcrumb.service';
+import {Course} from "../../../models/Course";
 
 import {Observable} from "rxjs";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Utils} from "../../util/Utils";
-import {Person} from "../../models/Person";
+import {Utils} from "../../../util/Utils";
+import {Person} from "../../../models/Person";
 import {ConfirmationService} from "primeng/api";
 import {Router} from "@angular/router";
 

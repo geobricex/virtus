@@ -61,10 +61,10 @@ public class TopicService {
             data = gson.toJson(topics).toString();
             status = "2";
             message = "Información obetnida con éxito.";
-            System.out.println(data);
+            System.out.println("getTopics=" + data);
 
         } else {
-            status = "4";
+            status = "3";
             message = "No se ha encontrado información.";
         }
 
@@ -83,7 +83,7 @@ public class TopicService {
             System.out.println(data);
 
         } else {
-            status = "4";
+            status = "3";
             message = "No se ha encontrado información.";
         }
 

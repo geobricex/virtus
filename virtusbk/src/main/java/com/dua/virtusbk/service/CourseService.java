@@ -95,6 +95,9 @@ public class CourseService {
             status = "2";
             message = "Información retornada con éxito.";
             data = jso.toString();
+        } else {
+            status = "3";
+            message = "No se ha encontrado datos.";
         }
 
         System.out.println(data);
@@ -111,14 +114,16 @@ public class CourseService {
             status = "2";
             message = "Información retornada con éxito.";
             data = jso.toString();
+        } else {
+            status = "3";
+            message = "No se ha encontrado datos.";
         }
-
         System.out.println(data);
         return new String[]{status, message, data};
     }
 
     public String[] selectCourseSyllabuTopic(String id_course) {
-        System.out.println("allCourseNoJoin");
+        System.out.println("selectCourseSyllabuTopic");
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
 
         String personsCours = personcourseDAO.finSelectCourseSyllabuTopic(Long.parseLong(id_course));
@@ -127,6 +132,9 @@ public class CourseService {
             status = "2";
             message = "Información retornada con éxito.";
             data = jso.toString();
+        } else {
+            status = "3";
+            message = "No se ha encontrado datos.";
         }
 
         System.out.println(data);

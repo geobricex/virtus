@@ -147,7 +147,8 @@
 
 <p-sidebar [(visible)]="informationCourse" position="right" [baseZIndex]="10000" [style]="{width:'35rem'}">
   <h3 style="font-weight:normal">{{infoCourseSelected.name_course}}</h3>
-  <h6> {{infoCourseSelected.description_course}} </h6>
+  <h5> {{infoCourseSelected.description_course}} </h5>
+  <h6> Agregado por: {{infoCourseSelected.fullname_person}} </h6>
 
   <span class="p-badge p-badge-info"> MÓDULOS </span>
 
@@ -189,8 +190,12 @@
             <p-table [value]="module.topics_" dataKey="id" responsiveLayout="scroll">
               <ng-template pTemplate="header">
       <tr>
-        <th pSortableColumn="name_topic">Título <p-sortIcon field="price"></p-sortIcon></th>
-        <th pSortableColumn="description_topic">Descripción <p-sortIcon field="customer"></p-sortIcon></th>
+        <th pSortableColumn="name_topic">Título
+          <p-sortIcon field="price"></p-sortIcon>
+        </th>
+        <th pSortableColumn="description_topic">Descripción
+          <p-sortIcon field="customer"></p-sortIcon>
+        </th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-topic let-expanded="expanded">

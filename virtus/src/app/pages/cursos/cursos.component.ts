@@ -49,7 +49,6 @@ export class CursosComponent implements OnInit {
       {label: 'Nombre curso Z-A', value: '!name_course'},
       {label: 'Mas antiguos', value: 'datereg_course'},
       {label: 'Ultimos agregados', value: '!datereg_course'}
-
     ];
   }
 

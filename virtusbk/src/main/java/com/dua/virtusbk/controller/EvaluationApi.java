@@ -91,7 +91,7 @@ public class EvaluationApi {
         if (!topic_id_evaluation.equals("")) {
             String[] res = evaluationService.getEvaluations(topic_id_evaluation);
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
-            if (res[0].equals("2")) {
+            if (res[0].equals("2") || res[0].equals("3")) {
                 return new ResponseEntity<>(message, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(message, HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
@@ -117,7 +117,7 @@ public class EvaluationApi {
         String id_evaluation = Methods.JsonToString(jso, "id_evaluation", "");
         String[] res = evaluationService.getEvaluation(id_evaluation);
         message = Methods.getJsonMessage(res[0], res[1], res[2]);
-        if (res[0].equals("2")) {
+        if (res[0].equals("2") || res[0].equals("3")) {
             return new ResponseEntity<>(message, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(message, HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
@@ -144,7 +144,7 @@ public class EvaluationApi {
                 System.out.println(id_evaluation);
                 res = evaluationService.getEvaluationQuestions(id_evaluation, clains[0]);
                 message = Methods.getJsonMessage(res[0], res[1], res[2]);
-                if (res[0].equals("2")) {
+                if (res[0].equals("2") || res[0].equals("3")) {
                     return new ResponseEntity<>(message, HttpStatus.OK);
                 } else {
                     return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);

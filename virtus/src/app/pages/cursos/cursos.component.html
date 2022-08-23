@@ -59,7 +59,7 @@
     </ng-template>
 
     <ng-template let-course pTemplate="gridItem">
-      <div class="col-12 md:col-4 hover:bg-black-alpha-10">
+      <div class="col-12 md:col-4 hover:bg-black-alpha-10 cursor-pointer">
         <div class="card m-3 border-1 surface-border">
           <div class="flex align-items-center justify-content-between p-s">
             <div class="flex align-items-center">
@@ -69,13 +69,13 @@
             </div>
             <span *ngIf="course.cant_syllabu > 0" class="product-badge status-instock"> DISPONIBLE </span>
             <span *ngIf="course.cant_syllabu === 0" class="product-badge status-outofstock"> NO DISPONIBLE </span>
-            <!--<span [class]="'product-badge status-' + course.inventoryStatus.toLowerCase()">{{product.inventoryStatus}}</span>-->
           </div>
           <div class="text-center">
             <img *ngIf="course.cant_syllabu > 0" [src]="course.pathimg_course" [alt]="course.name_course" width="200" height="200"
-                 class="w-9 shadow-2 my-3 mx-0 cursor-pointer" (click)="joinCourse(course.id_course)"/>
+                 class="w-full shadow-2 my-3 mx-0 cursor-pointer" (click)="joinCourse(course.id_course)"/>
             <img *ngIf="course.cant_syllabu === 0" [src]="course.pathimg_course" [alt]="course.name_course" width="200" height="200"
-                 class="w-9 shadow-2 my-3 mx-0 cursor-pointer" (click)="getUtils.showMessages(4, 'Curso no disponible', 'tst')"/>
+                 class="w-full shadow-2 my-3 mx-0 cursor-pointer"
+                 (click)="getUtils.showMessages(4, 'Curso no disponible', 'tst')"/>
             <div class="text-2xl font-bold">{{course.name_course}}</div>
             <div class="mb-3">{{course.description_course}}</div>
             <!--<p-rating [ngModel]="product.rating" [readonly]="true" [cancel]="false"></p-rating>-->
@@ -100,8 +100,8 @@
   <!--  </p-scrollPanel>-->
 </div>
 
-<p-confirmDialog header="Confirmar la union al curso" key="confirmJoin" icon="pi pi-exclamation-triangle"
-                 message="Esta seguro de ingresar a este curso ?"
+<p-confirmDialog header="Confirmar la unión al curso" key="confirmJoin" icon="pi pi-exclamation-triangle"
+                 message="¿Está seguro de ingresar a este curso?"
                  [style]="{width: '350px'}" acceptButtonStyleClass="p-button-text"
                  rejectButtonStyleClass="p-button-text"></p-confirmDialog>
 

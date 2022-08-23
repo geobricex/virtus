@@ -23,14 +23,16 @@ public interface EvaluationRepository extends JpaRepository<Evaluation, Long> {
             "       opportunity_evaluation, " +
             "       opportunities_evaluation, " +
             "       order_category, " +
+            "       allows_review, " +
             "       sum(eqc.number_question) as numberquestion_evaluation " +
             "FROM evaluations " +
             "         INNER JOIN evaluation_question_category eqc on evaluations.id_evaluation = eqc.evaluations_id_evaluation " +
             "WHERE topics_id_topic=?1 " +
-            "GROUP BY id_evaluation ", nativeQuery = true)
+            "GROUP BY id_evaluation " +
+            "ORDER BY  id_evaluation asc", nativeQuery = true)
     List<Evaluation> findIdTopicEvaluationList(Long param);
 
-    @Query(value = "SELECT * FROM evaluations where id_evaluation =?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM evaluations where id_evaluation =?1 order by  id_evaluation asc", nativeQuery = true)
     List<Map<String, Object>> findIdEvaluation(Long param);
 
     @Query(value = "SELECT information FROM questions_select(?1,?2)", nativeQuery = true)

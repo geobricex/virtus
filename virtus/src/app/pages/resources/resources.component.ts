@@ -33,6 +33,9 @@ export class ResourcesComponent implements OnInit {
   vieweRemoteUrl: boolean;
   urlSafe: any;
 
+  statusResources: number = 0;
+  statusEvaluations: number = 0;
+
   newResourseDialog: boolean;
   registerFormEvaluation: FormGroup;
   registerFormResources: FormGroup;
@@ -132,16 +135,27 @@ export class ResourcesComponent implements OnInit {
 
   loadResources() {
     console.log(this.idTopic);
-    this.apiLoadResources().subscribe(response => {
-      console.log(response);
-      this.resourcesData = response.data;
+    this.apiLoadResources().subscribe({
+      next: response => {
+        console.log(response);
+        this.statusResources = response.status;
+        if (response.status === 2)
+          this.resourcesData = response.data;
+      }, error: err => {
+
+      }
     })
   }
 
   loadEvaluations() {
-    this.apiLoadEvaluations().subscribe(response => {
-      console.log(response);
-      this.evaluationData = response.data;
+    this.apiLoadEvaluations().subscribe({
+      next: response => {
+        console.log(response);
+        this.statusEvaluations = response.status;
+        this.evaluationData = response.data;
+      }, error: err => {
+
+      }
     });
   }
 

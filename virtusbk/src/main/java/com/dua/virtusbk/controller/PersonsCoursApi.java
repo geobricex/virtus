@@ -43,7 +43,7 @@ public class PersonsCoursApi {
             JsonObject jso = Methods.stringToJSON(data);
             String id_course = Methods.JsonToString(jso, "id_course", "");
             res = courseService.joinCourse(id_course, clains[0]);
-            if (res[0].equals("2")) {
+            if (res[0].equals("2") || res[0].equals("3")) {
                 message = Methods.getJsonMessage(res[0], res[1], res[2]);
                 return new ResponseEntity<>(message, HttpStatus.OK);
             } else {
@@ -70,7 +70,7 @@ public class PersonsCoursApi {
             String state_course_person = Methods.JsonToString(jso, "state_course_person", "");
             res = courseService.myCourseJoin(clains[0], state_course_person);
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
-            if (res[0].equals("2")) {
+            if (res[0].equals("2") || res[0].equals("3")) {
                 return new ResponseEntity<>(message, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
@@ -96,7 +96,7 @@ public class PersonsCoursApi {
             String state_course_person = Methods.JsonToString(jso, "state_course_person", "");
             res = courseService.allCourseNoJoin(clains[0], state_course_person);
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
-            if (res[0].equals("2")) {
+            if (res[0].equals("2") || res[0].equals("3")) {
                 return new ResponseEntity<>(message, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);

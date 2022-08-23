@@ -40,7 +40,7 @@ public class EvaluationService {
         //*TABLA INTERMEDIA*//
         //*1 EVLUACIÓN CON MUCHOS TIPOS DE PREGUNTA*//
         List<EvaluationQuestionCategory> evaluationQuestionCategories = new ArrayList<>();
-        for (int typeQuestion = 1; typeQuestion <= 6; typeQuestion++) {
+        for (int typeQuestion = 1; typeQuestion <= 7; typeQuestion++) {
             evaluationQuestionCategories.add
                     (new EvaluationQuestionCategory
                             (evaluation, new QuestionCategory((long) typeQuestion), 0));
@@ -97,7 +97,7 @@ public class EvaluationService {
             System.out.println(data);
 
         } else {
-            status = "4";
+            status = "3";
             message = "No se ha encontrado información.";
         }
 
@@ -116,7 +116,7 @@ public class EvaluationService {
             System.out.println(data);
 
         } else {
-            status = "4";
+            status = "3";
             message = "No se ha encontrado información.";
         }
 
@@ -148,6 +148,9 @@ public class EvaluationService {
             } else {
                 data = jso.toString();
             }
+        } else {
+            status = "3";
+            message = "No se ha encontrado datos.";
         }
         return new String[]{status, message, data};
     }

@@ -4,6 +4,8 @@ import {Course} from "../../models/Course";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Utils} from "../../util/Utils";
 import {Observable} from "rxjs";
+import {Router} from "@angular/router";
+import {error} from "protractor";
 
 @Component({
   selector: 'app-miscursos',
@@ -19,12 +21,15 @@ export class MiscursosComponent implements OnInit {
   globalUri: string = "";
   infoCourseSelected: any = {};
   informationCourse: boolean;
-  loading: boolean = false;
+  loading: boolean = true;
+  sortOptions: any[];
+  statusApi: number = 0;
 
   expandedRows: any = {};
   isExpanded: boolean = false;
 
-  constructor(private breadcrumbService: BreadcrumbService, private utils: Utils, private _http: HttpClient) {
+  constructor(private breadcrumbService: BreadcrumbService, private utils: Utils, private _http: HttpClient,
+              public router: Router) {
     this.breadcrumbService.setItems([
       {label: '', routerLink: ['/app']},
       {label: 'Cursos', routerLink: ['/']},
@@ -34,6 +39,12 @@ export class MiscursosComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadMyCourse();
+    this.sortOptions = [
+      {label: 'Nombre curso A-Z', value: 'name_course'},
+      {label: 'Nombre curso Z-A', value: '!name_course'},
+      {label: 'Mas antiguos', value: 'datereg_course'},
+      {label: 'Ultimos agregados', value: '!datereg_course'}
+    ];
   }
 
   expandAll() {
@@ -49,12 +60,13 @@ export class MiscursosComponent implements OnInit {
 
   saberMas(idCourse: any) {
     console.log(idCourse)
-    this.apiSaberMas(idCourse).subscribe(response => {
-      console.log(response);
-      this.infoCourseSelected = response.data[0];
-      console.log(this.infoCourseSelected);
-      this.informationCourse = true;
-    });
+    this.apiSaberMas(idCourse)
+      .subscribe(response => {
+        console.log(response);
+        this.infoCourseSelected = response.data[0];
+        console.log(this.infoCourseSelected);
+        this.informationCourse = true;
+      });
   }
 
   apiSaberMas(idCourse: any): Observable<any> {
@@ -63,10 +75,23 @@ export class MiscursosComponent implements OnInit {
   }
 
   loadMyCourse() {
-    this.apiLoadMyCourse().subscribe(response => {
-      console.log(response);
-      this.courses = response.data;
-    });
+    this.loading = true;
+    this.apiLoadMyCourse()
+      .subscribe(
+        {
+          next: response => {
+            console.log(response);
+            this.statusApi = response.status;
+            if (response.status === 2) {
+              this.courses = response.data;
+            }
+            this.loading = false;
+          }
+          , error: err => {
+            console.log(err);
+            console.log("Error interno de servidor");
+          }
+        });
   }
 
   apiLoadMyCourse(): Observable<any> {

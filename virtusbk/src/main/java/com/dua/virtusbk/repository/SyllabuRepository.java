@@ -9,16 +9,16 @@ import java.util.List;
 import java.util.Map;
 
 public interface SyllabuRepository extends JpaRepository<Syllabu, Long> {
-    @Query(value = "SELECT id_syllabu,  count(t.id_topic) as cant_topic,\n" +
-            "       courses_id_course, datereg_syllabu, dateupdate_syllabu,\n" +
-            "       name_syllabu, description_syllabu, keywords_syllabu, pathimg_syllabus, state_syllabu\n" +
-            "FROM syllabus\n" +
-            "LEFT JOIN topics t on syllabus.id_syllabu = t.syllabus_id_syllabu\n" +
-            "WHERE state_syllabu = 'A' AND courses_id_course =?1 \n" +
-            "GROUP BY syllabus.id_syllabu\n" +
-            "ORDER BY syllabus.id_syllabu", nativeQuery = true)
+    @Query(value = "SELECT id_syllabu,  count(t.id_topic) as cant_topic," +
+            "       courses_id_course, datereg_syllabu, dateupdate_syllabu," +
+            "       name_syllabu, description_syllabu, keywords_syllabu, pathimg_syllabus, state_syllabu " +
+            "FROM syllabus " +
+            "LEFT JOIN topics t on syllabus.id_syllabu = t.syllabus_id_syllabu " +
+            "WHERE state_syllabu = 'A' AND courses_id_course =?1 " +
+            "GROUP BY syllabus.id_syllabu " +
+            "ORDER BY syllabus.id_syllabu asc", nativeQuery = true)
     List<Map<String, Object>> findByIdCourseList(Long param);
 
     @Query(value = "SELECT * FROM syllabus where id_syllabu =?1", nativeQuery = true)
-    Object[] findIdSyllabu(Long param);
+    List<Map<String, Object>> findIdSyllabu(Long param);
 }

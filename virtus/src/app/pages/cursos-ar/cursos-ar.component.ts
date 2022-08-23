@@ -45,7 +45,7 @@ export class CursosArComponent implements OnInit {
     private utils: Utils) {
     this.breadcrumbService.setItems([
       {label: '', routerLink: ['/app']},
-      {label: 'Cursos', routerLink: ['/app/coursear']}
+      {label: 'Cursos Activos', routerLink: ['/app/coursear']}
     ]);
   }
 
@@ -105,7 +105,8 @@ export class CursosArComponent implements OnInit {
   }
 
   apiLoadCourses(): Observable<Course[]> {
-    this.globalUri = this.utils.globalUrl + "course";
+    // this.globalUri = this.utils.globalUrl + "course";
+    this.globalUri = this.utils.globalUrl + "course/getcoursestatus?status_course=A";
     return this._http.get<Course[]>(this.globalUri, {});
   }
 
