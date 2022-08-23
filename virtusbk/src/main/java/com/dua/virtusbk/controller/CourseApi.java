@@ -47,6 +47,11 @@ public class CourseApi {
         }
     }
 
+    @GetMapping(path = "getcoursestatus")
+    public ResponseEntity<List<Course>> getCourseStatus(@RequestParam(name = "status_course") String status_course) {
+        List<Course> list = courseDAO.findAllByStateCourseOrdOrderByIdDesc(status_course);
+        return ResponseEntity.ok(list);
+    }
 
     @PostMapping("/insertcourse")
     public ResponseEntity<String> insertCourse(@RequestBody @Validated Course course, @RequestHeader("token") String sessionToken) {
