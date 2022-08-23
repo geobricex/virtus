@@ -506,30 +506,32 @@ export class QuestionnaireComponent implements OnInit {
   }
 
   evaluar_control_video(wildcard: string, i: number, database: string[]): void {
-    console.log("wilcardOriginal:" + wildcard);
     wildcard = wildcard.trim().replace(/[^a-zA-Z]+/, "");
-    console.log("wildcard:", wildcard, i, database.indexOf(wildcard.trim()));
+    console.log("evaluar_control_video:", wildcard, i, database.indexOf(wildcard.trim()));
     if (database.indexOf(wildcard.trim()) > -1) {
       //this.artyom.say("Ha indicado la selección del literal " + wildcard);
-      console.log("Ha indicado la selección del literal " + wildcard);
+      console.log("evaluar_control_video " + wildcard);
+
       console.log("#video_" + wildcard.trim() + ": => click")
-      this.autoClick("#video_" + wildcard.trim());
+      this.autoClick("#"+wildcard.trim().toLowerCase() + "_video_rec");
     } else {
-      console.log("No se encuentra ese literal")
+      console.log("No se encuentra el evaluar_control_video")
     }
   }
 
   evaluar_control_evaluacion(wildcard: string, i: number, database: string[]): void {
-    console.log("wilcardOriginal:" + wildcard);
     wildcard = wildcard.trim().replace(/[^a-zA-Z]+/, "");
-    console.log("wildcard:", wildcard, i, database.indexOf(wildcard.trim()));
+    console.log("evaluar_control_evaluacion:", wildcard, i, database.indexOf(wildcard.trim()));
     if (database.indexOf(wildcard.trim()) > -1) {
       //this.artyom.say("Ha indicado la selección del literal " + wildcard);
-      console.log("Ha indicado la selección del literal " + wildcard);
-      console.log("#video_" + wildcard.trim() + ": => click")
-      this.autoClick("#evt_control_" + wildcard.trim());
+      console.log("evaluar_control_evaluacion: " + wildcard);
+      if (wildcard.trim() == "señas"){
+        this.vistaVideoSenias = !this.vistaVideoSenias;
+      }else{
+        this.autoClick("#evt_control_" + wildcard.trim());
+      }
     } else {
-      console.log("No se encuentra ese literal")
+      console.log("No se encuentra es evaluar_control_evaluacion")
     }
   }
 
@@ -593,7 +595,7 @@ export class QuestionnaireComponent implements OnInit {
         smart: true, // Activar comando como un comando smart para poder usar comodines
         indexes: ["comando *"],
         action: function (i: number, wildcard: string) {
-          let database: string[] = ["siguiente", "anterior", "enviar"];
+          let database: string[] = ["siguiente", "anterior", "enviar", "señas"];
           local_this.evaluar_control_evaluacion(wildcard, i, database);
         }
       }
