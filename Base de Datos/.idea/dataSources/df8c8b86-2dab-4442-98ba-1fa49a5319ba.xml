@@ -3,7 +3,7 @@
   <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.39">
     <root id="1">
       <DateStyle>dmy</DateStyle>
-      <IntrospectionStateNumber>145543</IntrospectionStateNumber>
+      <IntrospectionStateNumber>145656</IntrospectionStateNumber>
       <ServerVersion>13.4</ServerVersion>
       <StartupTime>1658975013</StartupTime>
       <TimeZones>true ACDT
@@ -1451,7 +1451,7 @@ true posixrules
 13890||10|C|G
 13890||-9223372036854775808|U|G
 13890||10|U|G</Grants>
-      <IntrospectionStateNumber>145543</IntrospectionStateNumber>
+      <IntrospectionStateNumber>145656</IntrospectionStateNumber>
       <ObjectId>76116</ObjectId>
       <Relations>sequence|table|76840|76842|1
 sequence|table|76862|76864|1
@@ -4813,7 +4813,7 @@ sequence|table|77440|77442|1
     <schema id="270" parent="16" name="public">
       <Comment>standard public schema</Comment>
       <Current>1</Current>
-      <IntrospectionStateNumber>145543</IntrospectionStateNumber>
+      <IntrospectionStateNumber>145656</IntrospectionStateNumber>
       <ObjectId>2200</ObjectId>
       <StateNumber>287</StateNumber>
       <OwnerName>postgres</OwnerName>
@@ -5201,17 +5201,17 @@ sequence|table|77440|77442|1
       <TypeId>20</TypeId>
     </column>
     <column id="334" parent="292" name="name_course">
-      <DataType>varchar(50)|0s</DataType>
+      <DataType>varchar(75)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>2</Position>
-      <StateNumber>141903</StateNumber>
+      <StateNumber>145595</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="335" parent="292" name="description_course">
-      <DataType>varchar(150)|0s</DataType>
+      <DataType>varchar(250)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>3</Position>
-      <StateNumber>144137</StateNumber>
+      <StateNumber>145575</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="336" parent="292" name="keywords_course">
@@ -5982,9 +5982,9 @@ sequence|table|77440|77442|1
       <TypeId>20</TypeId>
     </column>
     <column id="441" parent="300" name="description_resource">
-      <DataType>varchar(100)|0s</DataType>
+      <DataType>varchar(500)|0s</DataType>
       <Position>10</Position>
-      <StateNumber>144490</StateNumber>
+      <StateNumber>145655</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="442" parent="300" name="pathurlremote_resource">
@@ -6090,10 +6090,10 @@ sequence|table|77440|77442|1
       <TypeId>20</TypeId>
     </column>
     <column id="455" parent="302" name="name_syllabu">
-      <DataType>varchar(50)|0s</DataType>
+      <DataType>varchar(75)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>2</Position>
-      <StateNumber>141917</StateNumber>
+      <StateNumber>145597</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="456" parent="302" name="description_syllabu">
@@ -6110,9 +6110,9 @@ sequence|table|77440|77442|1
       <TypeId>25</TypeId>
     </column>
     <column id="458" parent="302" name="pathimg_syllabus">
-      <DataType>varchar(200)|0s</DataType>
+      <DataType>varchar(250)|0s</DataType>
       <Position>5</Position>
-      <StateNumber>143296</StateNumber>
+      <StateNumber>145623</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="459" parent="302" name="datereg_syllabu">
@@ -6178,10 +6178,10 @@ sequence|table|77440|77442|1
       <TypeId>20</TypeId>
     </column>
     <column id="467" parent="303" name="name_topic">
-      <DataType>varchar(50)|0s</DataType>
+      <DataType>varchar(75)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>2</Position>
-      <StateNumber>141919</StateNumber>
+      <StateNumber>145600</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="468" parent="303" name="description_topic">
@@ -6198,9 +6198,9 @@ sequence|table|77440|77442|1
       <TypeId>25</TypeId>
     </column>
     <column id="470" parent="303" name="pathimg_topic">
-      <DataType>varchar(200)|0s</DataType>
+      <DataType>varchar(250)|0s</DataType>
       <Position>5</Position>
-      <StateNumber>143299</StateNumber>
+      <StateNumber>145621</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="471" parent="303" name="datereg_topic">

@@ -14,6 +14,10 @@ select *
 from resources;
 
 
+select *
+from syllabus
+where courses_id_course = 30;
+
 
 select *
 from questions--_category;
