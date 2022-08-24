@@ -101,9 +101,9 @@
   <p-dialog [(visible)]="newResourseDialog" [style]="{width: '450px'}" header="Nuevo recurso" [modal]="true"
             class="p-fluid">
     <ng-template pTemplate="content">
+      <p-messages [value]="msg"></p-messages>
       <form [formGroup]="registerFormResources">
         <div class="field">
-
           <div class="grid">
             <div class="col">
               <input type="text" autocomplete="off" pInputText class="w-full" formControlName="pathfileResource"
@@ -258,7 +258,8 @@
           <div class="col-4">
             <div class="field" style="display: grid">
               <label> Ordenar por categoría: </label>
-              <p-inputSwitch [(ngModel)]="checked" id="orderByCategory" formControlName="orderByCategory"></p-inputSwitch>
+              <p-inputSwitch [(ngModel)]="checked" id="orderByCategory"
+                             formControlName="orderByCategory"></p-inputSwitch>
             </div>
           </div>
         </div>
@@ -288,7 +289,7 @@
   <p-dialog [(visible)]="viewVideoDialog" header="Visualizar video" [modal]="true"
             class="p-fluid">
     <ng-template pTemplate="content">
-      <video src="{{videoUrl}}" controls></video>
+      <video src="{{videoUrl}}" controls width="800" height="500"></video>
     </ng-template>
   </p-dialog>
 
