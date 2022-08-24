@@ -152,13 +152,13 @@
         </div>
         <div class="col-12 text-center">
           <div class="p-buttonset">
-            <button id="reproducir_video" pButton pRipple icon="pi pi-play"
+            <button id="reproducir_video_rec" pButton pRipple icon="pi pi-play"
                     class="p-button-rounded p-button-warning mr-2 mb-2"
                     (click)="playVideo()"></button>
-            <button id="pausar_video" pButton pRipple icon="pi pi-pause"
+            <button id="pausar_video_rec" pButton pRipple icon="pi pi-pause"
                     class="p-button-rounded p-button-info mr-2 mb-2"
                     (click)="pauseVideo()"></button>
-            <button id="silenciar_video" pButton pRipple icon="pi pi-volume-up"
+            <button id="silenciar_video_rec" pButton pRipple icon="pi pi-volume-up"
                     class="p-button-rounded p-button-success mr-2 mb-2"
                     (click)="mutedVideo()"></button>
           </div>
@@ -264,6 +264,18 @@
         </div>
       </div>
       <div *ngIf="questionObject.name_questioncategory == tipoPregunta(5) && !questionObject.canResource">
+        <div class="col-12">
+          <p-messages severity="info" [enableService]="true"  >
+            <ng-template pTemplate>
+              <strong>Respuestas</strong>
+              <p-chip *ngFor="let option of questionObject.answers_[0].right_parts!" label="{{option.rightSide}}"
+                      image="{{option.resourse_leftSide.length > 0 ? option.resourse_leftSide :
+                      'assets/imgresource/empty/notification.png'}}" styleClass="mr-2"
+              ></p-chip>
+            </ng-template>
+          </p-messages>
+        </div>
+
         <div class="flex align-items-center justify-content-center">
           <p-card *ngFor="let option of questionObject.answers_[0].options_answer; let i = index"
                   [attr.data-index]="i" [style]="{width: '120px'}" styleClass="p-card-shadow">
@@ -274,7 +286,7 @@
                 <p>{{option.leftSide}}</p>
               </div>
               <div class="field-radiobutton">
-                <p-dropdown [options]="questionObject.answers_[0].right_parts!"
+                <p-dropdown [inputId]="'relation_input_' + i" [options]="questionObject.answers_[0].right_parts!"
                             [(ngModel)]="questionObject.answers_[0].responses[i]"
                             optionLabel="rightSide" placeholder=" -- - --"
                 ></p-dropdown>

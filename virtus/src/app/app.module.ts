@@ -203,8 +203,9 @@ FullCalendarModule.registerPlugins([
     TagModule,
     SkeletonModule,
     ChartModule,
-    AvatarModule
-
+    AvatarModule,
+    SkeletonModule,
+    ChartModule
   ],
 
   providers: [
