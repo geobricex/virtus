@@ -24,55 +24,16 @@ select * from answers;
 -- FUNCTION: public.home_select(integer, integer)
 
 -- DROP FUNCTION public.home_select(integer, integer);
+                                        select
+                                             (sum(timespent_person_evaluation)/count(timespent_person_evaluation)) as datereg_person_evaluation,
+                                                  (sum(qualification_person_evaluation)/count(qualification_person_evaluation)) as qualification_person_evaluation,
+                                                  p.evaluations_id_evaluation, e.name_evaluation, c.name_course
+                                       from persons_evaluations as p
+                                                inner join evaluations e on p.evaluations_id_evaluation = e.id_evaluation
+                                                inner join topics t on e.topics_id_topic = t.id_topic
+                                                inner join syllabus s on t.syllabus_id_syllabu = s.id_syllabu
+                                                inner join courses c on s.courses_id_course = c.id_course
+                                       where p.persons_id_person = 2
+                                       group by evaluations_id_evaluation, name_evaluation, name_course;
 
-CREATE OR REPLACE FUNCTION public.home_select(
-	id_type integer,
-	id_parameter integer)
-    RETURNS TABLE(status integer, infor text)
-    LANGUAGE 'plpgsql'
-    COST 100
-    VOLATILE PARALLEL UNSAFE
-    ROWS 1000
-
-AS $BODY$
-DECLARE
-  status int:= 4;
-  BEGIN
-  	BEGIN
-	-- COUNTS
-		IF (id_type = 1) THEN
-
-			status:= 2;
-
-			return query select
-			status, (select COALESCE(array_to_json(array_agg(row_to_json(home.*))),'[]') as home from (
-			select
-
-			(select count(*) as my_courses from persons_courses
-			 where persons_id_person = id_parameter),
-
-			(select COALESCE(sum(persons_evaluations.qualification_person_evaluation),'0') as my_point from persons_evaluations
-			where persons_id_person = id_parameter),
-
-			(select count(*) as total_course from courses
-			where state_course not in ('I')),
-
-			(select count(*) as total_user from persons
-			where type_person not in ('I', 'S'))
-			) as home)::text;
-
-
-		END IF;
-
-
-	EXCEPTION WHEN OTHERS THEN
-		raise notice '% %', SQLERRM, SQLSTATE;
-		status:=4;
-		rollback;
-	END;
-END;
-$BODY$;
-
-ALTER FUNCTION public.home_select(integer, integer)
-    OWNER TO postgres;
-
+select * from persons_evaluations;

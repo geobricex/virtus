@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {BreadcrumbService} from "../../../app.breadcrumb.service";
+import {Observable} from "rxjs";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
+import {Utils} from "../../../util/Utils";
 
 @Component({
   selector: 'app-scorereport',
@@ -7,8 +10,24 @@ import {BreadcrumbService} from "../../../app.breadcrumb.service";
   styleUrls: ['./scorereport.component.scss']
 })
 export class ScorereportComponent implements OnInit {
+  dataReviews: any;
+  globalUri: string | null = "";
+
+  /*Gráfica*/
+  lineData: any;
+  barData: any;
+  pieData: any;
+  polarData: any;
+  radarData: any;
+  lineOptions: any;
+  barOptions: any;
+  pieOptions: any;
+  polarOptions: any;
+  radarOptions: any;
 
   constructor(private breadcrumbService: BreadcrumbService,
+              private _http: HttpClient,
+              private utils: Utils,
   ) {
     this.breadcrumbService.setItems([
       {label: '', routerLink: ['/app/']},
@@ -16,25 +35,6 @@ export class ScorereportComponent implements OnInit {
     ]);
   }
 
-  lineData: any;
-
-  barData: any;
-
-  pieData: any;
-
-  polarData: any;
-
-  radarData: any;
-
-  lineOptions: any;
-
-  barOptions: any;
-
-  pieOptions: any;
-
-  polarOptions: any;
-
-  radarOptions: any;
 
   ngOnInit() {
     this.lineData = {
@@ -73,7 +73,7 @@ export class ScorereportComponent implements OnInit {
             color: '#A0A7B5'
           },
           grid: {
-            color:  'rgba(160, 167, 181, .3)',
+            color: 'rgba(160, 167, 181, .3)',
           }
         },
         y: {
@@ -81,7 +81,7 @@ export class ScorereportComponent implements OnInit {
             color: '#A0A7B5'
           },
           grid: {
-            color:  'rgba(160, 167, 181, .3)',
+            color: 'rgba(160, 167, 181, .3)',
           }
         },
       }
@@ -119,7 +119,7 @@ export class ScorereportComponent implements OnInit {
             color: '#A0A7B5'
           },
           grid: {
-            color:  'rgba(160, 167, 181, .3)',
+            color: 'rgba(160, 167, 181, .3)',
           }
         },
         y: {
@@ -127,7 +127,7 @@ export class ScorereportComponent implements OnInit {
             color: '#A0A7B5'
           },
           grid: {
-            color:  'rgba(160, 167, 181, .3)',
+            color: 'rgba(160, 167, 181, .3)',
           }
         },
       }
@@ -240,5 +240,28 @@ export class ScorereportComponent implements OnInit {
         }
       }
     };
+  }
+
+  loadgetReviews() {
+    console.log("DATA EVALUATION")
+    this.apiGetDataReview(3).subscribe({
+      next: response => {
+        this.dataReviews = response.data;
+        console.log(this.dataReviews);
+      }
+    })
+  }
+
+  apiGetDataReview(type: any): Observable<any> {
+    this.globalUri = this.utils.globalUrl + "personsevaluations/getpersonsevaluations";
+    let headers = new HttpHeaders()
+      .set('Access-Control-Allow-Origin', '*')
+      .set('provider', 'native')
+      .set('token', this.utils.token);
+    let queryParams = new HttpParams()
+      .append("type", type)
+      .append("id_evaluation", 0);
+    return this._http.get<any>(this.globalUri, {params: queryParams, headers: headers});
+
   }
 }
