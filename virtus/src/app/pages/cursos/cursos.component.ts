@@ -97,7 +97,7 @@ export class CursosComponent implements OnInit {
   joinCourse(idCourse: any) {
     this.confirmationService.confirm({
       key: 'confirmJoin',
-      message: 'Esta seguro de ingresar a este curso ?',
+      message: '¿Está seguro de ingresar a este curso ?',
       acceptLabel: 'Si',
       rejectLabel: 'No',
       accept: () => {

@@ -51,7 +51,11 @@ export class AppMenuComponent implements OnInit {
           label: 'Cursos', icon: 'pi pi-fw pi-book', routerLink: ['/javascript;'],
           items: [
             {label: 'Todos los cursos activos', icon: 'pi pi-fw pi-box', routerLink: ['/app/coursear']},
-            {label: 'Todos los cursos inactivos', icon: 'pi pi-fw pi-file-excel', routerLink: ['/app/courseinactivear']},
+            {
+              label: 'Todos los cursos inactivos',
+              icon: 'pi pi-fw pi-file-excel',
+              routerLink: ['/app/courseinactivear']
+            },
             // {label: 'Mis cursos agregados', icon: 'pi pi-fw pi-folder-open', routerLink: ['/app/coursear']},
           ]
         },
@@ -63,7 +67,14 @@ export class AppMenuComponent implements OnInit {
             {label: 'Tiempo', icon: 'pi pi-fw pi-clock', routerLink: ['/app/reports/timereport']},
             {label: 'Puntaje', icon: 'pi pi-fw pi-th-large', routerLink: ['/app/reports/scorereport']}
           ]
-        }
+        },
+        {
+          label: 'Más', icon: 'pi pi-fw pi-plus-circle', routerLink: ['/javascript;'],
+          items: [
+            {label: 'Juegos', icon: 'pi pi-fw pi-slack', routerLink: ['/app/games']},
+          ]
+        },
+
       ];
     } else if (this.user.type_person === "I") {
       this.model = [

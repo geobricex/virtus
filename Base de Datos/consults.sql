@@ -18,14 +18,22 @@ delete from persons_courses where persons_id_person = 7;
 
 select * from courses;
 
+select * from answers;
 
 
-SELECT id_syllabu,  count(t.id_topic) as cant_topic,
-           courses_id_course, datereg_syllabu::date, dateupdate_syllabu,
-             name_syllabu, description_syllabu, keywords_syllabu, pathimg_syllabus, state_syllabu
-            FROM syllabus
-            LEFT JOIN topics t on syllabus.id_syllabu = t.syllabus_id_syllabu
-            WHERE state_syllabu = 'A' AND courses_id_course =1
-            GROUP BY syllabus.id_syllabu
-            ORDER BY syllabus.id_syllabu
+-- FUNCTION: public.home_select(integer, integer)
 
+-- DROP FUNCTION public.home_select(integer, integer);
+                                        select
+                                             (sum(timespent_person_evaluation)/count(timespent_person_evaluation)) as datereg_person_evaluation,
+                                                  (sum(qualification_person_evaluation)/count(qualification_person_evaluation)) as qualification_person_evaluation,
+                                                  p.evaluations_id_evaluation, e.name_evaluation, c.name_course
+                                       from persons_evaluations as p
+                                                inner join evaluations e on p.evaluations_id_evaluation = e.id_evaluation
+                                                inner join topics t on e.topics_id_topic = t.id_topic
+                                                inner join syllabus s on t.syllabus_id_syllabu = s.id_syllabu
+                                                inner join courses c on s.courses_id_course = c.id_course
+                                       where p.persons_id_person = 2
+                                       group by evaluations_id_evaluation, name_evaluation, name_course;
+
+select * from persons_evaluations;

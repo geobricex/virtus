@@ -315,7 +315,8 @@ export class ResourcesarComponent implements OnInit {
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
       console.log(file);
-      if (file.type === "application/pdf" || file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+      console.log(file.type);
+      if (file.type === "application/pdf" || file.type === "application/x-zip-compressed" || file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
         || file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
         this.tmpFile = file;
         this.formR["pathfileResource"].setValue(file.name);

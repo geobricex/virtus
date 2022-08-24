@@ -1,15 +1,16 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com.dua.virtusbk.controller;
 
-
-import com.dua.virtusbk.entity.Evaluation;
-import com.dua.virtusbk.entity.Setting;
-import com.dua.virtusbk.entity.Util;
-import com.dua.virtusbk.repository.SettingRepository;
-import com.dua.virtusbk.repository.UtilRepository;
-import com.dua.virtusbk.service.SettingService;
-import com.dua.virtusbk.service.UtilService;
+import com.dua.virtusbk.entity.*;
+import com.dua.virtusbk.repository.AnswerRepository;
+import com.dua.virtusbk.repository.PersonsEvaluationsRepository;
+import com.dua.virtusbk.service.AnswerService;
+import com.dua.virtusbk.service.PersonsEvaluationsService;
 import com.dua.virtusbk.util.Methods;
-import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,33 +18,49 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
+/**
+ * @author Geovanny Brito.
+ */
 @RestController
-@RequestMapping("/settings")
-public class SettingApis {
+@RequestMapping("/personsevaluations")
+public class PersonsEvaluationsApi {
+    @Autowired
+    private PersonsEvaluationsRepository personsEvaluationsDAO;
 
     @Autowired
-    private SettingRepository settingDAO;
+    private PersonsEvaluationsService personsEvaluationsService;
 
-    @Autowired
-    private SettingService settingService;
-
-    //@RequestMapping(value = "", method = RequestMethod.GET)
     @GetMapping
-    public ResponseEntity<List<Setting>> getSetting() {
-        List<Setting> listSettings = settingDAO.findAll();
-        return ResponseEntity.ok(listSettings);
+    public ResponseEntity<List<PersonsEvaluations>> getPersonsEvaluations() {
+        List<PersonsEvaluations> list = personsEvaluationsDAO.findAll();
+        return ResponseEntity.ok(list);
     }
 
-    @PostMapping("/insertservice")
-    public ResponseEntity<String> insertService(@RequestBody @Validated Setting setting, @RequestHeader("token") String sessionToken) {
-        System.out.println("insertservice...");
+    @GetMapping(path = "getpersonsevaluations")
+    public ResponseEntity<String> getPersonsEvaluations(@RequestParam(name = "type") int type, @RequestParam(name = "id_evaluation") Long id_evaluation, @RequestHeader("token") String sessionToken) {
         String message;
         String[] clains = Methods.getDataToJwt(sessionToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
         if (res[0].equals("2")) {
-            res = settingService.saveSetting(setting);
+            System.out.println("getPersonsevaluations");
+            res = personsEvaluationsService.getPersonsEvaluations(type, id_evaluation,Long.parseLong(clains[0]));
+            message = Methods.getJsonMessage(res[0], res[1], res[2]);
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } else {
+            message = Methods.getJsonMessage("4", "Credenciales de sesión inválidas, vuelve a iniciar sesión "
+                    + "e intentalo de nuevo.", "[]");
+            return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @PostMapping("/insertpersonsevaluations")
+    public ResponseEntity<String> insertPersonsEvaluations(@RequestBody @Validated PersonsEvaluations personsEvaluations, @RequestHeader("token") String sessionToken) {
+        String message;
+        String[] clains = Methods.getDataToJwt(sessionToken);
+        String[] res = Methods.validatePermit(clains[0], clains[1], 1);
+        if (res[0].equals("2")) {
+            res = personsEvaluationsService.savePersonsEvaluations(personsEvaluations);
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
             if (res[0].equals("2")) {
                 return new ResponseEntity<>(message, HttpStatus.OK);
@@ -57,43 +74,19 @@ public class SettingApis {
         }
     }
 
-    @PostMapping("/updateservice")
-    public ResponseEntity<String> updateService(@RequestBody @Validated Setting setting, @RequestHeader("token") String sessionToken) {
-        System.out.println("updateService...");
+    @PostMapping("/updatepersonsevaluations")
+    public ResponseEntity<String> updatePersonsEvaluations(@RequestBody @Validated PersonsEvaluations personsEvaluations, @RequestHeader("token") String sessionToken) {
         String message;
         String[] clains = Methods.getDataToJwt(sessionToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
         if (res[0].equals("2")) {
-            res = settingService.updateSetting(setting);
+            res = personsEvaluationsService.updatePersonsEvaluations(personsEvaluations);
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
             if (res[0].equals("2")) {
                 return new ResponseEntity<>(message, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
             }
-        } else {
-            message = Methods.getJsonMessage("4", "Credenciales de sesión inválidas, vuelve a iniciar sesión "
-                    + "e intentalo de nuevo.", "[]");
-            return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
-        }
-    }
-
-    @PostMapping("/getserviceforperson")
-    public ResponseEntity<String> getServiceForPerson(@RequestHeader("token") String sessionToken) {
-        System.out.println("getServiceForPerson...");
-        String message;
-        String[] clains = Methods.getDataToJwt(sessionToken);
-        String[] res = Methods.validatePermit(clains[0], clains[1], 1);
-        if (res[0].equals("2")) {
-
-            res = settingService.getSettingForPerson(clains[0]);
-            message = Methods.getJsonMessage(res[0], res[1], res[2]);
-            if (res[0].equals("2")|| res[0].equals("3")) {
-                return new ResponseEntity<>(message, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
-            }
-
         } else {
             message = Methods.getJsonMessage("4", "Credenciales de sesión inválidas, vuelve a iniciar sesión "
                     + "e intentalo de nuevo.", "[]");

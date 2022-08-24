@@ -47,6 +47,11 @@ public class CourseApi {
         }
     }
 
+    @GetMapping(path = "getcoursestatus")
+    public ResponseEntity<List<Course>> getCourseStatus(@RequestParam(name = "status_course") String status_course) {
+        List<Course> list = courseDAO.findAllByStateCourseOrdOrderByIdDesc(status_course);
+        return ResponseEntity.ok(list);
+    }
 
     @PostMapping("/insertcourse")
     public ResponseEntity<String> insertCourse(@RequestBody @Validated Course course, @RequestHeader("token") String sessionToken) {
@@ -64,7 +69,7 @@ public class CourseApi {
         } else {
             message = Methods.getJsonMessage("4", "Credenciales de sesión inválidas, vuelve a iniciar sesión "
                     + "e intentalo de nuevo.", "[]");
-            return new ResponseEntity<>(message, HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
+            return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -84,7 +89,7 @@ public class CourseApi {
         } else {
             message = Methods.getJsonMessage("4", "Credenciales de sesión inválidas, vuelve a iniciar sesión "
                     + "e intentalo de nuevo.", "[]");
-            return new ResponseEntity<>(message, HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
+            return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -110,7 +115,7 @@ public class CourseApi {
 //        } else {
 //            message = Methods.getJsonMessage("4", "Credenciales de sesión inválidas, vuelve a iniciar sesión "
 //                    + "e intentalo de nuevo.", "[]");
-//            return new ResponseEntity<>(message, HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
+//            return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
 //        }
     }
 }

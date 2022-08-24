@@ -107,6 +107,8 @@ import {ChartModule} from "primeng/chart";
 import { CursosArInactiveComponent } from './pages/cursos-ar-inactive/cursos-ar-inactive.component';
 // ---- COMANDO DE TECLADO -----
 import {HotkeyModule} from 'angular2-hotkeys';
+import { GamesComponent } from './pages/games/games.component';
+import { ReviewComponent } from './pages/review/review.component';
 
 
 FullCalendarModule.registerPlugins([
@@ -151,7 +153,9 @@ FullCalendarModule.registerPlugins([
     TimereportComponent,
     ScorereportComponent,
     RequestssuggestionsComponent,
-    CursosArInactiveComponent
+    CursosArInactiveComponent,
+    GamesComponent,
+    ReviewComponent
   ],
   imports: [
     HttpClientModule,
@@ -199,11 +203,12 @@ FullCalendarModule.registerPlugins([
     FileUploadModule,
     RatingModule,
     TagModule,
-    AvatarModule,
-    SkeletonModule,
     SkeletonModule,
     ChartModule,
     HotkeyModule.forRoot(),
+    SkeletonModule,
+    ChartModule,
+    AvatarModule
   ],
 
   providers: [
