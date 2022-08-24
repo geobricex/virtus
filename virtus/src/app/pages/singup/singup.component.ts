@@ -5,6 +5,7 @@ import {Observable} from "rxjs";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Utils} from "../../util/Utils";
 import {Message} from "primeng/api";
+import {FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule, FormBuilder} from '@angular/forms';
 
 @Component({
   selector: 'app-singup',
@@ -19,15 +20,29 @@ export class SingupComponent implements OnInit {
   date: Date;
   msgs: Message[] = [];
 
+  frmSingUp: FormGroup;
+
   constructor(
     private utils: Utils,
-    private _http: HttpClient
+    private _http: HttpClient,
+    private formBuilder: FormBuilder,
   ) {
   }
 
   ngOnInit(): void {
     this.person = new Person(0, "", "", "", "", "", "", "", "", "", "");
     this.date = new Date();
+    this.frmSingUp = this.formBuilder.group({
+      name: ["", Validators.required],
+      lastname: ["", Validators.required],
+      email: ["", Validators.required],
+      password: ["", Validators.required],
+      repeat_password: ["", Validators.required]
+    });
+  }
+
+  get form() {
+    return this.frmSingUp.controls;
   }
 
   registerUser() {
