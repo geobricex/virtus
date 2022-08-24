@@ -5,46 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bbc5533f-4237-4b82-99c8-ccd5e9e0c413" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/backups/virtus7.0.backup" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/script_create_bd6.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/PersonsEvaluationsApi.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/dto/PersonsEvaluationsDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/entity/PersonsEvaluations.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/repository/PersonsEvaluationsRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/service/PersonsEvaluationsService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/df8c8b86-2dab-4442-98ba-1fa49a5319ba.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/df8c8b86-2dab-4442-98ba-1fa49a5319ba.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/df8c8b86-2dab-4442-98ba-1fa49a5319ba/storage_v2/_src_/database/virtus.kxFZzw/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/df8c8b86-2dab-4442-98ba-1fa49a5319ba/storage_v2/_src_/database/virtus.kxFZzw/schema/public.abK9xQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/consults.sql" beforeDir="false" afterPath="$PROJECT_DIR$/consults.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/dl_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/dl_settings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/logical/Objects.local" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/logical/Objects.local" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/logical/entity/seg_0/003A7B61-9D5E-9A1A-A469-431CEDDC2AB6.xml" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/logical/entity/seg_0/003A7B61-9D5E-9A1A-A469-431CEDDC2AB6.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/logical/entity/seg_0/306355EE-13C1-3B02-80A6-7C8B3AD2A2B7.xml" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/logical/entity/seg_0/306355EE-13C1-3B02-80A6-7C8B3AD2A2B7.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/logical/entity/seg_0/81C33A03-A66C-8294-76CD-15F9E167FB0D.xml" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/logical/entity/seg_0/81C33A03-A66C-8294-76CD-15F9E167FB0D.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/logical/entity/seg_0/D35CEDF3-8903-CB14-CBC9-D5D5DFF7B00C.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/logical/relation/seg_0/162A8D70-AB43-0DD0-536B-969D43A80716.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/logical/relation/seg_0/3E7BD8AB-8413-DBBC-602B-D474263D1FC8.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/logical/subviews/30C6B78F-2F85-5560-0373-9CE20245471A.xml" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/logical/subviews/30C6B78F-2F85-5560-0373-9CE20245471A.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/mapping/ExtendedMap.xml" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/mapping/ExtendedMap.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/querys.sql" beforeDir="false" afterPath="$PROJECT_DIR$/querys.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtus/src/app/pages/cursos/cursos.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/src/app/pages/cursos/cursos.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtus/src/app/pages/reports/intentreview/intentreview.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/src/app/pages/reports/intentreview/intentreview.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtus/src/app/pages/reports/intentreview/intentreview.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/src/app/pages/reports/intentreview/intentreview.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/AnswerApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/AnswerApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/CourseApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/CourseApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/EvaluationApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/EvaluationApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/PersonApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/PersonApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/PersonsAnswerApi.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/PersonsCoursApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/PersonsCoursApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/QuestionApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/QuestionApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/ResourceApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/ResourceApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/SettingApis.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/SettingApis.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/SyllabuApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/SyllabuApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/TopicApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/TopicApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/entity/Evaluation.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/entity/Evaluation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/entity/PersonsAnswer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/repository/PersonsAnswerRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/service/PersonAnswerService.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
