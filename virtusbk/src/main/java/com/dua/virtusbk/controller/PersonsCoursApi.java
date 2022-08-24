@@ -78,7 +78,7 @@ public class PersonsCoursApi {
         } else {
             message = Methods.getJsonMessage("4", "Credenciales de sesión inválidas, vuelve a iniciar sesión "
                     + "e intentalo de nuevo.", "[]");
-            return new ResponseEntity<>(message, HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
+            return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -104,7 +104,7 @@ public class PersonsCoursApi {
         } else {
             message = Methods.getJsonMessage("4", "Credenciales de sesión inválidas, vuelve a iniciar sesión "
                     + "e intentalo de nuevo.", "[]");
-            return new ResponseEntity<>(message, HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
+            return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
         }
     }
 }

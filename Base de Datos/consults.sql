@@ -18,14 +18,61 @@ delete from persons_courses where persons_id_person = 7;
 
 select * from courses;
 
+select * from answers;
 
 
-SELECT id_syllabu,  count(t.id_topic) as cant_topic,
-           courses_id_course, datereg_syllabu::date, dateupdate_syllabu,
-             name_syllabu, description_syllabu, keywords_syllabu, pathimg_syllabus, state_syllabu
-            FROM syllabus
-            LEFT JOIN topics t on syllabus.id_syllabu = t.syllabus_id_syllabu
-            WHERE state_syllabu = 'A' AND courses_id_course =1
-            GROUP BY syllabus.id_syllabu
-            ORDER BY syllabus.id_syllabu
+-- FUNCTION: public.home_select(integer, integer)
+
+-- DROP FUNCTION public.home_select(integer, integer);
+
+CREATE OR REPLACE FUNCTION public.home_select(
+	id_type integer,
+	id_parameter integer)
+    RETURNS TABLE(status integer, infor text)
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+    ROWS 1000
+
+AS $BODY$
+DECLARE
+  status int:= 4;
+  BEGIN
+  	BEGIN
+	-- COUNTS
+		IF (id_type = 1) THEN
+
+			status:= 2;
+
+			return query select
+			status, (select COALESCE(array_to_json(array_agg(row_to_json(home.*))),'[]') as home from (
+			select
+
+			(select count(*) as my_courses from persons_courses
+			 where persons_id_person = id_parameter),
+
+			(select COALESCE(sum(persons_evaluations.qualification_person_evaluation),'0') as my_point from persons_evaluations
+			where persons_id_person = id_parameter),
+
+			(select count(*) as total_course from courses
+			where state_course not in ('I')),
+
+			(select count(*) as total_user from persons
+			where type_person not in ('I', 'S'))
+			) as home)::text;
+
+
+		END IF;
+
+
+	EXCEPTION WHEN OTHERS THEN
+		raise notice '% %', SQLERRM, SQLSTATE;
+		status:=4;
+		rollback;
+	END;
+END;
+$BODY$;
+
+ALTER FUNCTION public.home_select(integer, integer)
+    OWNER TO postgres;
 

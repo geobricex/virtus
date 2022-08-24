@@ -111,23 +111,47 @@
             {{person.dateupdatePerson.date.day + '/' + person.dateupdatePerson.date.month + '/' + person.dateupdatePerson.date.year + ' ' +
           person.dateupdatePerson.time.hour + ':' + person.dateupdatePerson.time.minute + ':' + person.dateupdatePerson.time.second}}
           </td>
-          <div class="flex">
-            <button pButton pRipple icon="pi pi-angle-double-up"
-                    class="p-button-rounded p-button-success mr-2"></button>
-            <button pButton pRipple icon="pi pi-angle-double-down"
-                    class="p-button-rounded p-button-warning mr-2"></button>
-            <button pButton pRipple icon="pi pi-exclamation-triangle"
-                    class="p-button-rounded p-button-danger mr-2"></button>
-            <button pButton pRipple icon="pi pi-user-plus"
-                    class="p-button-rounded p-button-help mr-2"></button>
-            <button pButton pRipple class="p-button-rounded p-button-info mr-2">
-              <fa-icon [icon]="['fas', 'hands']"></fa-icon>
-            </button>
-            <button pButton pRipple class="p-button-rounded p-button-info mr-2">
-              <fa-icon [icon]="['fas', 'hands']"></fa-icon>
-            </button>
 
-          </div>
+            <div class="flex"
+              *ngIf="user.type_person == 'R'">
+              <button *ngIf="person.typePerson == 'U'" pButton pRipple icon="pi pi-angle-double-up"
+                      class="p-button-rounded p-button-success mr-2"></button>
+
+              <button *ngIf="person.typePerson == 'A'" pButton pRipple icon="pi pi-angle-double-down"
+                      class="p-button-rounded p-button-warning mr-2"></button>
+
+              <button *ngIf="person.typePerson == 'U'" pButton pRipple icon="pi pi-exclamation-triangle"
+                      class="p-button-rounded p-button-danger mr-2"></button>
+
+              <button *ngIf="person.typePerson == 'S'" pButton pRipple icon="pi pi-user-plus"
+                      class="p-button-rounded p-button-help mr-2"></button>
+
+              <button *ngIf="person.typePerson == 'U'" pButton pRipple class="p-button-rounded p-button-info mr-2">
+                <fa-icon [icon]="['fas', 'hands']"></fa-icon>
+              </button>
+
+              <button *ngIf="person.typePerson == 'U'" pButton pRipple class="p-button-rounded p-button-info mr-2">
+                <fa-icon [icon]="['fas', 'hands']"></fa-icon>
+              </button>
+            </div>
+            <div class="flex"
+              *ngIf="user.type_person == 'A'">
+              <button *ngIf="person.typePerson == 'U'" pButton pRipple icon="pi pi-exclamation-triangle"
+                      class="p-button-rounded p-button-danger mr-2"></button>
+
+              <button *ngIf="person.typePerson == 'S'" pButton pRipple icon="pi pi-user-plus"
+                      class="p-button-rounded p-button-help mr-2"></button>
+
+              <button *ngIf="person.typePerson == 'U'" pButton pRipple class="p-button-rounded p-button-info mr-2">
+                <fa-icon [icon]="['fas', 'hands']"></fa-icon>
+              </button>
+
+              <button *ngIf="person.typePerson == 'U'" pButton pRipple class="p-button-rounded p-button-info mr-2">
+                <fa-icon [icon]="['fas', 'hands']"></fa-icon>
+              </button>
+
+            </div>
+
         </tr>
       </ng-template>
     </p-table>

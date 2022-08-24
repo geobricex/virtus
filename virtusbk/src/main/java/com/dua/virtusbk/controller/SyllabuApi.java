@@ -54,7 +54,7 @@ public class SyllabuApi {
         } else {
             message = Methods.getJsonMessage("4", "Credenciales de sesión inválidas, vuelve a iniciar sesión "
                     + "e intentalo de nuevo.", "[]");
-            return new ResponseEntity<>(message, HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
+            return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -74,7 +74,7 @@ public class SyllabuApi {
         } else {
             message = Methods.getJsonMessage("4", "Credenciales de sesión inválidas, vuelve a iniciar sesión "
                     + "e intentalo de nuevo.", "[]");
-            return new ResponseEntity<>(message, HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
+            return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -111,7 +111,7 @@ public class SyllabuApi {
         if (res[0].equals("2")|| res[0].equals("3")) {
             return new ResponseEntity<>(message, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(message, HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
+            return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
         }
 //        } else {
 //            return ResponseEntity.noContent().build();
@@ -134,7 +134,7 @@ public class SyllabuApi {
         if (res[0].equals("2") || res[0].equals("3")) {
             return new ResponseEntity<>(message, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(message, HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
+            return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
         }
 //        } else {
 //            return ResponseEntity.noContent().build();

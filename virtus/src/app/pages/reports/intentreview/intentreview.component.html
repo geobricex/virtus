@@ -14,14 +14,14 @@
                 (click)="dt.exportCSV()"></button>
       </ng-template>
     </p-toolbar>
-    <p-table #dt [value]="persons" responsiveLayout="scroll" [rows]="5" [columns]="cols"
+    <p-table #dt [value]="dataReviews" responsiveLayout="scroll" [rows]="5" [columns]="cols"
              [globalFilterFields]="['Tipodeprueba','Calificación']"
              [paginator]="true" [rowsPerPageOptions]="[5,10,20,30]" [showCurrentPageReport]="true"
              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
              selectionMode="multiple" [rowHover]="true" dataKey="id">
       <ng-template pTemplate="caption">
         <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-          <h5 class="m-0">Registro de pruebas dadas</h5>
+          <h5 class="m-0">Registro de pruebas realizadas</h5>
           <span class="block mt-2 md:mt-0 p-input-icon-left">
                             <i class="pi pi-search"></i>
                             <input pInputText type="text" placeholder="Buscar..."/>
@@ -56,46 +56,56 @@
           <th pSortableColumn="Calificación">Calificación
             <p-sortIcon field="Calificación"></p-sortIcon>
           </th>
-          <th></th>
+          <th pSortableColumn="Calificación">Intento
+            <p-sortIcon field="Calificación"></p-sortIcon>
+          </th>
+          <th pSortableColumn="Revisión">Revisión
+          </th>
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-person>
+      <ng-template pTemplate="body" let-review>
         <tr>
           <td style="width:14%; min-width:10rem;"><span class="p-column-title">Fecha de evaluación</span>
-            {{person.dateregPerson.date.day + '/' + person.dateregPerson.date.month + '/' + person.dateregPerson.date.year + ' ' +
-            person.dateregPerson.time.hour + ':' + person.dateregPerson.time.minute + ':' + person.dateregPerson.time.second}}
+            {{review.datereg_person_evaluation}}
           </td>
           <td style="width:14%; min-width:10rem;">
             <span class="p-column-title">Curso</span>
-            {{person.providerPerson}}
+            {{review.name_course}}
           </td>
 
           <td style="width:14%; min-width:8rem;">
             <span class="p-column-title">Módulo</span>
-            {{person.providerPerson}}
+            {{review.name_syllabu}}
           </td>
           <td style="width:14%; min-width:10rem;">
             <span class="p-column-title">Tema</span>
-            {{person.providerPerson}}
+            {{review.name_topic}}
           </td>
           <td style="width:14%; min-width:10rem;">
             <span class="p-column-title">Tipo de prueba</span>
-            {{person.providerPerson}}
+            {{review.type_evaluation == 1 ? 'Evaluación' : 'Questionario'}}
           </td>
           <td style="width:14%; min-width:10rem;">
             <span class="p-column-title">Nombre de la prueba</span>
-            {{person.providerPerson}}
+            {{review.name_evaluation}}
           </td>
           <td style="width:14%; min-width:10rem;">
             <span class="p-column-title">Tiempo empleado</span>
-            {{person.providerPerson}}
+            {{review.timespent_person_evaluation}}
           </td>
           <td style="width:14%; min-width:10rem;">
             <span class="p-column-title">Calificación</span>
-            {{person.providerPerson}}
+            {{review.qualification_person_evaluation}}
           </td>
           <td style="width:14%; min-width:10rem;">
-            {{person.providerPerson}}
+            <span class="p-column-title">Intento</span>
+            {{review.trynumber_person_evaluation}}
+          </td>
+          <td style="width:14%; min-width:10rem;">
+            <button pButton pRipple icon="pi pi-eye"
+                    class="p-button-rounded p-button-help mr-2"
+                    routerLink="review/{{review.id_person_evaluation}}">
+            </button>
           </td>
         </tr>
       </ng-template>

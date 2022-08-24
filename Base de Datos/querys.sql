@@ -24,7 +24,7 @@ from questions--_category;
          inner join question_category qc on questions.question_category_id_questioncategory = qc.id_questioncategory;
 
 select *
-from answers;
+from evaluations;
 
 select *
 from answers
@@ -41,5 +41,7 @@ from evaluation_question_category;
 
 select * from question_category;
 
-select * from persons_answers;
+select * from persons_evaluations;
+
+
 

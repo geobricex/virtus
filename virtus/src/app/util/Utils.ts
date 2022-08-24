@@ -57,7 +57,6 @@ export class Utils {
     }
   }
 
-
   get globalUrl(): string {
     return this._globalUrl;
   }
