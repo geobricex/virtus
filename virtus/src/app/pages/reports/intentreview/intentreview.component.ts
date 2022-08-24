@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {BreadcrumbService} from "../../../app.breadcrumb.service";
 import {Person} from "../../../models/Person";
 import {Observable} from "rxjs";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Utils} from "../../../util/Utils";
 
 @Component({
@@ -15,6 +15,7 @@ export class IntentreviewComponent implements OnInit {
   person: Person;
   persons: Person[];
   cols: any[];
+  dataReviews: any;
 
   constructor(private breadcrumbService: BreadcrumbService,
               private _http: HttpClient,
@@ -27,8 +28,7 @@ export class IntentreviewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.utils.token);
-    this.loadgetPersons();
+    this.loadgetReviews();
 
     this.cols = [
       {field: 'Calificación', header: 'Calificación'},
@@ -36,26 +36,27 @@ export class IntentreviewComponent implements OnInit {
     ];
   }
 
-  loadgetPersons() {
-    this.apiLoadGetPersons().subscribe(response => {
-      this.persons = response.data;
-      console.log(response);
-    });
+  loadgetReviews() {
+    console.log("DATA EVALUATION")
+    this.apiGetDataReview(3).subscribe({
+      next: response => {
+        this.dataReviews = response.data;
+        console.log( this.dataReviews);
+      }
+    })
   }
 
-  apiLoadGetPersons(): Observable<any> {
-    this.globalUri = this.utils.globalUrl + "persons/personsget";
-    var headers = new HttpHeaders()
+  apiGetDataReview(type: any): Observable<any> {
+    this.globalUri = this.utils.globalUrl + "personsevaluations/getpersonsevaluations";
+    let headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
       .set('token', this.utils.token);
-    return this._http.post(this.globalUri, {}, {headers: headers});
-  }
+    let queryParams = new HttpParams()
+      .append("type", type)
+      .append("id_evaluation", 0);
+    return this._http.get<any>(this.globalUri, {params: queryParams, headers: headers});
 
-  apiLoadTopics(): Observable<any> {
-    this.globalUri = this.utils.globalUrl + "topic/gettopics";
-    return this._http.post<any>(this.globalUri,
-      {syllabu_id_topic: 1});
   }
 
 }

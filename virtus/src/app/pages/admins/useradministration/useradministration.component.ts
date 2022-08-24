@@ -5,6 +5,8 @@ import {Observable} from "rxjs";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Utils} from "../../../util/Utils";
 import {Person} from "../../../models/Person";
+import {User} from "../../../models/user";
+import {StorageService} from "../../../authentication/StorageService";
 
 @Component({
   selector: 'app-useradministration',
@@ -17,11 +19,13 @@ export class UseradministrationComponent implements OnInit {
   person: Person;
   persons: Person[];
   cols: any[];
+  public user: User;
 
   constructor(
     private breadcrumbService: BreadcrumbService,
     private _http: HttpClient,
     private utils: Utils,
+    private storageService: StorageService,
   ) {
     this.breadcrumbService.setItems([
       {label: 'Gestión de Usuario', routerLink: ['/app/useradministration']},
@@ -31,7 +35,8 @@ export class UseradministrationComponent implements OnInit {
   ngOnInit(): void {
     console.log(this.utils.token);
     this.loadgetPersons();
-
+    this.user = this.storageService.getCurrentUser();
+    console.log("===============" +this.user.type_person);
     this.cols = [
       {field: 'Nombre', header: 'Nombre'},
       {field: 'Apellido', header: 'Apellido'},

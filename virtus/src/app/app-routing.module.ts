@@ -30,6 +30,7 @@ import {IntentreviewComponent} from "./pages/reports/intentreview/intentreview.c
 import {ScorereportComponent} from "./pages/reports/scorereport/scorereport.component";
 import {TimereportComponent} from "./pages/reports/timereport/timereport.component";
 import {GamesComponent} from "./pages/games/games.component";
+import {ReviewComponent} from "./pages/review/review.component";
 
 @NgModule({
   imports: [
@@ -54,6 +55,7 @@ import {GamesComponent} from "./pages/games/games.component";
           {path: 'reports/timereport', component: TimereportComponent},
           {path: 'reports/scorereport', component: ScorereportComponent},
           {path: 'reports/intentreview', component: IntentreviewComponent},
+          {path: 'reports/intentreview/review/:idReview', component: ReviewComponent},
           {path: 'coursear/modulear/:idcourse', component: ModuloarComponent},
           {path: 'coursear/modulear/:idcourse/topicar/:idmodule', component: TopicarComponent},
           {path: 'coursear/modulear/:idcourse/topicar/:idmodule/resourcesar/:idTopic', component: ResourcesarComponent},
