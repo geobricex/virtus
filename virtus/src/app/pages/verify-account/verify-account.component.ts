@@ -40,7 +40,12 @@ export class VerifyAccountComponent implements OnInit {
   }
 
   apiRequestCode(): Observable<any> {
-    this.globalUri = "virtusbk/persons/requestcode";
+    if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+      this.globalUri = "virtus_bk/persons/requestcode";
+    } else {
+      // this.globalUri = "virtusbk/persons/signup";
+      this.globalUri = "virtusbk/persons/requestcode";
+    }
     return this._http.post<Person>(this.globalUri, {
       "flag": "1",
       "email": this.email,
