@@ -105,6 +105,8 @@ import { ScorereportComponent } from './pages/reports/scorereport/scorereport.co
 import { RequestssuggestionsComponent } from './pages/admins/requestssuggestions/requestssuggestions.component';
 import {ChartModule} from "primeng/chart";
 import { CursosArInactiveComponent } from './pages/cursos-ar-inactive/cursos-ar-inactive.component';
+// ---- COMANDO DE TECLADO -----
+import {HotkeyModule} from 'angular2-hotkeys';
 
 
 FullCalendarModule.registerPlugins([
@@ -200,7 +202,8 @@ FullCalendarModule.registerPlugins([
     AvatarModule,
     SkeletonModule,
     SkeletonModule,
-    ChartModule
+    ChartModule,
+    HotkeyModule.forRoot(),
   ],
 
   providers: [

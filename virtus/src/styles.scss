@@ -65,6 +65,10 @@ span, strong, td, h1, h2, h3, h4, h5, h6, a, img, label, div, p, pre {
   zoom:  var(--document-zoom-style, 100%);
 }
 
+:host ::ng-deep .p-dropdown {
+  max-width: 100%;
+  width: 100%;
+}
 
 .video_sign_float {
   display: block;
