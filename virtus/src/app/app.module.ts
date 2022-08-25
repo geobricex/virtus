@@ -206,7 +206,7 @@ FullCalendarModule.registerPlugins([
     SkeletonModule,
     ChartModule,
     AvatarModule,
-    // HotkeyModule.forRoot(),
+    HotkeyModule.forRoot(),
   ],
 
   providers: [
