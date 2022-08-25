@@ -4,7 +4,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Utils} from "../../util/Utils";
 import {Observable} from "rxjs";
 import {Course} from "../../models/Course";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {ActivatedRoute} from "@angular/router";
 import {Modules} from "../../models/Modules";
 
@@ -25,6 +25,9 @@ export class ModuloarComponent implements OnInit {
   idCourse: string | null = "";
   urlimageupload: any;
   tmpFile: any;
+  loading: boolean = true;
+  loadingDataCourse: boolean = true;
+  dataCourse: any;
 
   registerFormModule: FormGroup;
   moduleSuccessful = false;
@@ -57,6 +60,26 @@ export class ModuloarComponent implements OnInit {
         keywords: ["", Validators.required]
       }
     );
+    this.loadDataCourse();
+  }
+
+  loadDataCourse() {
+    this.loadingDataCourse = true;
+    this.apiGetDataCourse(this.idCourse).subscribe({
+      next: response => {
+        console.log(response);
+        this.dataCourse = response;
+        console.log(this.dataCourse);
+        this.loadingDataCourse = false;
+      }
+    })
+  }
+
+  apiGetDataCourse(id: any): Observable<any> {
+    this.globalUri = this.utils.globalUrl + "course/getCourseData";
+    let queryParams = new HttpParams();
+    queryParams = queryParams.append("id", id);
+    return this._http.get<any>(this.globalUri, {params: queryParams});
   }
 
   saveModule() {
@@ -104,9 +127,11 @@ export class ModuloarComponent implements OnInit {
   }
 
   loadCourse() {
+    this.loading = true;
     this.apiLoadCourses().subscribe(response => {
       console.log(response);
       this.modules = response.data;
+      this.loading = false;
     });
   }
 
