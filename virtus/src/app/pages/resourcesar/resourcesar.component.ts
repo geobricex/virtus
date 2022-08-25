@@ -314,6 +314,7 @@ export class ResourcesarComponent implements OnInit {
   }
 
   onUploadFile(event: any) {
+    this.msg.push({severity: 'info', summary: 'Virtus', detail: 'Procesando...'});
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
       console.log(file);
@@ -327,10 +328,12 @@ export class ResourcesarComponent implements OnInit {
         this.formR["pathfileResource"].setValue("");
         this.utils.showMessages(1, "Formato de archivo no permitido.", "tst");
       }
+      this.msg = [];
     }
   }
 
   onUploadVideoSenia(event: any) {
+    this.msg.push({severity: 'info', summary: 'Virtus', detail: 'Procesando...'});
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
       console.log(file);
@@ -343,9 +346,11 @@ export class ResourcesarComponent implements OnInit {
         this.utils.showMessages(1, "Formato de archivo no permitido.", "tst");
       }
     }
+    this.msg = [];
   }
 
   onUploadVideo(event: any) {
+    this.msg.push({severity: 'info', summary: 'Virtus', detail: 'Procesando...'});
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
       console.log(file);
@@ -359,6 +364,7 @@ export class ResourcesarComponent implements OnInit {
         this.utils.showMessages(1, "Formato de archivo no permitido.", "tst");
       }
     }
+    this.msg = [];
   }
 
   saveEvaluation() {
