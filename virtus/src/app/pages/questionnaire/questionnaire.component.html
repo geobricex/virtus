@@ -96,6 +96,19 @@
               </div>
             </div>
           </p-accordionTab>
+          <p-accordionTab header="Contruir la Palabra" [selected]="true" class="line-height-3 m-0">
+            <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
+              <div *ngIf="question.name_questioncategory == tipoPregunta(7)"
+                   class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
+                   (click)="cambiarPregunta(i2)"
+              >
+                <span> {{"N°" + (i2 + 1)}} </span>
+                <i
+                  class="pi pi-circle-on mt-1 text-sm {{validarPreguntaResuelta(question)?'text-green-600': 'text-pink-600'}}"
+                  style="float: right"></i>
+              </div>
+            </div>
+          </p-accordionTab>
           <p-accordionTab header="Complete" [selected]="true" class="line-height-3 m-0">
             <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
               <div *ngIf="question.name_questioncategory == tipoPregunta(4)"
@@ -254,7 +267,7 @@
               <span *ngFor="let wg of questionObject.answers_[0].complete_parts; let ic = index"
                     [attr.data-index]="ic"
                     [style]="{color: (wg == '$option$'?'#FF0000':'#000'), 'font-weight': (wg == '$option$'?'bold;':'normal;')}">
-                {{wg != '$option$' ? wg : '(' + alphabet[0] + '. '}}
+                {{wg != '$option$' ? wg : ('(' + alphabet[0] + '. ')}}
                 <!--                <input type="text" pInputText *ngIf="wg == '$option$'"/>-->
                 <!--                no tiene imagenes-->
                 <p-dropdown [options]="option.options" [(ngModel)]="questionObject.answers_[0].responses[ic]"
@@ -278,7 +291,7 @@
                      [src]="option.resourse_leftSide" height="100">
               </div>
               <div class="col-12 md:col-{{option.resourse_leftSide.length > 0?'8':'12'}} justify-content-start">
-                  <p>{{alphabet[i].toUpperCase() + ")\t" + (option.leftSide.length > 0 ? option.leftSide : 'Literal')}}</p>
+                  <p>{{alphabet[i].toUpperCase() + ")\t" + (option.leftSide.length > 0 ? option.leftSide : 'Foto')}}</p>
               </div>
             </div>
             <div class="col-12 md:col-4">
@@ -290,7 +303,7 @@
               >
                 <ng-template pTemplate="selectedItem">
                   <div class="country-item country-item-value" *ngIf="questionObject.answers_[0].responses[i]">
-                    <img [src]="questionObject.answers_[0].responses[i].resourse_rightSide"
+                    <img [src]="questionObject.answers_[0].responses[i].resourse_rightSide" height="25"
                          [class]="'flag'" *ngIf="questionObject.answers_[0].responses[i].resourse_rightSide"
                     />
                     <div>{{questionObject.answers_[0].responses[i].rightSide}}</div>
@@ -298,8 +311,7 @@
                 </ng-template>
                 <ng-template let-item pTemplate="item">
                   <div class="ui-helper-clearfix template-border">
-                    <img [src]="item.resourse_rightSide"
-                         [class]="'flag country-image'"/>
+                    <img [src]="item.resourse_rightSide" class="lang-change-img" alt="" />
                     <div>{{alphabet[item.ind].toUpperCase() + ".\t" + (item.rightSide.length > 0 ? item.rightSide : 'Opción')}}</div>
                   </div>
                 </ng-template>
@@ -311,6 +323,12 @@
             </div>
           </div>
         </div>
+      <div *ngIf="questionObject.name_questioncategory == tipoPregunta(7)">
+        <div *ngFor="let option of questionObject.answers_[0].options_answer; let i = index"
+             [attr.data-index]="i">
+          <input>
+        </div>
+      </div>
 <!--      </div>-->
       <!--Recursos para dibujar-->
       <p-fieldset legend="Raya el correcto" [toggleable]="true">
@@ -322,7 +340,7 @@
                 <p-chip *ngFor="let option of questionObject.answers_[0].right_parts!; let i = index"
                         [attr.data-index]="i"
                         label="{{alphabet[i] + '. ' + option.rightSide}}"
-                        image="{{option.resourse_leftSide.length > 0 ? option.resourse_leftSide :
+                        image="{{option.resourse_rightSide.length > 0 ? option.resourse_rightSide :
                       'assets/imgresource/empty/notification.png'}}" styleClass="mr-2"
                         [style]="{'text-decoration': 'underline'}"
                 ></p-chip>

@@ -12,7 +12,7 @@ import {Modules} from "../../models/Modules";
 @Component({
   selector: 'app-moduloar',
   templateUrl: './moduloar.component.html',
-  styleUrls: ['./moduloar.component.scss']
+  styleUrls: ['../../../assets/demo/badges.scss']
 })
 export class ModuloarComponent implements OnInit {
 

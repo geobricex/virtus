@@ -31,6 +31,7 @@ import {ScorereportComponent} from "./pages/reports/scorereport/scorereport.comp
 import {TimereportComponent} from "./pages/reports/timereport/timereport.component";
 import {GamesComponent} from "./pages/games/games.component";
 import {ReviewComponent} from "./pages/review/review.component";
+import {UpdateevacuestComponent} from "./pages/updateevacuest/updateevacuest.component";
 
 @NgModule({
   imports: [
@@ -59,6 +60,10 @@ import {ReviewComponent} from "./pages/review/review.component";
           {path: 'coursear/modulear/:idcourse', component: ModuloarComponent},
           {path: 'coursear/modulear/:idcourse/topicar/:idmodule', component: TopicarComponent},
           {path: 'coursear/modulear/:idcourse/topicar/:idmodule/resourcesar/:idTopic', component: ResourcesarComponent},
+          {
+            path: 'coursear/modulear/:idcourse/topicar/:idmodule/resourcesar/:idTopic/updatequecust/:idResource',
+            component: UpdateevacuestComponent
+          },
           {path: 'mycourse', component: MiscursosComponent},
           {
             path: 'mycourse/modules/:idcourse/themes/:idmodule/resources/:idTopic/questionnaire/:ideva',
