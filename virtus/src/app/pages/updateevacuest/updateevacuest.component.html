@@ -1,1 +1,86 @@
-<p>updateevacuest works!</p>
+<div class="card">
+  <p-tabView orientation="left">
+    <p-tabPanel header="Datos" class="line-height-3 m-0">
+      <form [formGroup]="frmEvaliationCuestionary">
+        <div class="p-fluid">
+          <div class="field">
+            <label for="nombrem">Nombre:</label>
+            <input id="nombrem" type="text" autocomplete="off" pInputText class="w-full" formControlName="name"
+                   [ngClass]="
+                 (form['name'].invalid && (form['name'].dirty && form['name'].touched)) ?
+                 'ng-dirty ng-invalid' : ''"/>
+            <small *ngIf="form['name'].invalid && (form['name'].dirty && form['name'].touched)"
+                   class="p-error">Este campo es requerido.</small>
+          </div>
+          <div class="field">
+            <label for="descm">Descripción:</label>
+            <textarea pInputTextarea name="" id="descm" cols="30" rows="5" formControlName="description" [ngClass]="
+                 (form['description'].invalid && (form['description'].dirty && form['description'].touched)) ?
+                 'ng-dirty ng-invalid' : ''"></textarea>
+            <small
+              *ngIf="form['description'].invalid && (form['description'].dirty && form['description'].touched)"
+              class="p-error">Este campo es requerido.</small>
+          </div>
+          <div class="field">
+            <label>Tipo:</label>
+            <p-dropdown id="type" [options]="typeEvalutionform" optionLabel="label" optionValue="value"
+                        formControlName="typeEvaluation" [ngClass]="
+                 (form['typeEvaluation'].invalid && (form['typeEvaluation'].dirty && form['typeEvaluation'].touched)) ?
+                 'ng-dirty ng-invalid' : ''"></p-dropdown>
+            <small
+              *ngIf="form['typeEvaluation'].invalid && (form['typeEvaluation'].dirty && form['typeEvaluation'].touched)"
+              class="p-error">Este campo es requerido.</small>
+          </div>
+          <div class="grid">
+            <div class="col-2">
+              <div class="field" style="display: grid">
+                <label>Tiempo:</label>
+                <p-inputSwitch formControlName="timeEvaluation"></p-inputSwitch>
+              </div>
+            </div>
+            <div class="col" *ngIf="form['timeEvaluation'].value">
+              <div class="field">
+                <label for="tiempomin"> Tiempo (minmutos): </label>
+                <p-inputNumber id="tiempomin" formControlName="timeminutesEvaluation"
+                               [ngClass]="
+                 (form['timeminutesEvaluation'].invalid && (form['timeminutesEvaluation'].dirty && form['timeminutesEvaluation'].touched)) ?
+                 'ng-dirty ng-invalid' : ''"></p-inputNumber>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid">
+            <div class="col-2">
+              <div class="field" style="display: grid">
+                <label for="tiempomin"> Intentos: </label>
+                <p-inputSwitch formControlName="opportunityEvaluation"></p-inputSwitch>
+              </div>
+            </div>
+            <div class="col" *ngIf="form['opportunityEvaluation'].value">
+              <div class="field">
+                <label for="cantintentos"> Cantidad de intentos: </label>
+                <p-inputNumber id="cantintentos" formControlName="opportunitiesEvaluation"
+                               [ngClass]=" (form['opportunitiesEvaluation'].invalid && (form['opportunitiesEvaluation'].dirty
+                           && form['opportunitiesEvaluation'].touched)) ?
+                 'ng-dirty ng-invalid' : ''"></p-inputNumber>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid">
+            <div class="col-4">
+              <div class="field" style="display: grid">
+                <label> Ordenar por categoría: </label>
+                <p-inputSwitch id="orderByCategory"
+                               formControlName="orderByCategory"></p-inputSwitch>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </p-tabPanel>
+    <p-tabPanel header="Banco de preguntas" class="line-height-3 m-0">
+
+    </p-tabPanel>
+  </p-tabView>
+</div>
