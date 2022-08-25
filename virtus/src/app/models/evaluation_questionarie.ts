@@ -54,6 +54,7 @@ export interface OptionsAnswer {
   resourse_leftSide: string;
   resourse_rightSide: string;
   rightSide: string;
+  ind?: number;
 }
 
 export enum Correct {

@@ -3,22 +3,20 @@ import {BreadcrumbService} from "../../app.breadcrumb.service";
 
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, Subscription, timer} from 'rxjs';
-import {Person} from "../../models/Person";
 import {Utils} from "../../util/Utils";
 import {ActivatedRoute} from '@angular/router';
 
 import {
+  Correct,
   Evaluation,
   EvaluationQuestionsResponse,
   Options,
   OptionsAnswer,
   Questions
 } from "../../models/evaluation_questionarie";
-import {FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule} from '@angular/forms';
-import {AppMainComponent} from '../../app.main.component';
-import {StorageService} from "../../authentication/StorageService";
 import {FormBuilder} from '@angular/forms';
-import {utils} from "protractor";
+import {StorageService} from "../../authentication/StorageService";
+import {ExtendedKeyboardEvent, Hotkey, HotkeysService} from "angular2-hotkeys";
 
 
 declare var Artyom: any;
@@ -73,9 +71,7 @@ export class QuestionnaireComponent implements OnInit {
               private utils: Utils,
               private activatedRoute: ActivatedRoute,
               private storageService: StorageService,
-              private fb: FormBuilder,
-              private changeDetector: ChangeDetectorRef
-  ) {
+              private _hotkeysService: HotkeysService) {
 
     this.idCourse = this._route.snapshot.paramMap.get("idcourse");
     this.idModule = this._route.snapshot.paramMap.get("idmodule");
@@ -117,6 +113,16 @@ export class QuestionnaireComponent implements OnInit {
       }
     });
     console.log("canvas, ", this.CanvasEl);
+    this.startHotKeysCommands();
+  }
+
+  repetirPregunta() {
+    if (this.text2SpeakSupport()) {
+      if (this.artyom.isSpeaking()) {
+        this.artyom.shutUp();
+      }
+      this.artyom.repeatLastSay();
+    }
   }
 
   openClose() {
@@ -217,16 +223,16 @@ export class QuestionnaireComponent implements OnInit {
           this.evaluationObject = response.data[0];
 
           //if (this.evaluationObject.time_evaluation) {
-            this.tiempoEvaluacion = 0;//60 * 60;//this.evaluationObject.timeminutes_evaluation * 60;
-            this.tiempoEvaluacion$ = timer(0, 1000)
-              .subscribe((iter: any) => {
-                //console.log("tiempoEvaluacion: " + iter);
-                //if (this.tiempoEvaluacion >= 60 * 60) {
-                  //this.tiempoEvaluacion$.unsubscribe();
-                  /*Código para indicar que se terminó el tiempo*/
-                //}
-                this.tiempoEvaluacion++;
-              });
+          this.tiempoEvaluacion = 0;//60 * 60;//this.evaluationObject.timeminutes_evaluation * 60;
+          this.tiempoEvaluacion$ = timer(0, 1000)
+            .subscribe((iter: any) => {
+              //console.log("tiempoEvaluacion: " + iter);
+              //if (this.tiempoEvaluacion >= 60 * 60) {
+              //this.tiempoEvaluacion$.unsubscribe();
+              /*Código para indicar que se terminó el tiempo*/
+              //}
+              this.tiempoEvaluacion++;
+            });
           //}
           if (this.voiceComandsSupport()) {
             if (this.storageService.getCurrentUser().email != "anthony.pachay2017@uteq.edu.ec") {
@@ -234,8 +240,8 @@ export class QuestionnaireComponent implements OnInit {
             }
           }
           if (this.storageService.getCurrentUser().email == "anthony.pachay2017@uteq.edu.ec") {
-            this.cambiarPregunta(13, true);
-          }else {
+            this.cambiarPregunta(11, true);
+          } else {
             this.cambiarPregunta(0, true);
           }
           //this.initCanvas(false);
@@ -250,14 +256,17 @@ export class QuestionnaireComponent implements OnInit {
   }
 
 
-  verificarRespuestasCorrectas(questionItem: Questions): boolean {
+  verificarRespuestasCorrectas(questionItem: Questions): [boolean, number] {
     if (questionItem.answers_[0].responses != undefined)
       //verdadero o falso O unica seleccion
       if (questionItem.name_questioncategory == this.tipoPregunta(2)
         || questionItem.name_questioncategory == this.tipoPregunta(1)) {
-        // @ts-ignore
-        return questionItem.answers_[0].responses.correct == "Yes";
-      } else if (questionItem.name_questioncategory == this.tipoPregunta(1)) {
+        return [
+          // @ts-ignore
+          questionItem.answers_[0].responses.correct == "Yes",
+          // @ts-ignore
+          questionItem.answers_[0].responses.correct == "Yes" ? questionItem.maximumpoints_question : 0];
+      } else if (questionItem.name_questioncategory == this.tipoPregunta(3)) {
         let flagAlltrue: boolean = true;
         let indT = 0;
         let indTS = 0;
@@ -273,10 +282,39 @@ export class QuestionnaireComponent implements OnInit {
             indT++;
           }
         }
-        return flagAlltrue && indTS == indT;
+        return [ // en caso de las evaluaciones,
+          // cambiar "flagAlltrue && indTS == indT"
+          // por "questionItem.answers_[0].responses.length > 0"
+          flagAlltrue && indTS == indT,
+          questionItem.maximumpoints_question * ((indTS / indT) / 100)];
+      } else if (questionItem.name_questioncategory == this.tipoPregunta(4)) {
+
+      } else if (questionItem.name_questioncategory == this.tipoPregunta(5)) {
+        //this.questionObject.answers_[0].options_answer
+        //this.questionObject.answers_[0].right_parts
+        let flagAlltrue: boolean = true;
+        let indT = 0;
+        let indTS = 0;
+        for (let ind = 0; ind < questionItem.answers_[0].options_answer.length; ind++) {
+          if (questionItem.answers_[0].options_answer[ind].rightSide
+            == questionItem.answers_[0].responses[ind].rightSide &&
+            questionItem.answers_[0].options_answer[ind].resourse_rightSide
+            == questionItem.answers_[0].responses[ind].resourse_rightSide
+          ) {
+            indTS++;
+          } else {
+            flagAlltrue = false;
+          }
+        }
+        indT = questionItem.answers_[0].options_answer.length;
+        return [ // en caso de las evaluaciones,
+          // cambiar "flagAlltrue && indTS == indT"
+          // por "questionItem.answers_[0].responses.length > 0"
+          flagAlltrue && indTS == indT,
+          questionItem.maximumpoints_question * ((indTS / indT) / 100)];
       } else {
       }
-    return false;
+    return [false, 0];
   }
 
   validarPreguntaResuelta(questionItem: Questions): boolean {
@@ -318,7 +356,7 @@ export class QuestionnaireComponent implements OnInit {
         //validar las respuestas que he dado
         console.log("FeedBack: ", this.questionObject.feedback_question);
         //this.utils.showMessages(1, "FeedBack: " + this.questionObject.feedback_question);
-        let flagCorrect = this.verificarRespuestasCorrectas(this.questionObject);
+        let [flagCorrect, points] = this.verificarRespuestasCorrectas(this.questionObject);
         this.showSwal(flagCorrect);
         if (!flagCorrect) {
           return;
@@ -347,8 +385,28 @@ export class QuestionnaireComponent implements OnInit {
         this.questionObject.answers_[0].responses = Array<OptionsAnswer>(this.questionObject.answers_[0].complete_parts!.length - 1);
       }
       if (this.questionObject.name_questioncategory == this.tipoPregunta(5)) {
-        this.questionObject.answers_[0].right_parts = [...this.questionObject.answers_[0].options_answer];
-        console.log("tipo pregujnta 5" , this.questionObject.answers_[0].right_parts);
+        //this.questionObject.answers_[0].right_parts = [...this.questionObject.answers_[0].options_answer];
+        this.questionObject.answers_[0].right_parts = Array<OptionsAnswer>(0);
+        let tmp: OptionsAnswer;
+        // = {
+        //   correct: Correct.No,
+        //   description_question: "",
+        //   description_question_R: "",
+        //   leftSide: "",
+        //   options: [],
+        //   resourse_leftSide: "",
+        //   resourse_rightSide: "",
+        //   rightSide: "",
+        //   opcion : '', resource : ''};
+        for (let index = 0; index < this.questionObject.answers_[0].options_answer.length; index++) {
+          //tmp.opcion = this.questionObject.answers_[0].options_answer[index].rightSide;
+          //tmp.resource = this.questionObject.answers_[0].options_answer[index].resourse_rightSide;
+          tmp = this.questionObject.answers_[0].options_answer[index];
+          tmp.ind = index;
+          this.questionObject.answers_[0].right_parts.push(tmp);
+        }
+        this.questionObject.answers_[0].right_parts = this.desordenar(this.questionObject.answers_[0].right_parts);
+        console.log("tipo pregujnta 5", this.questionObject.answers_[0].right_parts);
         this.questionObject.answers_[0].responses = Array<OptionsAnswer>(this.questionObject.answers_[0].options_answer.length - 1);
       }
       console.log("pregunta: ", this.questionObject);
@@ -430,6 +488,13 @@ export class QuestionnaireComponent implements OnInit {
     this.cambiarPregunta(ind);
   }
 
+  desordenar(unArray: any[]): any[] {
+    let t = unArray.sort(function (a, b) {
+      return (Math.random() - 0.5)
+    });
+    return [...t];
+  }
+
   /*Video Player*/
 
   public btnVideoControl: any;
@@ -472,10 +537,10 @@ export class QuestionnaireComponent implements OnInit {
     }
   }
 
-  evaluar(wildcard: string, i: number): void {
+  evaluarPreguntasSencillas(wildcard: string): void {
     console.log("wilcardOriginal:" + wildcard);
     wildcard = wildcard.trim().replace(/[^a-zA-Z]+/, "");
-    console.log("wildcard:", wildcard, i, this.alphabet.indexOf(wildcard.trim()));
+    console.log("wildcard:", wildcard, this.alphabet.indexOf(wildcard.trim()));
     if (this.alphabet.indexOf(wildcard.trim()) > -1) {
       //this.artyom.say("Ha indicado la selección del literal " + wildcard);
       console.log("Ha indicado la selección del literal " + wildcard);
@@ -513,22 +578,25 @@ export class QuestionnaireComponent implements OnInit {
       console.log("evaluar_control_video " + wildcard);
 
       console.log("#video_" + wildcard.trim() + ": => click")
-      this.autoClick("#"+wildcard.trim().toLowerCase() + "_video_rec");
+      this.autoClick("#" + wildcard.trim().toLowerCase() + "_video_rec");
     } else {
       console.log("No se encuentra el evaluar_control_video")
     }
   }
 
-  evaluar_control_evaluacion(wildcard: string, i: number, database: string[]): void {
-    wildcard = wildcard.trim().replace(/[^a-zA-Z]+/, "");
-    console.log("evaluar_control_evaluacion:", wildcard, i, database.indexOf(wildcard.trim()));
+  evaluar_control_evaluacion(wildcard: string, database: string[]): void {
+    wildcard = wildcard.trim().toLowerCase().replace(/[^a-zñ]+/, "");
+    console.log("evaluar_control_evaluacion:", wildcard, database.indexOf(wildcard.trim()));
     if (database.indexOf(wildcard.trim()) > -1) {
       //this.artyom.say("Ha indicado la selección del literal " + wildcard);
-      console.log("evaluar_control_evaluacion: " + wildcard);
-      if (wildcard.trim() == "señas"){
+
+      if (wildcard.trim() == "señas") {
         this.vistaVideoSenias = !this.vistaVideoSenias;
-      }else{
+      } else if (wildcard.trim() == "bancos") {
+        this.viewQuestionBank = !this.viewQuestionBank;
+      }else {
         this.autoClick("#evt_control_" + wildcard.trim());
+        console.log("evaluar_control_evaluacion: " +"evt_control_"+ wildcard);
       }
     } else {
       console.log("No se encuentra es evaluar_control_evaluacion")
@@ -552,20 +620,82 @@ export class QuestionnaireComponent implements OnInit {
     return this.artyom.Device.isMobile();
   }
 
+  take(values: number): void {
+    console.log("Hola la tecla z" + values);
+  }
+
+  startHotKeysCommands(): void {
+    let keyMaster = "shift";
+    // this._hotkeysService.add(new Hotkey(keyMaster + '+a', (event: KeyboardEvent): boolean => {
+    //   console.log('Typed hotkey');
+    //   return false; // Prevent bubbling
+    // }));
+    this._hotkeysService.add(new Hotkey([keyMaster + '+a', keyMaster + '+b', keyMaster + '+c', keyMaster + '+e', keyMaster + '+f'], (event: KeyboardEvent, combo: string): ExtendedKeyboardEvent => {
+      console.log('Combo: ' + combo); // 'Combo: meta+shift+g' or 'Combo: alt+shift+s'
+      let letra = combo.replace(keyMaster + "+", "");
+      console.log("selecciona el literal [" + combo + "]");
+      if (this.questionObject.name_questioncategory == this.tipoPregunta(1) ||
+        this.questionObject.name_questioncategory == this.tipoPregunta(2) ||
+        this.questionObject.name_questioncategory == this.tipoPregunta(3)) {
+        this.evaluarPreguntasSencillas(letra);
+      }else{
+        alert("comando actualmente no soportado")
+      }
+      let e: ExtendedKeyboardEvent = event;
+      e.returnValue = false; // Prevent bubbling
+      return e;
+    }));
+    let comandos = ["right", "left", "enter", "esc", "backspace", "tab"];
+    this._hotkeysService.add(new Hotkey([keyMaster + '+'+comandos[0], keyMaster + '+'+comandos[1],
+        keyMaster + '+'+comandos[2], keyMaster + '+'+comandos[3], keyMaster + '+'+comandos[4], 'shift+'+comandos[5]]
+      , (event: KeyboardEvent, combo: string): ExtendedKeyboardEvent => {
+        console.log('Combo: ' + combo); // 'Combo: meta+shift+g' or 'Combo: alt+shift+s'
+
+        let comodin = combo.replace(keyMaster + "+", "");
+        let database: string[] = ["siguiente", "anterior", "enviar", "señas", "repetir", "bancos"];
+        let indice = comandos.indexOf(comodin);
+        if(indice > -1){
+          this.evaluar_control_evaluacion(database[indice], database);
+        }
+
+        let e: ExtendedKeyboardEvent = event;
+        e.returnValue = false; // Prevent bubbling
+        return e;
+      }));
+  }
+
   startContinuousArtyom(): void {
 
     this.artyom.fatality();
     let local_this = this;
-    let myGroup: any = [{
-      description: "Si el usuario indica un literal que se encuentra en la lista",
-      smart: true, // Activar comando como un comando smart para poder usar comodines
-      indexes: ["literal *", "opción *"],
-      action: function (i: number, wildcard: string) {
-        //let database: string[] = ["a", "b", "c", "d", "e", "f"];
-        console.log("literal_wilcardOriginal:" + wildcard);
-        local_this.evaluar(wildcard, i);
-      }
-    },
+    let myGroup: any = [
+      {
+        description: "Si el usuario indica un literal que se encuentra en la lista",
+        smart: true, // Activar comando como un comando smart para poder usar comodines
+        indexes: ["literal *"],//, "opción *"
+        action: function (i: number, wildcard: string) {
+          //let database: string[] = ["a", "b", "c", "d", "e", "f"];
+          console.log("literal_wilcardOriginal:" + wildcard);
+          if (local_this.questionObject.name_questioncategory == local_this.tipoPregunta(1) ||
+            local_this.questionObject.name_questioncategory == local_this.tipoPregunta(2) ||
+            local_this.questionObject.name_questioncategory == local_this.tipoPregunta(3)) {
+            local_this.evaluarPreguntasSencillas(wildcard);
+          }else{
+            alert("Comando actualmente no soportado");
+          }
+
+        }
+      },
+      {
+        description: "Si el usuario indica un literal que se encuentra en la lista",
+        smart: true, // Activar comando como un comando smart para poder usar comodines
+        indexes: ["relacionar * opción *"],//, "opción *"
+        action: function (i: number, wildcard: string) {
+          //let database: string[] = ["a", "b", "c", "d", "e", "f"];
+          console.log("literal_wilcardOriginal:", wildcard);
+          //local_this.evaluar(wildcard, i);
+        }
+      },
       {
         description: "controles de video",
         smart: true, // Activar comando como un comando smart para poder usar comodines
@@ -576,27 +706,14 @@ export class QuestionnaireComponent implements OnInit {
           //pausar_video
           //silenciar_video
           local_this.evaluar_control_video(wildcard, i, database);
-
-          /*wildcard = wildcard.trim().replace(/[^a-zA-Z]+/, "");
-          console.log("wildcard:", wildcard, i, database.indexOf(wildcard.trim()));
-          if (database.indexOf(wildcard.trim()) > -1) {
-            //this.artyom.say("Ha indicado la selección del literal " + wildcard);
-            console.log("Ha indicado la selección del literal " + wildcard);
-            console.log("#video_" + wildcard.trim() + ": => click")
-            // this.autoClick("#video_" + wildcard.trim());
-            let btnStart = document.querySelector("#video_" + wildcard.trim());
-            if (btnStart) (btnStart as HTMLFormElement).click();
-          } else {
-            console.log("No se encuentra ese literal")
-          }*/
         }
       }, {
         description: "controles del contexto evaluativo",
         smart: true, // Activar comando como un comando smart para poder usar comodines
         indexes: ["comando *"],
         action: function (i: number, wildcard: string) {
-          let database: string[] = ["siguiente", "anterior", "enviar", "señas"];
-          local_this.evaluar_control_evaluacion(wildcard, i, database);
+          let database: string[] = ["siguiente", "anterior", "enviar", "señas", "repetir", "bancos"];
+          local_this.evaluar_control_evaluacion(wildcard, database);
         }
       }
     ];
@@ -618,10 +735,10 @@ export class QuestionnaireComponent implements OnInit {
 
   }
 
-  cancelarEscuchaComandosVoz():void{
-    if(this.artyom.isObeying()){
+  cancelarEscuchaComandosVoz(): void {
+    if (this.artyom.isObeying()) {
       this.artyom.dontObey();
-    } else{
+    } else {
       this.artyom.obey();
     }
   }
@@ -668,7 +785,7 @@ export class QuestionnaireComponent implements OnInit {
 
 
     let c_tamanio = 85, c_margen = 10;
-     if (this.questionObject.name_questioncategory == this.tipoPregunta(4)) {
+    if (this.questionObject.name_questioncategory == this.tipoPregunta(4)) {
       let parts_p_tmp: string[] = this.questionObject.answers_[0].complete_parts!;
       let parts_p: string[] = [];
       for (let ind = 0; ind < parts_p_tmp.length; ind++) {
@@ -688,21 +805,20 @@ export class QuestionnaireComponent implements OnInit {
         , true, "-");
       this.dibujaFilaItemsCanvas(ctx, c_tamanio, c_margen, cantidad, parts_o
         , false, "option");
-    }else if (this.questionObject.name_questioncategory == this.tipoPregunta(5)) {
-       let parts_o: OptionsAnswer[] = this.questionObject.answers_[0].options_answer;
-       let cantidad: number = parts_o.length;
-       mecanvas.height = (c_tamanio * cantidad) + (c_margen * (cantidad - 1));
-       mecanvas.width = (c_tamanio * 2) + 150;
-       mecanvas.getContext('2d')!.clearRect(0, 0, mecanvas.width, mecanvas.height);
-       let ctx = mecanvas.getContext('2d')!;
-       let colorPan = ["#E3FFFF", "#BFFFC4", "#F6FFA1", "#C5AEFE", "#FDBDB1", "#BEACFF", "#E9CEBB", "#EFA0E7"];
+    } else if (this.questionObject.name_questioncategory == this.tipoPregunta(5)) {
+      let parts_o: OptionsAnswer[] = this.questionObject.answers_[0].options_answer;
+      let cantidad: number = parts_o.length;
+      mecanvas.height = (c_tamanio * cantidad) + (c_margen * (cantidad - 1));
+      mecanvas.width = (c_tamanio * 2) + 150;
+      mecanvas.getContext('2d')!.clearRect(0, 0, mecanvas.width, mecanvas.height);
+      let ctx = mecanvas.getContext('2d')!;
+      let colorPan = ["#E3FFFF", "#BFFFC4", "#F6FFA1", "#C5AEFE", "#FDBDB1", "#BEACFF", "#E9CEBB", "#EFA0E7"];
 
-       this.dibujaFilaItemsCanvas(ctx, c_tamanio, c_margen, cantidad, parts_o
-         , true, "leftSide");
-       this.dibujaFilaItemsCanvas(ctx, c_tamanio, c_margen, cantidad, parts_o
-         , false, "rightSide");
-     }
-     else {
+      this.dibujaFilaItemsCanvas(ctx, c_tamanio, c_margen, cantidad, parts_o
+        , true, "-");
+      this.dibujaFilaItemsCanvas(ctx, c_tamanio, c_margen, cantidad, parts_o
+        , false, "+");
+    } else {
       let cantidad: number = this.questionObject.answers_[0].options_answer.length;
       mecanvas.width = (c_tamanio * cantidad) + (c_margen * (cantidad - 1));
       mecanvas.getContext('2d')!.clearRect(0, 0, mecanvas.width, mecanvas.height);
@@ -750,7 +866,8 @@ export class QuestionnaireComponent implements OnInit {
         let indice = Math.trunc((this.lastLoc.x) / 90);
         console.log(this.lastLoc.x, indice);
         let wildcard: string = this.alphabet[indice];
-        if (this.questionObject.name_questioncategory == this.tipoPregunta(1)) {
+
+        /*if (this.questionObject.name_questioncategory == this.tipoPregunta(1)) {
           this.autoClick("#option_vf_" + wildcard.trim());
         } else if (this.questionObject.name_questioncategory == this.tipoPregunta(2)) {
           if (this.questionObject.canResource) {
@@ -764,33 +881,69 @@ export class QuestionnaireComponent implements OnInit {
           } else {
             this.autoClick("#option_ck_" + wildcard.trim());
           }
+        }*/
+        if (this.questionObject.name_questioncategory == this.tipoPregunta(1) ||
+          this.questionObject.name_questioncategory == this.tipoPregunta(2) ||
+          this.questionObject.name_questioncategory == this.tipoPregunta(3)) {
+          this.evaluarPreguntasSencillas(wildcard);
         } else if (this.questionObject.name_questioncategory == this.tipoPregunta(4)) {
-          let mayor:number = Math.max(this.questionObject.answers_[0].options_answer[0].options!.length,
-                    this.questionObject.answers_[0].complete_parts!.length);
+          let mayor: number = Math.max(this.questionObject.answers_[0].options_answer[0].options!.length,
+            this.questionObject.answers_[0].complete_parts!.length);
           let origen = -1, destino = -1;
-          let saltosBaseOp = (((mayor / this.questionObject.answers_[0].options_answer[0].options!.length)) / 2 );
-          saltosBaseOp = (mayor == this.questionObject.answers_[0].options_answer[0].options!.length)? 0 : saltosBaseOp;
-          let saltosBasePr = (((mayor / this.questionObject.answers_[0].complete_parts!.length)) / 2 );
-          saltosBasePr = (mayor == this.questionObject.answers_[0].complete_parts!.length)? 0 : saltosBasePr;
+          let saltosBaseOp = (((mayor / this.questionObject.answers_[0].options_answer[0].options!.length)) / 2);
+          saltosBaseOp = (mayor == this.questionObject.answers_[0].options_answer[0].options!.length) ? 0 : saltosBaseOp;
+          let saltosBasePr = (((mayor / this.questionObject.answers_[0].complete_parts!.length)) / 2);
+          saltosBasePr = (mayor == this.questionObject.answers_[0].complete_parts!.length) ? 0 : saltosBasePr;
           let c_alto = 85;
 
-          if(this.firstLoc.x < c_alto && this.lastLoc.x > c_alto + 150){
+          if (this.firstLoc.x < c_alto && this.lastLoc.x > c_alto + 150) {
             origen = 1;
             console.log("izquierda a derecha ");
-            if(this.questionObject.answers_[0].options_answer[0].options!.length != mayor){
+            if (this.questionObject.answers_[0].options_answer[0].options!.length != mayor) {
               saltosBaseOp = 0;
-            }else{
+            } else {
               saltosBasePr = 0;
             }
             //((saltosBaseOp * c_tamanio) + (ssaltosBaseOp * c_margen))
             console.log("Indices seleccionados",
-              Math.trunc((this.firstLoc.y) / c_alto - ((saltosBasePr * c_tamanio) + (saltosBasePr * c_margen)) / c_alto ),
+              Math.trunc((this.firstLoc.y) / c_alto - ((saltosBasePr * c_tamanio) + (saltosBasePr * c_margen)) / c_alto),
               Math.trunc((this.lastLoc.y) / c_alto - ((saltosBaseOp * c_tamanio) + (saltosBaseOp * c_margen)) / c_alto));
-          } else if(this.lastLoc.x < 90 && this.firstLoc.x > c_alto + 150){
+          } else if (this.lastLoc.x < 90 && this.firstLoc.x > c_alto + 150) {
             destino = 1;
-            console.log("derecha a izquierda= " + "("+ this.firstLoc.y + ") / " + c_alto  + " - " + saltosBasePr);
+            console.log("derecha a izquierda= " + "(" + this.firstLoc.y + ") / " + c_alto + " - " + saltosBasePr);
             console.log("Indices seleccionados", Math.trunc((this.firstLoc.y) / c_alto - saltosBasePr),
               Math.trunc((this.lastLoc.y) / c_alto - saltosBaseOp));
+          }
+        } else if (this.questionObject.name_questioncategory == this.tipoPregunta(5)) {
+          let mayor: number = Math.max(this.questionObject.answers_[0].options_answer.length,
+            this.questionObject.answers_[0].right_parts!.length);
+          let origen = -1, destino = -1;
+          let saltosBaseOp = (((mayor / this.questionObject.answers_[0].options_answer.length)) / 2);
+          saltosBaseOp = (mayor == this.questionObject.answers_[0].options_answer.length) ? 0 : saltosBaseOp;
+          let saltosBasePr = (((mayor / this.questionObject.answers_[0].right_parts!.length)) / 2);
+          saltosBasePr = (mayor == this.questionObject.answers_[0].right_parts!.length) ? 0 : saltosBasePr;
+          let c_alto = 85;
+          let literal = -1, opcion = -1;
+          if (this.firstLoc.x < c_alto && this.lastLoc.x > c_alto + 150) {
+            origen = 1;
+            console.log("izquierda a derecha ");
+            if (this.questionObject.answers_[0].options_answer.length != mayor) {
+              saltosBaseOp = 0;
+            } else {
+              saltosBasePr = 0;
+            }
+            //((saltosBaseOp * c_tamanio) + (ssaltosBaseOp * c_margen))
+            literal = Math.trunc((this.firstLoc.y) / c_alto - ((saltosBasePr * c_tamanio) + (saltosBasePr * c_margen)) / c_alto);
+            opcion = Math.trunc((this.lastLoc.y) / c_alto - ((saltosBaseOp * c_tamanio) + (saltosBaseOp * c_margen)) / c_alto);
+            console.log("Indices seleccionados", literal, opcion);
+          } else if (this.lastLoc.x < 90 && this.firstLoc.x > c_alto + 150) {
+            destino = 1;
+            console.log("derecha a izquierda= " + "(" + this.firstLoc.y + ") / " + c_alto + " - " + saltosBasePr);
+            console.log("Indices seleccionados", Math.trunc((this.firstLoc.y) / c_alto - saltosBasePr),
+              Math.trunc((this.lastLoc.y) / c_alto - saltosBaseOp));
+          }
+          if (literal != -1 && opcion != -1) {
+            this.questionObject.answers_[0].responses[literal] = this.questionObject.answers_[0].right_parts![opcion];
           }
         }
       }
@@ -805,11 +958,11 @@ export class QuestionnaireComponent implements OnInit {
 
   //this.alphabet.subarray(parts.length);
   dibujaFilaItemsCanvas(ctx: CanvasRenderingContext2D, c_tamanio: number, c_margen: number, maxElements: number
-    , parts: any[], isleft: boolean, subProperty: string, subPropertyImg:  string = "-"): void {
+    , parts: any[], isleft: boolean, subProperty: string, subPropertyImg: string = "-"): void {
     let colorPan = ["#E3FFFF", "#BFFFC4", "#F6FFA1", "#C5AEFE", "#FDBDB1", "#BEACFF", "#E9CEBB", "#EFA0E7"];
     //console.log("cantidades", maxElements, parts.length, (maxElements / parts.length));
-    let saltosBase = (((maxElements / parts.length)) / 2 );
-    saltosBase = (maxElements == parts.length)? 0 : saltosBase;
+    let saltosBase = (((maxElements / parts.length)) / 2);
+    saltosBase = (maxElements == parts.length) ? 0 : saltosBase;
     //console.log("salto base:" + saltosBase);
     for (let ind = 0; ind < parts.length; ind++) {
       if (isleft) {
@@ -828,7 +981,15 @@ export class QuestionnaireComponent implements OnInit {
       ctx.fillStyle = "black";
       ctx.strokeStyle = "black";
       ctx.font = "15px Arial";
-      ctx.fillText(subProperty === "-" ? ("Literal " + parts[ind] + ".") : parts[ind][subProperty],
+      let lbl: string = "";
+      if (subProperty == "-") {
+        lbl = ("Literal " + this.alphabet[ind] + ".");
+      } else if (subProperty == "+") {
+        lbl = ("Opción " + this.alphabet[ind] + ".");
+      } else {
+        lbl = parts[ind][subProperty];
+      }
+      ctx.fillText(lbl,
         isleft ? (Math.trunc(c_margen / 2) + 7) : (c_tamanio + 150) + Math.trunc(c_margen / 2), tmp_y + Math.trunc((c_tamanio / 2) + 7));
       ctx.stroke();
 

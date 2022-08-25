@@ -105,6 +105,8 @@ import { ScorereportComponent } from './pages/reports/scorereport/scorereport.co
 import { RequestssuggestionsComponent } from './pages/admins/requestssuggestions/requestssuggestions.component';
 import {ChartModule} from "primeng/chart";
 import { CursosArInactiveComponent } from './pages/cursos-ar-inactive/cursos-ar-inactive.component';
+// ---- COMANDO DE TECLADO -----
+import {HotkeyModule} from 'angular2-hotkeys';
 import { GamesComponent } from './pages/games/games.component';
 import { ReviewComponent } from './pages/review/review.component';
 import { UpdateevacuestComponent } from './pages/updateevacuest/updateevacuest.component';
@@ -206,8 +208,7 @@ FullCalendarModule.registerPlugins([
     SkeletonModule,
     ChartModule,
     AvatarModule,
-    SkeletonModule,
-    ChartModule
+    HotkeyModule.forRoot(),
   ],
 
   providers: [
