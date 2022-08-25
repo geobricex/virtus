@@ -19,16 +19,17 @@ export interface Questions {
   description_question:   string;
   feedback_question:      string;
   hint_question:          string;
+  id_question:            number;
   level_question:         number;
   maximumpoints_question: number;
   name_questioncategory:  string;
   order_question:         number;
-  pathurlfile_question: string;
-  pathurlsign_question: string;
-  pathurlvideo_question: string;
+  pathurlfile_question:   string;
+  pathurlsign_question:   string;
+  pathurlvideo_question:  string;
   points_question:        boolean;
   title_question:         string;
-  canResource:           boolean;
+  canResource:            boolean;//de front
 }
 
 export interface Answers {
@@ -44,7 +45,6 @@ export interface OptionsAnswer {
   opcion:   string;
   resource?: string;
   // yo he seleccionado?
-  //miSelected?: boolean;
   //pregunta de complete
   description_question: string; // pregunta con psudocadena
   description_question_R: string; // respuesta para comparar
