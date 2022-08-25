@@ -92,7 +92,7 @@
         </ng-template>
 
         <ng-template let-module pTemplate="listItem">
-          <div class="col-12">
+          <div class="col-12 hover:bg-black-alpha-10 cursor-pointer">
             <div class="flex flex-column md:flex-row align-items-center p-3 w-full">
               <div class="my-4 md:my-0 w-9 md:w-10rem shadow-2 mr-5 imgcard-virtus-two">
                 <img [src]="module.pathimg_syllabus" [alt]="module.name_syllabu" width="100"/>
@@ -100,6 +100,7 @@
               <div class="flex-1 text-center md:text-left">
                 <div class="font-bold text-2xl">{{module.name_syllabu}}</div>
                 <div class="mb-3">{{module.description_syllabu}}</div>
+                <span class="customer-badge status-new"> MÓDULO # {{module.id_syllabu}} </span>
               </div>
               <div
                 class="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0">
@@ -115,9 +116,8 @@
             <div class="card m-3 border-1 surface-border card-virtus">
               <div class="flex align-items-center justify-content-between">
                 <div class="flex align-items-center">
-
+                  <span class="customer-badge status-new"> MÓDULO # {{module.id_syllabu}} </span>
                 </div>
-                <!--<span [class]="'product-badge status-' + module.inventoryStatus.toLowerCase()">{{product.inventoryStatus}}</span>-->
               </div>
               <div class="text-center">
                 <div class="w-full  my-3 mx-0 imgcard-virtus">

@@ -107,6 +107,7 @@ import {ChartModule} from "primeng/chart";
 import { CursosArInactiveComponent } from './pages/cursos-ar-inactive/cursos-ar-inactive.component';
 import { GamesComponent } from './pages/games/games.component';
 import { ReviewComponent } from './pages/review/review.component';
+import { UpdateevacuestComponent } from './pages/updateevacuest/updateevacuest.component';
 
 
 FullCalendarModule.registerPlugins([
@@ -153,7 +154,8 @@ FullCalendarModule.registerPlugins([
     RequestssuggestionsComponent,
     CursosArInactiveComponent,
     GamesComponent,
-    ReviewComponent
+    ReviewComponent,
+    UpdateevacuestComponent
   ],
   imports: [
     HttpClientModule,

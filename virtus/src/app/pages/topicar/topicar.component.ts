@@ -3,7 +3,7 @@ import {BreadcrumbService} from "../../app.breadcrumb.service";
 import {ActivatedRoute} from "@angular/router";
 import {Observable} from "rxjs";
 import {Utils} from "../../util/Utils";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Modules} from "../../models/Modules";
 import {Topic} from "../../models/Topic";
@@ -12,7 +12,7 @@ import {Topic} from "../../models/Topic";
 @Component({
   selector: 'app-topicar',
   templateUrl: './topicar.component.html',
-  styleUrls: ['./topicar.component.scss']
+  styleUrls: ['../../../assets/demo/badges.scss']
 })
 export class TopicarComponent implements OnInit {
 
@@ -26,6 +26,9 @@ export class TopicarComponent implements OnInit {
   topics: Topic[];
   urlimageupload: any;
   tmpFile: any;
+  loadingDataCourse: boolean = true;
+  dataCourse: any;
+  dataModule: any;
 
   registerFormTopic: FormGroup;
   topicSuccessful = false;
@@ -52,6 +55,8 @@ export class TopicarComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadTopics();
+    this.loadDataCourse();
+    this.loadDataModule();
     this.registerFormTopic = this.formBuilder.group(
       {
         name: ["", Validators.required],
@@ -59,6 +64,41 @@ export class TopicarComponent implements OnInit {
         keywords: ["", Validators.required]
       }
     );
+  }
+
+  loadDataCourse() {
+    this.loadingDataCourse = true;
+    this.apiGetDataCourse(this.idCourse).subscribe({
+      next: response => {
+        console.log(response);
+        this.dataCourse = response;
+        console.log(this.dataCourse);
+      }
+    })
+  }
+
+  loadDataModule() {
+    this.apiGetDataModule().subscribe({
+      next: response => {
+        console.log(response);
+        this.dataModule = response.data[0];
+        this.loadingDataCourse = false;
+      }
+    })
+  }
+
+  apiGetDataModule(): Observable<any> {
+    this.globalUri = this.utils.globalUrl + "syllabu/getsyllabu";
+    // @ts-ignore
+    return this._http.post<any>(this.globalUri,
+      {id_syllabu: this.idModule});
+  }
+
+  apiGetDataCourse(id: any): Observable<any> {
+    this.globalUri = this.utils.globalUrl + "course/getCourseData";
+    let queryParams = new HttpParams();
+    queryParams = queryParams.append("id", id);
+    return this._http.get<any>(this.globalUri, {params: queryParams});
   }
 
   saveTopic() {
