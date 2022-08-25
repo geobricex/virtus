@@ -64,8 +64,8 @@ export class AppMenuComponent implements OnInit {
         {
           label: 'Reportes', icon: 'pi pi-fw pi-chart-pie', routerLink: ['/javascript;'],
           items: [
-            {label: 'Tiempo', icon: 'pi pi-fw pi-clock', routerLink: ['/app/reports/timereport']},
-            {label: 'Puntaje', icon: 'pi pi-fw pi-th-large', routerLink: ['/app/reports/scorereport']}
+            {label: 'Puntaje/Tiempo', icon: 'pi pi-fw pi-th-large', routerLink: ['/app/reports/scorereport']},
+            {label: 'Revisión de intentos', icon: 'pi pi-fw pi-check-square', routerLink: ['/app/reports/intentreview']}
           ]
         },
         {
@@ -90,8 +90,8 @@ export class AppMenuComponent implements OnInit {
         {
           label: 'Reportes', icon: 'pi pi-fw pi-chart-pie', routerLink: ['/javascript;'],
           items: [
-            {label: 'Tiempo', icon: 'pi pi-fw pi-clock', routerLink: ['/app/reports/timereport']},
-            {label: 'Puntaje', icon: 'pi pi-fw pi-th-large', routerLink: ['/app/p']}
+            {label: 'Tiempo/Puntaje', icon: 'pi pi-fw pi-clock', routerLink: ['/app/reports/timereport']},
+            {label: 'Revisión de intentos', icon: 'pi pi-fw pi-check-square', routerLink: ['/app/reports/intentreview']}
           ]
         }
       ];
@@ -109,8 +109,8 @@ export class AppMenuComponent implements OnInit {
         {
           label: 'Reportes', icon: 'pi pi-fw pi-chart-pie', routerLink: ['/javascript;'],
           items: [
-            {label: 'Tiempo', icon: 'pi pi-fw pi-clock', routerLink: ['/app/reports/timereport']},
-            {label: 'Puntaje', icon: 'pi pi-fw pi-th-large', routerLink: ['/app/reports/scorereport']}
+            {label: 'Tiempo/Puntaje', icon: 'pi pi-fw pi-clock', routerLink: ['/app/reports/timereport']},
+            {label: 'Revisión de intentos', icon: 'pi pi-fw pi-check-square', routerLink: ['/app/reports/intentreview']}
           ]
         }
       ];
@@ -129,8 +129,7 @@ export class AppMenuComponent implements OnInit {
         {
           label: 'Reportes', icon: 'pi pi-fw pi-chart-pie', routerLink: ['/javascript;'],
           items: [
-            {label: 'Tiempo', icon: 'pi pi-fw pi-clock', routerLink: ['/app/reports/timereport']},
-            {label: 'Puntaje', icon: 'pi pi-fw pi-hashtag', routerLink: ['/app/reports/scorereport']},
+            {label: 'Tiempo/Puntaje', icon: 'pi pi-fw pi-clock', routerLink: ['/app/reports/timereport']},
             {label: 'Revisión de intentos', icon: 'pi pi-fw pi-check-square', routerLink: ['/app/reports/intentreview']}
           ]
         }

@@ -41,6 +41,8 @@ from evaluation_question_category;
 
 select * from question_category;
 
+select * from persons;
+
 select * from persons_evaluations;
 
 

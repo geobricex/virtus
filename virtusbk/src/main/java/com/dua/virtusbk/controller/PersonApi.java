@@ -8,7 +8,6 @@ import com.dua.virtusbk.util.Methods;
 import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -72,7 +71,7 @@ public class PersonApi {//implements UserDetailsService {
 
     }
 
-//    @PostMapping("/getpersons")
+    //    @PostMapping("/getpersons")
 //    public ResponseEntity<List<Person>> getPersons(@RequestBody String sessionToken, @RequestHeader("token") String dataHeader) {
 //        System.out.println("getPerson...");
 //        String token = dataHeader;
@@ -135,7 +134,7 @@ public class PersonApi {//implements UserDetailsService {
         String message;
         String[] res = personService.signUp(person);
         message = Methods.getJsonMessage(res[0], res[1], res[2]);
-        if (res[0].equals("2")) {
+        if (res[0].equals("2") || res[0].equals("3")) {
             return new ResponseEntity<>(message, HttpStatus.OK);
 //            return ResponseEntity.ok(person);
         } else {
@@ -163,26 +162,6 @@ public class PersonApi {//implements UserDetailsService {
             return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
         }
 
-    }
-
-    @PostMapping("/requestcode")
-    public ResponseEntity<String> recoverAccount(@RequestBody String data) {
-        System.out.println("recoverAccount...");
-        String message;
-        JsonObject jso = Methods.stringToJSON(data);
-        if (jso.size() > 0) {
-            String flag = Methods.JsonToString(jso, "flag", "");
-            String email = Methods.JsonToString(jso, "email", "");
-            String code = Methods.JsonToString(jso, "code", "");
-            String[] res = personService.requestCode(flag, email, code);
-
-            message = Methods.getJsonMessage(res[0], res[1], res[2]);
-
-            return new ResponseEntity<>(message, HttpStatus.OK);
-        } else {
-            message = Methods.getJsonMessage("4", "Parametros de entrada vacios.", "[]");
-            return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
-        }
     }
 
     @PostMapping("/changepassword")
@@ -213,9 +192,29 @@ public class PersonApi {//implements UserDetailsService {
         }
     }
 
-    @PostMapping("/recoveraccount")
-    public ResponseEntity<String> requestCodePerson(@RequestBody String data) {
-        System.out.println("requestCodePerson...");
+    @PostMapping("/requestcode")
+    public ResponseEntity<String> requestCode(@RequestBody String data) {
+        System.out.println("requestcode...");
+        String message;
+        JsonObject jso = Methods.stringToJSON(data);
+        if (jso.size() > 0) {
+            String flag = Methods.JsonToString(jso, "flag", "");
+            String email = Methods.JsonToString(jso, "email", "");
+            String code = Methods.JsonToString(jso, "code", "");
+            String[] res = personService.requestCode(flag, email, code);
+
+            message = Methods.getJsonMessage(res[0], res[1], res[2]);
+
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } else {
+            message = Methods.getJsonMessage("4", "Parametros de entrada vacios.", "[]");
+            return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
+        }
+    }
+
+    @PostMapping("/recoverAccount")
+    public ResponseEntity<String> recoverAccount(@RequestBody String data) {
+        System.out.println("recoverAccount...");
         String message;
         JsonObject jso = Methods.stringToJSON(data);
         if (jso.size() > 0) {
