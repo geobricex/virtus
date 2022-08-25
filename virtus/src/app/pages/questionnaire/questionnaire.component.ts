@@ -169,6 +169,9 @@ export class QuestionnaireComponent implements OnInit {
     if (typo == 6) {
       resp = "puzzle";
     }
+    if (typo == 7) {
+      resp = "Build word";
+    }
     return resp;
   }
 
@@ -630,6 +633,8 @@ export class QuestionnaireComponent implements OnInit {
     //   console.log('Typed hotkey');
     //   return false; // Prevent bubbling
     // }));
+    //https://npm.io/package/angular2-hotkeys
+    //https://craig.is/killing/mice
     this._hotkeysService.add(new Hotkey([keyMaster + '+a', keyMaster + '+b', keyMaster + '+c', keyMaster + '+e', keyMaster + '+f'], (event: KeyboardEvent, combo: string): ExtendedKeyboardEvent => {
       console.log('Combo: ' + combo); // 'Combo: meta+shift+g' or 'Combo: alt+shift+s'
       let letra = combo.replace(keyMaster + "+", "");
@@ -863,7 +868,7 @@ export class QuestionnaireComponent implements OnInit {
         preventDefault: () => void; pageX: any; pageY: any;
       }) => {
         this.onoff = false;
-        let indice = Math.trunc((this.lastLoc.x) / 90);
+        let indice = Math.trunc((this.lastLoc.x) / c_tamanio);
         console.log(this.lastLoc.x, indice);
         let wildcard: string = this.alphabet[indice];
 
@@ -886,55 +891,52 @@ export class QuestionnaireComponent implements OnInit {
           this.questionObject.name_questioncategory == this.tipoPregunta(2) ||
           this.questionObject.name_questioncategory == this.tipoPregunta(3)) {
           this.evaluarPreguntasSencillas(wildcard);
-        } else if (this.questionObject.name_questioncategory == this.tipoPregunta(4)) {
-          let mayor: number = Math.max(this.questionObject.answers_[0].options_answer[0].options!.length,
-            this.questionObject.answers_[0].complete_parts!.length);
+        } else if ( this.questionObject.name_questioncategory == this.tipoPregunta(4) ||
+          this.questionObject.name_questioncategory == this.tipoPregunta(5)) {
+          let mayor: number;
           let origen = -1, destino = -1;
-          let saltosBaseOp = (((mayor / this.questionObject.answers_[0].options_answer[0].options!.length)) / 2);
-          saltosBaseOp = (mayor == this.questionObject.answers_[0].options_answer[0].options!.length) ? 0 : saltosBaseOp;
-          let saltosBasePr = (((mayor / this.questionObject.answers_[0].complete_parts!.length)) / 2);
-          saltosBasePr = (mayor == this.questionObject.answers_[0].complete_parts!.length) ? 0 : saltosBasePr;
-          let c_alto = 85;
 
-          if (this.firstLoc.x < c_alto && this.lastLoc.x > c_alto + 150) {
-            origen = 1;
-            console.log("izquierda a derecha ");
-            if (this.questionObject.answers_[0].options_answer[0].options!.length != mayor) {
-              saltosBaseOp = 0;
-            } else {
-              saltosBasePr = 0;
-            }
-            //((saltosBaseOp * c_tamanio) + (ssaltosBaseOp * c_margen))
-            console.log("Indices seleccionados",
-              Math.trunc((this.firstLoc.y) / c_alto - ((saltosBasePr * c_tamanio) + (saltosBasePr * c_margen)) / c_alto),
-              Math.trunc((this.lastLoc.y) / c_alto - ((saltosBaseOp * c_tamanio) + (saltosBaseOp * c_margen)) / c_alto));
-          } else if (this.lastLoc.x < 90 && this.firstLoc.x > c_alto + 150) {
-            destino = 1;
-            console.log("derecha a izquierda= " + "(" + this.firstLoc.y + ") / " + c_alto + " - " + saltosBasePr);
-            console.log("Indices seleccionados", Math.trunc((this.firstLoc.y) / c_alto - saltosBasePr),
-              Math.trunc((this.lastLoc.y) / c_alto - saltosBaseOp));
+          let cOp, cPr;
+
+          if(this.questionObject.name_questioncategory == this.tipoPregunta(5)){
+            cOp = this.questionObject.answers_[0].options_answer.length;
+            cPr = this.questionObject.answers_[0].right_parts!.length;
+            mayor = Math.max(this.questionObject.answers_[0].options_answer.length,
+              this.questionObject.answers_[0].right_parts!.length);
+          }else if(this.questionObject.name_questioncategory == this.tipoPregunta(4)){
+            cOp = this.questionObject.answers_[0].options_answer[0].options!.length;
+            cPr = this.questionObject.answers_[0].complete_parts!.length;
+            mayor = Math.max(this.questionObject.answers_[0].options_answer.length,
+              this.questionObject.answers_[0].complete_parts!.length);
+          } else{
+            cOp = 1;
+            cPr = 1;
+            mayor = 0;
           }
-        } else if (this.questionObject.name_questioncategory == this.tipoPregunta(5)) {
-          let mayor: number = Math.max(this.questionObject.answers_[0].options_answer.length,
-            this.questionObject.answers_[0].right_parts!.length);
-          let origen = -1, destino = -1;
-          let saltosBaseOp = (((mayor / this.questionObject.answers_[0].options_answer.length)) / 2);
-          saltosBaseOp = (mayor == this.questionObject.answers_[0].options_answer.length) ? 0 : saltosBaseOp;
-          let saltosBasePr = (((mayor / this.questionObject.answers_[0].right_parts!.length)) / 2);
-          saltosBasePr = (mayor == this.questionObject.answers_[0].right_parts!.length) ? 0 : saltosBasePr;
+
+
+          let saltosBaseOp = (((mayor / cOp)) / 2);
+          saltosBaseOp = (mayor == cOp) ? 0 : saltosBaseOp;
+          let saltosBasePr = (((mayor / cPr)) / 2);
+          saltosBasePr = (mayor == cPr) ? 0 : saltosBasePr;
+          //tmp_y = (saltosBasePr * c_tamanio) + (saltosBasePr * c_margen);
+
           let c_alto = 85;
           let literal = -1, opcion = -1;
+          console.log("Saltos: ", saltosBaseOp, saltosBasePr);
+
           if (this.firstLoc.x < c_alto && this.lastLoc.x > c_alto + 150) {
             origen = 1;
             console.log("izquierda a derecha ");
             if (this.questionObject.answers_[0].options_answer.length != mayor) {
               saltosBaseOp = 0;
-            } else {
+            }else {
               saltosBasePr = 0;
             }
             //((saltosBaseOp * c_tamanio) + (ssaltosBaseOp * c_margen))
-            literal = Math.trunc((this.firstLoc.y) / c_alto - ((saltosBasePr * c_tamanio) + (saltosBasePr * c_margen)) / c_alto);
+            literal = Math.trunc(((this.firstLoc.y) / c_alto) - ((saltosBasePr * c_tamanio) + (saltosBasePr * c_margen)) / c_alto);
             opcion = Math.trunc((this.lastLoc.y) / c_alto - ((saltosBaseOp * c_tamanio) + (saltosBaseOp * c_margen)) / c_alto);
+            console.log("x", ((this.firstLoc.y) / c_alto), ((this.lastLoc.y) / c_alto));
             console.log("Indices seleccionados", literal, opcion);
           } else if (this.lastLoc.x < 90 && this.firstLoc.x > c_alto + 150) {
             destino = 1;
@@ -943,7 +945,12 @@ export class QuestionnaireComponent implements OnInit {
               Math.trunc((this.lastLoc.y) / c_alto - saltosBaseOp));
           }
           if (literal != -1 && opcion != -1) {
-            this.questionObject.answers_[0].responses[literal] = this.questionObject.answers_[0].right_parts![opcion];
+            if(this.questionObject.name_questioncategory == this.tipoPregunta(4)){
+              //this.questionObject.answers_[0].complete_parts![opcion];
+              //this.questionObject.answers_[0].responses[literal] = this.questionObject.answers_[0].options_answer[0].options[opcion];
+            }else if(this.questionObject.name_questioncategory == this.tipoPregunta(5)){
+              this.questionObject.answers_[0].responses[literal] = this.questionObject.answers_[0].right_parts![opcion];
+            }
           }
         }
       }
