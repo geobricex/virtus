@@ -948,8 +948,10 @@ export class QuestionnaireComponent implements OnInit {
 
             literal = Math.trunc((this.firstLoc.y) / (c_alto + c_margen));
             opcion = Math.trunc((this.lastLoc.y) / (c_alto + c_margen));
+            literal = literal - saltosBaseOp;
+            opcion = opcion - saltosBasePr;
 
-            console.log("Indices seleccionados 2: ", literal - saltosBaseOp, opcion - saltosBasePr);
+            console.log("Indices seleccionados 2: ", literal, opcion);
           } else if (this.lastLoc.x < 90 && this.firstLoc.x > c_alto + 150) {
             destino = 1;
             console.log("derecha a izquierda= " + "(" + this.firstLoc.y + ") / " + c_alto + " - " + saltosBasePr);
