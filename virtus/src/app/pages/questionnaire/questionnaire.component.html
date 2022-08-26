@@ -468,14 +468,28 @@
          width="250">
   </div>
   <div class="col-12 text-center"
-       *ngIf="(sweetFakeAlert[1] && ( questionObject.feedback_question.length > 0 || questionObject.feedback_question !== undefined ))
-          || (!sweetFakeAlert[1] && (questionObject.hint_question.length > 0 || questionObject.hint_question!== undefined))">
+       *ngIf="(sweetFakeAlert[1] && questionObject.feedback_question.length > 0 && questionObject.feedback_question !== undefined )
+          || (!sweetFakeAlert[1] && questionObject.hint_question.length > 0 && questionObject.hint_question!== undefined)">
     <p-tag styleClass="mr-2" severity="success"
            value="{{sweetFakeAlert[1]?'¿Quieres saber porqué?':'Te daremos una pista'}}"></p-tag>
   </div>
   <div class="col-12 text-center">
     <p class="justify-content-start">
       {{sweetFakeAlert[1] ? questionObject.feedback_question : questionObject.hint_question}}
+    </p>
+  </div>
+</p-dialog>
+<p-dialog header="Finalizando..."
+          [(visible)]="sweetFakeAlertFin" [modal]="true"
+          [draggable]="false" [resizable]="false" [style]="{width: '30vw'}"
+          [closable]="true">
+
+  <div class="col-12 text-center">
+    <img alt="Card" src="assets/imgresource/empty/image_fin.webp" width="250">
+  </div>
+  <div class="col-12 text-center">
+    <p class="justify-content-start">
+      Su evaluación le ha tomado un estimado de {{miliseguntos2Segundos(calcularTiempos())}}
     </p>
   </div>
 </p-dialog>

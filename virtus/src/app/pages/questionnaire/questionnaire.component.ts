@@ -54,12 +54,14 @@ export class QuestionnaireComponent implements OnInit {
   //
   public tiempoEvaluacion$: Subscription | any;
   public tiempoEvaluacion: number = 0;
+  public tiempoEvaluacion_lastQ: number = 0;
 
   public literalSeleccionado: any;
 
   valueProgress = 0;
 
   public sweetFakeAlert: boolean[] = [false, true];
+  public sweetFakeAlertFin: boolean = false;
 
   @ViewChild('canvasEl', {static: true}) CanvasEl: ElementRef<HTMLCanvasElement>;
   private contex: CanvasRenderingContext2D | null;
@@ -198,6 +200,17 @@ export class QuestionnaireComponent implements OnInit {
     return tpuntos;
   }
 
+  calcularTiempos(): number {
+    let tiempos: number = 0;
+    for (let ind = 0; ind < this.evaluationObject.questions_.length; ind++) {
+      let tmp = this.evaluationObject.questions_[ind].response_time!;
+      if (typeof (tmp) === "number") {
+        tiempos += tmp;
+      }
+    }
+    return tiempos;
+  }
+
   getCountResueltas(): string {
     let total = this.evaluationObject.questions_.length;
     let respondidas = 0;
@@ -256,7 +269,7 @@ export class QuestionnaireComponent implements OnInit {
             }
           }
           if (this.storageService.getCurrentUser().email == "anthony.pachay2017@uteq.edu.ec") {
-            this.cambiarPregunta(13, true);
+            this.cambiarPregunta(0, true);
           } else {
             this.cambiarPregunta(0, true);
           }
@@ -347,7 +360,8 @@ export class QuestionnaireComponent implements OnInit {
 
   validarPreguntaResuelta(questionItem: Questions): boolean {
     if (questionItem.name_questioncategory == this.tipoPregunta(4)) {
-      return (questionItem.answers_[0].options_answer[0].response.length > 0)
+      return (questionItem.answers_[0].options_answer[0].response !== undefined
+        && questionItem.answers_[0].options_answer[0].response.length > 0);
     } else {
       if (questionItem.answers_[0].responses != undefined)
         return (questionItem.answers_[0].responses.length > 0
@@ -390,6 +404,7 @@ export class QuestionnaireComponent implements OnInit {
         //this.utils.showMessages(1, "FeedBack: " + this.questionObject.feedback_question);
         let [flagCorrect, points] = this.verificarRespuestasCorrectas(this.questionObject);
         this.questionObject.response_points = points;
+        console.log(this.questionObject);
         this.showSwal(flagCorrect);
         if (!flagCorrect) {
           return;
@@ -397,6 +412,8 @@ export class QuestionnaireComponent implements OnInit {
           if (this.valueProgress < 100) {
             this.valueProgress = this.valueProgress + ((100) / this.evaluationObject.questions_.length);
           }
+          this.questionObject.response_time = (this.tiempoEvaluacion - (flag ? 10 : 0)) - this.tiempoEvaluacion_lastQ;
+          this.tiempoEvaluacion_lastQ = this.tiempoEvaluacion;
         }
       } else {
         console.log("Primero debes responder la pregunta");
@@ -892,21 +909,6 @@ export class QuestionnaireComponent implements OnInit {
         console.log(this.lastLoc.x, indice);
         let wildcard: string = this.alphabet[indice];
 
-        /*if (this.questionObject.name_questioncategory == this.tipoPregunta(1)) {
-          this.autoClick("#option_vf_" + wildcard.trim());
-        } else if (this.questionObject.name_questioncategory == this.tipoPregunta(2)) {
-          if (this.questionObject.canResource) {
-            this.autoClick("#option_rd_2_" + wildcard.trim());
-          } else {
-            this.autoClick("#option_rd_" + wildcard.trim());
-          }
-        } else if (this.questionObject.name_questioncategory == this.tipoPregunta(3)) {
-          if (this.questionObject.canResource) {
-            this.autoClick("#option_ck_2_" + wildcard.trim());
-          } else {
-            this.autoClick("#option_ck_" + wildcard.trim());
-          }
-        }*/
         if (this.questionObject.name_questioncategory == this.tipoPregunta(1) ||
           this.questionObject.name_questioncategory == this.tipoPregunta(2) ||
           this.questionObject.name_questioncategory == this.tipoPregunta(3)) {
@@ -1053,9 +1055,10 @@ export class QuestionnaireComponent implements OnInit {
   //###########################333
 
   // función
-  enviarEvaluacion():void{
+  enviarEvaluacion(): void {
     console.log("##########################################################################");
     console.log(this.evaluationObject);
+    this.sweetFakeAlertFin = true;
   }
 }
 
