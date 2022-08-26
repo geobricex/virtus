@@ -114,6 +114,10 @@ export class QuestionnaireComponent implements OnInit {
     });
     console.log("canvas, ", this.CanvasEl);
     this.startHotKeysCommands();
+    //Rompecabezas
+
+
+
   }
 
   repetirPregunta() {
@@ -147,6 +151,16 @@ export class QuestionnaireComponent implements OnInit {
         this.artyom.clearGarbageCollection();
       });
     }
+  }
+
+  contarTipoPregunta(tipo: number):number{
+    let cantidad: number = 0;
+    for (let ind: number = 0; ind < this.evaluationObject.questions_.length; ind++){
+      if(this.evaluationObject.questions_[ind].name_questioncategory ==  this.tipoPregunta(tipo)){
+        cantidad++;
+      }
+    }
+    return cantidad;
   }
 
   tipoPregunta(typo: number): string {
@@ -385,22 +399,12 @@ export class QuestionnaireComponent implements OnInit {
         for (let i = 0; i < this.questionObject.answers_[0].options_answer.length; i++) {
           this.questionObject.answers_[0].complete_parts = this.partirPreguntaComplete(this.questionObject.answers_[0].options_answer[i].description_question);
         }
-        this.questionObject.answers_[0].responses = Array<OptionsAnswer>(this.questionObject.answers_[0].complete_parts!.length - 1);
+        this.questionObject.answers_[0].options_answer[0].response = Array<Options>(this.questionObject.answers_[0].complete_parts!.length - 1);
       }
       if (this.questionObject.name_questioncategory == this.tipoPregunta(5)) {
         //this.questionObject.answers_[0].right_parts = [...this.questionObject.answers_[0].options_answer];
         this.questionObject.answers_[0].right_parts = Array<OptionsAnswer>(0);
         let tmp: OptionsAnswer;
-        // = {
-        //   correct: Correct.No,
-        //   description_question: "",
-        //   description_question_R: "",
-        //   leftSide: "",
-        //   options: [],
-        //   resourse_leftSide: "",
-        //   resourse_rightSide: "",
-        //   rightSide: "",
-        //   opcion : '', resource : ''};
         for (let index = 0; index < this.questionObject.answers_[0].options_answer.length; index++) {
           //tmp.opcion = this.questionObject.answers_[0].options_answer[index].rightSide;
           //tmp.resource = this.questionObject.answers_[0].options_answer[index].resourse_rightSide;
@@ -809,7 +813,7 @@ export class QuestionnaireComponent implements OnInit {
       this.dibujaFilaItemsCanvas(ctx, c_tamanio, c_margen, cantidad, this.alphabet.slice(0, parts_p.length)
         , true, "-");
       this.dibujaFilaItemsCanvas(ctx, c_tamanio, c_margen, cantidad, parts_o
-        , false, "option");
+        , false, "+");
     } else if (this.questionObject.name_questioncategory == this.tipoPregunta(5)) {
       let parts_o: OptionsAnswer[] = this.questionObject.answers_[0].options_answer;
       let cantidad: number = parts_o.length;
@@ -901,29 +905,32 @@ export class QuestionnaireComponent implements OnInit {
           if(this.questionObject.name_questioncategory == this.tipoPregunta(5)){
             cOp = this.questionObject.answers_[0].options_answer.length;
             cPr = this.questionObject.answers_[0].right_parts!.length;
-            mayor = Math.max(this.questionObject.answers_[0].options_answer.length,
-              this.questionObject.answers_[0].right_parts!.length);
+            mayor = Math.max(cOp, cPr);
           }else if(this.questionObject.name_questioncategory == this.tipoPregunta(4)){
             cOp = this.questionObject.answers_[0].options_answer[0].options!.length;
             cPr = this.questionObject.answers_[0].complete_parts!.length;
-            mayor = Math.max(this.questionObject.answers_[0].options_answer.length,
-              this.questionObject.answers_[0].complete_parts!.length);
+            mayor = Math.max(cOp, cPr);
           } else{
             cOp = 1;
             cPr = 1;
             mayor = 0;
           }
 
-
-          let saltosBaseOp = (((mayor / cOp)) / 2);
+          let saltosBaseOp = (((mayor / cOp)) );
           saltosBaseOp = (mayor == cOp) ? 0 : saltosBaseOp;
-          let saltosBasePr = (((mayor / cPr)) / 2);
+          let saltosBasePr = (((mayor / cPr)) );
           saltosBasePr = (mayor == cPr) ? 0 : saltosBasePr;
-          //tmp_y = (saltosBasePr * c_tamanio) + (saltosBasePr * c_margen);
 
-          let c_alto = 85;
+          saltosBaseOp = mayor - cOp;
+          saltosBasePr = mayor - cPr;
+          console.log("paneles de mas: ", saltosBaseOp, saltosBasePr);
+          let tmp_yOp = (saltosBaseOp * c_tamanio) + (saltosBaseOp * c_margen);
+          let tmp_yPr = (saltosBasePr * c_tamanio) + (saltosBasePr * c_margen);
+
+          let c_alto = c_tamanio;
           let literal = -1, opcion = -1;
           console.log("Saltos: ", saltosBaseOp, saltosBasePr);
+          console.log("Saltos: ", tmp_yOp, tmp_yPr);
 
           if (this.firstLoc.x < c_alto && this.lastLoc.x > c_alto + 150) {
             origen = 1;
@@ -933,11 +940,20 @@ export class QuestionnaireComponent implements OnInit {
             }else {
               saltosBasePr = 0;
             }
+            literal = Math.trunc((this.firstLoc.y - tmp_yOp) / (c_alto + c_margen));
+            opcion = Math.trunc((this.lastLoc.y - tmp_yPr) / (c_alto + c_margen));
+
+
             //((saltosBaseOp * c_tamanio) + (ssaltosBaseOp * c_margen))
-            literal = Math.trunc(((this.firstLoc.y) / c_alto) - ((saltosBasePr * c_tamanio) + (saltosBasePr * c_margen)) / c_alto);
-            opcion = Math.trunc((this.lastLoc.y) / c_alto - ((saltosBaseOp * c_tamanio) + (saltosBaseOp * c_margen)) / c_alto);
-            console.log("x", ((this.firstLoc.y) / c_alto), ((this.lastLoc.y) / c_alto));
-            console.log("Indices seleccionados", literal, opcion);
+            // literal = Math.trunc(((this.firstLoc.y) / c_alto) - ((saltosBasePr * c_tamanio) + (saltosBasePr * c_margen)) / c_alto);
+            // opcion = Math.trunc((this.lastLoc.y) / c_alto - ((saltosBaseOp * c_tamanio) + (saltosBaseOp * c_margen)) / c_alto);
+            //
+            //
+            // console.log("x", ((this.firstLoc.y) / c_alto), ((this.lastLoc.y) / c_alto));
+            // console.log("Indices seleccionados", literal, opcion);
+            // literal = (((saltosBasePr + literal) * c_tamanio) + ((saltosBasePr + literal) * c_margen))/(c_tamanio);
+            // opcion = (((saltosBaseOp + opcion) * c_tamanio) + ((saltosBaseOp + opcion) * c_margen))/(c_tamanio);
+            console.log("Indices seleccionados 2: ", literal, opcion);
           } else if (this.lastLoc.x < 90 && this.firstLoc.x > c_alto + 150) {
             destino = 1;
             console.log("derecha a izquierda= " + "(" + this.firstLoc.y + ") / " + c_alto + " - " + saltosBasePr);
@@ -947,8 +963,9 @@ export class QuestionnaireComponent implements OnInit {
           if (literal != -1 && opcion != -1) {
             if(this.questionObject.name_questioncategory == this.tipoPregunta(4)){
               //this.questionObject.answers_[0].complete_parts![opcion];
-              //this.questionObject.answers_[0].responses[literal] = this.questionObject.answers_[0].options_answer[0].options[opcion];
-            }else if(this.questionObject.name_questioncategory == this.tipoPregunta(5)){
+              this.questionObject.answers_[0].options_answer[0].response[literal] = this.questionObject.answers_[0].options_answer[0].options[opcion];
+              console.log("respuseta: ", this.questionObject.answers_[0].options_answer[0].response);
+            } else if(this.questionObject.name_questioncategory == this.tipoPregunta(5)){
               this.questionObject.answers_[0].responses[literal] = this.questionObject.answers_[0].right_parts![opcion];
             }
           }
@@ -1019,5 +1036,51 @@ export class QuestionnaireComponent implements OnInit {
     return {
       x: Math.round(x - ctxbox.left), y: Math.round(y - ctxbox.top)
     };
+  }
+
+  //###########################333
+
+  // función
+
+}
+
+class Puzzle{
+
+  private maxSizeImg:number = 250;
+  private dimens:number = 3;
+
+  private arrayImagePuzzle: any[] = new Array(this.dimens);
+  private arrayPositionPuzzle: number[] = new Array(this.dimens);
+
+
+  crearPuzzle(cantidad: number, url: string):void{
+    let img = new Image();
+    let maxSizeImg = this.maxSizeImg;
+    let mecanvas = new HTMLCanvasElement();
+    mecanvas.width = maxSizeImg;
+    mecanvas.height = maxSizeImg;
+    let local_this= this;
+    img.onload = function () {
+      img.width = maxSizeImg;
+      img.height = maxSizeImg;
+      let ctx = mecanvas.getContext('2d')!;
+      ctx.drawImage(img, 0 , 0, maxSizeImg, maxSizeImg);
+
+      /*for (let x = 0; x < local_this.dimens; x++){
+        local_this.arrayImagePuzzle[x] = new Array(local_this.dimens);
+        for (let y = 0; y < local_this.dimens; y++){
+          let imgData = ctx.getImageData(0, 0, maxSizeImg/local_this.dimens, maxSizeImg/local_this.dimens);
+          console.log(imgData)
+          local_this.arrayImagePuzzle[y]=imgData;
+        }
+      }*/
+      let imgData = ctx.getImageData(0, 0, maxSizeImg/local_this.dimens, maxSizeImg/local_this.dimens);
+      console.log(imgData)
+    };
+    img.src = url;
+  }
+
+  mover(origen: {x:number, y: number}, destino: {x:number, y: number}){
+
   }
 }

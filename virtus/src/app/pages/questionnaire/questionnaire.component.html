@@ -62,7 +62,8 @@
           </div>
         </p-panel>
         <p-accordion *ngIf="evaluationObject.order_category == true">
-          <p-accordionTab header="Verdadero o Falso" [selected]="true" class="line-height-3 m-0">
+          <p-accordionTab header="Verdadero o Falso" [selected]="true" class="line-height-3 m-0"
+            *ngIf="contarTipoPregunta(1) > 0" >
             <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
               <div *ngIf="question.name_questioncategory == tipoPregunta(1)"
                    class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2">
@@ -73,7 +74,8 @@
               </div>
             </div>
           </p-accordionTab>
-          <p-accordionTab header="Opción única" [selected]="true" class="line-height-3 m-0">
+          <p-accordionTab header="Opción única" [selected]="true" class="line-height-3 m-0"
+            *ngIf="contarTipoPregunta(2) > 0" >
             <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
               <div *ngIf="question.name_questioncategory == tipoPregunta(2)"
                    class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
@@ -85,7 +87,8 @@
               </div>
             </div>
           </p-accordionTab>
-          <p-accordionTab header="Opción multiples" [selected]="true" class="line-height-3 m-0">
+          <p-accordionTab header="Opción multiples" [selected]="true" class="line-height-3 m-0"
+            *ngIf="contarTipoPregunta(3) > 0" >
             <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
               <div *ngIf="question.name_questioncategory == tipoPregunta(3)"
                    class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2">
@@ -96,7 +99,8 @@
               </div>
             </div>
           </p-accordionTab>
-          <p-accordionTab header="Contruir la Palabra" [selected]="true" class="line-height-3 m-0">
+          <p-accordionTab header="Contruir la Palabra" [selected]="true" class="line-height-3 m-0"
+            *ngIf="contarTipoPregunta(7) > 0" >
             <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
               <div *ngIf="question.name_questioncategory == tipoPregunta(7)"
                    class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
@@ -109,7 +113,8 @@
               </div>
             </div>
           </p-accordionTab>
-          <p-accordionTab header="Complete" [selected]="true" class="line-height-3 m-0">
+          <p-accordionTab header="Complete" [selected]="true" class="line-height-3 m-0"
+            *ngIf="contarTipoPregunta(4) > 0">
             <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
               <div *ngIf="question.name_questioncategory == tipoPregunta(4)"
                    class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
@@ -121,7 +126,8 @@
               </div>
             </div>
           </p-accordionTab>
-          <p-accordionTab header="Relación" [selected]="true" class="line-height-3 m-0">
+          <p-accordionTab header="Relación" [selected]="true" class="line-height-3 m-0"
+              *ngIf="contarTipoPregunta(5) > 0">
             <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
               <div *ngIf="question.name_questioncategory == tipoPregunta(5)"
                    class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
@@ -262,21 +268,38 @@
       <div *ngIf="questionObject.name_questioncategory == tipoPregunta(4) && !questionObject.canResource">
         <div *ngFor="let option of questionObject.answers_[0].options_answer; let i = index"
              [attr.data-index]="i">
-          <div class="field-radiobutton">
-            <p>
-              <span *ngFor="let wg of questionObject.answers_[0].complete_parts; let ic = index"
+          <div class="flex-auto">
+            <span *ngFor="let wg of questionObject.answers_[0].complete_parts; let ic = index"
                     [attr.data-index]="ic"
                     [style]="{color: (wg == '$option$'?'#FF0000':'#000'), 'font-weight': (wg == '$option$'?'bold;':'normal;')}">
                 {{wg != '$option$' ? wg : ('(' + alphabet[0] + '. ')}}
                 <!--                <input type="text" pInputText *ngIf="wg == '$option$'"/>-->
                 <!--                no tiene imagenes-->
-                <p-dropdown [options]="option.options" [(ngModel)]="questionObject.answers_[0].responses[ic]"
+                <p-dropdown [inputId]="'relation_input_' + ic"
+                            [options]="option.options"
+                            [(ngModel)]="questionObject.answers_[0].options_answer[0].response[ic]"
                             optionLabel="option" placeholder=" -- Seleccione una opcíón --"
-                            *ngIf="wg == '$option$'"></p-dropdown>
+                            *ngIf="wg == '$option$'" [filter]="true" filterBy="rightSide"
+                            [showClear]="true" placeholder=" -- - --"
+                >
+                  <ng-template pTemplate="selectedItem">
+                    <div class="country-item country-item-value" *ngIf="questionObject.answers_[0].responses[i]">
+                      <img [src]="questionObject.answers_[0].responses[i].resourse_rightSide" height="25"
+                           [class]="'flag flag-FR'" *ngIf="questionObject.answers_[0].responses[i].resourse_rightSide"
+                      />
+                      <div>{{questionObject.answers_[0].responses[i].rightSide}}</div>
+                    </div>
+                    </ng-template>
+                    <ng-template let-option pTemplate="item">
+                      <div class="ui-helper-clearfix template-border">
+                        <img  [src]="option.resource" [class]="'flag flag-FR'" alt="" *ngIf="option.resource.length > 0"/>
+                        <div>{{option.option}}</div>
+                      </div>
+                    </ng-template>
+                </p-dropdown>
                 <!--                Tiene imagenes-->
                 {{wg != '$option$' ? wg : ') '}}
             </span>
-            </p>
           </div>
         </div>
       </div>
@@ -304,14 +327,14 @@
                 <ng-template pTemplate="selectedItem">
                   <div class="country-item country-item-value" *ngIf="questionObject.answers_[0].responses[i]">
                     <img [src]="questionObject.answers_[0].responses[i].resourse_rightSide" height="25"
-                         [class]="'flag'" *ngIf="questionObject.answers_[0].responses[i].resourse_rightSide"
+                         [class]="'flag flag-FR'" *ngIf="questionObject.answers_[0].responses[i].resourse_rightSide"
                     />
                     <div>{{questionObject.answers_[0].responses[i].rightSide}}</div>
                   </div>
                 </ng-template>
                 <ng-template let-item pTemplate="item">
                   <div class="ui-helper-clearfix template-border">
-                    <img [src]="item.resourse_rightSide" class="lang-change-img" alt="" />
+                    <img [src]="item.resourse_rightSide" [class]="'flag flag-FR'" alt="" />
                     <div>{{alphabet[item.ind].toUpperCase() + ".\t" + (item.rightSide.length > 0 ? item.rightSide : 'Opción')}}</div>
                   </div>
                 </ng-template>
@@ -351,6 +374,9 @@
         <div class="col-12" style="display: flex;align-items: center;justify-content: center;">
           <canvas #canvasEl id="canvasEl"
                   width="450" height="85"></canvas>
+        </div>
+        <div class="col-12" style="display: flex;align-items: center;justify-content: center;">
+          <div id="div_puzzle" ></div>
         </div>
       </p-fieldset>
       <hr>
@@ -404,7 +430,9 @@
          src="{{sweetFakeAlert[1]?'assets/imgresource/empty/acierto.webp':'assets/imgresource/empty/pista.webp'}}"
          width="250">
   </div>
-  <div class="col-12 text-center">
+  <div class="col-12 text-center"
+    *ngIf="(sweetFakeAlert[1] && ( questionObject.feedback_question.length > 0 || questionObject.feedback_question !== undefined ))
+          || (!sweetFakeAlert[1] && (questionObject.hint_question.length > 0 || questionObject.hint_question!== undefined))" >
     <p-tag styleClass="mr-2" severity="success"
            value="{{sweetFakeAlert[1]?'¿Quieres saber porqué?':'Te daremos una pista'}}"></p-tag>
   </div>
