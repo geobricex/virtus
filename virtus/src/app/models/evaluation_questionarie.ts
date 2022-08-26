@@ -12,6 +12,7 @@ export interface Evaluation {
   time_evaluation:           boolean;
   timeminutes_evaluation:    number;
   order_category:            boolean;
+  response_all_time:         number;
 }
 
 export interface Questions {
@@ -30,6 +31,8 @@ export interface Questions {
   points_question:        boolean;
   title_question:         string;
   canResource:            boolean;//de front
+  response_points?:       number;
+  response_time?:         number;
 }
 
 export interface Answers {
