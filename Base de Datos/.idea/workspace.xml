@@ -6,14 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="bbc5533f-4237-4b82-99c8-ccd5e9e0c413" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/df8c8b86-2dab-4442-98ba-1fa49a5319ba.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/df8c8b86-2dab-4442-98ba-1fa49a5319ba.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/df8c8b86-2dab-4442-98ba-1fa49a5319ba/storage_v2/_src_/database/virtus.kxFZzw/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/df8c8b86-2dab-4442-98ba-1fa49a5319ba/storage_v2/_src_/database/virtus.kxFZzw/schema/public.abK9xQ.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/consults.sql" beforeDir="false" afterPath="$PROJECT_DIR$/consults.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/querys.sql" beforeDir="false" afterPath="$PROJECT_DIR$/querys.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtus/src/app/app.menu.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/src/app/app.menu.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtus/src/app/pages/app.login.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/src/app/pages/app.login.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/PersonApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/PersonApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/service/PersonService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/service/PersonService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

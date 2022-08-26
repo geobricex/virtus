@@ -5,7 +5,7 @@
     "logLevel": "debug"
   },
   "/virtus_bk/*": {
-    "target": "http://localhost:8888/",
+    "target": "http://localhost:9999/",
     "secure": false,
     "logLevel": "debug"
   }
