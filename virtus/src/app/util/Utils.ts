@@ -31,7 +31,7 @@ export class Utils {
   }
 
   initPocket() {
-    this.client = new PocketBase("https://aplicaciones.uteq.edu.ec:9549");
+    // this.client = new PocketBase("https://aplicaciones.uteq.edu.ec:9549");
     this.client = new PocketBase("https://fyc.uteq.edu.ec:9549");
     this.client.Admins.authViaEmail("anthony.pachay2017@uteq.edu.ec", "Abc1234567");
   }
