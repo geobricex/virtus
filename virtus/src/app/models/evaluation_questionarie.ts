@@ -49,6 +49,7 @@ export interface OptionsAnswer {
   description_question: string; // pregunta con psudocadena
   description_question_R: string; // respuesta para comparar
   options: Options[] //literales
+  response: Options[]
   //Unir con línea
   leftSide: string;
   resourse_leftSide: string;
