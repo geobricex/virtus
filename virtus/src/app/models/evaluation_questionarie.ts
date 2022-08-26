@@ -30,6 +30,7 @@ export interface Questions {
   points_question:        boolean;
   title_question:         string;
   canResource:            boolean;//de front
+  response_points?:       number;
 }
 
 export interface Answers {

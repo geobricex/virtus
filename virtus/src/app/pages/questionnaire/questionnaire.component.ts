@@ -117,7 +117,6 @@ export class QuestionnaireComponent implements OnInit {
     //Rompecabezas
 
 
-
   }
 
   repetirPregunta() {
@@ -153,10 +152,10 @@ export class QuestionnaireComponent implements OnInit {
     }
   }
 
-  contarTipoPregunta(tipo: number):number{
+  contarTipoPregunta(tipo: number): number {
     let cantidad: number = 0;
-    for (let ind: number = 0; ind < this.evaluationObject.questions_.length; ind++){
-      if(this.evaluationObject.questions_[ind].name_questioncategory ==  this.tipoPregunta(tipo)){
+    for (let ind: number = 0; ind < this.evaluationObject.questions_.length; ind++) {
+      if (this.evaluationObject.questions_[ind].name_questioncategory == this.tipoPregunta(tipo)) {
         cantidad++;
       }
     }
@@ -257,7 +256,7 @@ export class QuestionnaireComponent implements OnInit {
             }
           }
           if (this.storageService.getCurrentUser().email == "anthony.pachay2017@uteq.edu.ec") {
-            this.cambiarPregunta(11, true);
+            this.cambiarPregunta(13, true);
           } else {
             this.cambiarPregunta(0, true);
           }
@@ -274,7 +273,8 @@ export class QuestionnaireComponent implements OnInit {
 
 
   verificarRespuestasCorrectas(questionItem: Questions): [boolean, number] {
-    if (questionItem.answers_[0].responses != undefined)
+    if (questionItem.answers_[0].responses != undefined ||
+      questionItem.answers_[0].options_answer[0].response.length > 0)
       //verdadero o falso O unica seleccion
       if (questionItem.name_questioncategory == this.tipoPregunta(2)
         || questionItem.name_questioncategory == this.tipoPregunta(1)) {
@@ -305,7 +305,18 @@ export class QuestionnaireComponent implements OnInit {
           flagAlltrue && indTS == indT,
           questionItem.maximumpoints_question * ((indTS / indT) / 100)];
       } else if (questionItem.name_questioncategory == this.tipoPregunta(4)) {
-
+        console.log("objeto:", questionItem);
+        let elemento: string[] = [];
+        for (let ind = 0; ind < questionItem.answers_[0].complete_parts!.length; ind++) {
+          if (questionItem.answers_[0].complete_parts![ind] != "$option$") {
+            elemento.push(questionItem.answers_[0].complete_parts![ind]);
+          } else {
+            elemento.push(questionItem.answers_[0].options_answer[0].response[ind].option);
+          }
+        }
+        console.log("Respuseta final: ", elemento);
+        let flag: boolean = elemento.join('') == questionItem.answers_[0].options_answer[0].description_question_R;
+        return [flag, flag ? questionItem.maximumpoints_question : 0];
       } else if (questionItem.name_questioncategory == this.tipoPregunta(5)) {
         //this.questionObject.answers_[0].options_answer
         //this.questionObject.answers_[0].right_parts
@@ -335,9 +346,13 @@ export class QuestionnaireComponent implements OnInit {
   }
 
   validarPreguntaResuelta(questionItem: Questions): boolean {
-    if (questionItem.answers_[0].responses != undefined)
-      return (questionItem.answers_[0].responses.length > 0
-        || Object.keys(questionItem.answers_[0].responses).length > 0);
+    if (questionItem.name_questioncategory == this.tipoPregunta(4)) {
+      return (questionItem.answers_[0].options_answer[0].response.length > 0)
+    } else {
+      if (questionItem.answers_[0].responses != undefined)
+        return (questionItem.answers_[0].responses.length > 0
+          || Object.keys(questionItem.answers_[0].responses).length > 0);
+    }
     return false;
   }
 
@@ -374,6 +389,7 @@ export class QuestionnaireComponent implements OnInit {
         console.log("FeedBack: ", this.questionObject.feedback_question);
         //this.utils.showMessages(1, "FeedBack: " + this.questionObject.feedback_question);
         let [flagCorrect, points] = this.verificarRespuestasCorrectas(this.questionObject);
+        this.questionObject.response_points = points;
         this.showSwal(flagCorrect);
         if (!flagCorrect) {
           return;
@@ -601,9 +617,9 @@ export class QuestionnaireComponent implements OnInit {
         this.vistaVideoSenias = !this.vistaVideoSenias;
       } else if (wildcard.trim() == "bancos") {
         this.viewQuestionBank = !this.viewQuestionBank;
-      }else {
+      } else {
         this.autoClick("#evt_control_" + wildcard.trim());
-        console.log("evaluar_control_evaluacion: " +"evt_control_"+ wildcard);
+        console.log("evaluar_control_evaluacion: " + "evt_control_" + wildcard);
       }
     } else {
       console.log("No se encuentra es evaluar_control_evaluacion")
@@ -647,7 +663,7 @@ export class QuestionnaireComponent implements OnInit {
         this.questionObject.name_questioncategory == this.tipoPregunta(2) ||
         this.questionObject.name_questioncategory == this.tipoPregunta(3)) {
         this.evaluarPreguntasSencillas(letra);
-      }else{
+      } else {
         alert("comando actualmente no soportado")
       }
       let e: ExtendedKeyboardEvent = event;
@@ -655,15 +671,15 @@ export class QuestionnaireComponent implements OnInit {
       return e;
     }));
     let comandos = ["right", "left", "enter", "esc", "backspace", "tab"];
-    this._hotkeysService.add(new Hotkey([keyMaster + '+'+comandos[0], keyMaster + '+'+comandos[1],
-        keyMaster + '+'+comandos[2], keyMaster + '+'+comandos[3], keyMaster + '+'+comandos[4], 'shift+'+comandos[5]]
+    this._hotkeysService.add(new Hotkey([keyMaster + '+' + comandos[0], keyMaster + '+' + comandos[1],
+        keyMaster + '+' + comandos[2], keyMaster + '+' + comandos[3], keyMaster + '+' + comandos[4], 'shift+' + comandos[5]]
       , (event: KeyboardEvent, combo: string): ExtendedKeyboardEvent => {
         console.log('Combo: ' + combo); // 'Combo: meta+shift+g' or 'Combo: alt+shift+s'
 
         let comodin = combo.replace(keyMaster + "+", "");
         let database: string[] = ["siguiente", "anterior", "enviar", "señas", "repetir", "bancos"];
         let indice = comandos.indexOf(comodin);
-        if(indice > -1){
+        if (indice > -1) {
           this.evaluar_control_evaluacion(database[indice], database);
         }
 
@@ -689,7 +705,7 @@ export class QuestionnaireComponent implements OnInit {
             local_this.questionObject.name_questioncategory == local_this.tipoPregunta(2) ||
             local_this.questionObject.name_questioncategory == local_this.tipoPregunta(3)) {
             local_this.evaluarPreguntasSencillas(wildcard);
-          }else{
+          } else {
             alert("Comando actualmente no soportado");
           }
 
@@ -895,30 +911,30 @@ export class QuestionnaireComponent implements OnInit {
           this.questionObject.name_questioncategory == this.tipoPregunta(2) ||
           this.questionObject.name_questioncategory == this.tipoPregunta(3)) {
           this.evaluarPreguntasSencillas(wildcard);
-        } else if ( this.questionObject.name_questioncategory == this.tipoPregunta(4) ||
+        } else if (this.questionObject.name_questioncategory == this.tipoPregunta(4) ||
           this.questionObject.name_questioncategory == this.tipoPregunta(5)) {
           let mayor: number;
           let origen = -1, destino = -1;
 
           let cOp, cPr;
 
-          if(this.questionObject.name_questioncategory == this.tipoPregunta(5)){
+          if (this.questionObject.name_questioncategory == this.tipoPregunta(5)) {
             cOp = this.questionObject.answers_[0].options_answer.length;
             cPr = this.questionObject.answers_[0].right_parts!.length;
             mayor = Math.max(cOp, cPr);
-          }else if(this.questionObject.name_questioncategory == this.tipoPregunta(4)){
+          } else if (this.questionObject.name_questioncategory == this.tipoPregunta(4)) {
             cOp = this.questionObject.answers_[0].options_answer[0].options!.length;
             cPr = this.questionObject.answers_[0].complete_parts!.length;
             mayor = Math.max(cOp, cPr);
-          } else{
+          } else {
             cOp = 1;
             cPr = 1;
             mayor = 0;
           }
 
-          let saltosBaseOp = (((mayor / cOp)) );
+          let saltosBaseOp = (((mayor / cOp)));
           saltosBaseOp = (mayor == cOp) ? 0 : saltosBaseOp;
-          let saltosBasePr = (((mayor / cPr)) );
+          let saltosBasePr = (((mayor / cPr)));
           saltosBasePr = (mayor == cPr) ? 0 : saltosBasePr;
 
           saltosBaseOp = mayor - cOp;
@@ -930,52 +946,38 @@ export class QuestionnaireComponent implements OnInit {
           let literal = -1, opcion = -1;
           console.log("Saltos: ", saltosBaseOp, saltosBasePr);
 
-
           if (this.firstLoc.x < c_alto && this.lastLoc.x > c_alto + 150) {
-            origen = 1;
             console.log("izquierda a derecha ");
-            /*if (this.questionObject.answers_[0].options_answer.length != mayor) {
-              saltosBaseOp = 0;
-            }else {
-              saltosBasePr = 0;
-            }*/
-            /*let tmp_yOp = (saltosBaseOp * c_tamanio) + (saltosBaseOp * c_margen);
-            let tmp_yPr = (saltosBasePr * c_tamanio) + (saltosBasePr * c_margen);
-            console.log("Saltos: ", tmp_yOp, tmp_yPr);
-
-            literal = Math.trunc((this.firstLoc.y - tmp_yOp) / (c_alto + c_margen));
-            opcion = Math.trunc((this.lastLoc.y - tmp_yPr) / (c_alto + c_margen));*/
-
             literal = Math.trunc((this.firstLoc.y) / (c_alto + c_margen));
             opcion = Math.trunc((this.lastLoc.y) / (c_alto + c_margen));
             literal = literal - saltosBaseOp;
-            opcion = opcion - saltosBasePr;
-
-            console.log("Indices seleccionados 2: ", literal, opcion);
-          } else if (this.lastLoc.x < 90 && this.firstLoc.x > c_alto + 150) {
-            destino = 1;
-            console.log("derecha a izquierda= " + "(" + this.firstLoc.y + ") / " + c_alto + " - " + saltosBasePr);
-            console.log("Indices seleccionados", Math.trunc((this.firstLoc.y) / c_alto - saltosBasePr),
-              Math.trunc((this.lastLoc.y) / c_alto - saltosBaseOp));
+            opcion = opcion - (saltosBasePr > 1 ? saltosBasePr : 0);
+          } else if (this.lastLoc.x < c_alto && this.firstLoc.x > c_alto + 150) {
+            console.log("derecha a izquierda ");
+            literal = Math.trunc((this.lastLoc.y) / (c_alto + c_margen));
+            opcion = Math.trunc((this.firstLoc.y) / (c_alto + c_margen));
+            literal = literal - saltosBaseOp;
+            opcion = opcion - (saltosBasePr > 1 ? saltosBasePr : 0);
           }
+          console.log("Indices seleccionados 2: ", literal, opcion);
           if (literal != -1 && opcion != -1) {
-            if(this.questionObject.name_questioncategory == this.tipoPregunta(4)){
+            if (this.questionObject.name_questioncategory == this.tipoPregunta(4)) {
               //this.questionObject.answers_[0].complete_parts![opcion];
               //buscamos el indice al que se le debería ubicar el valor para que se presente
               //todo bien en la interfaz, una solución poco elegante pero válida
               let trueIndex = 0, count = -1;
-              for (let ind = 0; ind < this.questionObject.answers_[0].complete_parts!.length; ind++){
-                if(this.questionObject.answers_[0].complete_parts![ind] == "$option$"){
+              for (let ind = 0; ind < this.questionObject.answers_[0].complete_parts!.length; ind++) {
+                if (this.questionObject.answers_[0].complete_parts![ind] == "$option$") {
+                  trueIndex = ind;
                   count++;
                 }
-                if(count == literal) {
-                  trueIndex = ind;
+                if (count == literal) {
                   ind = this.questionObject.answers_[0].complete_parts!.length;
                 }
               }
               this.questionObject.answers_[0].options_answer[0].response[trueIndex] = this.questionObject.answers_[0].options_answer[0].options[opcion];
               console.log("respuseta: ", this.questionObject.answers_[0].options_answer[0].response);
-            } else if(this.questionObject.name_questioncategory == this.tipoPregunta(5)){
+            } else if (this.questionObject.name_questioncategory == this.tipoPregunta(5)) {
               this.questionObject.answers_[0].responses[literal] = this.questionObject.answers_[0].right_parts![opcion];
             }
           }
@@ -1051,30 +1053,33 @@ export class QuestionnaireComponent implements OnInit {
   //###########################333
 
   // función
-
+  enviarEvaluacion():void{
+    console.log("##########################################################################");
+    console.log(this.evaluationObject);
+  }
 }
 
-class Puzzle{
+class Puzzle {
 
-  private maxSizeImg:number = 250;
-  private dimens:number = 3;
+  private maxSizeImg: number = 250;
+  private dimens: number = 3;
 
   private arrayImagePuzzle: any[] = new Array(this.dimens);
   private arrayPositionPuzzle: number[] = new Array(this.dimens);
 
 
-  crearPuzzle(cantidad: number, url: string):void{
+  crearPuzzle(cantidad: number, url: string): void {
     let img = new Image();
     let maxSizeImg = this.maxSizeImg;
     let mecanvas = new HTMLCanvasElement();
     mecanvas.width = maxSizeImg;
     mecanvas.height = maxSizeImg;
-    let local_this= this;
+    let local_this = this;
     img.onload = function () {
       img.width = maxSizeImg;
       img.height = maxSizeImg;
       let ctx = mecanvas.getContext('2d')!;
-      ctx.drawImage(img, 0 , 0, maxSizeImg, maxSizeImg);
+      ctx.drawImage(img, 0, 0, maxSizeImg, maxSizeImg);
 
       /*for (let x = 0; x < local_this.dimens; x++){
         local_this.arrayImagePuzzle[x] = new Array(local_this.dimens);
@@ -1084,13 +1089,14 @@ class Puzzle{
           local_this.arrayImagePuzzle[y]=imgData;
         }
       }*/
-      let imgData = ctx.getImageData(0, 0, maxSizeImg/local_this.dimens, maxSizeImg/local_this.dimens);
+      let imgData = ctx.getImageData(0, 0, maxSizeImg / local_this.dimens, maxSizeImg / local_this.dimens);
       console.log(imgData)
     };
     img.src = url;
   }
 
-  mover(origen: {x:number, y: number}, destino: {x:number, y: number}){
+  mover(origen: { x: number, y: number }, destino: { x: number, y: number }) {
 
   }
+
 }
