@@ -32,6 +32,7 @@ export class Utils {
 
   initPocket() {
     this.client = new PocketBase("https://aplicaciones.uteq.edu.ec:9549");
+    this.client = new PocketBase("https://fyc.uteq.edu.ec:9549");
     this.client.Admins.authViaEmail("anthony.pachay2017@uteq.edu.ec", "Abc1234567");
   }
 
@@ -43,7 +44,8 @@ export class Utils {
   }
 
   makePathRecurso(element: any): string {
-    var urlRecurso: string = "https://aplicaciones.uteq.edu.ec:9549" + "/api/files/" + element["@collectionName"] + "/" + element.id + "/" + element.field;// +"/" ;
+    var urlRecurso: string = "https://fyc.uteq.edu.ec:9549" + "/api/files/" + element["@collectionName"] + "/" + element.id + "/" + element.field;// +"/" ;
+    // var urlRecurso: string = "https://aplicaciones.uteq.edu.ec:9549" + "/api/files/" + element["@collectionName"] + "/" + element.id + "/" + element.field;// +"/" ;
     return urlRecurso;
   }
 
