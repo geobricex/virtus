@@ -83,43 +83,48 @@ public class PersonService {
                 && person.getProviderPerson().equals("native")))
                 && Methods.testregex("[0-9]+\\-[0-9]+\\-[0-9]+", person.getIdLocation())) {
             System.out.println("sigUp...");
-            String sendEmailCode = weEncoder.getEmailCode();
+            List<Person> Persons = personDAO.findByEmailList(person.getEmailPerson());
+            if (Persons.size() == 0) {// no exista un usuario con el correo electrónico
+                String sendEmailCode = weEncoder.getEmailCode();
 
-            person.setNamePerson(person.getNamePerson().toUpperCase().trim());
-            person.setLastnamePerson(person.getLastnamePerson().toUpperCase().trim());
-            person.setCodeverificationPerson(sendEmailCode);
-            person.setEmailPerson(person.getEmailPerson().toLowerCase().trim());
-            person.setPasswordPerson(bCryptPasswordEncoder.encode(person.getPasswordPerson().trim()));
-            person.setTypePerson("S");
-            /*FECHA*/
-            person.setDateregPerson(Methods.nowLocalDateTime());
-            person.setDateupdatePerson(Methods.nowLocalDateTime());
-            /*FIN FECHA*/
-            /*AVATAR ALEATORIO*/
-            String[] avatarUser = DataStatic.avatarUser;
-            int indexRandom = Methods.randomNumberInRange(0, avatarUser.length - 1);
-            person.setPathimgPerson(avatarUser[indexRandom]);
-            /*FIN AVATAR ALEATORIO*/
-            person = personDAO.save(person);
-            if (person.getTypePerson().equals("S")) {
+                person.setNamePerson(person.getNamePerson().toUpperCase().trim());
+                person.setLastnamePerson(person.getLastnamePerson().toUpperCase().trim());
+                person.setCodeverificationPerson(sendEmailCode);
+                person.setEmailPerson(person.getEmailPerson().toLowerCase().trim());
+                person.setPasswordPerson(bCryptPasswordEncoder.encode(person.getPasswordPerson().trim()));
+                person.setTypePerson("S");
+                /*FECHA*/
+                person.setDateregPerson(Methods.nowLocalDateTime());
+                person.setDateupdatePerson(Methods.nowLocalDateTime());
+                /*FIN FECHA*/
+                /*AVATAR ALEATORIO*/
+                String[] avatarUser = DataStatic.avatarUser;
+                int indexRandom = Methods.randomNumberInRange(0, avatarUser.length - 1);
+                person.setPathimgPerson(avatarUser[indexRandom]);
+                /*FIN AVATAR ALEATORIO*/
+                person = personDAO.save(person);
+                if (person.getTypePerson().equals("S")) {
 
-                if (utilService.eInsertUser(person.getEmailPerson(), person.getNamePerson(), person.getLastnamePerson(), person.getCodeverificationPerson())) {
-                    status = "2";
-                    message = "Usuario registrado con éxito.";
-                    data = personToJson(person).toString();
+                    if (utilService.eInsertUser(person.getEmailPerson(), person.getNamePerson(), person.getLastnamePerson(), person.getCodeverificationPerson())) {
+                        status = "2";
+                        message = "Usuario registrado con éxito.";
+                        data = personToJson(person).toString();
+                    } else {
+                        status = "4";
+                        message = "Error al enviar código de verificación.";
+                        throw new RuntimeException("Error in Send Email");
+                    }
                 } else {
                     status = "4";
-                    message = "Error al enviar código de verificación.";
-                    throw new RuntimeException("Error in Send Email");
+                    message = "Datos del usuario no disponibles.";
                 }
             } else {
-                status = "4";
-                message = "Datos del usuario no disponibles.";
+                status = "3";
+                message = "El correo ingresado ya se encuentra registraso.";
             }
-
         } else {
             status = "3";
-            message = "Los parámetros ingresados no son válidos";
+            message = "Los parámetros ingresados no son válidos.";
         }
         return new String[]{status, message, data};
 
@@ -158,6 +163,32 @@ public class PersonService {
         return new String[]{status, message, data};
     }
 
+    public String[] changePassword(String password, String newPassword, String id_person) {
+        String status = "4", message = "Error en los parámetros introducidos", data = "[]";
+        Optional<Person> Persons = personDAO.findById(Long.parseLong(id_person));
+        password = bCryptPasswordEncoder.encode(password.trim());
+        newPassword = bCryptPasswordEncoder.encode(newPassword.trim());
+        if (Persons.isPresent()) {
+            if (password.equals(Persons.get().getPasswordPerson()) && !password.equals(newPassword)) {
+                Persons.get().setPasswordPerson(newPassword);
+                Persons.get().setDateupdatePerson(Methods.nowLocalDateTime());
+                personDAO.save(Persons.get());
+                String textMessage = "Su contraseña ha sido actualizada con éxito.";
+                utilService.eMessageUser(Persons.get().getEmailPerson(), Persons.get().getNamePerson(), Persons.get().getLastnamePerson(), textMessage);
+                status = "2";
+                message = "Contraseña actualizada.";
+            } else {
+                status = "5";
+                message = "No se puede actualizar la contraseña.";
+            }
+
+        } else {
+            status = "4";
+            message = "Usuario no encontrado.";
+        }
+        return new String[]{status, message, data};
+    }
+
     public String[] requestCode(String flag, String email, String code) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
         List<Person> Persons = personDAO.findByEmailList(email);
@@ -192,32 +223,6 @@ public class PersonService {
 
                     break;
             }
-        } else {
-            status = "4";
-            message = "Usuario no encontrado.";
-        }
-        return new String[]{status, message, data};
-    }
-
-    public String[] changePassword(String password, String newPassword, String id_person) {
-        String status = "4", message = "Error en los parámetros introducidos", data = "[]";
-        Optional<Person> Persons = personDAO.findById(Long.parseLong(id_person));
-        password = bCryptPasswordEncoder.encode(password.trim());
-        newPassword = bCryptPasswordEncoder.encode(newPassword.trim());
-        if (Persons.isPresent()) {
-            if (password.equals(Persons.get().getPasswordPerson()) && !password.equals(newPassword)) {
-                Persons.get().setPasswordPerson(newPassword);
-                Persons.get().setDateupdatePerson(Methods.nowLocalDateTime());
-                personDAO.save(Persons.get());
-                String textMessage = "Su contraseña ha sido actualizada con éxito.";
-                utilService.eMessageUser(Persons.get().getEmailPerson(), Persons.get().getNamePerson(), Persons.get().getLastnamePerson(), textMessage);
-                status = "2";
-                message = "Contraseña actualizada.";
-            } else {
-                status = "5";
-                message = "No se puede actualizar la contraseña.";
-            }
-
         } else {
             status = "4";
             message = "Usuario no encontrado.";
@@ -268,7 +273,7 @@ public class PersonService {
                             status = "5";
                             message = "La cuenta no se encuentra verificada.";
                             break;
-                        case "I":
+                        case "D":
                             status = "5";
                             message = "La cuenta se encuentra inactiva.";
                             break;
@@ -279,6 +284,14 @@ public class PersonService {
                         case "U":
                             status = "2";
                             message = "Sesión iniciada con éxito.";
+                            break;
+                        case "I":
+                            status = "2";
+                            message = "Sesión de instructor iniciada con éxito.";
+                            break;
+                        case "E":
+                            status = "2";
+                            message = "Sesión de educador iniciada con éxito.";
                             break;
                         default:
                             status = "3";

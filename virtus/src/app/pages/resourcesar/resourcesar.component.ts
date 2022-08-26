@@ -9,6 +9,7 @@ import {Evaluation} from "../../models/Evaluation";
 import {Topic} from "../../models/Topic";
 import {Resources} from "../../models/Resources";
 import {DomSanitizer} from "@angular/platform-browser";
+import {Message} from "primeng/api";
 
 @Component({
   selector: 'app-resourcesar',
@@ -45,6 +46,7 @@ export class ResourcesarComponent implements OnInit {
   viewPdf: boolean;
   pdfUrl: any;
   typeEvalutionform: any[];
+  msg: Message[] = [];
 
   carouselResponsiveOptions: any[] = [
     {
@@ -312,6 +314,7 @@ export class ResourcesarComponent implements OnInit {
   }
 
   onUploadFile(event: any) {
+    this.msg.push({severity: 'info', summary: 'Virtus', detail: 'Procesando...'});
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
       console.log(file);
@@ -325,10 +328,12 @@ export class ResourcesarComponent implements OnInit {
         this.formR["pathfileResource"].setValue("");
         this.utils.showMessages(1, "Formato de archivo no permitido.", "tst");
       }
+      this.msg = [];
     }
   }
 
   onUploadVideoSenia(event: any) {
+    this.msg.push({severity: 'info', summary: 'Virtus', detail: 'Procesando...'});
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
       console.log(file);
@@ -341,9 +346,11 @@ export class ResourcesarComponent implements OnInit {
         this.utils.showMessages(1, "Formato de archivo no permitido.", "tst");
       }
     }
+    this.msg = [];
   }
 
   onUploadVideo(event: any) {
+    this.msg.push({severity: 'info', summary: 'Virtus', detail: 'Procesando...'});
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
       console.log(file);
@@ -357,9 +364,12 @@ export class ResourcesarComponent implements OnInit {
         this.utils.showMessages(1, "Formato de archivo no permitido.", "tst");
       }
     }
+    this.msg = [];
   }
 
   saveEvaluation() {
+    this.msg.push({severity: 'info', summary: 'Virtus', detail: 'Procesando...'});
+
     if (!this.form['timeEvaluation'].value) {
       this.form['timeminutesEvaluation'].setValue(0);
     }
@@ -397,6 +407,8 @@ export class ResourcesarComponent implements OnInit {
       this.utils.showMessages(response.status, response.information, "tst");
       this.loadEvaluations();
       this.resetEvaluation();
+      this.registerFormResources.reset();
+      this.msg = [];
     });
   }
 

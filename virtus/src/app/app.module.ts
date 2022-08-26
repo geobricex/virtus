@@ -109,6 +109,7 @@ import { CursosArInactiveComponent } from './pages/cursos-ar-inactive/cursos-ar-
 import {HotkeyModule} from 'angular2-hotkeys';
 import { GamesComponent } from './pages/games/games.component';
 import { ReviewComponent } from './pages/review/review.component';
+import { UpdateevacuestComponent } from './pages/updateevacuest/updateevacuest.component';
 
 
 FullCalendarModule.registerPlugins([
@@ -155,7 +156,8 @@ FullCalendarModule.registerPlugins([
     RequestssuggestionsComponent,
     CursosArInactiveComponent,
     GamesComponent,
-    ReviewComponent
+    ReviewComponent,
+    UpdateevacuestComponent
   ],
   imports: [
     HttpClientModule,
@@ -205,10 +207,8 @@ FullCalendarModule.registerPlugins([
     TagModule,
     SkeletonModule,
     ChartModule,
+    AvatarModule,
     HotkeyModule.forRoot(),
-    SkeletonModule,
-    ChartModule,
-    AvatarModule
   ],
 
   providers: [

@@ -11,7 +11,7 @@ import {Utils} from "../../util/Utils";
 @Component({
   selector: 'app-cursos-ar',
   templateUrl: './cursos-ar.component.html',
-  styleUrls: ['./cursos-ar.component.scss']
+  styleUrls: ['./cursos-ar.component.css']
 })
 export class CursosArComponent implements OnInit {
 
@@ -24,6 +24,7 @@ export class CursosArComponent implements OnInit {
   tmpFile: any;
   urlimageupload: any;
   idiomas: any [];
+  loading: boolean = true;
 
   infoCourseSelected: any = {};
   informationCourse: boolean;
@@ -67,6 +68,12 @@ export class CursosArComponent implements OnInit {
     );
   }
 
+  validateText(text: string) {
+    if (text.length > 10) {
+
+    }
+  }
+
   expandAll() {
     if (!this.isExpanded) {
       let module: any = {};
@@ -98,9 +105,11 @@ export class CursosArComponent implements OnInit {
   }
 
   loadCourse() {
+    this.loading = true;
     this.apiLoadCourses().subscribe(response => {
       this.courses = response;
       console.log(this.courses);
+      this.loading = false;
     });
   }
 
