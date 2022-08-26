@@ -280,14 +280,14 @@
                             [(ngModel)]="questionObject.answers_[0].options_answer[0].response[ic]"
                             optionLabel="option" placeholder=" -- Seleccione una opcíón --"
                             *ngIf="wg == '$option$'" [filter]="true" filterBy="rightSide"
-                            [showClear]="true" placeholder=" -- - --"
+                            [showClear]="true"  [style]="{'minWidth':'20vw', 'width': '20vw'}"
                 >
                   <ng-template pTemplate="selectedItem">
-                    <div class="country-item country-item-value" *ngIf="questionObject.answers_[0].responses[i]">
-                      <img [src]="questionObject.answers_[0].responses[i].resourse_rightSide" height="25"
-                           [class]="'flag flag-FR'" *ngIf="questionObject.answers_[0].responses[i].resourse_rightSide"
+                    <div class="country-item country-item-value" *ngIf="questionObject.answers_[0].options_answer[0].response[ic]">
+                      <img [src]="questionObject.answers_[0].options_answer[0].response[ic].resource" height="25"
+                           [class]="'flag flag-FR'" *ngIf="questionObject.answers_[0].options_answer[0].response[ic].resource.length > 0"
                       />
-                      <div>{{questionObject.answers_[0].responses[i].rightSide}}</div>
+                      <div>{{questionObject.answers_[0].options_answer[0].response[ic].option}}</div>
                     </div>
                     </ng-template>
                     <ng-template let-option pTemplate="item">
@@ -298,7 +298,7 @@
                     </ng-template>
                 </p-dropdown>
                 <!--                Tiene imagenes-->
-                {{wg != '$option$' ? wg : ') '}}
+                {{wg != '$option$' ? '' : ') '}}
             </span>
           </div>
         </div>

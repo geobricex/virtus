@@ -924,36 +924,32 @@ export class QuestionnaireComponent implements OnInit {
           saltosBaseOp = mayor - cOp;
           saltosBasePr = mayor - cPr;
           console.log("paneles de mas: ", saltosBaseOp, saltosBasePr);
-          let tmp_yOp = (saltosBaseOp * c_tamanio) + (saltosBaseOp * c_margen);
-          let tmp_yPr = (saltosBasePr * c_tamanio) + (saltosBasePr * c_margen);
+
 
           let c_alto = c_tamanio;
           let literal = -1, opcion = -1;
           console.log("Saltos: ", saltosBaseOp, saltosBasePr);
-          console.log("Saltos: ", tmp_yOp, tmp_yPr);
+
 
           if (this.firstLoc.x < c_alto && this.lastLoc.x > c_alto + 150) {
             origen = 1;
             console.log("izquierda a derecha ");
-            if (this.questionObject.answers_[0].options_answer.length != mayor) {
+            /*if (this.questionObject.answers_[0].options_answer.length != mayor) {
               saltosBaseOp = 0;
             }else {
               saltosBasePr = 0;
-            }
+            }*/
+            /*let tmp_yOp = (saltosBaseOp * c_tamanio) + (saltosBaseOp * c_margen);
+            let tmp_yPr = (saltosBasePr * c_tamanio) + (saltosBasePr * c_margen);
+            console.log("Saltos: ", tmp_yOp, tmp_yPr);
+
             literal = Math.trunc((this.firstLoc.y - tmp_yOp) / (c_alto + c_margen));
-            opcion = Math.trunc((this.lastLoc.y - tmp_yPr) / (c_alto + c_margen));
+            opcion = Math.trunc((this.lastLoc.y - tmp_yPr) / (c_alto + c_margen));*/
 
+            literal = Math.trunc((this.firstLoc.y) / (c_alto + c_margen));
+            opcion = Math.trunc((this.lastLoc.y) / (c_alto + c_margen));
 
-            //((saltosBaseOp * c_tamanio) + (ssaltosBaseOp * c_margen))
-            // literal = Math.trunc(((this.firstLoc.y) / c_alto) - ((saltosBasePr * c_tamanio) + (saltosBasePr * c_margen)) / c_alto);
-            // opcion = Math.trunc((this.lastLoc.y) / c_alto - ((saltosBaseOp * c_tamanio) + (saltosBaseOp * c_margen)) / c_alto);
-            //
-            //
-            // console.log("x", ((this.firstLoc.y) / c_alto), ((this.lastLoc.y) / c_alto));
-            // console.log("Indices seleccionados", literal, opcion);
-            // literal = (((saltosBasePr + literal) * c_tamanio) + ((saltosBasePr + literal) * c_margen))/(c_tamanio);
-            // opcion = (((saltosBaseOp + opcion) * c_tamanio) + ((saltosBaseOp + opcion) * c_margen))/(c_tamanio);
-            console.log("Indices seleccionados 2: ", literal, opcion);
+            console.log("Indices seleccionados 2: ", literal - saltosBaseOp, opcion - saltosBasePr);
           } else if (this.lastLoc.x < 90 && this.firstLoc.x > c_alto + 150) {
             destino = 1;
             console.log("derecha a izquierda= " + "(" + this.firstLoc.y + ") / " + c_alto + " - " + saltosBasePr);
@@ -963,7 +959,19 @@ export class QuestionnaireComponent implements OnInit {
           if (literal != -1 && opcion != -1) {
             if(this.questionObject.name_questioncategory == this.tipoPregunta(4)){
               //this.questionObject.answers_[0].complete_parts![opcion];
-              this.questionObject.answers_[0].options_answer[0].response[literal] = this.questionObject.answers_[0].options_answer[0].options[opcion];
+              //buscamos el indice al que se le debería ubicar el valor para que se presente
+              //todo bien en la interfaz, una solución poco elegante pero válida
+              let trueIndex = 0, count = -1;
+              for (let ind = 0; ind < this.questionObject.answers_[0].complete_parts!.length; ind++){
+                if(this.questionObject.answers_[0].complete_parts![ind] == "$option$"){
+                  count++;
+                }
+                if(count == literal) {
+                  trueIndex = ind;
+                  ind = this.questionObject.answers_[0].complete_parts!.length;
+                }
+              }
+              this.questionObject.answers_[0].options_answer[0].response[trueIndex] = this.questionObject.answers_[0].options_answer[0].options[opcion];
               console.log("respuseta: ", this.questionObject.answers_[0].options_answer[0].response);
             } else if(this.questionObject.name_questioncategory == this.tipoPregunta(5)){
               this.questionObject.answers_[0].responses[literal] = this.questionObject.answers_[0].right_parts![opcion];
