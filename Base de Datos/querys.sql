@@ -24,8 +24,12 @@ from questions--_category;
          inner join question_category qc on questions.question_category_id_questioncategory = qc.id_questioncategory;
 
 select *
-from evaluations;
-
+from evaluations
+where topics_id_topic = 29;
+select * from evaluation_question_category;
+select *
+from resources
+where topics_id_topic = 29;
 select *
 from answers
          inner join questions q on answers.questions_id_question = q.id_question;
