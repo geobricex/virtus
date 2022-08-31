@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bbc5533f-4237-4b82-99c8-ccd5e9e0c413" name="Changes" comment="" />
+    <list default="true" id="bbc5533f-4237-4b82-99c8-ccd5e9e0c413" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../documentos/~$estions.rtf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../documentos/~WRL1711.tmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtus/proxy.conf.json" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/proxy.conf.json" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
