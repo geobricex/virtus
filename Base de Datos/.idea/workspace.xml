@@ -5,9 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bbc5533f-4237-4b82-99c8-ccd5e9e0c413" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../documentos/~$estions.rtf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../documentos/~WRL1711.tmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtus/proxy.conf.json" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/proxy.conf.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/PersonDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/consults.sql" beforeDir="false" afterPath="$PROJECT_DIR$/consults.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtus/src/app/app.menu.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/src/app/app.menu.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtus/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/src/app/app.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtus/src/app/pages/admins/useradministration/useradministration.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/src/app/pages/admins/useradministration/useradministration.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtus/src/app/pages/admins/useradministration/useradministration.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/src/app/pages/admins/useradministration/useradministration.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtus/src/app/pages/myprofile/myprofile.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/src/app/pages/myprofile/myprofile.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtus/src/app/pages/reports/timereport/timereport.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/src/app/pages/reports/timereport/timereport.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtus/src/app/pages/reports/timereport/timereport.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/src/app/pages/reports/timereport/timereport.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/PersonApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/PersonApi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/QuestionApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/QuestionApi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/entity/Person.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/entity/Person.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/repository/PersonRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/repository/PersonRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/service/PersonService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/service/PersonService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

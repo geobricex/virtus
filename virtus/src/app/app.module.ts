@@ -110,6 +110,8 @@ import {HotkeyModule} from 'angular2-hotkeys';
 import { GamesComponent } from './pages/games/games.component';
 import { ReviewComponent } from './pages/review/review.component';
 import { UpdateevacuestComponent } from './pages/updateevacuest/updateevacuest.component';
+import {SelectButtonModule} from "primeng/selectbutton";
+import {AutoCompleteModule} from "primeng/autocomplete";
 
 
 FullCalendarModule.registerPlugins([
@@ -209,6 +211,8 @@ FullCalendarModule.registerPlugins([
     ChartModule,
     AvatarModule,
     HotkeyModule.forRoot(),
+    SelectButtonModule,
+    AutoCompleteModule,
   ],
 
   providers: [

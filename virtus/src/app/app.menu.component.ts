@@ -34,12 +34,12 @@ export class AppMenuComponent implements OnInit {
         {label: 'Inicio', icon: 'pi pi-fw pi-home', routerLink: ['/app']},
         {label: 'Cursos', icon: 'pi pi-fw pi-book', routerLink: ['/app/coursear']},
         {label: 'Gestión de usuarios', icon: 'pi pi-fw pi-users', routerLink: ['/app/admins/useradministration']},
-        {label: 'Solicitudes', icon: 'pi pi-comments', routerLink: ['/app/requestssuggestions']},
+        {label: 'Solicitudes', icon: 'pi pi-comments', routerLink: ['/app/admins/requestssuggestions']},
         {
           label: 'Reportes', icon: 'pi pi-fw pi-chart-pie', routerLink: ['/javascript;'],
           items: [
-            {label: 'Tiempo', icon: 'pi pi-fw pi-clock', routerLink: ['/app/reports/timereport']},
-            {label: 'Puntaje', icon: 'pi pi-fw pi-th-large', routerLink: ['/app/reports/scorereport']}
+            {label: 'Puntaje/Tiempo', icon: 'pi pi-fw pi-th-large', routerLink: ['/app/reports/scorereport']},
+            {label: 'Revisión de intentos', icon: 'pi pi-fw pi-check-square', routerLink: ['/app/reports/intentreview']}
           ]
         }
       ];

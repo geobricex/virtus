@@ -52,7 +52,7 @@ export class MyprofileComponent implements OnInit {
     this.editar_datos = false;
     this.formUpdatePhto = false;
     // https://aplicaciones.uteq.edu.ec:9549
-    this.client = new PocketBase("https://aplicaciones.uteq.edu.ec:9549");
+    this.client = new PocketBase("https://fyc.uteq.edu.ec:9549");
     let resp = this.initPocket();
     console.log(resp);
     console.log(this.session.token);
@@ -144,7 +144,7 @@ export class MyprofileComponent implements OnInit {
   }
 
   makePathRecurso(element: any): string {
-    var urlRecurso: string = "https://aplicaciones.uteq.edu.ec:9549" + "/api/files/" + element["@collectionName"] + "/" + element.id + "/" + element.field;// +"/" ;
+    var urlRecurso: string = "https://fyc.uteq.edu.ec:9549" + "/api/files/" + element["@collectionName"] + "/" + element.id + "/" + element.field;// +"/" ;
     return urlRecurso;
   }
 
