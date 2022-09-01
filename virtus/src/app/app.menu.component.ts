@@ -84,7 +84,7 @@ export class AppMenuComponent implements OnInit {
           items: [
             {label: 'Todos los cursos', icon: 'pi pi-fw pi-box', routerLink: ['/app/course']},
             {label: 'Mis cursos', icon: 'pi pi-fw pi-inbox', routerLink: ['/app/mycourse']},
-            {label: 'Favoritos', icon: 'pi pi-fw pi-heart-fill', routerLink: ['/app/general/favorites']}
+            // {label: 'Favoritos', icon: 'pi pi-fw pi-heart-fill', routerLink: ['/app/general/favorites']}
           ]
         },
         {
@@ -103,7 +103,7 @@ export class AppMenuComponent implements OnInit {
           items: [
             {label: 'Todos los cursos', icon: 'pi pi-fw pi-box', routerLink: ['/app/course']},
             {label: 'Mis cursos', icon: 'pi pi-fw pi-inbox', routerLink: ['/app/mycourse']},
-            {label: 'Favoritos', icon: 'pi pi-fw pi-heart-fill', routerLink: ['/app/general/favorites']}
+            // {label: 'Favoritos', icon: 'pi pi-fw pi-heart-fill', routerLink: ['/app/general/favorites']}
           ]
         },
         {
@@ -122,7 +122,7 @@ export class AppMenuComponent implements OnInit {
           items: [
             {label: 'Todos los cursos', icon: 'pi pi-fw pi-box', routerLink: ['/app/course']},
             {label: 'Mis cursos', icon: 'pi pi-fw pi-inbox', routerLink: ['/app/mycourse']},
-            {label: 'Favoritos', icon: 'pi pi-fw pi-heart-fill', routerLink: ['/app/general/favorites']}
+            // {label: 'Favoritos', icon: 'pi pi-fw pi-heart-fill', routerLink: ['/app/general/favorites']}
           ]
         },
         // {label: 'Recursos', icon: 'pi pi-fw pi-folder-open', routerLink: ['/app/r']},
