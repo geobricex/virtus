@@ -1,0 +1,135 @@
+<div class="card">
+  <h5> Encabezado pregunta </h5>
+  <form [formGroup]="registerFormQuestion">
+    <div class="p-fluid">
+      <div class="field">
+        <label for="titulo"> Titulo: </label>
+        <input id="titulo" pInputText type="text" formControlName="title_question">
+      </div>
+      <div class="field">
+        <label for="description"> Descripcion: </label>
+        <textarea pInputTextarea name="" id="description" cols="30" rows="5"
+                  formControlName="description_question"></textarea>
+      </div>
+      <div class="field">
+        <label for="retroalimen"> Retroalimentación: </label>
+        <input id="retroalimen" pInputText type="text" formControlName="feedback_question">
+      </div>
+      <div class="field">
+        <label for="pista"> Pista: </label>
+        <input id="pista" pInputText type="text" formControlName="hint_question">
+      </div>
+      <div class="field">
+        <label for="nivel"> Nivel de dificultad </label>
+        <input id="nivel" type="text" pInputText readonly formControlName="level_question" [(ngModel)]="levelQuestion"/>
+        <p-slider [min]="1" [max]="5" formControlName="level_question" [(ngModel)]="levelQuestion"></p-slider>
+      </div>
+      <div class="grid">
+        <div class="col-2">
+          <div class="field" style="display: grid">
+            <label>Puntos:</label>
+            <p-inputSwitch formControlName="points_question"></p-inputSwitch>
+          </div>
+        </div>
+        <div class="col" *ngIf="form['points_question'].value">
+          <div class="field">
+            <label for="puntaje"> Puntaje: </label>
+            <p-inputNumber id="puntaje" formControlName="maximumpoints_question"></p-inputNumber>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <h5> Respuestas </h5>
+
+  <!-- Estructura para las preguntas de verdadero o falso -->
+  <div class="mt-2" *ngIf="typeQuestion === 1">
+    <span> Seleccione el criterio a las posibles respuestas: </span>
+    <div class="grid mt-2">
+      <div class="col-12 md:col-4">
+        <div class="field-radiobutton">
+          <p-radioButton name="city" value="Verdadero/Falso" [(ngModel)]="valRadio" id="city1"
+                         (onClick)="changeOption($event)"></p-radioButton>
+          <label for="city1">Verdadero/Falso</label>
+        </div>
+      </div>
+      <div class="col-12 md:col-4">
+        <div class="field-radiobutton">
+          <p-radioButton name="city" value="Si/No" [(ngModel)]="valRadio" (onClick)="changeOption($event)"
+                         id="city2"></p-radioButton>
+          <label for="city2">Si/No</label>
+        </div>
+      </div>
+      <div class="col-12 md:col-4">
+        <div class="field-radiobutton">
+          <p-radioButton name="city" value="Correcto/Incorrecto" [(ngModel)]="valRadio" id="city3"
+                         (onClick)="changeOption($event)"></p-radioButton>
+          <label for="city3">Correcto/Incorrecto</label>
+        </div>
+      </div>
+    </div>
+
+    <span> Seleccione la opción correcta </span>
+    <div class="p-fluid mt-3">
+      <div class="field" *ngFor="let option of structure; let i = index">
+        <label> {{option.opcion}} </label>
+        <p-dropdown [options]="options" optionLabel="label" optionValue="value"></p-dropdown>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estructura para las preguntas de opcion unica -->
+  <div class="mt-2" *ngIf="typeQuestion === 2">
+    <button pButton pRipple label="Nuevo literal" icon="pi pi-plus" class="p-button-success mr-2 mb-4"
+            (click)="addNewAlternative()"></button>
+    <div class="p-fluid">
+      <div class="field" *ngFor="let option of structure; let i = index">
+        <strong> LITERAL {{literales[i]}}) </strong>
+        <div class="grid mt-2">
+          <div class="col">
+            <label> Ingrese el enunciado de la respuesta </label>
+            <input class="mt-2" pInputText type="text" value="{{option.opcion}}">
+          </div>
+          <div class="col">
+            <label> Especifique si la respuesta es correcta o incorrecta </label>
+            <p-dropdown [options]="options" optionLabel="label" optionValue="value" styleClass="mt-2"
+                        [ngModel]="option.correct" (onChange)="validateOptionUnique(i)"></p-dropdown>
+          </div>
+          <div class="col-1">
+            <label> Acción </label> <br>
+            <button pButton pRipple icon="pi pi-trash" class="mr-2 p-button p-button-danger"
+                    style="margin-top: 7px" (click)="deleteAlternative(i)"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estructura para las opciones multiples -->
+  <div class="mt-2" *ngIf="typeQuestion === 3">
+    <button pButton pRipple label="Nuevo literal" icon="pi pi-plus" class="p-button-success mr-2 mb-4"
+            (click)="addNewAlternative()"></button>
+    <div class="p-fluid">
+      <div class="field" *ngFor="let option of structure; let i = index">
+        <strong> LITERAL {{literales[i]}}) </strong>
+        <div class="grid mt-2">
+          <div class="col">
+            <label> Ingrese el enunciado de la respuesta </label>
+            <input class="mt-2" pInputText type="text" value="{{option.opcion}}">
+          </div>
+          <div class="col">
+            <label> Especifique si la respuesta es correcta o incorrecta </label>
+            <p-dropdown [options]="options" optionLabel="label" optionValue="value" styleClass="mt-2"
+                        [ngModel]="option.correct"></p-dropdown>
+          </div>
+          <div class="col-1">
+            <label> Acción </label> <br>
+            <button pButton pRipple icon="pi pi-trash" class="mr-2 p-button p-button-danger"
+                    style="margin-top: 7px" (click)="deleteAlternative(i)"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
