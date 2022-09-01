@@ -12,6 +12,10 @@ WHERE state_topic = 'A' and syllabus_id_syllabu=1
 GROUP BY id_topic
 ORDER BY id_topic;
 
+select * from resources;
+
+
+select * from question_category;
 
 select * from topics
 --inner join resources r on topics.id_topic = r.topics_id_topic
