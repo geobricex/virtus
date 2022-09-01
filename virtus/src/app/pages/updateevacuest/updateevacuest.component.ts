@@ -2,9 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {BreadcrumbService} from "../../app.breadcrumb.service";
 import {Utils} from "../../util/Utils";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Observable} from "rxjs";
+import {Evaluation, EvaluationQuestionsResponse, Questions} from "../../models/evaluation_questionarie";
 
 @Component({
   selector: 'app-updateevacuest',
@@ -16,9 +17,13 @@ export class UpdateevacuestComponent implements OnInit {
   idCourse: string | null = "";
   idModule: string | null = "";
   idTopic: string | null = "";
-  idResource: string | null = "";
+  idEvaluation: number;
   globalUrl: string = "";
   typeEvalutionform: any[];
+  new_question_dialog: boolean = false;
+
+  public evaluationObject: Evaluation;
+  public questionObject: Questions;
 
   frmEvaliationCuestionary: FormGroup;
 
@@ -32,7 +37,8 @@ export class UpdateevacuestComponent implements OnInit {
     this.idCourse = this._route.snapshot.paramMap.get("idcourse");
     this.idModule = this._route.snapshot.paramMap.get("idmodule");
     this.idTopic = this._route.snapshot.paramMap.get("idTopic");
-    this.idResource = this._route.snapshot.paramMap.get("idResource");
+    let idEvaluation_string: string | null = this._route.snapshot.paramMap.get("idResource");
+    this.idEvaluation = parseInt(idEvaluation_string !== null ? idEvaluation_string : "0");
     this.breadcrumbService.setItems([
       {
         label: '',
@@ -47,10 +53,10 @@ export class UpdateevacuestComponent implements OnInit {
       },
       {
         label: 'Edicion de cuestionarios/evaluaciones',
-        routerLink: ['/app/coursear/modulear/' + this.idCourse + '/topicar/' + this.idModule + '/resourcesar/' + this.idTopic + '/updatequecust/' + this.idResource]
+        routerLink: ['/app/coursear/modulear/' + this.idCourse + '/topicar/' + this.idModule + '/resourcesar/' + this.idTopic + '/updatequecust/' + this.idEvaluation]
       }
     ]);
-    console.log(this.idResource);
+    console.log(this.idEvaluation);
     this.frmEvaliationCuestionary = this.formBuilder.group(
       {
         name: ["", Validators.required],
@@ -66,6 +72,7 @@ export class UpdateevacuestComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadEvaluations();
+    this.loadQuestions();
     this.typeEvalutionform = [
       {label: "---:---", value: null},
       {label: "Evaluación", value: 1},
@@ -92,9 +99,52 @@ export class UpdateevacuestComponent implements OnInit {
     })
   }
 
+  loadQuestions() {
+    this.apiGetQuestions(this.idEvaluation).subscribe({
+      next: response => {
+        if (response.status == 2) {
+          if (response.data.length > 0) {
+            this.evaluationObject = response.data[0];
+            console.log(this.evaluationObject);
+          }
+        }
+      }
+    });
+  }
+
   apiLoadDataEvaluation(): Observable<any> {
     this.globalUrl = this.utils.globalUrl + "evaluation/getevaluation";
-    return this._http.post(this.globalUrl, {"id_evaluation": parseInt(typeof this.idResource === "string" ? this.idResource : "0")});
+    return this._http.post(this.globalUrl, {"id_evaluation": this.idEvaluation});
+  }
+
+  apiGetQuestions(idEvaluation: number): Observable<EvaluationQuestionsResponse> {
+    let url_gq: string;
+    url_gq = this.utils.globalUrl;
+    url_gq += "evaluation/getEvaluationQuestions";
+
+    let headers = new HttpHeaders()
+      .set('Access-Control-Allow-Origin', '*')
+      .set('provider', 'native')
+      .set('token', this.utils.token);
+
+    return this._http.post<EvaluationQuestionsResponse>(url_gq, {"id_evaluation": idEvaluation}, {headers: headers});
+  }
+
+  tipoPregunta(typo: number): string {
+    let resp: string = "";
+    if (typo == 1) {
+      resp = "Complete";
+    }
+    if (typo == 2) {
+      resp = "Simple Option";
+    }
+    if (typo == 3) {
+      resp = "Multiple Option";
+    }
+    if (typo == 4) {
+      resp = "Relate";
+    }
+    return resp;
   }
 
 }

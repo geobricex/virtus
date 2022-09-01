@@ -29,7 +29,7 @@ import {TabViewModule} from 'primeng/tabview';
 import {ColorPickerModule} from 'primeng/colorpicker';
 import {PdfViewerModule} from 'ng2-pdf-viewer';
 
-import { TagModule } from 'primeng/tag';
+import {TagModule} from 'primeng/tag';
 import {AvatarModule} from 'primeng/avatar';
 
 //INICIO SERVICE
@@ -99,17 +99,19 @@ import {FavoritesComponent} from './pages/general/favorites/favorites.component'
 import {FileUploadModule} from "primeng/fileupload";
 import {RatingModule} from "primeng/rating";
 import {SkeletonModule} from "primeng/skeleton";
-import { IntentreviewComponent } from './pages/reports/intentreview/intentreview.component';
-import { TimereportComponent } from './pages/reports/timereport/timereport.component';
-import { ScorereportComponent } from './pages/reports/scorereport/scorereport.component';
-import { RequestssuggestionsComponent } from './pages/admins/requestssuggestions/requestssuggestions.component';
+import {IntentreviewComponent} from './pages/reports/intentreview/intentreview.component';
+import {TimereportComponent} from './pages/reports/timereport/timereport.component';
+import {ScorereportComponent} from './pages/reports/scorereport/scorereport.component';
+import {RequestssuggestionsComponent} from './pages/admins/requestssuggestions/requestssuggestions.component';
 import {ChartModule} from "primeng/chart";
-import { CursosArInactiveComponent } from './pages/cursos-ar-inactive/cursos-ar-inactive.component';
+import {CursosArInactiveComponent} from './pages/cursos-ar-inactive/cursos-ar-inactive.component';
 // ---- COMANDO DE TECLADO -----
 import {HotkeyModule} from 'angular2-hotkeys';
-import { GamesComponent } from './pages/games/games.component';
-import { ReviewComponent } from './pages/review/review.component';
-import { UpdateevacuestComponent } from './pages/updateevacuest/updateevacuest.component';
+import {GamesComponent} from './pages/games/games.component';
+import {ReviewComponent} from './pages/review/review.component';
+import {UpdateevacuestComponent} from './pages/updateevacuest/updateevacuest.component';
+import {QuestionNuComponent} from './pages/question-nu/question-nu.component';
+import {SliderModule} from "primeng/slider";
 
 
 FullCalendarModule.registerPlugins([
@@ -157,7 +159,8 @@ FullCalendarModule.registerPlugins([
     CursosArInactiveComponent,
     GamesComponent,
     ReviewComponent,
-    UpdateevacuestComponent
+    UpdateevacuestComponent,
+    QuestionNuComponent
   ],
   imports: [
     HttpClientModule,
@@ -209,6 +212,7 @@ FullCalendarModule.registerPlugins([
     ChartModule,
     AvatarModule,
     HotkeyModule.forRoot(),
+    SliderModule,
   ],
 
   providers: [

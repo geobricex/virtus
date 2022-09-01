@@ -32,6 +32,7 @@ import {TimereportComponent} from "./pages/reports/timereport/timereport.compone
 import {GamesComponent} from "./pages/games/games.component";
 import {ReviewComponent} from "./pages/review/review.component";
 import {UpdateevacuestComponent} from "./pages/updateevacuest/updateevacuest.component";
+import {QuestionNuComponent} from "./pages/question-nu/question-nu.component";
 
 @NgModule({
   imports: [
@@ -75,7 +76,11 @@ import {UpdateevacuestComponent} from "./pages/updateevacuest/updateevacuest.com
           },
           {path: 'mycourse/modules/:idcourse', component: ModuloComponent},
           {path: 'mycourse/modules/:idcourse/themes/:idmodule', component: TemasComponent},
-          {path: 'mycourse/modules/:idcourse/themes/:idmodule/resources/:idTopic', component: ResourcesComponent}
+          {path: 'mycourse/modules/:idcourse/themes/:idmodule/resources/:idTopic', component: ResourcesComponent},
+          {
+            path: 'coursear/modulear/:idcourse/topicar/:idmodule/resourcesar/:idTopic/updatequecust/:idResource/question_nu/:type',
+            component: QuestionNuComponent
+          }
         ]
       },
       {path: 'login', component: AppLoginComponent},
