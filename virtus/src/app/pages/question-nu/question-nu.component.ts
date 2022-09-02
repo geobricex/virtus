@@ -1,9 +1,19 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {BreadcrumbService} from "../../app.breadcrumb.service";
-import {Answers, Questions} from "../../models/evaluation_questionarie";
+import {
+  Answers, AnswersModel,
+  EvaluationModel,
+  QuestionCategory,
+  Questions,
+  QuestionsModel
+} from "../../models/evaluation_questionarie";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {type} from "os";
+import {Utils} from "../../util/Utils";
+import {Observable} from "rxjs";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {Message} from "primeng/api";
 
 @Component({
   selector: 'app-question-nu',
@@ -24,11 +34,18 @@ export class QuestionNuComponent implements OnInit {
 
   registerFormQuestion: FormGroup;
 
-  objectQuestion: Questions;
-  objectAnswer: Answers;
+  public objectQuestion = {} as QuestionsModel;
+  public objetctEvaluation = {} as EvaluationModel;
+  public objectQuestionCategory = {} as QuestionCategory;
+
+  public objectAnswer = {} as AnswersModel;
 
   valRadio: string;
   options: any [];
+
+  tmpFileRes: any;
+  tmpFileQuest: any;
+  globalUri: string = "";
 
   frmPhoto = new FormGroup({
     firstName: new FormControl()
@@ -36,13 +53,18 @@ export class QuestionNuComponent implements OnInit {
   urlimageupload: any;
   tmpFile: any;
 
+  msgs: Message[] = [];
+
   // ESTRUCTURA PARA LAS RESPUESTAS DE LAS PREGUNTAS
   structure: any [];
+  tmpfiles: any [];
 
   constructor(
     private _route: ActivatedRoute,
     private breadcrumbService: BreadcrumbService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private utils: Utils,
+    private _http: HttpClient
   ) {
     this.idCourse = this._route.snapshot.paramMap.get("idcourse");
     this.idModule = this._route.snapshot.paramMap.get("idmodule");
@@ -76,6 +98,7 @@ export class QuestionNuComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.utils.initPocket();
     this.registerFormQuestion = this.formBuilder.group(
       {
         title_question: ["", Validators.required],
@@ -84,10 +107,10 @@ export class QuestionNuComponent implements OnInit {
         hint_question: ["", Validators.required],
         level_question: [this.levelQuestion, Validators.required],
         points_question: ["", Validators.required],
-        maximumpoints_question: ["", Validators.required],
-        pathurlfile_question: ["", Validators.required],
-        pathurlsign_question: ["", Validators.required],
-        pathurlvideo_question: ["", Validators.required]
+        maximumpoints_question: [""],
+        pathurlfile_question: [""],
+        pathurlsign_question: [""],
+        pathurlvideo_question: [""]
       }
     );
     this.options = [
@@ -97,6 +120,110 @@ export class QuestionNuComponent implements OnInit {
     ];
     this.literales = ["A", "B", "C", "D", "E", "F"];
     this.validateAnswer(this.typeQuestion);
+  }
+
+  saveQuestion() {
+    this.msgs.push({severity: 'info', summary: 'Virtus', detail: 'Procesando...'});
+    console.log(this.structure);
+    this.objectQuestion.descriptionQuestion = this.form["description_question"].value;
+    this.objectQuestion.feedbackQuestion = this.form["feedback_question"].value;
+    this.objectQuestion.hintQuestion = this.form["hint_question"].value;
+    this.objectQuestion.id = 0;
+    this.objectQuestion.maximumpointsQuestion = this.form["maximumpoints_question"].value;
+    this.objectQuestion.pathurlfileQuestion = this.form["pathurlfile_question"].value;
+    this.objectQuestion.pathurlsignQuestion = this.form["pathurlsign_question"].value;
+    this.objectQuestion.pathurlvideoQuestion = this.form["pathurlvideo_question"].value;
+    this.objectQuestion.pointsQuestion = this.form["points_question"].value;
+    this.objectQuestion.stateQuestion = "";
+    this.objectQuestion.titleQuestion = this.form["title_question"].value;
+    this.objetctEvaluation.id = parseInt(this.idEvaluation === null ? "" : this.idEvaluation);
+    this.objectQuestion.evaluationsIdEvaluation = this.objetctEvaluation;
+    this.objectQuestionCategory.id = 2
+    this.objectQuestion.questionCategoryIdQuestionCategory = this.objectQuestionCategory;
+    console.log(this.objectQuestion);
+
+    // guardar la imagen
+    if (this.objectQuestion.pathurlfileQuestion !== "") {
+      let urlPhoto: string = "";
+      this.utils.changeImage(this.tmpFileQuest).then(response => {
+        urlPhoto = this.utils.makePathRecurso(response);
+        console.log(urlPhoto);
+        this.objectQuestion.pathurlfileQuestion = urlPhoto;
+        this.apiSaveQuestion().subscribe({
+          next: response => {
+            if (response.data.id_question !== 0) {
+              console.log(response);
+              // verificar si la pregunta permite archivos en las respuestas
+              // console.log(this.structure);
+              this.objectQuestion.id = response.data.id_question;
+              this.objectAnswer.id = 0;
+              this.objectAnswer.dateregAnswer = "";
+              this.objectAnswer.dateupdateAnswer = "";
+              this.objectAnswer.optionsAnswer = JSON.stringify(this.structure);
+              this.objectAnswer.questionsIdQuestion = this.objectQuestion;
+              this.apiSaveResponses().subscribe(response => {
+                console.log(response);
+                this.utils.showMessages(1, "Pregunta agregara correctamente.", "tst");
+                this.registerFormQuestion.reset();
+                this.validateAnswer(this.typeQuestion);
+                this.msgs = [];
+              });
+            } else {
+              this.msgs = [];
+              this.utils.showMessages(3, "Ocurrio un error.", "tst");
+            }
+          }
+        })
+      });
+    } else {
+      this.apiSaveQuestion().subscribe({
+        next: response => {
+          if (response.data.id_question !== 0) {
+            console.log(response);
+            // verificar si la pregunta permite archivos en las respuestas
+            // console.log(this.structure);
+            this.objectQuestion.id = response.data.id_question;
+            this.objectAnswer.id = 0;
+            this.objectAnswer.dateregAnswer = "";
+            this.objectAnswer.dateupdateAnswer = "";
+            this.objectAnswer.optionsAnswer = JSON.stringify(this.structure);
+            this.objectAnswer.questionsIdQuestion = this.objectQuestion;
+            this.apiSaveResponses().subscribe(response => {
+              console.log(response);
+              this.utils.showMessages(1, "Pregunta agregara correctamente.", "tst");
+              this.registerFormQuestion.reset();
+              this.validateAnswer(this.typeQuestion);
+              this.msgs = [];
+            });
+          } else {
+            this.msgs = [];
+            this.utils.showMessages(3, "Ocurrio un error.", "tst");
+          }
+        }
+      });
+    }
+  }
+
+  apiSaveQuestion(): Observable<any> {
+    this.globalUri = this.utils.globalUrl + "question/insertquestion";
+    var headers = new HttpHeaders()
+      .set('Access-Control-Allow-Origin', '*')
+      .set('provider', 'native')
+      .set('token', this.utils.token);
+    return this._http.post<any>(this.globalUri, this.objectQuestion, {headers: headers});
+  }
+
+  apiSaveResponses(): Observable<any> {
+    this.globalUri = this.utils.globalUrl + "answer/insertanswer";
+    var headers = new HttpHeaders()
+      .set('Access-Control-Allow-Origin', '*')
+      .set('provider', 'native')
+      .set('token', this.utils.token);
+    return this._http.post<any>(this.globalUri, this.objectAnswer, {headers: headers});
+  }
+
+  resetQuestion() {
+    this.registerFormQuestion.reset();
   }
 
   // metodos para la opcion de verdadero y falso
@@ -116,8 +243,9 @@ export class QuestionNuComponent implements OnInit {
     this.structure.push({
       "opcion": "Opcion " + (this.structure.length + 1),
       "correct": "No",
-      "resource": ""
-    })
+      "resource": "No se ha encontrado un archivo."
+    });
+    this.tmpfiles.push({tmp: null});
   }
 
   validateOptionUnique(index: number) {
@@ -127,6 +255,26 @@ export class QuestionNuComponent implements OnInit {
         this.structure[i].correct = "No";
       }
     }
+  }
+
+  uploadFileResp(event: any, index: number) {
+    event.target.files.length > 0;
+    const file = event.target.files[0];
+    console.log(file);
+    this.tmpfiles[index].tmp = file
+    let urlPhoto: string = "";
+    this.utils.changeImage(this.tmpfiles[index].tmp).then(response => {
+      urlPhoto = this.utils.makePathRecurso(response);
+      this.structure[index].resource = urlPhoto;
+    });
+  }
+
+  uploadFileQuest(event: any) {
+    event.target.files.length > 0;
+    const file = event.target.files[0];
+    console.log(file);
+    this.tmpFileQuest = file;
+    this.form["pathurlfile_question"].setValue(this.tmpFileQuest.name);
   }
 
   // metodos para la estructura de relcionar
@@ -141,7 +289,9 @@ export class QuestionNuComponent implements OnInit {
       "resourse_rightSide": "",
       "leftSide": "Texto de prueba",
       "resourse_leftSide": ""
-    })
+    });
+
+    this.tmpfiles.push({tmpright: null}, {tmpleft: null});
   }
 
   // metodos para la estructura de puzzle
@@ -192,10 +342,12 @@ export class QuestionNuComponent implements OnInit {
   deleteAlternative(index: number) {
     console.log(index)
     this.structure.splice(index, 1);
+    this.tmpfiles.splice(index, 1);
   }
 
   validateAnswer(typeQuestion: number) {
     this.structure = [];
+    this.tmpfiles = [];
     if (typeQuestion === 1) {
       this.valRadio = "Verdadero/Falso";
       this.structure.push(
@@ -212,13 +364,14 @@ export class QuestionNuComponent implements OnInit {
       this.structure.push({
         "opcion": "Opcion 1",
         "correct": "No",
-        "resource": ""
+        "resource": "No se ha encontrado un archivo."
       })
-    } else if (this.typeQuestion === 5) {
+      this.tmpfiles.push({tmp: null});
+    } else if (this.typeQuestion === 7) {
       this.structure.push({
         "opcion": "TEXTO DE PRUEBA"
       });
-    } else if (this.typeQuestion === 6) {
+    } else if (this.typeQuestion === 5) {
       this.structure.push(
         {
           "rightSide": "Texto de prueba",
@@ -227,11 +380,13 @@ export class QuestionNuComponent implements OnInit {
           "resourse_leftSide": ""
         }
       );
-    } else if (this.typeQuestion === 7) {
+      this.tmpfiles.push({tmpright: null}, {tmpleft: null});
+    } else if (this.typeQuestion === 6) {
       this.structure.push({
         "resource": "",
         "piece_questionarie": 0
       });
+      this.tmpfiles.push({tmp: null});
     } else if (this.typeQuestion === 4) {
       this.structure.push({
         "description_question": "texto de prueba",

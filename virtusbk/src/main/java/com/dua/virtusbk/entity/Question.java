@@ -17,11 +17,22 @@ import javax.persistence.*;
 @NoArgsConstructor
 @ToString
 public class Question {
+
+    public Question(Long id) {
+        this.id = id;
+    }
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id_question", unique = true, nullable = false)
+    private Long id;
+
+    /*@Id
     @SequenceGenerator(name="persons_courses_id_person_course_seq", sequenceName="persons_courses_id_person_course_seq", allocationSize=1)
     @GeneratedValue(generator="persons_courses_id_person_course_seq")
     @Column(name = "id_question", nullable = false)
-    private Long id;
+    private Long id;*/
 
     @Column(name = "title_question", nullable = false, length = 200)
     private String titleQuestion;
@@ -56,11 +67,11 @@ public class Question {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
 //    @Cascade(value={org.hibernate.annotations.CascadeType.ALL})
     @JoinColumn(name = "evaluations_id_evaluation", nullable = false)
-    @JsonIgnore// No traer toda la relación en una consulta
+    //@JsonIgnore// No traer toda la relación en una consulta
     private Evaluation evaluationsIdEvaluation;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "question_category_id_questioncategory", nullable = false)
-    @JsonIgnore
-    private Evaluation questionCategoryIdQuestionCategory;
+    //@JsonIgnore
+    private QuestionCategory questionCategoryIdQuestionCategory;
 }
