@@ -95,7 +95,9 @@ export class ResourcesarComponent implements OnInit {
         timeminutesEvaluation: ["",],
         typeEvaluation: ["", Validators.required],
         opportunityEvaluation: ["", Validators.required],
-        opportunitiesEvaluation: [""]
+        opportunitiesEvaluation: [""],
+        orderByCategory: [true, Validators.required],
+        allowsReview: [true, Validators.required]
       }
     );
     this.registerFormResources = this.formBuilder.group(
@@ -392,7 +394,7 @@ export class ResourcesarComponent implements OnInit {
       this.form['typeEvaluation'].value,
       this.form['opportunityEvaluation'].value,
       this.form['opportunityEvaluation'].value ? this.form['opportunitiesEvaluation'].value : 1,
-      this.form['orderByCategory'].value
+      this.form['orderByCategory'].value, this.form['allowsReview'].value
     )
     let topicAux: Topic;
     topicAux = new Topic(
