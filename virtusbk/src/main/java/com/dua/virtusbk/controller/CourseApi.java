@@ -7,7 +7,7 @@ package com.dua.virtusbk.controller;
 
 import com.dua.virtusbk.reports.ReportCertificateCours;
 import com.dua.virtusbk.reports.TypeReport;
-import com.dua.virtusbk.dto.reportCertDTO;
+import com.dua.virtusbk.dto.reportCertDto;
 import com.dua.virtusbk.service.CourseService;
 import com.dua.virtusbk.entity.Course;
 import com.dua.virtusbk.repository.CourseRepository;
@@ -135,7 +135,7 @@ public class CourseApi {
             throws JRException, IOException, SQLException {
         System.out.println(params);
 
-        reportCertDTO dto = reportCertificateCours.getReport(params);
+        reportCertDto dto = reportCertificateCours.getReport(params);
 
         InputStreamResource streamResource = new InputStreamResource(dto.getStream());
         MediaType mediaType = null;

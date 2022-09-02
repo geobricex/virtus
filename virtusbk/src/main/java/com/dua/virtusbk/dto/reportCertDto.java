@@ -2,7 +2,7 @@ package com.dua.virtusbk.dto;
 
 import java.io.ByteArrayInputStream;
 
-public class reportCertDTO {
+public class reportCertDto {
 
     private String fileName;
     private ByteArrayInputStream stream;

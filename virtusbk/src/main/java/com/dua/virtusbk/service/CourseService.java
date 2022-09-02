@@ -4,7 +4,7 @@ import com.dua.virtusbk.ExcludeProxiedFields;
 import com.dua.virtusbk.reports.JasperReportManager;
 import com.dua.virtusbk.reports.ReportCertificateCours;
 import com.dua.virtusbk.reports.TypeReport;
-import com.dua.virtusbk.dto.reportCertDTO;
+import com.dua.virtusbk.dto.reportCertDto;
 import com.dua.virtusbk.entity.Course;
 import com.dua.virtusbk.entity.Person;
 import com.dua.virtusbk.entity.PersonsCours;
@@ -157,10 +157,10 @@ public class CourseService implements ReportCertificateCours {
     private DataSource dataSource;
 
     @Override
-    public reportCertDTO getReport(Map<String, Object> params)
+    public reportCertDto getReport(Map<String, Object> params)
             throws JRException, IOException, SQLException {
         String fileName = "virtus_cert";
-        reportCertDTO dto = new reportCertDTO();
+        reportCertDto dto = new reportCertDto();
         String extension = params.get("type").toString().equalsIgnoreCase(TypeReport.EXCEL.name()) ? ".xlsx"
                 : ".pdf";
         dto.setFileName(fileName + extension);
