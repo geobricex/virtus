@@ -9,6 +9,7 @@ import javax.swing.table.DefaultTableModel;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface PersonRepository extends JpaRepository<Person, Long> {
@@ -26,4 +27,6 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
     Optional<Person> findById(Long id);
 
     List<Person> findByIdNotOrderByDateregPerson(Long id);
+
+//    List<Map<String, Object>> findByIdNotOrderByDateregPerson(Long id);
 }

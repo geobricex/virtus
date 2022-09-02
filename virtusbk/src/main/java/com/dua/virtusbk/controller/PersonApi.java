@@ -93,7 +93,7 @@ public class PersonApi {//implements UserDetailsService {
 //    }
     @PostMapping("/personsget")
     public ResponseEntity<String> getPersonsPro(@RequestHeader("token") String sessionToken) {
-        System.out.println("getPerson...");
+        System.out.println("getPersons...");
         //String token = dataHeader;
         String message;
         //JsonObject jso = Methods.stringToJSON(sessionToken);
@@ -245,6 +245,7 @@ public class PersonApi {//implements UserDetailsService {
 
     @PutMapping
     public ResponseEntity<String> updatePerson(@RequestBody Person person, @RequestHeader("token") String sessionToken) {
+        System.out.println("updatePerson");
         String message = "[]";
         String[] clains = Methods.getDataToJwt(sessionToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);

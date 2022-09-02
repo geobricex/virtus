@@ -102,7 +102,7 @@
             {{review.trynumber_person_evaluation}}
           </td>
           <td style="width:14%; min-width:10rem;">
-            <button pButton pRipple icon="pi pi-eye"
+            <button *ngIf="review.allows_review" pButton pRipple icon="pi pi-eye"
                     class="p-button-rounded p-button-help mr-2"
                     routerLink="review/{{review.id_person_evaluation}}">
             </button>

@@ -9,5 +9,13 @@
       <jdbc-url>jdbc:postgresql://190.15.134.7:5432/virtus</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="virtus@fyc-virtus" uuid="95fff79f-c0e7-4569-a9fc-3048e680161f">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <remarks>virtus in fyc</remarks>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://190.15.134.4:3245/virtus</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
