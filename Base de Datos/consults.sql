@@ -40,7 +40,7 @@ select * from answers;
 select * from evaluations;
 select * from evaluation_question_category;
 select * from questions;
-select * from answers where options_answer ilike  '%piece%';
+select * from answers; --where options_answer ilike  '%piece%';
 -- FUNCTION: public.home_select(integer, integer)
 
 -- DROP FUNCTION public.home_select(integer, integer);

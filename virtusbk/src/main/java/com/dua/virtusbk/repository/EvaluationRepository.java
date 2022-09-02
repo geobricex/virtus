@@ -37,4 +37,7 @@ public interface EvaluationRepository extends JpaRepository<Evaluation, Long> {
 
     @Query(value = "SELECT information FROM questions_select(?1,?2)", nativeQuery = true)
     String returnEvaluation(int id_evaluation, int id_person);
+
+    @Query(value = "SELECT information FROM questions_all_select(?1,?2)", nativeQuery = true)
+    String returnAllEvaluation(int id_evaluation, int id_person);
 }
