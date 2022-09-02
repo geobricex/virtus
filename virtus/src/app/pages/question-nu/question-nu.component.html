@@ -105,7 +105,7 @@
           <div class="col">
             <label> Especifique si la respuesta es correcta o incorrecta </label>
             <p-dropdown [options]="options" optionLabel="label" optionValue="value" styleClass="mt-2"
-                        [ngModel]="option.correct" (onChange)="validateOptionUnique(i)"></p-dropdown>
+                        [(ngModel)]="option.correct" (onChange)="validateOptionUnique(i)"></p-dropdown>
           </div>
           <div class="col-1">
             <label> Acción </label> <br>
@@ -124,15 +124,20 @@
     <div class="p-fluid">
       <div class="field" *ngFor="let option of structure; let i = index">
         <strong> LITERAL {{literales[i]}}) </strong>
+        <label for="uploadFileAns{{i}}" class="bg-indigo-100 p-1 border-1 border-round cursor-pointer mr-2">
+          Examinar... </label>
+        <span> {{option.resource}} </span>
+        <input style="display: none" id="uploadFileAns{{i}}" type="file"
+               (change)="uploadFileResp($event, i)">
         <div class="grid mt-2">
           <div class="col">
             <label> Ingrese el enunciado de la respuesta </label>
-            <input class="mt-2" pInputText type="text" value="{{option.opcion}}">
+            <input class="mt-2" pInputText type="text" value="{{option.opcion}}" [(ngModel)]="option.opcion">
           </div>
           <div class="col">
             <label> Especifique si la respuesta es correcta o incorrecta </label>
             <p-dropdown [options]="options" optionLabel="label" optionValue="value" styleClass="mt-2"
-                        [ngModel]="option.correct"></p-dropdown>
+                        [(ngModel)]="option.correct"></p-dropdown>
           </div>
           <div class="col-1">
             <label> Acción </label> <br>

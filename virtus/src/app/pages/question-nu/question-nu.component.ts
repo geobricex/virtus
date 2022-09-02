@@ -76,7 +76,7 @@ export class QuestionNuComponent implements OnInit {
     this.breadcrumbService.setItems([
       {
         label: '',
-        routerLink: ['/app/coursear/modulear/' + this.idCourse + '/topicar/' + this.idModule + '/resourcesar/' + this.idTopic + '/updatequecust/' + this.idEvaluation]
+        routerLink: ['/app/coursear/modulear/' + this.idCourse + '/topicar/' + this.idModule + '/resourcesar/' + this.idTopic + '/update_evaluation/' + this.idEvaluation]
       },
       {label: 'Cursos', routerLink: ['/app/coursear']},
       {label: 'Módulos', routerLink: ['/app/coursear/modulear/' + this.idCourse]},
@@ -138,7 +138,7 @@ export class QuestionNuComponent implements OnInit {
     this.objectQuestion.titleQuestion = this.form["title_question"].value;
     this.objetctEvaluation.id = parseInt(this.idEvaluation === null ? "" : this.idEvaluation);
     this.objectQuestion.evaluationsIdEvaluation = this.objetctEvaluation;
-    this.objectQuestionCategory.id = 2
+    this.objectQuestionCategory.id = this.typeQuestion
     this.objectQuestion.questionCategoryIdQuestionCategory = this.objectQuestionCategory;
     console.log(this.objectQuestion);
 

@@ -53,7 +53,7 @@ export class UpdateevacuestComponent implements OnInit {
       },
       {
         label: 'Edicion de cuestionarios/evaluaciones',
-        routerLink: ['/app/coursear/modulear/' + this.idCourse + '/topicar/' + this.idModule + '/resourcesar/' + this.idTopic + '/updatequecust/' + this.idEvaluation]
+        routerLink: ['/app/coursear/modulear/' + this.idCourse + '/topicar/' + this.idModule + '/resourcesar/' + this.idTopic + '/update_evaluation/' + this.idEvaluation]
       }
     ]);
     console.log(this.idEvaluation);
@@ -120,7 +120,7 @@ export class UpdateevacuestComponent implements OnInit {
   apiGetQuestions(idEvaluation: number): Observable<EvaluationQuestionsResponse> {
     let url_gq: string;
     url_gq = this.utils.globalUrl;
-    url_gq += "evaluation/getEvaluationQuestions";
+    url_gq += "evaluation/getAllEvaluationQuestions";
 
     let headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
@@ -133,7 +133,7 @@ export class UpdateevacuestComponent implements OnInit {
   tipoPregunta(typo: number): string {
     let resp: string = "";
     if (typo == 1) {
-      resp = "Complete";
+      resp = "True or False";
     }
     if (typo == 2) {
       resp = "Simple Option";
@@ -142,7 +142,16 @@ export class UpdateevacuestComponent implements OnInit {
       resp = "Multiple Option";
     }
     if (typo == 4) {
+      resp = "Complete";
+    }
+    if (typo == 5) {
       resp = "Relate";
+    }
+    if (typo == 6) {
+      resp = "puzzle";
+    }
+    if (typo == 7) {
+      resp = "Build word";
     }
     return resp;
   }

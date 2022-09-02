@@ -83,6 +83,22 @@
       <button pButton pRipple label="Nueva pregunta" icon="pi pi-plus" class="p-button-success mr-2 mb-4"
               (click)="new_question_dialog = true"></button>
       <p-accordion>
+        <p-accordionTab header="Verdadero falso" [selected]="true" class="line-height-3 m-0">
+          <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
+            <div *ngIf="question.name_questioncategory == tipoPregunta(1)"
+                 class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2">
+              <span>
+                <div style="float: right">
+                  <span class="pi pi-pencil mr-3 text-blue-500 cursor-pointer" pTooltip="Editar"
+                        tooltipPosition="top"></span>
+                  <span class="pi pi-trash text-pink-500 cursor-pointer" pTooltip="Eliminar"
+                        tooltipPosition="top"></span>
+                </div>
+                {{"N°" + (i2 + 1) + " " + question.title_question + ": " + question.description_question}}
+              </span>
+            </div>
+          </div>
+        </p-accordionTab>
         <p-accordionTab header="Opción única" [selected]="true" class="line-height-3 m-0">
           <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
             <div *ngIf="question.name_questioncategory == tipoPregunta(2)"
@@ -116,7 +132,7 @@
         </p-accordionTab>
         <p-accordionTab header="Complete" [selected]="true" class="line-height-3 m-0">
           <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
-            <div *ngIf="question.name_questioncategory == tipoPregunta(1)"
+            <div *ngIf="question.name_questioncategory == tipoPregunta(4)"
                  class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2">
               <span>
                 <div style="float: right">
@@ -131,7 +147,37 @@
         </p-accordionTab>
         <p-accordionTab header="Relación" [selected]="true" class="line-height-3 m-0">
           <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
-            <div *ngIf="question.name_questioncategory == tipoPregunta(4)"
+            <div *ngIf="question.name_questioncategory == tipoPregunta(5)"
+                 class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2">
+              <span>
+                <div style="float: right">
+                  <span class="pi pi-pencil mr-3 text-blue-500 cursor-pointer" pTooltip="Editar"
+                        tooltipPosition="top"></span>
+                  <span class="pi pi-trash text-pink-500 cursor-pointer" pTooltip="Eliminar"
+                        tooltipPosition="top"></span>
+                </div>
+                {{"N°" + (i2 + 1) + " " + question.title_question + ": " + question.description_question}} </span>
+            </div>
+          </div>
+        </p-accordionTab>
+        <p-accordionTab header="Puzzle" [selected]="true" class="line-height-3 m-0">
+          <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
+            <div *ngIf="question.name_questioncategory == tipoPregunta(6)"
+                 class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2">
+              <span>
+                <div style="float: right">
+                  <span class="pi pi-pencil mr-3 text-blue-500 cursor-pointer" pTooltip="Editar"
+                        tooltipPosition="top"></span>
+                  <span class="pi pi-trash text-pink-500 cursor-pointer" pTooltip="Eliminar"
+                        tooltipPosition="top"></span>
+                </div>
+                {{"N°" + (i2 + 1) + " " + question.title_question + ": " + question.description_question}} </span>
+            </div>
+          </div>
+        </p-accordionTab>
+        <p-accordionTab header="Costruir palabra" [selected]="true" class="line-height-3 m-0">
+          <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
+            <div *ngIf="question.name_questioncategory == tipoPregunta(7)"
                  class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2">
               <span>
                 <div style="float: right">

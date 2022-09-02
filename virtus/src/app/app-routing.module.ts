@@ -62,7 +62,7 @@ import {QuestionNuComponent} from "./pages/question-nu/question-nu.component";
           {path: 'coursear/modulear/:idcourse/topicar/:idmodule', component: TopicarComponent},
           {path: 'coursear/modulear/:idcourse/topicar/:idmodule/resourcesar/:idTopic', component: ResourcesarComponent},
           {
-            path: 'coursear/modulear/:idcourse/topicar/:idmodule/resourcesar/:idTopic/updatequecust/:idResource',
+            path: 'coursear/modulear/:idcourse/topicar/:idmodule/resourcesar/:idTopic/update_evaluation/:idResource',
             component: UpdateevacuestComponent
           },
           {path: 'mycourse', component: MiscursosComponent},
@@ -78,7 +78,7 @@ import {QuestionNuComponent} from "./pages/question-nu/question-nu.component";
           {path: 'mycourse/modules/:idcourse/themes/:idmodule', component: TemasComponent},
           {path: 'mycourse/modules/:idcourse/themes/:idmodule/resources/:idTopic', component: ResourcesComponent},
           {
-            path: 'coursear/modulear/:idcourse/topicar/:idmodule/resourcesar/:idTopic/updatequecust/:idResource/question_nu/:type',
+            path: 'coursear/modulear/:idcourse/topicar/:idmodule/resourcesar/:idTopic/update_evaluation/:idResource/question_nu/:type',
             component: QuestionNuComponent
           }
         ]
