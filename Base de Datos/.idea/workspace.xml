@@ -5,13 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bbc5533f-4237-4b82-99c8-ccd5e9e0c413" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../documentos/Questions.rtf" beforeDir="false" afterPath="$PROJECT_DIR$/../documentos/Questions.rtf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../documentos/~$estions.rtf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../documentos/~WRL0003.tmp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/CourseApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/CourseApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/dto/reportCertDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/dto/reportCertDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/reports/ReportCertificateCours.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/reports/ReportCertificateCours.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/service/CourseService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/service/CourseService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/consults.sql" beforeDir="false" afterPath="$PROJECT_DIR$/consults.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/PersonsEvaluationsApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/PersonsEvaluationsApi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/repository/PersonsEvaluationsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/repository/PersonsEvaluationsRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/service/PersonsEvaluationsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/service/PersonsEvaluationsService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

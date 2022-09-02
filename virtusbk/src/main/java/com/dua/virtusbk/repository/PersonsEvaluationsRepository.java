@@ -25,4 +25,5 @@ public interface PersonsEvaluationsRepository extends JpaRepository<PersonsEvalu
     @Query(value = "select infor from evaluations_review_select(?1, ?2, ?3)", nativeQuery = true)//Debería hacerse con un DTO
     String findByEvaluationsIdEvaluationAndPersonsIdPerson(int type, Long id_evaluation, Long id_person);
 
+    List<PersonsEvaluations>findByPersonsIdPersonAndEvaluationsIdEvaluation(Person person, Evaluation evaluation);
 }
