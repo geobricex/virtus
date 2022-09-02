@@ -164,7 +164,24 @@
       <p-chip *ngIf="questionObject.points_question == false" label="Piloto"
               image="{{'assets/imgresource/empty/shield.png'}}"
       ></p-chip>
-
+      <div *ngIf="validarPreguntaRecurso(questionObject.pathurlfile_question)" class="col-12">
+        <div class="col-12 text-center">
+          <object type="application/pdf" *ngIf="isPdf(questionObject.pathurlfile_question)"
+                  data="{{questionObject.pathurlfile_question}}"
+                  height="200">
+          </object>
+          <img [src]="questionObject.pathurlfile_question" height="200"
+               *ngIf="isImg(questionObject.pathurlfile_question)">
+        </div>
+        <div class="col-12 text-center">
+          <div class="p-buttonset">
+            <a pButton pRipple icon="pi pi-download" href="{{questionObject.pathurlfile_question}}"
+               [download]="questionObject.pathurlfile_question" target="_blank"
+                    class="p-button-rounded p-button-primary mr-2 mb-2"
+                    ></a>
+          </div>
+        </div>
+      </div>
       <div *ngIf="validarPreguntaRecurso(questionObject.pathurlvideo_question)" class="col-12">
         <div class="col-12 text-center">
           <video id="pathurlvideo_question" height="300" controls [src]="questionObject.pathurlvideo_question"

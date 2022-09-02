@@ -274,7 +274,7 @@ export class QuestionnaireComponent implements OnInit {
             }
           }
           if (this.storageService.getCurrentUser().email == "anthony.pachay2017@uteq.edu.ec") {
-            this.cambiarPregunta(10, true);
+            this.cambiarPregunta(11, true);
           } else {
             this.cambiarPregunta(0, true);
           }
@@ -424,6 +424,19 @@ export class QuestionnaireComponent implements OnInit {
     }
   }
 
+  obtenerExtension(filename: string): string {
+    return filename.substring(filename.lastIndexOf('.') + 1, filename.length) || filename;
+  }
+
+  isImg(filename: string): boolean {
+    let formats = ["gif", "jpeg", "jpg", "png"];
+    return formats.indexOf(this.obtenerExtension(filename)) != -1;
+  }
+
+  isPdf(filename: string): boolean {
+    return "pdf" == this.obtenerExtension(filename);
+  }
+
   cambiarPregunta(indice: number, flag = false): void {
     console.log("cambia a pregunta:" + indice);
     console.log(this.questionObject != undefined && this.questionObject != null);
@@ -549,6 +562,13 @@ export class QuestionnaireComponent implements OnInit {
           this.sweetFakeAlert[0] = false;
         }
       });
+    let cadena = "";
+    if(correcta) {
+      cadena +="¡Geniál!\n recordemos que \n" + this.questionObject.feedback_question;
+    }else{
+      cadena +="¡Oh no!\n Te daremos una pista \n" + this.questionObject.hint_question;
+    }
+    this.decirAlgo(cadena);
   }
 
 
@@ -889,11 +909,33 @@ export class QuestionnaireComponent implements OnInit {
         reader += this.questionObject.answers_[0].options_answer[i].opcion + " \n";
       }
     } else if (this.questionObject.name_questioncategory == this.tipoPregunta(4)) {
-    } else if (this.questionObject.name_questioncategory == this.tipoPregunta(5)) {
+      //completa
+      for (let i = 0; i < this.questionObject.answers_[0].complete_parts!.length; i++) {
+        let tmpString =  this.questionObject.answers_[0].complete_parts![i];
+        tmpString = tmpString === "$option$"? "puntos suspensivos": tmpString;
+        reader += tmpString;
+      }
+      reader += "\n las posibles respuestas son: \n";
+
       for (let i = 0; i < this.questionObject.answers_[0].options_answer.length; i++) {
         reader += "literal " + this.alphabet[i] + " \n";
         reader += this.questionObject.answers_[0].options_answer[i].leftSide + " \n";
       }
+
+    } else if (this.questionObject.name_questioncategory == this.tipoPregunta(5)) {
+      //relaciona
+      for (let i = 0; i < this.questionObject.answers_[0].options_answer.length; i++) {
+        reader += "literal " + this.alphabet[i] + " \n";
+        reader += this.questionObject.answers_[0].options_answer[i].leftSide + " \n";
+      }
+      reader += "las posibles respuestas son: \n";
+      for (let i = 0; i < this.questionObject.answers_[0].options_answer.length; i++) {
+        reader += "literal " + this.alphabet[i] + " \n";
+        reader += this.questionObject.answers_[0].options_answer[i].rightSide + " \n";
+      }
+    }else if (this.questionObject.name_questioncategory == this.tipoPregunta(6)) {
+    } else if (this.questionObject.name_questioncategory == this.tipoPregunta(7)) {
+      // y que mas le digo? xd
     }
 
     //si están hablando, callarlos
@@ -915,6 +957,25 @@ export class QuestionnaireComponent implements OnInit {
     });
   }
 
+  decirAlgo(cadena: string):void{
+    //si están hablando, callarlos
+    if (this.artyom.isSpeaking()) {
+      this.artyom.shutUp();
+    }
+
+    //Desactivar el reconocimiento de comandos cuando empiece la lectura
+    this.artyom.dontObey();
+    let local_artyom = this.artyom;
+    this.artyom.say(cadena, {
+      onStart: function () {
+      },
+      onEnd: function () {
+        //activar el reconocimiento de los comandos
+        local_artyom.obey();
+        console.log("vuelve a hablar");
+      }
+    });
+  }
   /*Operaciones en canvas*/
 
   public onoff: boolean;
