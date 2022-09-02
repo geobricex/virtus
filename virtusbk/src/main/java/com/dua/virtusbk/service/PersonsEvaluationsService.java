@@ -24,10 +24,18 @@ public class PersonsEvaluationsService {
     @Autowired
     private PersonsEvaluationsRepository personsEvaluationsDAO;
 
-    public String[] savePersonsEvaluations(PersonsEvaluations personsEvaluations) {
+    public String[] savePersonsEvaluations(PersonsEvaluations personsEvaluations, Person person) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
 
+        System.out.println(personsEvaluations);
+
+        personsEvaluations.setPersonsIdPerson(person);
         personsEvaluations.setDateregPersonEvaluation(Methods.nowLocalDateTime());
+
+//        Evaluation evaluation = new Evaluation();
+//        List<PersonsEvaluations> personsEvaluationsList = personsEvaluationsDAO.findByPersonsIdPersonAndEvaluationsIdEvaluation(person, evaluation);
+//        personsEvaluations.setTrynumberPersonEvaluation(personsEvaluationsList.size() + 1);
+
         personsEvaluations = personsEvaluationsDAO.save(personsEvaluations);
 
         JsonObject jsonObject = new JsonObject();
@@ -45,12 +53,12 @@ public class PersonsEvaluationsService {
 //        List<Map<String, Object>> personsEvaluations = personsEvaluationsDAO.findByEvaluationsIdEvaluationAndPersonsIdPerson(
 //                new Evaluation(id_evaluation), new Person(id_person));
         String personsEvaluations = personsEvaluationsDAO.findByEvaluationsIdEvaluationAndPersonsIdPerson(
-                type , (id_evaluation), (id_person));
+                type, (id_evaluation), (id_person));
 
 
         status = "2";
         message = "Resultados retornado con éxito.";
-        data =  personsEvaluations;
+        data = personsEvaluations;
 
         return new String[]{status, message, data};
     }

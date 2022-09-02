@@ -5,19 +5,27 @@
  */
 package com.dua.virtusbk.controller;
 
-import com.dua.virtusbk.entity.Util;
+import com.dua.virtusbk.reports.ReportCertificateCours;
+import com.dua.virtusbk.reports.TypeReport;
+import com.dua.virtusbk.dto.reportCertDto;
 import com.dua.virtusbk.service.CourseService;
 import com.dua.virtusbk.entity.Course;
 import com.dua.virtusbk.repository.CourseRepository;
 import com.dua.virtusbk.util.Methods;
 import com.google.gson.JsonObject;
+import net.sf.jasperreports.engine.JRException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -118,4 +126,28 @@ public class CourseApi {
 //            return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
 //        }
     }
+
+    @Autowired
+    private ReportCertificateCours reportCertificateCours;
+
+    @GetMapping(path = "/certificate/download")
+    public ResponseEntity<InputStreamResource> download(@RequestParam Map<String, Object> params)
+            throws JRException, IOException, SQLException {
+        System.out.println(params);
+
+        reportCertDto dto = reportCertificateCours.getReport(params);
+
+        InputStreamResource streamResource = new InputStreamResource(dto.getStream());
+        MediaType mediaType = null;
+        if (params.get("type").toString().equalsIgnoreCase(TypeReport.EXCEL.name())) {
+            mediaType = MediaType.APPLICATION_OCTET_STREAM;
+        } else {
+            mediaType = MediaType.APPLICATION_PDF;
+        }
+
+        return ResponseEntity.ok().header("Content-Disposition", "inline; filename=\"" + dto.getFileName() + "\"")
+                .contentLength(dto.getLength()).contentType(mediaType).body(streamResource);
+    }
+
+
 }

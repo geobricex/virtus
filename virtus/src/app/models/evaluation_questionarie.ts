@@ -63,9 +63,9 @@ export interface QuestionCategory {
 
 export interface Answers {
   options_answer: OptionsAnswer[];
-  responses: OptionsAnswer[];
-  complete_parts?: string[];
-  right_parts?: OptionsAnswer[];
+  responses: OptionsAnswer[];//interface
+  complete_parts?: string[];//interface
+  right_parts?: OptionsAnswer[];//interface
 }
 
 export interface AnswersModel {
@@ -92,7 +92,7 @@ export interface OptionsAnswer {
   resourse_leftSide: string;
   resourse_rightSide: string;
   rightSide: string;
-  ind?: number;
+  ind?: number;//interface
 }
 
 export enum Correct {
