@@ -353,14 +353,39 @@
         </div>
       </div>
       <div *ngIf="questionObject.name_questioncategory == tipoPregunta(7)">
-        <div *ngFor="let option of questionObject.answers_[0].options_answer; let i = index"
-             [attr.data-index]="i">
-          <input>
+        <div class="col-12">
+          <p-messages severity="warn" [enableService]="true" [closable]="true" >
+            <ng-template pTemplate>
+              <img src="assets/imgresource/empty/notification.png" width="25"
+              />
+              <div class="ml-2">Actualmente este tipo de preguntas <strong>no soporta</strong> caracteristicas de accesibilidad como comandos de voz, acceso por teclado u otros.</div>
+            </ng-template>
+          </p-messages>
+        </div>
+        <h5>Palabra:</h5>
+        <div class="centar-botones">
+          <button pButton pRipple *ngFor="let option of questionObject.answers_[0].options_answer[0].opcion.toString().split(''); let i = index"
+          class="p-button-info" [ngClass]="i != palabra.release ? 'p-button-outlined': ''"
+          [disabled]="showLetra(option, i) == 'space'" (click)="clickUp(i)" >
+          <img height="35" [src]="'assets/imgresource/alfabeto/' + showLetra(option, i) + '.png'" />
+          </button>
+        </div>
+
+        <div class="col-12 justify-content-center align-content-center" style="margin-bottom: 50px!important;">
+          <h5>Alfabeto español</h5>
+          <div class="centar-botones">
+            <button pButton pRipple *ngFor="let letra of alphabet; let indL = index;" [attr.data-index]="indL"
+                    class="p-button-info" [ngClass]="indL != palabra.press ? 'p-button-outlined': ''"
+               (click)="clickDown(indL)" >
+              <img height="35" [src]="'assets/imgresource/alfabeto/' + letra + '.png'" />
+            </button>
+          </div>
         </div>
       </div>
       <!--      </div>-->
       <!--Recursos para dibujar-->
-      <p-fieldset legend="Raya el correcto" [toggleable]="true">
+      <p-fieldset legend="Raya el correcto" [toggleable]="true"
+                  [hidden]="questionObject.name_questioncategory == tipoPregunta(7)">
         <div *ngIf="questionObject.name_questioncategory == tipoPregunta(4)">
           <div class="col-12">
             <p-messages severity="info" [enableService]="true">
