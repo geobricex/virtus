@@ -155,4 +155,23 @@ public class EvaluationService {
         return new String[]{status, message, data};
     }
 
+    public String[] getAllEvaluationQuestions(String id_evaluation, String id_person) {
+        String status = "4", message = "Error en los parámetros introducidos", data = "[]";
+
+        String homeInformation = evaluationDAO.returnAllEvaluation(Integer.parseInt(id_evaluation), Integer.parseInt(id_person));
+
+        JsonArray jso = Methods.stringToJsonArray(homeInformation);
+        if (!jso.toString().equals("[]")) {
+            status = "2";
+            message = "Información retornada con éxito.";
+            data = jso.toString();
+            return new String[]{status, message, data};
+
+        } else {
+            status = "3";
+            message = "No se ha encontrado datos.";
+        }
+        return new String[]{status, message, data};
+    }
+
 }

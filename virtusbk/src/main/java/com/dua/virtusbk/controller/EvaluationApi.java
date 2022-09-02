@@ -159,4 +159,37 @@ public class EvaluationApi {
             return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
         }
     }
+
+    @PostMapping("/getAllEvaluationQuestions")
+    public ResponseEntity<String> getAllEvaluationQuestions(@RequestBody @Validated String data, @RequestHeader("token") String sessionToken) {
+        System.out.print("getEvaluationQuestions...");
+        String message;
+        /*TEMPORAL*/
+//        JsonObject jso = Methods.stringToJSON(data);
+//        String sessionToken = Methods.JsonToString(jso, "sessionToken", "");
+        /*FIN TEMPORAL*/
+        String[] clains = Methods.getDataToJwt(sessionToken);
+        String[] res = Methods.validatePermit(clains[0], clains[1], 1);
+        if (res[0].equals("2")) {
+            JsonObject jso = Methods.stringToJSON(data);
+            if (jso.size() > 0) {
+                String id_evaluation = Methods.JsonToString(jso, "id_evaluation", "");
+                System.out.println(id_evaluation);
+                res = evaluationService.getAllEvaluationQuestions(id_evaluation, clains[0]);
+                message = Methods.getJsonMessage(res[0], res[1], res[2]);
+                if (res[0].equals("2") || res[0].equals("3")) {
+                    return new ResponseEntity<>(message, HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
+                }
+            } else {
+                message = Methods.getJsonMessage("4", "Parametros de entrada no válidos.", "[]");
+                return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
+            }
+        } else {
+            message = Methods.getJsonMessage("4", "Credenciales de sesión inválidas, vuelve a iniciar sesión "
+                    + "e intentalo de nuevo.", "[]");
+            return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
+        }
+    }
 }
