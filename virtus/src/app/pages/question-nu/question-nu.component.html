@@ -40,7 +40,7 @@
       </div>
     </div>
   </form>
-  <h5> Respuestas </h5>
+  <span class="font-bold mb-3"> Configure las posibles respuestas </span>
 
   <!-- Estructura para las preguntas de verdadero o falso -->
   <div class="mt-2" *ngIf="typeQuestion === 1">
@@ -128,6 +128,83 @@
                     style="margin-top: 7px" (click)="deleteAlternative(i)"></button>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estructura de relacionar items -->
+  <div class="mt-2" *ngIf="typeQuestion === 6">
+    <button pButton pRipple label="Nuevo literal" icon="pi pi-plus" class="p-button-success mr-2 mb-4"
+            (click)="addNewAlternativeRel()"></button>
+    <div class="p-fluid">
+      <div class="field" *ngFor="let option of structure; let i = index">
+        <strong> LITERAL {{literales[i]}}) </strong>
+        <div class="grid mt-2">
+          <div class="col">
+            <label> Ingrese el texto a relacionar </label>
+            <input class="mt-2" pInputText type="text" value="{{option.rightSide}}">
+          </div>
+          <div class="col text-center">
+            <img src="assets/layout/images/imagesVirtus/resize.png" alt="" width="60">
+          </div>
+          <div class="col">
+            <label> Ingrese el texto a relacionar </label>
+            <input class="mt-2" pInputText type="text" value="{{option.leftSide}}">
+          </div>
+          <div class="col-1">
+            <label> Acción </label> <br>
+            <button pButton pRipple icon="pi pi-trash" class="mr-2 p-button p-button-danger"
+                    style="margin-top: 7px" (click)="deleteAlternative(i)"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estructura para armar la palabra -->
+  <div class="mt-2" *ngIf="typeQuestion === 5">
+    <div class="p-fluid">
+      <div class="field">
+        <label> Ingrese la palabra a armar </label>
+        <input style="font-size: 5rem; letter-spacing: 1.5px !important;" pInputText type="text"
+               value="{{structure[0].opcion}}">
+      </div>
+    </div>
+  </div>
+
+  <!-- Estructura para puzzle -->
+  <div class="mt-2" *ngIf="typeQuestion === 7">
+    <div class="p-fluid text-center">
+      <label for=""> Cantidad de particiones: </label> <br>
+      <input pInputText type="text" class="mb-3 w-3">
+      <div [formGroup]="frmPhoto" class="text-center">
+        <img [src]="urlimageupload" alt="" width="400" height="400"
+             style="border: 5px solid #2D3F47" class="border-round"> <br>
+        <label for="uploadPhotoNew" class="p-button p-button-info w-2 mt-2"> <span
+          class="m-auto"> Seleccionar foto </span>
+        </label>
+        <input style="display: none" id="uploadPhotoNew" formControlName="firstName" type="file"
+               (change)="onFileChange($event)">
+      </div>
+    </div>
+  </div>
+
+  <!-- Estructura para completar -->
+  <div class="" *ngIf="typeQuestion === 4">
+    <div class="p-fluid">
+      <div class="field">
+        <label for="">Ingrese el texto a completar (click
+          <strong class="text-blue-500 cursor-pointer" (click)="addOption()"> aqui </strong>
+          para agregar una opcion): </label>
+        <textarea pInputTextarea id="" cols="30" rows="10" name="descriptionText"
+                  [(ngModel)]="structure[0].description_question"></textarea>
+      </div>
+      <button pButton pRipple label="Nuevo distractor" icon="pi pi-plus" class="p-button-success mr-2 mb-4"
+              (click)="addDistractor()"></button>
+      <div class="field" *ngFor="let option of structure[0].options; let i = index">
+        <label for=""> Distractor {{i + 1}} </label>
+        <input pInputText type="text" value="{{option.option}}"
+               placeholder="Ingrese la palabra correcta o un distractor">
       </div>
     </div>
   </div>
