@@ -12,7 +12,7 @@ WHERE state_topic = 'A' and syllabus_id_syllabu=1
 GROUP BY id_topic
 ORDER BY id_topic;
 
-select * from resources;
+select * from resources order by id_resource desc;
 
 
 select * from question_category;
@@ -38,6 +38,9 @@ select * from courses;
 select * from answers;
 
 select * from evaluations;
+select * from evaluation_question_category;
+select * from questions;
+select * from answers;
 -- FUNCTION: public.home_select(integer, integer)
 
 -- DROP FUNCTION public.home_select(integer, integer);

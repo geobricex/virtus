@@ -1,6 +1,10 @@
 package com.dua.virtusbk.service;
 
 import com.dua.virtusbk.ExcludeProxiedFields;
+import com.dua.virtusbk.reports.JasperReportManager;
+import com.dua.virtusbk.reports.ReportCertificateCours;
+import com.dua.virtusbk.reports.TypeReport;
+import com.dua.virtusbk.dto.reportCertDTO;
 import com.dua.virtusbk.entity.Course;
 import com.dua.virtusbk.entity.Person;
 import com.dua.virtusbk.entity.PersonsCours;
@@ -11,15 +15,21 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import net.sf.jasperreports.engine.JRException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Map;
+import javax.sql.DataSource;
 
 @Service
 @Transactional
-public class CourseService {
+public class CourseService implements ReportCertificateCours {
     @Autowired
     private CourseRepository courseDAO;
 
@@ -139,5 +149,29 @@ public class CourseService {
 
         System.out.println(data);
         return new String[]{status, message, data};
+    }
+
+    @Autowired
+    private JasperReportManager reportManager;
+    @Autowired
+    private DataSource dataSource;
+
+    @Override
+    public reportCertDTO getReport(Map<String, Object> params)
+            throws JRException, IOException, SQLException {
+        String fileName = "virtus_cert";
+        reportCertDTO dto = new reportCertDTO();
+        String extension = params.get("type").toString().equalsIgnoreCase(TypeReport.EXCEL.name()) ? ".xlsx"
+                : ".pdf";
+        dto.setFileName(fileName + extension);
+
+        ByteArrayOutputStream stream = reportManager.exportReport(fileName, params.get("type").toString(), params,
+                dataSource.getConnection());
+
+        byte[] bs = stream.toByteArray();
+        dto.setStream(new ByteArrayInputStream(bs));
+        dto.setLength(bs.length);
+
+        return dto;
     }
 }
