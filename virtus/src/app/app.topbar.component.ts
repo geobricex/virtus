@@ -25,7 +25,7 @@ export class AppTopBarComponent implements OnInit {
   }
 
   logout() {
-    //location.reload();
+    location.reload();
     this.storageService.logout();
     //this.utils.token = "";
   }
