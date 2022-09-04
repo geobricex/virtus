@@ -191,8 +191,8 @@
           <div class="p-buttonset">
             <a pButton pRipple icon="pi pi-download" href="{{questionObject.pathurlfile_question}}"
                [download]="questionObject.pathurlfile_question" target="_blank"
-                    class="p-button-rounded p-button-primary mr-2 mb-2"
-                    ></a>
+               class="p-button-rounded p-button-primary mr-2 mb-2"
+            ></a>
           </div>
         </div>
       </div>
@@ -385,37 +385,45 @@
       </div>
       <div *ngIf="questionObject.name_questioncategory == tipoPregunta(6)">
         <div class="col-12">
-          <p-messages severity="warn" [enableService]="true" [closable]="true" >
+          <p-messages severity="warn" [enableService]="true" [closable]="true">
             <ng-template pTemplate>
               <img src="assets/imgresource/empty/notification.png" width="25"
               />
-              <div class="ml-2">Actualmente este tipo de preguntas <strong>no soporta</strong> caracteristicas de accesibilidad como comandos de voz, acceso por teclado u otros.</div>
+              <div class="ml-2">Actualmente este tipo de preguntas <strong>no soporta</strong> caracteristicas de
+                accesibilidad como comandos de voz, acceso por teclado u otros.
+              </div>
             </ng-template>
           </p-messages>
         </div>
         <h5>Palabra:</h5>
         <div class="centar-botones">
-            <img height="35" [src]="tmpPuzzle.objImagePuzzle" />
+          <div *ngFor="let rowImgPz of tmpPuzzle.arrayImagePuzzle; let y = index">
+            <button pButton pRipple *ngFor="let elem of rowImgPz; let x = index"
+                    class="p-button-info" [ngClass]="!tmpPuzzle.isActive(x, y) ? 'p-button-outlined': ''"
+                    style="padding: 1px!important;" (click)="tmpPuzzle.mover(x, y)" >
+              <img height="35" [src]="elem"/>
+            </button>
+          </div>
         </div>
-
-
       </div>
       <div *ngIf="questionObject.name_questioncategory == tipoPregunta(7)">
         <div class="col-12">
-          <p-messages severity="warn" [enableService]="true" [closable]="true" >
+          <p-messages severity="warn" [enableService]="true" [closable]="true">
             <ng-template pTemplate>
-              <img src="assets/imgresource/empty/notification.png" width="25"
-              />
-              <div class="ml-2">Actualmente este tipo de preguntas <strong>no soporta</strong> caracteristicas de accesibilidad como comandos de voz, acceso por teclado u otros.</div>
+              <img src="assets/imgresource/empty/notification.png" width="25" />
+              <div class="ml-2">Actualmente este tipo de preguntas <strong>no soporta</strong> caracteristicas de
+                accesibilidad como comandos de voz, acceso por teclado u otros.
+              </div>
             </ng-template>
           </p-messages>
         </div>
         <h5>Palabra:</h5>
         <div class="centar-botones">
-          <button pButton pRipple *ngFor="let option of questionObject.answers_[0].options_answer[0].opcion.toString().split(''); let i = index"
-          class="p-button-info" [ngClass]="i != palabra.release ? 'p-button-outlined': ''"
-          [disabled]="showLetra(option, i) == 'space'" (click)="clickUp(i)" >
-          <img height="35" [src]="'assets/imgresource/alfabeto/' + showLetra(option, i) + '.png'" />
+          <button pButton pRipple
+                  *ngFor="let option of questionObject.answers_[0].options_answer[0].opcion.toString().split(''); let i = index"
+                  class="p-button-info" [ngClass]="i != palabra.release ? 'p-button-outlined': ''"
+                  [disabled]="showLetra(option, i) == 'space'" (click)="clickUp(i)">
+            <img height="35" [src]="'assets/imgresource/alfabeto/' + showLetra(option, i) + '.png'"/>
           </button>
         </div>
 
@@ -424,8 +432,8 @@
           <div class="centar-botones">
             <button pButton pRipple *ngFor="let letra of alphabet; let indL = index;" [attr.data-index]="indL"
                     class="p-button-info" [ngClass]="indL != palabra.press ? 'p-button-outlined': ''"
-               (click)="clickDown(indL)" >
-              <img height="35" [src]="'assets/imgresource/alfabeto/' + letra + '.png'" />
+                    (click)="clickDown(indL)">
+              <img height="35" [src]="'assets/imgresource/alfabeto/' + letra + '.png'"/>
             </button>
           </div>
         </div>
@@ -433,7 +441,8 @@
       <!--      </div>-->
       <!--Recursos para dibujar-->
       <p-fieldset legend="Raya el correcto" [toggleable]="true"
-                  [hidden]="questionObject.name_questioncategory == tipoPregunta(7)">
+                  [hidden]="questionObject.name_questioncategory == tipoPregunta(7) ||
+          questionObject.name_questioncategory == tipoPregunta(6) ">
         <div *ngIf="questionObject.name_questioncategory == tipoPregunta(4)">
           <div class="col-12">
             <p-messages severity="info" [enableService]="true">

@@ -67,6 +67,8 @@ export class QuestionnaireComponent implements OnInit {
     press: -1,
     released: -1
   };
+
+
   public tmpPuzzle: Puzzle;
 
   @ViewChild('canvasEl', {static: true}) CanvasEl: ElementRef<HTMLCanvasElement>;
@@ -315,7 +317,14 @@ export class QuestionnaireComponent implements OnInit {
         flagAlltrue && indTS == indT,
         questionItem.maximumpoints_question * ((indTS / indT) / 100)];
 
-    } else {
+    } else if (questionItem.name_questioncategory == this.tipoPregunta(7)) {
+      let resp: number[] = this.tmpPuzzle.comprobarResultado();
+      return [ // en caso de las evaluaciones,
+        // cambiar resp[0] == resp[1] por siempre TRUE
+        resp[0] == resp[1],
+        questionItem.maximumpoints_question * ((resp[0] / resp[1]) / 100)];
+    }else
+    {
       if (questionItem.answers_[0].responses != undefined ||
         questionItem.answers_[0].options_answer[0].response.length > 0)
         //verdadero o falso O unica seleccion
@@ -503,8 +512,9 @@ export class QuestionnaireComponent implements OnInit {
       }
       if (this.questionObject.name_questioncategory == this.tipoPregunta(6)) {
         let imgPath: string = this.questionObject.answers_[0].options_answer[0].resource!;
-        let dimensions: number = this.questionObject.answers_[0].options_answer[0].piece_questionaire!;
+        let dimensions: number = this.questionObject.answers_[0].options_answer[0].piece_questionarie!;
         this.tmpPuzzle = new Puzzle();
+        imgPath = "assets/imgresource/empty/notification.png";
         this.tmpPuzzle.crearPuzzle(dimensions, imgPath);
       }
       if (this.questionObject.name_questioncategory == this.tipoPregunta(7)) {
@@ -573,10 +583,10 @@ export class QuestionnaireComponent implements OnInit {
         }
       });
     let cadena = "";
-    if(correcta) {
-      cadena +="¡Geniál!\n recordemos que \n" + this.questionObject.feedback_question;
-    }else{
-      cadena +="¡Oh no!\n Te daremos una pista \n" + this.questionObject.hint_question;
+    if (correcta) {
+      cadena += "¡Geniál!\n recordemos que \n" + this.questionObject.feedback_question;
+    } else {
+      cadena += "¡Oh no!\n Te daremos una pista \n" + this.questionObject.hint_question;
     }
     this.decirAlgo(cadena);
   }
@@ -921,8 +931,8 @@ export class QuestionnaireComponent implements OnInit {
     } else if (this.questionObject.name_questioncategory == this.tipoPregunta(4)) {
       //completa
       for (let i = 0; i < this.questionObject.answers_[0].complete_parts!.length; i++) {
-        let tmpString =  this.questionObject.answers_[0].complete_parts![i];
-        tmpString = tmpString === "$option$"? "puntos suspensivos": tmpString;
+        let tmpString = this.questionObject.answers_[0].complete_parts![i];
+        tmpString = tmpString === "$option$" ? "puntos suspensivos" : tmpString;
         reader += tmpString;
       }
       reader += "\n las posibles respuestas son: \n";
@@ -943,7 +953,7 @@ export class QuestionnaireComponent implements OnInit {
         reader += "literal " + this.alphabet[i] + " \n";
         reader += this.questionObject.answers_[0].options_answer[i].rightSide + " \n";
       }
-    }else if (this.questionObject.name_questioncategory == this.tipoPregunta(6)) {
+    } else if (this.questionObject.name_questioncategory == this.tipoPregunta(6)) {
     } else if (this.questionObject.name_questioncategory == this.tipoPregunta(7)) {
       // y que mas le digo? xd
     }
@@ -967,7 +977,7 @@ export class QuestionnaireComponent implements OnInit {
     });
   }
 
-  decirAlgo(cadena: string):void{
+  decirAlgo(cadena: string): void {
     //si están hablando, callarlos
     if (this.artyom.isSpeaking()) {
       this.artyom.shutUp();
@@ -986,6 +996,7 @@ export class QuestionnaireComponent implements OnInit {
       }
     });
   }
+
   /*Operaciones en canvas*/
 
   public onoff: boolean;
@@ -1281,36 +1292,56 @@ class Puzzle {
   private maxSizeImg: number = 25;
   private dimens: number = 3;
 
-  private arrayImagePuzzle: string[];
-  private arrayPositionPuzzle: number[] = new Array(this.dimens);
+  public arrayImagePuzzle: string[][];
+  public arrayPositionPuzzle: number[][];
 
-  public objImagePuzzle: string;
+  //public objImagePuzzle: string;
+
+  public puzzleControls: any = {
+    complete: false,
+    pressed: {x: -1, y: -1},
+    released: {x: -1, y: -1}
+  };
 
   crearPuzzle(cantidad: number, url: string): void {
-    let img = new Image();
     this.dimens = Math.sqrt(cantidad);
+
     let maxSizeImg = this.maxSizeImg * this.dimens;
-    this.arrayImagePuzzle  = new Array(cantidad);
-    this.arrayPositionPuzzle  = new Array(cantidad);
+    this.arrayImagePuzzle = new Array<string[]>(cantidad);
+    this.arrayPositionPuzzle = new Array<number[]>(cantidad);
     let mecanvas = document.createElement("canvas") as HTMLCanvasElement;
+    //let mecanvas = document.getElementById("tmpImagenCanvas") as HTMLCanvasElement;
+    console.log(mecanvas);
     mecanvas.width = maxSizeImg;
     mecanvas.height = maxSizeImg;
+    let ctx = mecanvas.getContext('2d')!;
     let local_this = this;
+    let img = new Image();
     img.onload = function () {
       img.width = maxSizeImg;
       img.height = maxSizeImg;
-      let ctx = mecanvas.getContext('2d')!;
-      ctx.drawImage(img, 0, 0, maxSizeImg, maxSizeImg);
 
-      /*for (let x = 0; x < local_this.dimens; x++){
-        local_this.arrayImagePuzzle[x] = new Array(local_this.dimens);
-        for (let y = 0; y < local_this.dimens; y++){
-          let imgData = ctx.getImageData(0, 0, maxSizeImg/local_this.dimens, maxSizeImg/local_this.dimens);
-          console.log(imgData)
-          local_this.arrayImagePuzzle[y]=imgData;
+      ctx.drawImage(img, 0, 0, maxSizeImg, maxSizeImg);
+      let ind = 0;
+      for (let y = 0; y < local_this.dimens; y++) {
+        local_this.arrayImagePuzzle[y] = new Array<string>(local_this.dimens);
+        local_this.arrayPositionPuzzle[y] = new Array<number>(local_this.dimens);
+        for (let x = 0; x < local_this.dimens; x++) {
+          let imgData = ctx.getImageData(x * local_this.maxSizeImg, y * local_this.maxSizeImg,
+            (x * local_this.maxSizeImg) + local_this.maxSizeImg,
+            (y * local_this.maxSizeImg) + local_this.maxSizeImg);
+          let mincanvas = document.createElement("canvas") as HTMLCanvasElement;
+          mincanvas.width = local_this.maxSizeImg;
+          mincanvas.height = local_this.maxSizeImg;
+          let minctx = mincanvas.getContext('2d')!;
+          minctx.putImageData(imgData, 0, 0);
+
+          console.log("base64: ", mincanvas.toDataURL());
+          local_this.arrayImagePuzzle[y][x] = mincanvas.toDataURL();
+          local_this.arrayPositionPuzzle[y][x] = ind++;
         }
-      }*/
-      let imgData = ctx.getImageData(0, 0, local_this.maxSizeImg, local_this.maxSizeImg);
+      }
+      /*let imgData = ctx.getImageData(0, 0, local_this.maxSizeImg, local_this.maxSizeImg);
       let mincanvas = document.createElement("canvas") as HTMLCanvasElement;
       mincanvas.width = local_this.maxSizeImg;
       mincanvas.height = local_this.maxSizeImg;
@@ -1318,14 +1349,61 @@ class Puzzle {
       minctx.putImageData(imgData, 0, 0);
 
       console.log("base64: ", mincanvas.toDataURL());
-      local_this.objImagePuzzle = mincanvas.toDataURL();
+      local_this.objImagePuzzle = mincanvas.toDataURL();*/
     };
+    img.crossOrigin = "Anonymous";
     img.src = url;
   }
 
-  mover(origen: { x: number, y: number }, destino: { x: number, y: number }) {
+  mover(x: number, y: number) {
+    if (!this.puzzleControls.complete) {
+      this.puzzleControls.pressed = {x: x, y: y};
+      this.puzzleControls.complete = true;
+    } else {
+      this.puzzleControls.released = {x: x, y: y};
 
+      let auxInd = this.arrayPositionPuzzle[this.puzzleControls.released.y][this.puzzleControls.released.x];
+      this.arrayPositionPuzzle[this.puzzleControls.released.y][this.puzzleControls.released.x] =
+        this.arrayPositionPuzzle[this.puzzleControls.pressed.y][this.puzzleControls.pressed.x];
+      this.arrayPositionPuzzle[this.puzzleControls.pressed.y][this.puzzleControls.pressed.x] = auxInd;
+
+      let auxbase64 = this.arrayImagePuzzle[this.puzzleControls.released.y][this.puzzleControls.released.x];
+      this.arrayImagePuzzle[this.puzzleControls.released.y][this.puzzleControls.released.x] =
+        this.arrayImagePuzzle[this.puzzleControls.pressed.y][this.puzzleControls.pressed.x];
+      this.arrayImagePuzzle[this.puzzleControls.pressed.y][this.puzzleControls.pressed.x] = auxbase64;
+
+      //hacer truco de cambio
+      this.puzzleControls.pressed = {x: -1, y: -1};
+      this.puzzleControls.released = {x: -1, y: -1};
+      this.puzzleControls.complete = false;
+    }
   }
 
+  isActive(x: number, y: number){
+    //if(!this.puzzleControls.complete){
+      return (this.puzzleControls.pressed.x === x && this.puzzleControls.pressed.y === y);
+      //(this.puzzleControls.rel.x === x && this.puzzleControls.pressed.y === y)
+    /*}
+    return false;*/
+  }
 
+  desordenar(unArray: any[]): any[] {
+    let t = unArray.sort(function (a, b) {
+      return (Math.random() - 0.5)
+    });
+    return [...t];
+  }
+
+  comprobarResultado(): number[]{
+    let ind = 0, success = 0;
+    for (let y = 0; y < this.dimens; y++) {
+      for (let x = 0; x < this.dimens; x++) {
+        if(this.arrayPositionPuzzle[y][x] == ind){
+          success++; //fichas en el lugar correcto
+        }
+        ind++;
+      }
+    }
+    return [success, this.dimens * this.dimens];
+  }
 }
