@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.sql.SQLException;
 import java.util.*;
 
 
@@ -173,5 +174,24 @@ public class EvaluationService {
         }
         return new String[]{status, message, data};
     }
+
+    public String[] updateQuantityQuestions(String quantity_question, String id_evaluation, String id_question_category) {
+        String status = "4", message = "Error en los parámetros introducidos", data = "[]";
+        System.out.println("updateQuantityQuestions");
+//        try {
+
+        Long id_evaluation_question_category = evaluationQuestionCategoryDAO.updatePersonsQuestions(Long.parseLong(quantity_question), Long.parseLong(id_evaluation), Long.parseLong(id_question_category));
+
+        status = "2";
+        message = "Cantidad de preguntas asignadas con éxito.";
+        data = "[{\"id_evaluation_question_category\":" + id_evaluation_question_category + "}]";
+//        } catch (Exception exception) {
+//            status = "4";
+//            message = exception.toString();
+//        }
+
+        return new String[]{status, message, data};
+    }
+
 
 }

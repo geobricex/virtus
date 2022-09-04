@@ -148,7 +148,7 @@ export class UpdateevacuestComponent implements OnInit {
       resp = "Relate";
     }
     if (typo == 6) {
-      resp = "puzzle";
+      resp = "Puzzle";
     }
     if (typo == 7) {
       resp = "Build word";

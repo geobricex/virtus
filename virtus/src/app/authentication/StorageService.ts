@@ -48,6 +48,8 @@ export class StorageService {
 
   removeCurrentSession(): void {
     this.localStorageService.removeItem('currentUser');
+    localStorage.clear();
+    sessionStorage.clear()
     //this.currentSession = new Session("", new User("", "", "", "", "", ""));
   }
 

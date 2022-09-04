@@ -38,8 +38,13 @@ export class AppLoginComponent {
    * Metodo para inicializar cualquier cosa
    * */
   ngOnInit(): void {
-    //location.reload();
+
+    this.storageService.logout();
+    localStorage.clear()
+    sessionStorage.clear()
+    this.sessionLog = new Session("", new User("", "", "", "", "", ""));
     this.user = new User("", "", "", "", "", "");
+
   }
 
 
@@ -53,6 +58,9 @@ export class AppLoginComponent {
   }
 
   login() {
+    this.sessionLog = new Session("", new User("", "", "", "", "", ""));
+    this.storageService.setCurrentSession(this.sessionLog);
+
     this.apiLogin().subscribe(response => {
       console.log(response);
       this.sessionLog = new Session("", new User("", "", "", "", "", ""));

@@ -19,6 +19,7 @@ export class DashboardDemoComponent implements OnInit {
   constructor(
     private breadcrumbService: BreadcrumbService,
     private _http: HttpClient,
+    private storageService: StorageService,
     private utils: Utils
   ) {
     this.breadcrumbService.setItems([
@@ -29,6 +30,8 @@ export class DashboardDemoComponent implements OnInit {
 
   ngOnInit() {
     console.log("ngOnInit Home");
+    this.homedata = [];
+    this.statusApi = 0;
     this.apiInformationHome().subscribe({
       next: response => {
         console.log(response);
@@ -40,7 +43,6 @@ export class DashboardDemoComponent implements OnInit {
 
 
   apiInformationHome(): Observable<any> {
-    console.log(this.utils.globalUrl);
     this.globalUri = this.utils.globalUrl + "utils/gethomeinformation";
     console.log(this.globalUri)
     var headers = new HttpHeaders()

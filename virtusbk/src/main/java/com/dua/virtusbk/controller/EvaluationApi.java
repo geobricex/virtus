@@ -192,4 +192,29 @@ public class EvaluationApi {
             return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
         }
     }
+
+    @PostMapping("/updateQuantityQuestions")
+    public ResponseEntity<String> updateQuantityQuestions(@RequestBody @Validated String data, @RequestHeader("token") String sessionToken) {
+        String message;
+        String[] clains = Methods.getDataToJwt(sessionToken);
+        String[] res = Methods.validatePermit(clains[0], clains[1], 1);
+        if (res[0].equals("2")) {
+            JsonObject jso = Methods.stringToJSON(data);
+            String quantity_question = Methods.JsonToString(jso, "quantity_question", "");
+            String id_evaluation = Methods.JsonToString(jso, "id_evaluation", "");
+            String id_question_category = Methods.JsonToString(jso, "id_question_category", "");
+
+            res = evaluationService.updateQuantityQuestions(quantity_question, id_evaluation, id_question_category);
+            message = Methods.getJsonMessage(res[0], res[1], res[2]);
+            if (res[0].equals("2")) {
+                return new ResponseEntity<>(message, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
+            }
+        } else {
+            message = Methods.getJsonMessage("4", "Credenciales de sesión inválidas, vuelve a iniciar sesión "
+                    + "e intentalo de nuevo.", "[]");
+            return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
+        }
+    }
 }

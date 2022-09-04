@@ -62,7 +62,7 @@
       >{{user.name_person !== undefined ? user.name_person : ''}} {{user.last_name !== undefined ? user.last_name : ''}}</span>
 
       <span
-        class="p-badge p-badge-success ml-1">{{user.type_person === 'U' ? 'Usuario' : user.type_person === 'A' ? 'Administrador' : 'Root'}}</span>
+        class="p-badge p-badge-success ml-1">{{user.type_person === 'U' ? 'Aprendiz' : user.type_person === 'I' ? 'Instructor' : user.type_person === 'A' ? 'Administrador' : 'Root'}}</span>
     </a>
     <ul id="topbar-profile-menu" class="animated fadeInDown"
         [ngClass]="{'topbar-profile-menu-active': app.topbarMenuActive}">
@@ -75,10 +75,10 @@
           <i class="pi pi-cog topbar-icon-settings"></i>
           <span class="topbar-item-name">Configuración</span>
         </a>
-<!--        <a (click)="showDialog()">-->
-<!--          <i class="pi pi-cog topbar-icon-settings"></i>-->
-<!--          <span class="topbar-item-name">Accesibilidad</span>-->
-<!--        </a>-->
+        <!--        <a (click)="showDialog()">-->
+        <!--          <i class="pi pi-cog topbar-icon-settings"></i>-->
+        <!--          <span class="topbar-item-name">Accesibilidad</span>-->
+        <!--        </a>-->
         <a (click)="logout()">
           <i class="topbar-icon pi pi-fw pi-sign-out"></i>
           <span class="topbar-item-name">Cerrar Sesion</span>

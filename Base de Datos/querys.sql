@@ -43,6 +43,10 @@ from settings;
 select *
 from evaluation_question_category;
 
+UPDATE evaluation_question_category SET number_question = 0
+WHERE evaluations_id_evaluation = 18 AND question_category_id_questioncategory = 7
+                                      RETURNING id_evaluation_question_category;
+
 select * from question_category;
 
 select * from persons;
