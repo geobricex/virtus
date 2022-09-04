@@ -1,6 +1,7 @@
 package com.dua.virtusbk.service;
 
 import com.dua.virtusbk.ExcludeProxiedFields;
+import com.dua.virtusbk.PersonDto;
 import com.dua.virtusbk.entity.Person;
 import com.dua.virtusbk.repository.PersonRepository;
 import com.dua.virtusbk.util.DataStatic;
@@ -11,6 +12,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -18,6 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -63,8 +66,10 @@ public class PersonService {
 
         List<Person> listPerson = personDAO.findByIdNotOrderByDateregPerson(id_person);
         if (listPerson.size() >= 0) {
-            Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();
-            data = gson.toJson(listPerson);
+            System.out.println(listPerson);
+//            Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();
+            JSONArray jsonArray = new JSONArray(listPerson);
+            data = jsonArray.toString();
             status = "2";
             message = "Información obetnida con éxito.";
             System.out.println(data);
@@ -133,14 +138,16 @@ public class PersonService {
     public String[] updatePerson(Person person) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
 
-        if (Methods.testregex("[0-9]+\\-[0-9]+\\-[0-9]+", person.getIdLocation())
+        if (Methods.isInteger(person.getId().toString())
+                //Methods.testregex("[0-9]+\\-[0-9]+\\-[0-9]+", person.getIdLocation()
             // && Methods.comprobeEmail(person.getEmailPerson())
             // && ((Methods.comprobePassword(person.getPasswordPerson())
             // && person.getProviderPerson().equals("native")))
         ) {
-            System.out.println("updatePerson...");
+            System.out.println(person);
 
             if (!person.getTypePerson().equals("S") && !person.getTypePerson().equals("I")) {
+//                PersonDto personDto = new PersonDto(person.getId(), person.getNamePerson(), person.getLastnamePerson(), person.getEmailPerson(), person.getTypePerson(), Methods.nowLocalDateTime());
 
                 person.setNamePerson(person.getNamePerson().toUpperCase().trim());
                 person.setLastnamePerson(person.getLastnamePerson().toUpperCase().trim());
@@ -280,6 +287,10 @@ public class PersonService {
                         case "A":
                             status = "2";
                             message = "Sesión de administración iniciada con éxito.";
+                            break;
+                        case "R":
+                            status = "2";
+                            message = "Sesión de super administrador iniciada con éxito.";
                             break;
                         case "U":
                             status = "2";

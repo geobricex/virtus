@@ -3,6 +3,7 @@ import {BreadcrumbService} from "../../../app.breadcrumb.service";
 import {Observable} from "rxjs";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Utils} from "../../../util/Utils";
+import {Course} from "../../../models/Course";
 
 @Component({
   selector: 'app-timereport',
@@ -25,6 +26,12 @@ export class TimereportComponent implements OnInit {
   polarOptions: any;
   radarOptions: any;
 
+  selectedCourse: string;
+  courses: Course[];
+  statusApi: number = 0;
+  timespent_person_evaluation: number[] = [];
+  qualification_person_evaluation: number[] = [];
+  name_evaluation: string[] = [];
 
   constructor(private breadcrumbService: BreadcrumbService,
               private _http: HttpClient,
@@ -32,27 +39,34 @@ export class TimereportComponent implements OnInit {
   ) {
     this.breadcrumbService.setItems([
       {label: '', routerLink: ['/app/']},
-      {label: 'Revisión de Tiempo', routerLink: ['/app/reports/timereport']},
+      {label: 'Revisión de Reportes', routerLink: ['/app/reports/timereport']},
     ]);
+
   }
 
   ngOnInit() {
-    this.loadgetReviews();
-
+    this.loadMyCourse();
   }
 
-  loadgetReviews() {
-    console.log("DATA EVALUATION")
-    this.apiGetDataReview(5).subscribe({
+  chartCourse(value: any) {
+    console.log(value)
+    this.loadgetReviews(5, value);
+  }
+
+  loadgetReviews(type: number, param: number) {
+    this.apiGetDataReview(type, param).subscribe({
       next: response => {
         this.dataReviews = response.data;
+        this.timespent_person_evaluation= [];
+        this.qualification_person_evaluation= [];
+        this.name_evaluation = [];
         this.viewBarReport();
         this.viewGeneralReport();
       }
     })
   }
 
-  apiGetDataReview(type: any): Observable<any> {
+  apiGetDataReview(type: number, param: number): Observable<any> {
     this.globalUri = this.utils.globalUrl + "personsevaluations/getpersonsevaluations";
     let headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
@@ -60,36 +74,33 @@ export class TimereportComponent implements OnInit {
       .set('token', this.utils.token);
     let queryParams = new HttpParams()
       .append("type", type)
-      .append("id_evaluation", 0);
+      .append("id_evaluation", param);
     return this._http.get<any>(this.globalUri, {params: queryParams, headers: headers});
 
   }
-  viewBarReport() {
-    let timespent_person_evaluation : number[] = [];
-    let qualification_person_evaluation : number[] = [];
-    let name_evaluation : string[] = [];
 
+  viewBarReport() {
     for (let i = 0; i < this.dataReviews.length; i++) {
-      timespent_person_evaluation[i] = this.dataReviews[i].timespent_person_evaluation;
-      qualification_person_evaluation[i] = this.dataReviews[i].qualification_person_evaluation;
-      name_evaluation[i] = (this.dataReviews[i].name_evaluation + "-"+ this.dataReviews[i].name_course);
+      this.timespent_person_evaluation[i] = this.dataReviews[i].timespent_person_evaluation;
+      this.qualification_person_evaluation[i] = this.dataReviews[i].qualification_person_evaluation;
+      this.name_evaluation[i] = (this.dataReviews[i].name_evaluation + "-" + this.dataReviews[i].name_course);
     }
     this.barData = {
-      labels: name_evaluation,
+      labels: this.name_evaluation,
       datasets: [
         {
           label: 'Promedio de Tiempo empleado (minutos)',
           backgroundColor: 'rgb(255, 99, 132)',
           borderColor: 'rgb(255, 99, 132)',
-          data: timespent_person_evaluation
+          data: this.timespent_person_evaluation
         },
         {
           label: 'Promedio de Puntaje obetenido',
           backgroundColor: 'rgb(92,88,220)',
           borderColor: 'rgb(3,38,133)',
-          data: qualification_person_evaluation
+          data: this.qualification_person_evaluation
         }
-        ]
+      ]
     };
 
     this.barOptions = {
@@ -120,23 +131,21 @@ export class TimereportComponent implements OnInit {
       }
     };
   }
-  viewGeneralReport(){
-    let timespent_person_evaluation : number[] = [];
-    let qualification_person_evaluation : number[] = [];
-    let name_evaluation : string[] = [];
+
+  viewGeneralReport() {
 
     for (let i = 0; i < this.dataReviews.length; i++) {
-      timespent_person_evaluation[i] = this.dataReviews[i].timespent_person_evaluation;
-      qualification_person_evaluation[i] = this.dataReviews[i].qualification_person_evaluation;
-      name_evaluation[i] = (this.dataReviews[i].name_evaluation + "-"+ this.dataReviews[i].name_course);
+      this.timespent_person_evaluation[i] = this.dataReviews[i].timespent_person_evaluation;
+      this.qualification_person_evaluation[i] = this.dataReviews[i].qualification_person_evaluation;
+      this.name_evaluation[i] = (this.dataReviews[i].name_evaluation + "-" + this.dataReviews[i].name_course);
     }
 
     this.lineData = {
-      labels: name_evaluation,
+      labels: this.name_evaluation,
       datasets: [
         {
-          label: 'First Dataset',
-          data: timespent_person_evaluation,
+          label: 'Promedio de Tiempo obtenido',
+          data: this.timespent_person_evaluation,
           fill: false,
           backgroundColor: 'rgb(255, 205, 86)',
           borderColor: 'rgb(255, 205, 86)',
@@ -144,7 +153,7 @@ export class TimereportComponent implements OnInit {
         },
         {
           label: 'Promedio de Puntaje obetenido',
-          data: qualification_person_evaluation,
+          data: this.qualification_person_evaluation,
           fill: false,
           backgroundColor: 'rgb(75, 192, 192)',
           borderColor: 'rgb(75, 192, 192)',
@@ -167,7 +176,7 @@ export class TimereportComponent implements OnInit {
             color: '#A0A7B5'
           },
           grid: {
-            color:  'rgba(160, 167, 181, .3)',
+            color: 'rgba(160, 167, 181, .3)',
           }
         },
         y: {
@@ -175,17 +184,17 @@ export class TimereportComponent implements OnInit {
             color: '#A0A7B5'
           },
           grid: {
-            color:  'rgba(160, 167, 181, .3)',
+            color: 'rgba(160, 167, 181, .3)',
           }
         },
       }
     };
 
     this.pieData = {
-      labels: name_evaluation,
+      labels: this.name_evaluation,
       datasets: [
         {
-          data: timespent_person_evaluation,
+          data: this.qualification_person_evaluation,
           backgroundColor: [
             'rgb(54, 162, 235)',
             'rgb(255, 99, 132)',
@@ -207,7 +216,7 @@ export class TimereportComponent implements OnInit {
 
     this.polarData = {
       datasets: [{
-        data: timespent_person_evaluation,
+        data: this.timespent_person_evaluation,
         backgroundColor: [
           'rgb(54, 162, 235)',
           'rgb(255, 99, 132)',
@@ -217,7 +226,7 @@ export class TimereportComponent implements OnInit {
         label: 'Promedio de tiempo empleado (min)'
       }],
       labels:
-        name_evaluation
+      this.name_evaluation
     };
 
     this.polarOptions = {
@@ -238,7 +247,7 @@ export class TimereportComponent implements OnInit {
     };
 
     this.radarData = {
-      labels: name_evaluation,
+      labels: this.name_evaluation,
       datasets: [
         {
           label: 'Promedio de tiempo empleado (min)',
@@ -248,7 +257,7 @@ export class TimereportComponent implements OnInit {
           pointBorderColor: '#fff',
           pointHoverBackgroundColor: '#fff',
           pointHoverBorderColor: 'rgba(54, 162, 235,1)',
-          data: timespent_person_evaluation
+          data: this.timespent_person_evaluation
         },
         {
           label: 'Promedio de Puntaje obetenido',
@@ -258,7 +267,7 @@ export class TimereportComponent implements OnInit {
           pointBorderColor: '#fff',
           pointHoverBackgroundColor: '#fff',
           pointHoverBorderColor: 'rgba(255, 99, 132,1)',
-          data: qualification_person_evaluation
+          data: this.qualification_person_evaluation
         }
       ]
     };
@@ -280,4 +289,39 @@ export class TimereportComponent implements OnInit {
       }
     };
   }
+
+  auxPrimaryValue: number;
+
+  loadMyCourse() {
+    this.apiLoadMyCourse()
+      .subscribe(
+        {
+          next: response => {
+            console.log(response);
+            this.statusApi = response.status;
+            if (response.status === 2) {
+              this.courses = response.data;
+
+              this.auxPrimaryValue = response.data[0].id_course
+              console.log(  this.auxPrimaryValue)
+              this.loadgetReviews(5, this.auxPrimaryValue);
+
+            }
+          }
+          , error: err => {
+            console.log(err);
+            console.log("Error interno de servidor");
+          }
+        });
+  }
+
+  apiLoadMyCourse(): Observable<any> {
+    this.globalUri = this.utils.globalUrl + "personscours/mycoursejoin";
+    var headers = new HttpHeaders()
+      .set('Access-Control-Allow-Origin', '*')
+      .set('provider', 'native')
+      .set('token', this.utils.token);
+    return this._http.post(this.globalUri, {state_course_person: "A"}, {headers: headers});
+  }
+
 }

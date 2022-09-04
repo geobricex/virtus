@@ -60,7 +60,7 @@ public class PersonsEvaluationsApi {
         String[] clains = Methods.getDataToJwt(sessionToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
         if (res[0].equals("2")) {
-            res = personsEvaluationsService.savePersonsEvaluations(personsEvaluations);
+            res = personsEvaluationsService.savePersonsEvaluations(personsEvaluations, new Person(Long.parseLong(clains[0])));
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
             if (res[0].equals("2")) {
                 return new ResponseEntity<>(message, HttpStatus.OK);

@@ -1,4 +1,5 @@
 <p-toast key="tst" [baseZIndex]="99999"></p-toast>
+<p-messages [value]="msgs"></p-messages>
 <div class="grid">
   <div class="col-12">
     <p-toast></p-toast>
@@ -103,54 +104,64 @@
           </td>
           <td style="width:14%; min-width:10rem;">
             <span class="p-column-title">Fecha registro</span>
-            {{person.dateregPerson.date.day + '/' + person.dateregPerson.date.month + '/' + person.dateregPerson.date.year + ' ' +
-          person.dateregPerson.time.hour + ':' + person.dateregPerson.time.minute + ':' + person.dateregPerson.time.second}}
+            {{person.dateregPerson}}
           </td>
           <td style="width:14%; min-width:10rem;">
             <span class="p-column-title">Fecha actualización</span>
-            {{person.dateupdatePerson.date.day + '/' + person.dateupdatePerson.date.month + '/' + person.dateupdatePerson.date.year + ' ' +
-          person.dateupdatePerson.time.hour + ':' + person.dateupdatePerson.time.minute + ':' + person.dateupdatePerson.time.second}}
+            {{person.dateupdatePerson}}
           </td>
 
-            <div class="flex"
-              *ngIf="user.type_person == 'R'">
-              <button *ngIf="person.typePerson == 'U'" pButton pRipple icon="pi pi-angle-double-up"
-                      class="p-button-rounded p-button-success mr-2"></button>
+          <div class="flex"
+               *ngIf="user.type_person == 'R'">
+            <button *ngIf="person.typePerson == 'U'" pButton pRipple icon="pi pi-angle-double-up"
+                    class="p-button-rounded p-button-success mr-2" pTooltip="Promover a administrador"
+                    tooltipPosition="left"
+                    (click)="changeRolPersons(person,'UtoA')"></button>
 
-              <button *ngIf="person.typePerson == 'A'" pButton pRipple icon="pi pi-angle-double-down"
-                      class="p-button-rounded p-button-warning mr-2"></button>
+            <button *ngIf="person.typePerson == 'A'" pButton pRipple icon="pi pi-angle-double-down"
+                    class="p-button-rounded p-button-warning mr-2" pTooltip="Degradar a usuario"
+                    tooltipPosition="left"
+                    (click)="changeRolPersons(person,'AtoU')"></button>
 
-              <button *ngIf="person.typePerson == 'U'" pButton pRipple icon="pi pi-exclamation-triangle"
-                      class="p-button-rounded p-button-danger mr-2"></button>
+            <button *ngIf="person.typePerson == 'U'" pButton pRipple icon="pi pi-exclamation-triangle"
+                    class="p-button-rounded p-button-danger mr-2" pTooltip="Desactivar cuenta"
+                    tooltipPosition="left"
+                    (click)="changeRolPersons(person,'UtoD')"></button>
 
-              <button *ngIf="person.typePerson == 'S'" pButton pRipple icon="pi pi-user-plus"
-                      class="p-button-rounded p-button-help mr-2"></button>
+            <button *ngIf="person.typePerson == 'S'" pButton pRipple icon="pi pi-user-plus"
+                    class="p-button-rounded p-button-help mr-2" pTooltip="Habilitar cuenta"
+                    tooltipPosition="left"
+                    (click)="changeRolPersons(person,'StoU')"></button>
 
-              <button *ngIf="person.typePerson == 'U'" pButton pRipple class="p-button-rounded p-button-info mr-2">
-                <fa-icon [icon]="['fas', 'hands']"></fa-icon>
-              </button>
+            <!--              <button *ngIf="person.typePerson == 'U'" pButton pRipple class="p-button-rounded p-button-info mr-2">-->
+            <!--                <fa-icon [icon]="['fas', 'hands']"></fa-icon>-->
+            <!--              </button>-->
 
-              <button *ngIf="person.typePerson == 'U'" pButton pRipple class="p-button-rounded p-button-info mr-2">
-                <fa-icon [icon]="['fas', 'hands']"></fa-icon>
-              </button>
-            </div>
-            <div class="flex"
-              *ngIf="user.type_person == 'A'">
-              <button *ngIf="person.typePerson == 'U'" pButton pRipple icon="pi pi-exclamation-triangle"
-                      class="p-button-rounded p-button-danger mr-2"></button>
+            <!--              <button *ngIf="person.typePerson == 'U'" pButton pRipple class="p-button-rounded p-button-info mr-2">-->
+            <!--                <fa-icon [icon]="['fas', 'hands']"></fa-icon>-->
+            <!--              </button>-->
+          </div>
+          <div class="flex"
+               *ngIf="user.type_person == 'A'">
+            <button *ngIf="person.typePerson == 'U'" pButton pRipple icon="pi pi-exclamation-triangle"
+                    class="p-button-rounded p-button-danger mr-2" pTooltip="Desactivar cuenta"
+                    tooltipPosition="left"
+                    (click)="changeRolPersons(person, 'UtoD')"></button>
 
-              <button *ngIf="person.typePerson == 'S'" pButton pRipple icon="pi pi-user-plus"
-                      class="p-button-rounded p-button-help mr-2"></button>
+            <button *ngIf="person.typePerson == 'S'" pButton pRipple icon="pi pi-user-plus"
+                    class="p-button-rounded p-button-help mr-2" pTooltip="Activar cuenta"
+                    tooltipPosition="left"
+                    (click)="changeRolPersons(person, 'StoU')"></button>
 
-              <button *ngIf="person.typePerson == 'U'" pButton pRipple class="p-button-rounded p-button-info mr-2">
-                <fa-icon [icon]="['fas', 'hands']"></fa-icon>
-              </button>
+            <!--              <button *ngIf="person.typePerson == 'U'" pButton pRipple class="p-button-rounded p-button-info mr-2">-->
+            <!--                <fa-icon [icon]="['fas', 'hands']"></fa-icon>-->
+            <!--              </button>-->
 
-              <button *ngIf="person.typePerson == 'U'" pButton pRipple class="p-button-rounded p-button-info mr-2">
-                <fa-icon [icon]="['fas', 'hands']"></fa-icon>
-              </button>
+            <!--              <button *ngIf="person.typePerson == 'U'" pButton pRipple class="p-button-rounded p-button-info mr-2">-->
+            <!--                <fa-icon [icon]="['fas', 'hands']"></fa-icon>-->
+            <!--              </button>-->
 
-            </div>
+          </div>
 
         </tr>
       </ng-template>

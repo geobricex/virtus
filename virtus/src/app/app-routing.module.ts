@@ -32,6 +32,7 @@ import {TimereportComponent} from "./pages/reports/timereport/timereport.compone
 import {GamesComponent} from "./pages/games/games.component";
 import {ReviewComponent} from "./pages/review/review.component";
 import {UpdateevacuestComponent} from "./pages/updateevacuest/updateevacuest.component";
+import {QuestionNuComponent} from "./pages/question-nu/question-nu.component";
 
 @NgModule({
   imports: [
@@ -61,7 +62,7 @@ import {UpdateevacuestComponent} from "./pages/updateevacuest/updateevacuest.com
           {path: 'coursear/modulear/:idcourse/topicar/:idmodule', component: TopicarComponent},
           {path: 'coursear/modulear/:idcourse/topicar/:idmodule/resourcesar/:idTopic', component: ResourcesarComponent},
           {
-            path: 'coursear/modulear/:idcourse/topicar/:idmodule/resourcesar/:idTopic/updatequecust/:idResource',
+            path: 'coursear/modulear/:idcourse/topicar/:idmodule/resourcesar/:idTopic/update_evaluation/:idResource',
             component: UpdateevacuestComponent
           },
           {path: 'mycourse', component: MiscursosComponent},
@@ -75,7 +76,11 @@ import {UpdateevacuestComponent} from "./pages/updateevacuest/updateevacuest.com
           },
           {path: 'mycourse/modules/:idcourse', component: ModuloComponent},
           {path: 'mycourse/modules/:idcourse/themes/:idmodule', component: TemasComponent},
-          {path: 'mycourse/modules/:idcourse/themes/:idmodule/resources/:idTopic', component: ResourcesComponent}
+          {path: 'mycourse/modules/:idcourse/themes/:idmodule/resources/:idTopic', component: ResourcesComponent},
+          {
+            path: 'coursear/modulear/:idcourse/topicar/:idmodule/resourcesar/:idTopic/update_evaluation/:idResource/question_nu/:type',
+            component: QuestionNuComponent
+          }
         ]
       },
       {path: 'login', component: AppLoginComponent},

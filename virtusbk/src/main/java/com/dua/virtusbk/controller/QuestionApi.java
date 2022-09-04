@@ -5,6 +5,7 @@
  */
 package com.dua.virtusbk.controller;
 
+import com.dua.virtusbk.service.AnswerService;
 import com.dua.virtusbk.service.QuestionService;
 import com.dua.virtusbk.entity.Question;
 import com.dua.virtusbk.repository.QuestionRepository;
@@ -41,6 +42,8 @@ public class QuestionApi {
         String message;
         String[] clains = Methods.getDataToJwt(sessionToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
+        System.out.println(clains[0] +" - "+ clains[1]);
+        System.out.println(question.toString());
         if (res[0].equals("2")) {
             res = questionService.saveQuestion(question);
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
@@ -90,7 +93,7 @@ public class QuestionApi {
                 String id_evaluation = Methods.JsonToString(jso, "id_evaluation", "");
                 res = questionService.getQuestions(id_evaluation);
                 message = Methods.getJsonMessage(res[0], res[1], res[2]);
-                if (res[0].equals("2")|| res[0].equals("3")) {
+                if (res[0].equals("2") || res[0].equals("3")) {
                     return new ResponseEntity<>(message, HttpStatus.OK);
                 } else {
                     return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
@@ -120,7 +123,7 @@ public class QuestionApi {
                 String id_question = Methods.JsonToString(jso, "id_question", "");
                 res = questionService.getQuestion(id_question);
                 message = Methods.getJsonMessage(res[0], res[1], res[2]);
-                if (res[0].equals("2")|| res[0].equals("3")) {
+                if (res[0].equals("2") || res[0].equals("3")) {
                     return new ResponseEntity<>(message, HttpStatus.OK);
                 } else {
                     return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);

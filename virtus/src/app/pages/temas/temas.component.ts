@@ -9,7 +9,7 @@ import {Observable} from "rxjs";
 @Component({
   selector: 'app-temas',
   templateUrl: './temas.component.html',
-  styleUrls: ['./temas.component.scss']
+  styleUrls: ['../../../assets/demo/badges.scss']
 })
 export class TemasComponent implements OnInit {
 

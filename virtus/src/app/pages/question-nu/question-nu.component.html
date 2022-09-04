@@ -1,0 +1,237 @@
+<p-toast key="tst" [baseZIndex]="99999"></p-toast>
+<div class="card">
+  <p-messages [value]="msgs"></p-messages>
+  <h5> Encabezado pregunta </h5>
+  <form [formGroup]="registerFormQuestion">
+    <label for="uploadFileQues" class="bg-indigo-100 p-1 border-1 border-round cursor-pointer mr-2">
+      Examinar... </label>
+    <span> {{form["pathurlfile_question"].value}} </span>
+    <input style="display: none" id="uploadFileQues" type="file"
+           (change)="uploadFileQuest($event)">
+    <div class="p-fluid mt-3">
+      <div class="field">
+        <label for="titulo"> Titulo: </label>
+        <input id="titulo" pInputText type="text" formControlName="title_question">
+      </div>
+      <div class="field">
+        <label for="description"> Descripcion: </label>
+        <textarea pInputTextarea name="" id="description" cols="30" rows="5"
+                  formControlName="description_question"></textarea>
+      </div>
+      <div class="field">
+        <label for="retroalimen"> Retroalimentación: </label>
+        <input id="retroalimen" pInputText type="text" formControlName="feedback_question">
+      </div>
+      <div class="field">
+        <label for="pista"> Pista: </label>
+        <input id="pista" pInputText type="text" formControlName="hint_question">
+      </div>
+      <div class="field">
+        <label for="nivel"> Nivel de dificultad </label>
+        <input id="nivel" type="text" pInputText readonly formControlName="level_question" [(ngModel)]="levelQuestion"/>
+        <p-slider [min]="1" [max]="5" formControlName="level_question" [(ngModel)]="levelQuestion"></p-slider>
+      </div>
+      <div class="grid">
+        <div class="col-2">
+          <div class="field" style="display: grid">
+            <label>Puntos:</label>
+            <p-inputSwitch formControlName="points_question"></p-inputSwitch>
+          </div>
+        </div>
+        <div class="col" *ngIf="form['points_question'].value">
+          <div class="field">
+            <label for="puntaje"> Puntaje: </label>
+            <p-inputNumber id="puntaje" formControlName="maximumpoints_question"></p-inputNumber>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <span class="font-bold mb-3"> Configure las posibles respuestas </span>
+
+  <!-- Estructura para las preguntas de verdadero o falso -->
+  <div class="mt-2" *ngIf="typeQuestion === 1">
+    <span> Seleccione el criterio a las posibles respuestas: </span>
+    <div class="grid mt-2">
+      <div class="col-12 md:col-4">
+        <div class="field-radiobutton">
+          <p-radioButton name="city" value="Verdadero/Falso" [(ngModel)]="valRadio" id="city1"
+                         (onClick)="changeOption($event)"></p-radioButton>
+          <label for="city1">Verdadero/Falso</label>
+        </div>
+      </div>
+      <div class="col-12 md:col-4">
+        <div class="field-radiobutton">
+          <p-radioButton name="city" value="Si/No" [(ngModel)]="valRadio" (onClick)="changeOption($event)"
+                         id="city2"></p-radioButton>
+          <label for="city2">Si/No</label>
+        </div>
+      </div>
+      <div class="col-12 md:col-4">
+        <div class="field-radiobutton">
+          <p-radioButton name="city" value="Correcto/Incorrecto" [(ngModel)]="valRadio" id="city3"
+                         (onClick)="changeOption($event)"></p-radioButton>
+          <label for="city3">Correcto/Incorrecto</label>
+        </div>
+      </div>
+    </div>
+
+    <span> Seleccione la opción correcta </span>
+    <div class="p-fluid mt-3">
+      <div class="field" *ngFor="let option of structure; let i = index">
+        <label> {{option.opcion}} </label>
+        <p-dropdown [options]="options" optionLabel="label" optionValue="value"></p-dropdown>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estructura para las preguntas de opcion unica -->
+  <div class="mt-2" *ngIf="typeQuestion === 2">
+    <button pButton pRipple label="Nuevo literal" icon="pi pi-plus" class="p-button-success mr-2 mb-4"
+            (click)="addNewAlternative()"></button>
+    <div class="p-fluid">
+      <div class="field" *ngFor="let option of structure; let i = index">
+        <strong class="mr-3"> LITERAL {{literales[i]}}) </strong>
+        <label for="uploadFileAns{{i}}" class="bg-indigo-100 p-1 border-1 border-round cursor-pointer mr-2">
+          Examinar... </label>
+        <span> {{option.resource}} </span>
+        <input style="display: none" id="uploadFileAns{{i}}" type="file"
+               (change)="uploadFileResp($event, i)">
+        <div class="grid mt-2">
+          <div class="col">
+            <label> Ingrese el enunciado de la respuesta </label>
+            <input class="mt-2" pInputText type="text" value="{{option.opcion}}" [(ngModel)]="option.opcion">
+          </div>
+          <div class="col">
+            <label> Especifique si la respuesta es correcta o incorrecta </label>
+            <p-dropdown [options]="options" optionLabel="label" optionValue="value" styleClass="mt-2"
+                        [(ngModel)]="option.correct" (onChange)="validateOptionUnique(i)"></p-dropdown>
+          </div>
+          <div class="col-1">
+            <label> Acción </label> <br>
+            <button pButton pRipple icon="pi pi-trash" class="mr-2 p-button p-button-danger mr-1"
+                    style="margin-top: 7px" (click)="deleteAlternative(i)"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estructura para las opciones multiples -->
+  <div class="mt-2" *ngIf="typeQuestion === 3">
+    <button pButton pRipple label="Nuevo literal" icon="pi pi-plus" class="p-button-success mr-2 mb-4"
+            (click)="addNewAlternative()"></button>
+    <div class="p-fluid">
+      <div class="field" *ngFor="let option of structure; let i = index">
+        <strong> LITERAL {{literales[i]}}) </strong>
+        <label for="uploadFileAns{{i}}" class="bg-indigo-100 p-1 border-1 border-round cursor-pointer mr-2">
+          Examinar... </label>
+        <span> {{option.resource}} </span>
+        <input style="display: none" id="uploadFileAns{{i}}" type="file"
+               (change)="uploadFileResp($event, i)">
+        <div class="grid mt-2">
+          <div class="col">
+            <label> Ingrese el enunciado de la respuesta </label>
+            <input class="mt-2" pInputText type="text" value="{{option.opcion}}" [(ngModel)]="option.opcion">
+          </div>
+          <div class="col">
+            <label> Especifique si la respuesta es correcta o incorrecta </label>
+            <p-dropdown [options]="options" optionLabel="label" optionValue="value" styleClass="mt-2"
+                        [(ngModel)]="option.correct"></p-dropdown>
+          </div>
+          <div class="col-1">
+            <label> Acción </label> <br>
+            <button pButton pRipple icon="pi pi-trash" class="mr-2 p-button p-button-danger"
+                    style="margin-top: 7px" (click)="deleteAlternative(i)"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estructura de relacionar items -->
+  <div class="mt-2" *ngIf="typeQuestion === 6">
+    <button pButton pRipple label="Nuevo literal" icon="pi pi-plus" class="p-button-success mr-2 mb-4"
+            (click)="addNewAlternativeRel()"></button>
+    <div class="p-fluid">
+      <div class="field" *ngFor="let option of structure; let i = index">
+        <strong> LITERAL {{literales[i]}}) </strong>
+        <div class="grid mt-2">
+          <div class="col">
+            <label> Ingrese el texto a relacionar </label>
+            <input class="mt-2" pInputText type="text" value="{{option.rightSide}}">
+          </div>
+          <div class="col text-center">
+            <img src="assets/layout/images/imagesVirtus/resize.png" alt="" width="60">
+          </div>
+          <div class="col">
+            <label> Ingrese el texto a relacionar </label>
+            <input class="mt-2" pInputText type="text" value="{{option.leftSide}}">
+          </div>
+          <div class="col-1">
+            <label> Acción </label> <br>
+            <button pButton pRipple icon="pi pi-trash" class="mr-2 p-button p-button-danger"
+                    style="margin-top: 7px" (click)="deleteAlternative(i)"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Estructura para armar la palabra -->
+  <div class="mt-2" *ngIf="typeQuestion === 5">
+    <div class="p-fluid">
+      <div class="field">
+        <label> Ingrese la palabra a armar </label>
+        <input style="font-size: 5rem; letter-spacing: 1.5px !important;" pInputText type="text"
+               value="{{structure[0].opcion}}">
+      </div>
+    </div>
+  </div>
+
+  <!-- Estructura para puzzle -->
+  <div class="mt-2" *ngIf="typeQuestion === 7">
+    <div class="p-fluid text-center">
+      <label for=""> Cantidad de particiones: </label> <br>
+      <input pInputText type="text" class="mb-3 w-3">
+      <div [formGroup]="frmPhoto" class="text-center">
+        <img [src]="urlimageupload" alt="" width="400" height="400"
+             style="border: 5px solid #2D3F47" class="border-round"> <br>
+        <label for="uploadPhotoNew" class="p-button p-button-info w-2 mt-2"> <span
+          class="m-auto"> Seleccionar foto </span>
+        </label>
+        <input style="display: none" id="uploadPhotoNew" formControlName="firstName" type="file"
+               (change)="onFileChange($event)">
+      </div>
+    </div>
+  </div>
+
+  <!-- Estructura para completar -->
+  <div class="" *ngIf="typeQuestion === 4">
+    <div class="p-fluid">
+      <div class="field">
+        <label for="">Ingrese el texto a completar (click
+          <strong class="text-blue-500 cursor-pointer" (click)="addOption()"> aqui </strong>
+          para agregar una opcion): </label>
+        <textarea pInputTextarea id="" cols="30" rows="10" name="descriptionText"
+                  [(ngModel)]="structure[0].description_question"></textarea>
+      </div>
+      <button pButton pRipple label="Nuevo distractor" icon="pi pi-plus" class="p-button-success mr-2 mb-4"
+              (click)="addDistractor()"></button>
+      <div class="field" *ngFor="let option of structure[0].options; let i = index">
+        <label for=""> Distractor {{i + 1}} </label>
+        <input pInputText type="text" value="{{option.option}}"
+               placeholder="Ingrese la palabra correcta o un distractor">
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center">
+    <hr>
+    <button pButton pRipple label="Cancelar" icon="pi pi-times" class="mr-2"
+            (click)="resetQuestion()"></button>
+    <button pButton pRipple [disabled]="registerFormQuestion.invalid" label="Guardar cambios" icon="pi pi-check"
+            class="p-button-success" (click)="saveQuestion()"></button>
+  </div>
+  <p-messages [value]="msgs"></p-messages>
+</div>

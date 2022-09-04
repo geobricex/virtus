@@ -40,6 +40,7 @@ public class AnswerApi {
         String message;
         String[] clains = Methods.getDataToJwt(sessionToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
+        System.out.printf(answer.toString());
         if (res[0].equals("2")) {
             res = answerService.saveAnswers(answer);
             message = Methods.getJsonMessage(res[0], res[1], res[2]);

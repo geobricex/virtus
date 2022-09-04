@@ -86,7 +86,7 @@
               <div class="my-3">
                 <button pButton pRipple icon="pi pi-pencil" label="Editar" class="mr-2 p-button-info w-8rem"
                         pTooltip="Editar evaluacion" tooltipPosition="bottom"
-                        routerLink="updatequecust/{{evaluation.id}}"></button>
+                        routerLink="update_evaluation/{{evaluation.id}}"></button>
                 <button pButton pRipple icon="pi pi-trash" label="Eliminar" class="mr-2 p-button-danger w-8rem"
                         pTooltip="Eliminar recurso" tooltipPosition="bottom"></button>
               </div>
@@ -254,14 +254,16 @@
           </div>
         </div>
 
-        <div class="grid">
-          <div class="col-4">
-            <div class="field" style="display: grid">
-              <label> Ordenar por categoría: </label>
-              <p-inputSwitch [(ngModel)]="checked" id="orderByCategory"
-                             formControlName="orderByCategory"></p-inputSwitch>
-            </div>
-          </div>
+        <div class="field" style="display: grid">
+          <label> Ordenar por categoría: </label>
+          <p-inputSwitch [(ngModel)]="checked"
+                         formControlName="orderByCategory"></p-inputSwitch>
+        </div>
+
+        <div class="field" style="display: grid">
+          <label> Revision de intento: </label>
+          <p-inputSwitch [(ngModel)]="checked"
+                         formControlName="allowsReview"></p-inputSwitch>
         </div>
 
       </form>
