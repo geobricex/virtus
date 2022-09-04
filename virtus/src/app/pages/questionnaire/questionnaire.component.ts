@@ -67,6 +67,7 @@ export class QuestionnaireComponent implements OnInit {
     press: -1,
     released: -1
   };
+  public tmpPuzzle: Puzzle;
 
   @ViewChild('canvasEl', {static: true}) CanvasEl: ElementRef<HTMLCanvasElement>;
   private contex: CanvasRenderingContext2D | null;
@@ -187,7 +188,7 @@ export class QuestionnaireComponent implements OnInit {
       resp = "Relate";
     }
     if (typo == 6) {
-      resp = "puzzle";
+      resp = "Puzzle";
     }
     if (typo == 7) {
       resp = "Build word";
@@ -213,7 +214,8 @@ export class QuestionnaireComponent implements OnInit {
         tiempos += tmp;
       }
     }
-    return tiempos;
+    //return tiempo;
+    return this.tiempoEvaluacion;
   }
 
   getCountResueltas(): string {
@@ -274,7 +276,7 @@ export class QuestionnaireComponent implements OnInit {
             }
           }
           if (this.storageService.getCurrentUser().email == "anthony.pachay2017@uteq.edu.ec") {
-            this.cambiarPregunta(11, true);
+            this.cambiarPregunta(14, true);
           } else {
             this.cambiarPregunta(0, true);
           }
@@ -394,6 +396,8 @@ export class QuestionnaireComponent implements OnInit {
     } else if (questionItem.name_questioncategory == this.tipoPregunta(7)) {
       return (questionItem.answers_[0].complete_parts !== undefined
         && questionItem.answers_[0].complete_parts.length > 0);
+    } else if (questionItem.name_questioncategory == this.tipoPregunta(7)) {
+      return false;
     } else {
       if (questionItem.answers_[0].responses != undefined)
         return (questionItem.answers_[0].responses.length > 0
@@ -496,6 +500,12 @@ export class QuestionnaireComponent implements OnInit {
         this.questionObject.answers_[0].right_parts = this.desordenar(this.questionObject.answers_[0].right_parts);
         console.log("tipo pregujnta 5", this.questionObject.answers_[0].right_parts);
         this.questionObject.answers_[0].responses = Array<OptionsAnswer>(this.questionObject.answers_[0].options_answer.length - 1);
+      }
+      if (this.questionObject.name_questioncategory == this.tipoPregunta(6)) {
+        let imgPath: string = this.questionObject.answers_[0].options_answer[0].resource!;
+        let dimensions: number = this.questionObject.answers_[0].options_answer[0].piece_questionaire!;
+        this.tmpPuzzle = new Puzzle();
+        this.tmpPuzzle.crearPuzzle(dimensions, imgPath);
       }
       if (this.questionObject.name_questioncategory == this.tipoPregunta(7)) {
 
@@ -1268,17 +1278,21 @@ export class QuestionnaireComponent implements OnInit {
 
 class Puzzle {
 
-  private maxSizeImg: number = 250;
+  private maxSizeImg: number = 25;
   private dimens: number = 3;
 
-  private arrayImagePuzzle: any[] = new Array(this.dimens);
+  private arrayImagePuzzle: string[];
   private arrayPositionPuzzle: number[] = new Array(this.dimens);
 
+  public objImagePuzzle: string;
 
   crearPuzzle(cantidad: number, url: string): void {
     let img = new Image();
-    let maxSizeImg = this.maxSizeImg;
-    let mecanvas = new HTMLCanvasElement();
+    this.dimens = Math.sqrt(cantidad);
+    let maxSizeImg = this.maxSizeImg * this.dimens;
+    this.arrayImagePuzzle  = new Array(cantidad);
+    this.arrayPositionPuzzle  = new Array(cantidad);
+    let mecanvas = document.createElement("canvas") as HTMLCanvasElement;
     mecanvas.width = maxSizeImg;
     mecanvas.height = maxSizeImg;
     let local_this = this;
@@ -1296,8 +1310,15 @@ class Puzzle {
           local_this.arrayImagePuzzle[y]=imgData;
         }
       }*/
-      let imgData = ctx.getImageData(0, 0, maxSizeImg / local_this.dimens, maxSizeImg / local_this.dimens);
-      console.log(imgData)
+      let imgData = ctx.getImageData(0, 0, local_this.maxSizeImg, local_this.maxSizeImg);
+      let mincanvas = document.createElement("canvas") as HTMLCanvasElement;
+      mincanvas.width = local_this.maxSizeImg;
+      mincanvas.height = local_this.maxSizeImg;
+      let minctx = mincanvas.getContext('2d')!;
+      minctx.putImageData(imgData, 0, 0);
+
+      console.log("base64: ", mincanvas.toDataURL());
+      local_this.objImagePuzzle = mincanvas.toDataURL();
     };
     img.src = url;
   }

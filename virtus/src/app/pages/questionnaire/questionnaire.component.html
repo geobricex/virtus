@@ -142,6 +142,20 @@
               </div>
             </div>
           </p-accordionTab>
+          <p-accordionTab header="Puzzle" [selected]="true" class="line-height-3 m-0"
+                          *ngIf="contarTipoPregunta(5) > 0">
+            <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
+              <div *ngIf="question.name_questioncategory == tipoPregunta(6)"
+                   class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
+                   (click)="cambiarPregunta(i2)"
+              >
+                <span> {{"N°" + (i2 + 1)}} </span>
+                <i
+                  class="pi pi-circle-on mt-1 text-sm {{validarPreguntaResuelta(question)?'text-green-600': 'text-pink-600'}}"
+                  style="float: right"></i>
+              </div>
+            </div>
+          </p-accordionTab>
 
         </p-accordion>
         <!--      <div class="xl:col-12 md:col-12 sm:col-12 text-center">-->
@@ -368,6 +382,23 @@
             <p-divider></p-divider>
           </div>
         </div>
+      </div>
+      <div *ngIf="questionObject.name_questioncategory == tipoPregunta(6)">
+        <div class="col-12">
+          <p-messages severity="warn" [enableService]="true" [closable]="true" >
+            <ng-template pTemplate>
+              <img src="assets/imgresource/empty/notification.png" width="25"
+              />
+              <div class="ml-2">Actualmente este tipo de preguntas <strong>no soporta</strong> caracteristicas de accesibilidad como comandos de voz, acceso por teclado u otros.</div>
+            </ng-template>
+          </p-messages>
+        </div>
+        <h5>Palabra:</h5>
+        <div class="centar-botones">
+            <img height="35" [src]="tmpPuzzle.objImagePuzzle" />
+        </div>
+
+
       </div>
       <div *ngIf="questionObject.name_questioncategory == tipoPregunta(7)">
         <div class="col-12">
