@@ -37,7 +37,7 @@ export class CursosComponent implements OnInit {
     public router: Router) {
     this.breadcrumbService.setItems([
       {label: '', routerLink: ['/app']},
-      {label: 'Cursos', routerLink: ['app/course']},
+      {label: 'Cursos', routerLink: ['/app/course']},
       {label: 'Todos los cursos', routerLink: ['/app/course']}
     ]);
   }

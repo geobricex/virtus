@@ -99,7 +99,7 @@
 
   <!--dialog para agregar un nuevo recurso-->
   <p-dialog [(visible)]="newResourseDialog" [style]="{width: '450px'}" header="Nuevo recurso" [modal]="true"
-            class="p-fluid">
+            class="p-fluid" [style.z-index]="1000">
     <ng-template pTemplate="content">
       <p-messages [value]="msg"></p-messages>
       <form [formGroup]="registerFormResources">
@@ -184,8 +184,7 @@
 
   <!--dialog para agreegar una nueva evaluacion-->
   <p-dialog [(visible)]="newEvaluationsDialog" [style]="{width: '450px'}" header="Nueva evaluación"
-            [modal]="true"
-            class="p-fluid">
+            [modal]="true" class="p-fluid" [style.z-index]="1000">
     <ng-template pTemplate="content">
       <form [formGroup]="registerFormEvaluation" name="form">
 

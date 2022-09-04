@@ -35,7 +35,7 @@ export class TemasComponent implements OnInit {
     this.idModule = this._route.snapshot.paramMap.get("idmodule");
     this.breadcrumbService.setItems([
       {label: '', routerLink: ['/app/mycourse/modules/' + this.idCourse]},
-      {label: 'Cursos', routerLink: ['/app']},
+      {label: 'Cursos', routerLink: ['/app/course']},
       {label: 'Mis cursos', routerLink: ['/app/mycourse']},
       {label: 'Módulos', routerLink: ['/app/mycourse/modules/' + this.idCourse]},
       {label: 'Temas', routerLink: ['/app/mycourse/modules/' + this.idCourse + '/themes/' + this.idModule]}
@@ -48,10 +48,10 @@ export class TemasComponent implements OnInit {
 
     this.loadTopics();
     this.sortOptions = [
-      {label: 'Nombre curso A-Z', value: 'nameTopic'},
-      {label: 'Nombre curso Z-A', value: '!nameTopic'},
-      {label: 'Mas antiguos', value: 'dateregTopic'},
-      {label: 'Ultimos agregados', value: '!dateregTopic'}
+      {label: 'Nombre curso A-Z', value: 'name_topic'},
+      {label: 'Nombre curso Z-A', value: '!name_topic'},
+      {label: 'Mas antiguos', value: 'description_topic'},
+      {label: 'Ultimos agregados', value: '!datereg_syllabu'}
     ];
   }
 

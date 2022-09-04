@@ -110,6 +110,7 @@ export class ResourcesarComponent implements OnInit {
         pathurlremote_resource: [""]
       }
     );
+
   }
 
   ngOnInit(): void {
@@ -143,6 +144,8 @@ export class ResourcesarComponent implements OnInit {
   }
 
   saveResources() {
+    this.utils.loading;
+
     this.resource = new Resources(
       0,
       this.formR['nameResources'].value, this.formR["descriptionRes"].value,
@@ -162,6 +165,7 @@ export class ResourcesarComponent implements OnInit {
         this.utils.showMessages(response.status, response.information, "tst");
         this.loadResources();
         this.resetResources();
+        this.utils.closeLoading;
       });
     }
 
@@ -175,6 +179,7 @@ export class ResourcesarComponent implements OnInit {
           this.utils.showMessages(response.status, response.information, "tst");
           this.loadResources();
           this.resetResources();
+          this.utils.closeLoading;
         });
       });
     }
@@ -189,6 +194,7 @@ export class ResourcesarComponent implements OnInit {
           this.utils.showMessages(response.status, response.information, "tst");
           this.loadResources();
           this.resetResources();
+          this.utils.closeLoading;
         });
       });
     }
@@ -203,6 +209,7 @@ export class ResourcesarComponent implements OnInit {
           this.utils.showMessages(response.status, response.information, "tst");
           this.loadResources();
           this.resetResources();
+          this.utils.closeLoading;
         });
       });
     }
@@ -220,6 +227,7 @@ export class ResourcesarComponent implements OnInit {
             this.utils.showMessages(response.status, response.information, "tst");
             this.loadResources();
             this.resetResources();
+            this.utils.closeLoading;
           });
         });
       });
@@ -238,6 +246,7 @@ export class ResourcesarComponent implements OnInit {
             this.utils.showMessages(response.status, response.information, "tst");
             this.loadResources();
             this.resetResources();
+            this.utils.closeLoading;
           });
         });
       });
@@ -256,6 +265,7 @@ export class ResourcesarComponent implements OnInit {
             this.utils.showMessages(response.status, response.information, "tst");
             this.loadResources();
             this.resetResources();
+            this.utils.closeLoading;
           });
         });
       });
@@ -277,12 +287,12 @@ export class ResourcesarComponent implements OnInit {
               this.utils.showMessages(response.status, response.information, "tst");
               this.loadResources();
               this.resetResources();
+              this.utils.closeLoading;
             });
           });
         });
       });
     }
-
   }
 
   enteredResources() {
@@ -313,6 +323,10 @@ export class ResourcesarComponent implements OnInit {
   resetResources() {
     this.newResourseDialog = false;
     this.registerFormResources.reset();
+    this.formR["pathfileResource"].setValue("");
+    this.formR["pathvideoResource"].setValue("");
+    this.formR["pathurlsignResource"].setValue("");
+    this.formR["pathurlremote_resource"].setValue("");
   }
 
   onUploadFile(event: any) {
@@ -370,7 +384,7 @@ export class ResourcesarComponent implements OnInit {
   }
 
   saveEvaluation() {
-    this.msg.push({severity: 'info', summary: 'Virtus', detail: 'Procesando...'});
+    this.utils.loading;
 
     if (!this.form['timeEvaluation'].value) {
       this.form['timeminutesEvaluation'].setValue(0);
@@ -410,7 +424,7 @@ export class ResourcesarComponent implements OnInit {
       this.loadEvaluations();
       this.resetEvaluation();
       this.registerFormResources.reset();
-      this.msg = [];
+      this.utils.closeLoading;
     });
   }
 

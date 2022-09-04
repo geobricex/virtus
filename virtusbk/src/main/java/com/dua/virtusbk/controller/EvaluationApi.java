@@ -198,12 +198,15 @@ public class EvaluationApi {
         String message;
         String[] clains = Methods.getDataToJwt(sessionToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
+        System.out.println(data);
         if (res[0].equals("2")) {
             JsonObject jso = Methods.stringToJSON(data);
             String quantity_question = Methods.JsonToString(jso, "quantity_question", "");
             String id_evaluation = Methods.JsonToString(jso, "id_evaluation", "");
             String id_question_category = Methods.JsonToString(jso, "id_question_category", "");
-
+            System.out.println(quantity_question);
+            System.out.println(id_evaluation);
+            System.out.println(id_question_category);
             res = evaluationService.updateQuantityQuestions(quantity_question, id_evaluation, id_question_category);
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
             if (res[0].equals("2")) {

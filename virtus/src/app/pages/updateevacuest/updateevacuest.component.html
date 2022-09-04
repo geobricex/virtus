@@ -1,3 +1,4 @@
+<p-toast key="tst" [baseZIndex]="99999"></p-toast>
 <div class="card">
   <p-tabView orientation="left">
     <p-tabPanel header="Datos" class="line-height-3 m-0">
@@ -86,7 +87,7 @@
         <p-accordionTab header="Verdadero falso" [selected]="true" class="line-height-3 m-0">
           <div class="field">
             <label> Cantidad de preguntas a evaluar: </label>
-            <input type="text" class="ml-3" pInputText>
+            <input type="text" class="ml-3" pInputText (blur)="updateQuantityQuestions(1)" [(ngModel)]="quantity_true">
           </div>
           <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
             <div *ngIf="question.name_questioncategory == tipoPregunta(1)"
@@ -106,7 +107,7 @@
         <p-accordionTab header="Opción única" [selected]="true" class="line-height-3 m-0">
           <div class="field">
             <label> Cantidad de preguntas a evaluar: </label>
-            <input type="text" class="ml-3" pInputText>
+            <input type="text" class="ml-3" pInputText (blur)="updateQuantityQuestions(2)" [(ngModel)]="quantity_true">
           </div>
           <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
             <div *ngIf="question.name_questioncategory == tipoPregunta(2)"
@@ -126,7 +127,7 @@
         <p-accordionTab header="Opción multiples" [selected]="true" class="line-height-3 m-0">
           <div class="field">
             <label> Cantidad de preguntas a evaluar: </label>
-            <input type="text" class="ml-3" pInputText>
+            <input type="text" class="ml-3" pInputText (blur)="updateQuantityQuestions(3)" [(ngModel)]="quantity_true">
           </div>
           <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
             <div *ngIf="question.name_questioncategory == tipoPregunta(3)"
@@ -145,7 +146,7 @@
         <p-accordionTab header="Complete" [selected]="true" class="line-height-3 m-0">
           <div class="field">
             <label> Cantidad de preguntas a evaluar: </label>
-            <input type="text" class="ml-3" pInputText>
+            <input type="text" class="ml-3" pInputText (blur)="updateQuantityQuestions(4)" [(ngModel)]="quantity_true">
           </div>
           <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
             <div *ngIf="question.name_questioncategory == tipoPregunta(4)"
@@ -164,7 +165,7 @@
         <p-accordionTab header="Relación" [selected]="true" class="line-height-3 m-0">
           <div class="field">
             <label> Cantidad de preguntas a evaluar: </label>
-            <input type="text" class="ml-3" pInputText>
+            <input type="text" class="ml-3" pInputText (blur)="updateQuantityQuestions(5)" [(ngModel)]="quantity_true">
           </div>
           <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
             <div *ngIf="question.name_questioncategory == tipoPregunta(5)"
@@ -183,7 +184,7 @@
         <p-accordionTab header="Puzzle" [selected]="true" class="line-height-3 m-0">
           <div class="field">
             <label> Cantidad de preguntas a evaluar: </label>
-            <input type="text" class="ml-3" pInputText>
+            <input type="text" class="ml-3" pInputText (blur)="updateQuantityQuestions(6)" [(ngModel)]="quantity_true">
           </div>
           <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
             <div *ngIf="question.name_questioncategory == tipoPregunta(6)"
@@ -202,7 +203,7 @@
         <p-accordionTab header="Costruir palabra" [selected]="true" class="line-height-3 m-0">
           <div class="field">
             <label> Cantidad de preguntas a evaluar: </label>
-            <input type="text" class="ml-3" pInputText>
+            <input type="text" class="ml-3" pInputText (blur)="updateQuantityQuestions(1)" [(ngModel)]="quantity_true">
           </div>
           <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
             <div *ngIf="question.name_questioncategory == tipoPregunta(7)"

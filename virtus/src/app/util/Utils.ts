@@ -3,6 +3,7 @@ import {MessageService} from "primeng/api";
 import {Observable} from "rxjs";
 import PocketBase from "pocketbase";
 import {StorageService} from "../authentication/StorageService";
+import Swal from 'sweetalert2'
 
 @Injectable()
 export class Utils {
@@ -11,11 +12,28 @@ export class Utils {
   private _token: string = "";
   private _globalUrl: string = "";
 
+
   constructor(private service: MessageService, private storageService: StorageService) {
     this.validateHost();
     this._token = this.storageService.getCurrentSession().token;
   }
 
+  get loading() {
+    return Swal.fire({
+      width: 300,
+      html:
+        '<img src="assets/layout/images/imagesVirtus/loding.gif" alt="" width="150" style="filter: none;"> <br>' +
+        '<span> Cargando... </span>',
+      showCloseButton: false,
+      showCancelButton: false,
+      showConfirmButton: false,
+      allowOutsideClick: false
+    });
+  }
+
+  get closeLoading() {
+    return Swal.close();
+  }
 
   getUserSession() {
     return this.storageService.getCurrentSession().user;

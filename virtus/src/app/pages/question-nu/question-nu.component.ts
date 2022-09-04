@@ -134,6 +134,7 @@ export class QuestionNuComponent implements OnInit {
   }
 
   saveQuestion() {
+    this.utils.loading;
     this.msgs.push({severity: 'info', summary: 'Virtus', detail: 'Procesando...'});
     console.log(this.structure);
     this.objectQuestion.descriptionQuestion = this.form["description_question"].value;
@@ -178,11 +179,11 @@ export class QuestionNuComponent implements OnInit {
                 this.registerFormQuestion.reset();
                 this.validateAnswer(this.typeQuestion);
                 this.urlimageupload = "";
-                this.msgs = [];
                 this.objectQuestion = {} as QuestionsModel;
+                this.form["pathurlfile_question"].setValue("");
+                this.utils.closeLoading;
               });
             } else {
-              this.msgs = [];
               this.utils.showMessages(3, "Ocurrio un error.", "tst");
             }
           }
@@ -206,7 +207,8 @@ export class QuestionNuComponent implements OnInit {
               this.utils.showMessages(1, "Pregunta agregara correctamente.", "tst");
               this.registerFormQuestion.reset();
               this.validateAnswer(this.typeQuestion);
-              this.msgs = [];
+              this.form["pathurlfile_question"].setValue("");
+              this.utils.closeLoading;
             });
           } else {
             this.msgs = [];

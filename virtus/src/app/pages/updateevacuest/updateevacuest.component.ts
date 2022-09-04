@@ -21,6 +21,7 @@ export class UpdateevacuestComponent implements OnInit {
   globalUrl: string = "";
   typeEvalutionform: any[];
   new_question_dialog: boolean = false;
+  quantity_true: number;
 
   public evaluationObject: Evaluation;
   public questionObject: Questions;
@@ -80,6 +81,36 @@ export class UpdateevacuestComponent implements OnInit {
     ]
   }
 
+  updateQuantityQuestions(idcategory: number) {
+    this.utils.loading;
+    this.apiUpdateQuantityQuestions(idcategory).subscribe({
+      next: response => {
+        console.log(response);
+        this.quantity_true = 0;
+        this.utils.showMessages(response.status, response.information, "tst")
+        this.utils.closeLoading;
+      }
+    })
+  }
+
+  apiUpdateQuantityQuestions(idcategory: number): Observable<any> {
+    console.log(this.quantity_true);
+    let url_gq: string;
+    url_gq = this.utils.globalUrl;
+    url_gq += "evaluation/updateQuantityQuestions";
+
+    let headers = new HttpHeaders()
+      .set('Access-Control-Allow-Origin', '*')
+      .set('provider', 'native')
+      .set('token', this.utils.token);
+
+    return this._http.post<any>(url_gq, {
+      "quantity_question": this.quantity_true,
+      "id_evaluation": (String(this.idEvaluation)),
+      "id_question_category": String(idcategory)
+    }, {headers: headers});
+  }
+
   get form() {
     return this.frmEvaliationCuestionary.controls;
   }
@@ -113,8 +144,16 @@ export class UpdateevacuestComponent implements OnInit {
   }
 
   apiLoadDataEvaluation(): Observable<any> {
-    this.globalUrl = this.utils.globalUrl + "evaluation/getevaluation";
-    return this._http.post(this.globalUrl, {"id_evaluation": this.idEvaluation});
+    this.globalUrl = this.utils.globalUrl + "evaluation/updateQuantityQuestions";
+    let headers = new HttpHeaders()
+      .set('Access-Control-Allow-Origin', '*')
+      .set('provider', 'native')
+      .set('token', this.utils.token);
+    return this._http.post(this.globalUrl, {
+      "quantity_question": this.idEvaluation,
+      "id_evaluation": "",
+      "id_question_category": ""
+    }, {headers: headers});
   }
 
   apiGetQuestions(idEvaluation: number): Observable<EvaluationQuestionsResponse> {
