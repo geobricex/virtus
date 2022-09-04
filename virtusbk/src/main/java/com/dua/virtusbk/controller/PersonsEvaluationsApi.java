@@ -11,6 +11,7 @@ import com.dua.virtusbk.repository.PersonsEvaluationsRepository;
 import com.dua.virtusbk.service.AnswerService;
 import com.dua.virtusbk.service.PersonsEvaluationsService;
 import com.dua.virtusbk.util.Methods;
+import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -93,4 +94,5 @@ public class PersonsEvaluationsApi {
             return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
         }
     }
+
 }
