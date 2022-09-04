@@ -94,7 +94,7 @@ export interface OptionsAnswer {
   rightSide: string;
   ind?: number;//interface
   //puzzle
-  piece_questionaire: number;
+  piece_questionarie: number;
 }
 
 export enum Correct {
