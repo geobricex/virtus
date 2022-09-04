@@ -514,7 +514,7 @@ export class QuestionnaireComponent implements OnInit {
         let imgPath: string = this.questionObject.answers_[0].options_answer[0].resource!;
         let dimensions: number = this.questionObject.answers_[0].options_answer[0].piece_questionarie!;
         this.tmpPuzzle = new Puzzle();
-        imgPath = "assets/imgresource/empty/notification.png";
+        // imgPath = "assets/imgresource/empty/notification.png";
         this.tmpPuzzle.crearPuzzle(dimensions, imgPath);
       }
       if (this.questionObject.name_questioncategory == this.tipoPregunta(7)) {
@@ -1295,7 +1295,7 @@ class Puzzle {
   public arrayImagePuzzle: string[][];
   public arrayPositionPuzzle: number[][];
 
-  //public objImagePuzzle: string;
+  // public objImagePuzzleuzzle: string;
 
   public puzzleControls: any = {
     complete: false,
