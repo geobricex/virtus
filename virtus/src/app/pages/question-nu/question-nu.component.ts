@@ -39,6 +39,7 @@ export class QuestionNuComponent implements OnInit {
   public objectQuestionCategory = {} as QuestionCategory;
 
   public objectAnswer = {} as AnswersModel;
+  cant_piezas: any [];
 
   valRadio: string;
   options: any [];
@@ -119,6 +120,16 @@ export class QuestionNuComponent implements OnInit {
       {label: "Respuesta incorrecta", value: "No"}
     ];
     this.literales = ["A", "B", "C", "D", "E", "F"];
+    this.cant_piezas = [
+      {label: "---:---", value: null},
+      {label: "4", value: 4},
+      {label: "9", value: 9},
+      {label: "16", value: 16},
+      {label: "25", value: 25},
+      {label: "36", value: 36},
+      {label: "49", value: 49},
+      {label: "64", value: 64}
+    ];
     this.validateAnswer(this.typeQuestion);
   }
 
@@ -166,7 +177,9 @@ export class QuestionNuComponent implements OnInit {
                 this.utils.showMessages(1, "Pregunta agregara correctamente.", "tst");
                 this.registerFormQuestion.reset();
                 this.validateAnswer(this.typeQuestion);
+                this.urlimageupload = "";
                 this.msgs = [];
+                this.objectQuestion = {} as QuestionsModel;
               });
             } else {
               this.msgs = [];
@@ -243,7 +256,7 @@ export class QuestionNuComponent implements OnInit {
     this.structure.push({
       "opcion": "Opcion " + (this.structure.length + 1),
       "correct": "No",
-      "resource": "No se ha encontrado un archivo."
+      "resource": ""
     });
     this.tmpfiles.push({tmp: null});
   }
@@ -294,6 +307,30 @@ export class QuestionNuComponent implements OnInit {
     this.tmpfiles.push({tmpright: null}, {tmpleft: null});
   }
 
+  uploadFileRespR(event: any, index: number) {
+    event.target.files.length > 0;
+    const file = event.target.files[0];
+    console.log(file);
+    this.tmpfiles[index].tmpright = file
+    let urlPhoto: string = "";
+    this.utils.changeImage(this.tmpfiles[index].tmpright).then(response => {
+      urlPhoto = this.utils.makePathRecurso(response);
+      this.structure[index].resourse_rightSide = urlPhoto;
+    });
+  }
+
+  uploadFileRespL(event: any, index: number) {
+    event.target.files.length > 0;
+    const file = event.target.files[0];
+    console.log(file);
+    this.tmpfiles[index].tmpleft = file
+    let urlPhoto: string = "";
+    this.utils.changeImage(this.tmpfiles[index].tmpleft).then(response => {
+      urlPhoto = this.utils.makePathRecurso(response);
+      this.structure[index].resourse_leftSide = urlPhoto;
+    });
+  }
+
   // metodos para la estructura de puzzle
   onFileChange(event: any) {
     if (event.target.files.length > 0) {
@@ -311,8 +348,14 @@ export class QuestionNuComponent implements OnInit {
       this.urlimageupload = objectURL;
       console.log(objectURL)
       this.tmpFile = file;
+      //this.structure[0].resource =
       this.frmPhoto.patchValue({
         field: file
+      });
+      let urlPhoto: string = "";
+      this.utils.changeImage(this.tmpFile).then(response => {
+        urlPhoto = this.utils.makePathRecurso(response);
+        this.structure[0].resource = urlPhoto;
       });
     }
   }
@@ -364,7 +407,7 @@ export class QuestionNuComponent implements OnInit {
       this.structure.push({
         "opcion": "Opcion 1",
         "correct": "No",
-        "resource": "No se ha encontrado un archivo."
+        "resource": ""
       })
       this.tmpfiles.push({tmp: null});
     } else if (this.typeQuestion === 7) {

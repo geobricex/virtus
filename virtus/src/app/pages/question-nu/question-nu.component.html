@@ -150,23 +150,33 @@
   </div>
 
   <!-- Estructura de relacionar items -->
-  <div class="mt-2" *ngIf="typeQuestion === 6">
+  <div class="mt-2" *ngIf="typeQuestion === 5">
     <button pButton pRipple label="Nuevo literal" icon="pi pi-plus" class="p-button-success mr-2 mb-4"
             (click)="addNewAlternativeRel()"></button>
     <div class="p-fluid">
       <div class="field" *ngFor="let option of structure; let i = index">
         <strong> LITERAL {{literales[i]}}) </strong>
         <div class="grid mt-2">
-          <div class="col">
+          <div class="col-5">
             <label> Ingrese el texto a relacionar </label>
-            <input class="mt-2" pInputText type="text" value="{{option.rightSide}}">
+            <label for="uploadFileAnsR{{i}}" class="bg-indigo-100 p-1 border-1 border-round cursor-pointer mr-2">
+              Examinar... </label>
+            <span> {{option.resourse_rightSide === '' ? '' : 'Archivo seleccionado'}} </span>
+            <input style="display: none" id="uploadFileAnsR{{i}}" type="file"
+                   (change)="uploadFileRespR($event, i)">
+            <input class="mt-2" pInputText type="text" value="{{option.rightSide}}" [(ngModel)]="option.rightSide">
           </div>
-          <div class="col text-center">
+          <div class="col-1 text-center">
             <img src="assets/layout/images/imagesVirtus/resize.png" alt="" width="60">
           </div>
-          <div class="col">
+          <div class="col-5">
             <label> Ingrese el texto a relacionar </label>
-            <input class="mt-2" pInputText type="text" value="{{option.leftSide}}">
+            <label for="uploadFileAnsL{{i}}" class="bg-indigo-100 p-1 border-1 border-round cursor-pointer mr-2">
+              Examinar... </label>
+            <span> {{option.resourse_leftSide === '' ? '' : 'Archivo seleccionado'}} </span>
+            <input style="display: none" id="uploadFileAnsL{{i}}" type="file"
+                   (change)="uploadFileRespL($event, i)">
+            <input class="mt-2" pInputText type="text" value="{{option.leftSide}}" [(ngModel)]="option.leftSide">
           </div>
           <div class="col-1">
             <label> Acción </label> <br>
@@ -179,21 +189,22 @@
   </div>
 
   <!-- Estructura para armar la palabra -->
-  <div class="mt-2" *ngIf="typeQuestion === 5">
+  <div class="mt-2" *ngIf="typeQuestion === 7">
     <div class="p-fluid">
       <div class="field">
         <label> Ingrese la palabra a armar </label>
         <input style="font-size: 5rem; letter-spacing: 1.5px !important;" pInputText type="text"
-               value="{{structure[0].opcion}}">
+               value="{{structure[0].opcion}}" [(ngModel)]="structure[0].opcion">
       </div>
     </div>
   </div>
 
   <!-- Estructura para puzzle -->
-  <div class="mt-2" *ngIf="typeQuestion === 7">
+  <div class="mt-2" *ngIf="typeQuestion === 6">
     <div class="p-fluid text-center">
-      <label for=""> Cantidad de particiones: </label> <br>
-      <input pInputText type="text" class="mb-3 w-3">
+      <label for=""> Cantidad de piezas: </label> <br>
+      <p-dropdown id="languagex" [options]="cant_piezas" optionLabel="label" optionValue="value"
+                  styleClass="mt-2 m-auto w-3 mb-2" [(ngModel)]="structure[0].piece_questionarie"></p-dropdown>
       <div [formGroup]="frmPhoto" class="text-center">
         <img [src]="urlimageupload" alt="" width="400" height="400"
              style="border: 5px solid #2D3F47" class="border-round"> <br>
