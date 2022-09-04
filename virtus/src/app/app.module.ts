@@ -114,6 +114,8 @@ import { QuestionNuComponent } from './pages/question-nu/question-nu.component';
 import { SliderModule } from "primeng/slider";
 // ---- COMANDO DE TECLADO -----
 import { HotkeyModule } from 'angular2-hotkeys';
+import { AcercadeComponent } from './pages/acercade/acercade.component';
+import { ComandosComponent } from './pages/comandos/comandos.component';
 
 
 FullCalendarModule.registerPlugins([
@@ -162,7 +164,9 @@ FullCalendarModule.registerPlugins([
     GamesComponent,
     ReviewComponent,
     UpdateevacuestComponent,
-    QuestionNuComponent
+    QuestionNuComponent,
+    AcercadeComponent,
+    ComandosComponent
   ],
   imports: [
     HttpClientModule,
