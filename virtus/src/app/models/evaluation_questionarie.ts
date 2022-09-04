@@ -93,6 +93,8 @@ export interface OptionsAnswer {
   resourse_rightSide: string;
   rightSide: string;
   ind?: number;//interface
+  //puzzle
+  piece_questionaire: number;
 }
 
 export enum Correct {
