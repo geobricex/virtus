@@ -33,6 +33,9 @@ import {GamesComponent} from "./pages/games/games.component";
 import {ReviewComponent} from "./pages/review/review.component";
 import {UpdateevacuestComponent} from "./pages/updateevacuest/updateevacuest.component";
 import {QuestionNuComponent} from "./pages/question-nu/question-nu.component";
+import {AcercadeComponent} from "./pages/acercade/acercade.component";
+import {ComandosComponent} from "./pages/comandos/comandos.component";
+import {C} from "@angular/cdk/keycodes";
 
 @NgModule({
   imports: [
@@ -47,6 +50,8 @@ import {QuestionNuComponent} from "./pages/question-nu/question-nu.component";
         children: [
           {path: '', component: DashboardDemoComponent},
           {path: 'games', component: GamesComponent},
+          {path: 'about', component: AcercadeComponent},
+          {path: 'information', component: ComandosComponent},
           {path: 'myprofile', component: MyprofileComponent},
           {path: 'course', component: CursosComponent},
           {path: 'general/favorites', component: FavoritesComponent},

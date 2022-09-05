@@ -41,7 +41,15 @@ export class AppMenuComponent implements OnInit {
             {label: 'Puntaje/Tiempo', icon: 'pi pi-fw pi-th-large', routerLink: ['/app/reports/scorereport']},
             {label: 'Revisión de intentos', icon: 'pi pi-fw pi-check-square', routerLink: ['/app/reports/intentreview']}
           ]
-        }
+        },
+        {
+          label: 'Más', icon: 'pi pi-fw pi-plus-circle', routerLink: ['/javascript;'],
+          items: [
+            {label: 'Acerca de', icon: 'pi pi-fw pi-globe', routerLink: ['/app/about']},
+            {label: 'Información', icon: 'pi pi-fw pi-info-circle', routerLink: ['/app/information']},
+            // {label: 'Juegos', icon: 'pi pi-fw pi-slack', routerLink: ['/app/games']},
+          ]
+        },
       ];
     } else if (this.user.type_person === "A") {
       this.model = [
@@ -71,7 +79,9 @@ export class AppMenuComponent implements OnInit {
         {
           label: 'Más', icon: 'pi pi-fw pi-plus-circle', routerLink: ['/javascript;'],
           items: [
-            {label: 'Juegos', icon: 'pi pi-fw pi-slack', routerLink: ['/app/games']},
+            {label: 'Acerca de', icon: 'pi pi-fw pi-globe', routerLink: ['/app/about']},
+            {label: 'Información', icon: 'pi pi-fw pi-info-circle', routerLink: ['/app/information']},
+            // {label: 'Juegos', icon: 'pi pi-fw pi-slack', routerLink: ['/app/games']},
           ]
         },
 
@@ -93,7 +103,15 @@ export class AppMenuComponent implements OnInit {
             {label: 'Tiempo/Puntaje', icon: 'pi pi-fw pi-clock', routerLink: ['/app/reports/timereport']},
             {label: 'Revisión de intentos', icon: 'pi pi-fw pi-check-square', routerLink: ['/app/reports/intentreview']}
           ]
-        }
+        },
+        {
+          label: 'Más', icon: 'pi pi-fw pi-plus-circle', routerLink: ['/javascript;'],
+          items: [
+            {label: 'Acerca de', icon: 'pi pi-fw pi-globe', routerLink: ['/app/about']},
+            {label: 'Información', icon: 'pi pi-fw pi-info-circle', routerLink: ['/app/information']},
+            // {label: 'Juegos', icon: 'pi pi-fw pi-slack', routerLink: ['/app/games']},
+          ]
+        },
       ];
     } else if (this.user.type_person === "E") {
       this.model = [
@@ -132,7 +150,15 @@ export class AppMenuComponent implements OnInit {
             {label: 'Tiempo/Puntaje', icon: 'pi pi-fw pi-clock', routerLink: ['/app/reports/timereport']},
             {label: 'Revisión de intentos', icon: 'pi pi-fw pi-check-square', routerLink: ['/app/reports/intentreview']}
           ]
-        }
+        },
+        {
+          label: 'Más', icon: 'pi pi-fw pi-plus-circle', routerLink: ['/javascript;'],
+          items: [
+            {label: 'Acerca de', icon: 'pi pi-fw pi-globe', routerLink: ['/app/about']},
+            {label: 'Información', icon: 'pi pi-fw pi-info-circle', routerLink: ['/app/information']},
+            // {label: 'Juegos', icon: 'pi pi-fw pi-slack', routerLink: ['/app/games']},
+          ]
+        },
       ];
     } else {
       this.router.navigateByUrl('/login');
