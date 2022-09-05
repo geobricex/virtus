@@ -15,9 +15,8 @@ import javax.persistence.*;
 @Table(name = "evaluation_question_category")
 public class EvaluationQuestionCategory {
 
-    public EvaluationQuestionCategory(Evaluation evaluationsIdEvaluation, QuestionCategory questionCategoryIdQuestioncategory) {
-        this.evaluationsIdEvaluation = evaluationsIdEvaluation;
-        this.questionCategoryIdQuestioncategory = questionCategoryIdQuestioncategory;
+    public EvaluationQuestionCategory() {
+
     }
 
     public EvaluationQuestionCategory(Evaluation evaluationsIdEvaluation, QuestionCategory questionCategoryIdQuestioncategory, Integer numberQuestion) {
@@ -40,10 +39,8 @@ public class EvaluationQuestionCategory {
     @JoinColumn(name = "question_category_id_questioncategory", nullable = false)
     private QuestionCategory questionCategoryIdQuestioncategory;
 
-    @Column(name = "number_question", nullable = true)
+    @Column(name = "number_question", nullable = false)
     private Integer numberQuestion;
 
-    public EvaluationQuestionCategory() {
 
-    }
 }

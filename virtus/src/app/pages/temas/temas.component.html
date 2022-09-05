@@ -128,8 +128,8 @@
             class="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0">
             <button pButton icon="pi pi-desktop" label="Ingresar" class="mb-2 p-button p-button-info"
                     routerLink="resources/{{tema.id_topic}}"></button>
-            <span *ngIf="tema.cantevaluation > 0" class="product-badge status-instock"> Tiene pruebas </span>
-            <span *ngIf="tema.cantevaluation == 0" class="product-badge status-outofstock"> No tiene pruebas </span>
+            <span *ngIf="tema.cantevaluation > 0" class="product-badge status-instock"> Tiene evaluaciones </span>
+            <span *ngIf="tema.cantevaluation == 0" class="product-badge status-outofstock"> No tiene evaluaciones </span>
 
             <!-- <span class="product-price">${{product.price}}</span>
             <span [class]="'product-badge status-' + product.inventoryStatus.toLowerCase()">{{product.inventoryStatus}}</span>-->

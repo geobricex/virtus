@@ -87,7 +87,7 @@
         <p-accordionTab header="Verdadero falso" [selected]="true" class="line-height-3 m-0">
           <div class="field">
             <label> Cantidad de preguntas a evaluar: </label>
-            <input type="text" class="ml-3" pInputText (blur)="updateQuantityQuestions(1)" [(ngModel)]="quantity_true">
+            <input type="text" class="ml-3" pInputText (blur)="updateQuantityQuestions(1)" [value]="quantityQuestions[0].number_question" [(ngModel)]="quantity_true">
           </div>
           <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
             <div *ngIf="question.name_questioncategory == tipoPregunta(1)"
@@ -107,7 +107,7 @@
         <p-accordionTab header="Opción única" [selected]="true" class="line-height-3 m-0">
           <div class="field">
             <label> Cantidad de preguntas a evaluar: </label>
-            <input type="text" class="ml-3" pInputText (blur)="updateQuantityQuestions(2)" [(ngModel)]="quantity_true">
+            <input type="text" class="ml-3" pInputText (blur)="updateQuantityQuestions(2)" [value]="quantityQuestions[1].number_question" [(ngModel)]="quantity_true">
           </div>
           <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
             <div *ngIf="question.name_questioncategory == tipoPregunta(2)"
@@ -127,7 +127,7 @@
         <p-accordionTab header="Opción multiples" [selected]="true" class="line-height-3 m-0">
           <div class="field">
             <label> Cantidad de preguntas a evaluar: </label>
-            <input type="text" class="ml-3" pInputText (blur)="updateQuantityQuestions(3)" [(ngModel)]="quantity_true">
+            <input type="text" class="ml-3" pInputText (blur)="updateQuantityQuestions(3)" [value]="quantityQuestions[2].number_question" [(ngModel)]="quantity_true">
           </div>
           <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
             <div *ngIf="question.name_questioncategory == tipoPregunta(3)"
@@ -146,7 +146,7 @@
         <p-accordionTab header="Complete" [selected]="true" class="line-height-3 m-0">
           <div class="field">
             <label> Cantidad de preguntas a evaluar: </label>
-            <input type="text" class="ml-3" pInputText (blur)="updateQuantityQuestions(4)" [(ngModel)]="quantity_true">
+            <input type="text" class="ml-3" pInputText (blur)="updateQuantityQuestions(4)" [value]="quantityQuestions[3].number_question" [(ngModel)]="quantity_true">
           </div>
           <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
             <div *ngIf="question.name_questioncategory == tipoPregunta(4)"
@@ -165,7 +165,7 @@
         <p-accordionTab header="Relación" [selected]="true" class="line-height-3 m-0">
           <div class="field">
             <label> Cantidad de preguntas a evaluar: </label>
-            <input type="text" class="ml-3" pInputText (blur)="updateQuantityQuestions(5)" [(ngModel)]="quantity_true">
+            <input type="text" class="ml-3" pInputText (blur)="updateQuantityQuestions(5)" [value]="quantityQuestions[4].number_question" [(ngModel)]="quantity_true">
           </div>
           <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
             <div *ngIf="question.name_questioncategory == tipoPregunta(5)"
@@ -184,7 +184,7 @@
         <p-accordionTab header="Puzzle" [selected]="true" class="line-height-3 m-0">
           <div class="field">
             <label> Cantidad de preguntas a evaluar: </label>
-            <input type="text" class="ml-3" pInputText (blur)="updateQuantityQuestions(6)" [(ngModel)]="quantity_true">
+            <input type="text" class="ml-3" pInputText (blur)="updateQuantityQuestions(6)" [value]="quantityQuestions[5].number_question" [(ngModel)]="quantity_true">
           </div>
           <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
             <div *ngIf="question.name_questioncategory == tipoPregunta(6)"
@@ -203,7 +203,7 @@
         <p-accordionTab header="Costruir palabra" [selected]="true" class="line-height-3 m-0">
           <div class="field">
             <label> Cantidad de preguntas a evaluar: </label>
-            <input type="text" class="ml-3" pInputText (blur)="updateQuantityQuestions(1)" [(ngModel)]="quantity_true">
+            <input type="text" class="ml-3" pInputText (blur)="updateQuantityQuestions(7)" [value]="quantityQuestions[6].number_question" [(ngModel)]="quantity_true">
           </div>
           <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
             <div *ngIf="question.name_questioncategory == tipoPregunta(7)"

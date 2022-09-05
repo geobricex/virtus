@@ -1,41 +1,37 @@
 <div>
   <div style="text-align: center;">
     <p-dropdown [options]="courses" [(ngModel)]="selectedCourse" (onChange)="chartCourse($event.value)"
-               optionLabel="name_course" optionValue="id_course"></p-dropdown>
+                optionLabel="name_course" optionValue="id_course"></p-dropdown>
   </div>
-  <div class="grid p-fluid">
-    <div class="col-12 lg:col-6">
+  <!--    <div class="col-12 lg:col-6">-->
 
-      <div class="card">
-        <h5>Gráfica de línea: Tiempo/Puntaje</h5>
-        <p-chart type="line" [data]="lineData" [options]="lineOptions" [style]="{'width': '50%'}"></p-chart>
-      </div>
-      <div class="card flex flex-column align-items-center">
-        <h5 class="text-left w-full">Gráfica pastel: Promedio de puntaje obtenido</h5>
-        <p-chart type="pie" [data]="pieData" [options]="pieOptions" [style]="{'width': '50%'}"></p-chart>
-      </div>
-      <!--    <div class="card flex flex-column align-items-center">-->
-      <!--      <h5 class="text-left w-full">Gráfica área polar: Promedio de tiempo empleado (min)</h5>-->
-      <!--      <p-chart type="polarArea" [data]="polarData" [options]="polarOptions" [style]="{'width': '50%'}"></p-chart>-->
-      <!--    </div>-->
-    </div>
-    <div class="col-12 lg:col-6">
-      <div class="card">
-        <h5>Gráfico de barras: Tiempo/Puntaje</h5>
-        <p-chart type="bar" [data]="barData" [options]="barOptions"></p-chart>
-      </div>
-      <div class="card flex flex-column align-items-center">
-        <h5 class="text-left w-full">Gráfica área polar: Promedio de tiempo empleado (min)</h5>
-        <p-chart type="polarArea" [data]="polarData" [options]="polarOptions" [style]="{'width': '50%'}"></p-chart>
-      </div>
-      <!--    <div class="card flex flex-column align-items-center">-->
-      <!--      <h5 class="text-left w-full">Gráfica dona: Promedio de tiempo empleado (min)</h5>-->
-      <!--      <p-chart type="doughnut" [data]="pieData" [options]="pieOptions" [style]="{'width': '50%'}"></p-chart>-->
-      <!--    </div>-->
-      <!--    <div class="card flex flex-column align-items-center">-->
-      <!--      <h5 class="text-left w-full">Gráfico radar</h5>-->
-      <!--      <p-chart type="radar" [data]="radarData" [options]="radarOptions" [style]="{'width': '50%'}"></p-chart>-->
-      <!--    </div>-->
-    </div>
+  <div class="card">
+    <h5>Tiempo/Puntaje</h5>
+    <p-chart type="line" [data]="lineData" [options]="lineOptions" [style]="{'width': '50%'}"></p-chart>
   </div>
+  <div class="card flex flex-column align-items-center">
+    <h5 class="text-left w-full">Promedio de puntaje obtenido</h5>
+    <p-chart type="pie" [data]="pieData" [options]="pieOptions" [style]="{'width': '50%'}"></p-chart>
+  </div>
+  <!--    <div class="card flex flex-column align-items-center">-->
+  <!--      <h5 class="text-left w-full">Gráfica área polar: Promedio de tiempo empleado (min)</h5>-->
+  <!--      <p-chart type="polarArea" [data]="polarData" [options]="polarOptions" [style]="{'width': '50%'}"></p-chart>-->
+  <!--    </div>-->
 </div>
+<div class="card">
+  <h5>Tiempo/Puntaje</h5>
+  <p-chart type="bar" [data]="barData" [options]="barOptions"></p-chart>
+</div>
+<div class="card flex flex-column align-items-center">
+  <h5 class="text-left w-full">Promedio de tiempo empleado (min)</h5>
+  <p-chart type="polarArea" [data]="polarData" [options]="polarOptions" [style]="{'width': '50%'}"></p-chart>
+</div>
+<!--    <div class="card flex flex-column align-items-center">-->
+<!--      <h5 class="text-left w-full">Gráfica dona: Promedio de tiempo empleado (min)</h5>-->
+<!--      <p-chart type="doughnut" [data]="pieData" [options]="pieOptions" [style]="{'width': '50%'}"></p-chart>-->
+<!--    </div>-->
+<!--    <div class="card flex flex-column align-items-center">-->
+<!--      <h5 class="text-left w-full">Gráfico radar</h5>-->
+<!--      <p-chart type="radar" [data]="radarData" [options]="radarOptions" [style]="{'width': '50%'}"></p-chart>-->
+<!--    </div>-->
+

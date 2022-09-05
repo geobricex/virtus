@@ -22,6 +22,7 @@ export class UpdateevacuestComponent implements OnInit {
   typeEvalutionform: any[];
   new_question_dialog: boolean = false;
   quantity_true: number;
+  quantityQuestions: any[];
 
   public evaluationObject: Evaluation;
   public questionObject: Questions;
@@ -53,7 +54,7 @@ export class UpdateevacuestComponent implements OnInit {
         routerLink: ['/app/coursear/modulear/' + this.idCourse + '/topicar/' + this.idModule + '/resourcesar/' + this.idTopic]
       },
       {
-        label: 'Edicion de cuestionarios/evaluaciones',
+        label: 'Edicion de evaluaciones',
         routerLink: ['/app/coursear/modulear/' + this.idCourse + '/topicar/' + this.idModule + '/resourcesar/' + this.idTopic + '/update_evaluation/' + this.idEvaluation]
       }
     ]);
@@ -79,6 +80,37 @@ export class UpdateevacuestComponent implements OnInit {
       {label: "Evaluación", value: 1},
       {label: "Cuestionario", value: 2},
     ]
+    this.selectQuantityQuestions();
+  }
+
+  selectQuantityQuestions() {
+    this.utils.loading;
+    this.apiSelectQuantityQuestions().subscribe({
+      next: response => {
+        this.quantityQuestions = response.data;
+        console.log(this.quantityQuestions);
+        // console.log(this.quantityQuestions[0].number_question);
+
+        this.utils.showMessages(response.status, response.information, "tst")
+        this.utils.closeLoading;
+      }
+    })
+  }
+
+  apiSelectQuantityQuestions(): Observable<any> {
+    console.log(this.quantity_true);
+    let url_gq: string;
+    url_gq = this.utils.globalUrl;
+    url_gq += "evaluation/selectQuantityQuestions";
+
+    let headers = new HttpHeaders()
+      .set('Access-Control-Allow-Origin', '*')
+      .set('provider', 'native')
+      .set('token', this.utils.token);
+
+    return this._http.post<any>(url_gq, {
+      "id_evaluation": (String(this.idEvaluation))
+    }, {headers: headers});
   }
 
   updateQuantityQuestions(idcategory: number) {
@@ -103,12 +135,18 @@ export class UpdateevacuestComponent implements OnInit {
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
       .set('token', this.utils.token);
+    if (this.quantity_true >= 0) {
+
+    } else {
+      this.quantity_true = 0;
+    }
 
     return this._http.post<any>(url_gq, {
       "quantity_question": this.quantity_true,
       "id_evaluation": (String(this.idEvaluation)),
       "id_question_category": String(idcategory)
     }, {headers: headers});
+
   }
 
   get form() {

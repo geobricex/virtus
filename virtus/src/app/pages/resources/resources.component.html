@@ -68,7 +68,7 @@
 
   <div class="col-12">
     <div class="card">
-      <h5>Cuestionarios y evaluaciones</h5>
+      <h5>Evaluaciones</h5>
 
       <div *ngIf="statusEvaluations === 0">
         <div class="grid">
@@ -104,7 +104,7 @@
                      alt="" width="50">
               </div>
               <span
-                class="text-pink-400 font-italic font-bold"> {{evaluation.typeEvaluation === 1 ? 'Evaluación' : 'Cuestionario'}} </span>
+                class="text-pink-400 font-italic font-bold"> {{evaluation.typeEvaluation === 1 ? 'Evaluación' : 'Autoevaluación'}} </span>
               <div class="mt-3">
                 <span class="p-badge p-badge-warning"> Preguntas: {{evaluation.numberquestionEvaluation}} </span> <br>
                 <span

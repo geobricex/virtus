@@ -180,11 +180,38 @@ public class EvaluationService {
         System.out.println("updateQuantityQuestions");
 //        try {
 
-        Long id_evaluation_question_category = evaluationQuestionCategoryDAO.updatePersonsQuestions(Long.parseLong(quantity_question), Long.parseLong(id_evaluation), Long.parseLong(id_question_category));
+        if (Methods.isInteger(quantity_question) &&
+                Methods.isInteger(id_question_category) &&
+                Methods.isInteger(id_evaluation) &&
+                Long.parseLong(quantity_question) >= 0) {
+            Long id_evaluation_question_category = evaluationQuestionCategoryDAO.updatePersonsQuestions
+                    (Long.parseLong(quantity_question), Long.parseLong(id_evaluation), Long.parseLong(id_question_category));
+            status = "2";
+            message = "Cantidad de preguntas asignadas con éxito.";
+            data = "[{\"id_evaluation_question_category\":" + id_evaluation_question_category + "}]";
+        } else {
+            status = "4";
+            message = "No se puede asignar esa cantidad de preguntas;";
+        }
+//        } catch (Exception exception) {
+//            status = "4";
+//            message = exception.toString();
+//        }
+        return new String[]{status, message, data};
+    }
+
+    public String[] selectQuantityQuestions(String id_evaluation) {
+        String status = "4", message = "Error en los parámetros introducidos", data = "[]";
+//        try {
+
+        List<Map<String, Object>> evaluationQuestionCategories =
+                evaluationQuestionCategoryDAO.findByAllEvaluationsIdEvaluation((Long.parseLong(id_evaluation)));
+
+        Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();
 
         status = "2";
-        message = "Cantidad de preguntas asignadas con éxito.";
-        data = "[{\"id_evaluation_question_category\":" + id_evaluation_question_category + "}]";
+        message = "Cantidad de preguntas retornadas con éxito.";
+        data = gson.toJson(evaluationQuestionCategories);
 //        } catch (Exception exception) {
 //            status = "4";
 //            message = exception.toString();
@@ -192,6 +219,5 @@ public class EvaluationService {
 
         return new String[]{status, message, data};
     }
-
 
 }

@@ -58,7 +58,7 @@
 
   <div class="col-12">
     <div class="card">
-      <h5>Cuestionarios y evaluaciones</h5>
+      <h5>Evaluaciones</h5>
       <button pButton label="Nuevo" icon="pi pi-plus" class="p-button p-button-success w-8rem mt-2"
               (click)="newEvaluationsDialog=true"></button>
       <p-carousel [value]="evaluationData" [numVisible]="3" [numScroll]="3" [circular]="false"
@@ -70,8 +70,14 @@
             <div>
               <h5 class="mb-1">{{evaluation.nameEvaluation}}</h5>
               <span> {{evaluation.descriptionEvaluation}} </span> <br>
+              <div class="mt-2">
+                <i *ngIf="evaluation.typeEvaluation === 2" class="pi pi-check-circle lg:font-bold text-green-500"
+                   style="font-size: 45px"></i>
+                <img *ngIf="evaluation.typeEvaluation === 1" src="assets/layout/images/imagesVirtus/SVG/evaluacion.svg"
+                     alt="" width="50">
+              </div>
               <span
-                class="text-pink-400 font-italic font-bold"> {{evaluation.typeEvaluation === 1 ? 'Evaluación' : 'Cuestionario'}} </span>
+                class="text-pink-400 font-italic font-bold"> {{evaluation.typeEvaluation === 1 ? 'Evaluación' : 'Autoevaluación'}} </span>
               <div class="mt-3">
                 <!--                <span class="p-badge p-badge-warning"> Preguntas: {{evaluation.numberquestionEvaluation}} </span> <br>-->
                 <span

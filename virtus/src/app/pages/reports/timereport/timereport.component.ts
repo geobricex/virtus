@@ -107,14 +107,14 @@ export class TimereportComponent implements OnInit {
       plugins: {
         legend: {
           labels: {
-            fontColor: '#A0A7B5'
+            fontColor: '#000000'
           }
         }
       },
       scales: {
         x: {
           ticks: {
-            color: '#A0A7B5'
+            fontColor: '#000000'
           },
           grid: {
             color: 'rgba(160, 167, 181, .3)',
@@ -122,7 +122,7 @@ export class TimereportComponent implements OnInit {
         },
         y: {
           ticks: {
-            color: '#A0A7B5'
+            fontColor: '#000000'
           },
           grid: {
             color: 'rgba(160, 167, 181, .3)',
@@ -149,7 +149,8 @@ export class TimereportComponent implements OnInit {
           fill: false,
           backgroundColor: 'rgb(255, 205, 86)',
           borderColor: 'rgb(255, 205, 86)',
-          tension: .4
+          // pointBorderColor: "#000000",
+          tension: .9
         },
         {
           label: 'Promedio de Puntaje obetenido',
@@ -157,7 +158,8 @@ export class TimereportComponent implements OnInit {
           fill: false,
           backgroundColor: 'rgb(75, 192, 192)',
           borderColor: 'rgb(75, 192, 192)',
-          tension: .4
+          // pointBorderColor: "#000000",
+          tension: 0.9
         }
       ]
     };
@@ -166,14 +168,14 @@ export class TimereportComponent implements OnInit {
       plugins: {
         legend: {
           labels: {
-            fontColor: '#A0A7B5'
+            fontColor: '#000000'
           }
         }
       },
       scales: {
         x: {
           ticks: {
-            color: '#A0A7B5'
+            fontColor: '#000000'
           },
           grid: {
             color: 'rgba(160, 167, 181, .3)',
@@ -181,7 +183,7 @@ export class TimereportComponent implements OnInit {
         },
         y: {
           ticks: {
-            color: '#A0A7B5'
+            fontColor: '#000000'
           },
           grid: {
             color: 'rgba(160, 167, 181, .3)',
@@ -208,7 +210,7 @@ export class TimereportComponent implements OnInit {
       plugins: {
         legend: {
           labels: {
-            fontColor: '#A0A7B5'
+            fontColor: '#000000'
           }
         }
       }
@@ -233,7 +235,7 @@ export class TimereportComponent implements OnInit {
       plugins: {
         legend: {
           labels: {
-            fontColor: '#A0A7B5'
+            fontColor: '#000000'
           }
         }
       },
@@ -276,7 +278,7 @@ export class TimereportComponent implements OnInit {
       plugins: {
         legend: {
           labels: {
-            fontColor: '#A0A7B5'
+            fontColor: '#000000'
           }
         }
       },

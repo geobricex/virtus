@@ -41,7 +41,9 @@ select *
 from settings;
 
 select *
-from evaluation_question_category;
+from evaluation_question_category
+where evaluations_id_evaluation = 17
+ORDER BY question_category_id_questioncategory;
 
 UPDATE evaluation_question_category SET number_question = 0
 WHERE evaluations_id_evaluation = 18 AND question_category_id_questioncategory = 7
