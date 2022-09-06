@@ -84,15 +84,15 @@ export class UpdateevacuestComponent implements OnInit {
   }
 
   selectQuantityQuestions() {
-    this.utils.loading;
+    //this.utils.loading;
     this.apiSelectQuantityQuestions().subscribe({
       next: response => {
         this.quantityQuestions = response.data;
         console.log(this.quantityQuestions);
         // console.log(this.quantityQuestions[0].number_question);
 
-        this.utils.showMessages(response.status, response.information, "tst")
-        this.utils.closeLoading;
+        //this.utils.showMessages(response.status, response.information, "tst")
+        //this.utils.closeLoading;
       }
     })
   }
@@ -113,20 +113,21 @@ export class UpdateevacuestComponent implements OnInit {
     }, {headers: headers});
   }
 
-  updateQuantityQuestions(idcategory: number) {
+  updateQuantityQuestions(idcategory: number, pos: number) {
     this.utils.loading;
-    this.apiUpdateQuantityQuestions(idcategory).subscribe({
+    this.apiUpdateQuantityQuestions(idcategory, pos).subscribe({
       next: response => {
         console.log(response);
         this.quantity_true = 0;
         this.utils.showMessages(response.status, response.information, "tst")
         this.utils.closeLoading;
+        this.selectQuantityQuestions();
       }
     })
   }
 
-  apiUpdateQuantityQuestions(idcategory: number): Observable<any> {
-    console.log(this.quantity_true);
+  apiUpdateQuantityQuestions(idcategory: number, pos: number): Observable<any> {
+    console.log(this.quantityQuestions[pos].number_question);
     let url_gq: string;
     url_gq = this.utils.globalUrl;
     url_gq += "evaluation/updateQuantityQuestions";
@@ -142,7 +143,7 @@ export class UpdateevacuestComponent implements OnInit {
     }
 
     return this._http.post<any>(url_gq, {
-      "quantity_question": this.quantity_true,
+      "quantity_question": this.quantityQuestions[pos].number_question,
       "id_evaluation": (String(this.idEvaluation)),
       "id_question_category": String(idcategory)
     }, {headers: headers});
@@ -182,15 +183,13 @@ export class UpdateevacuestComponent implements OnInit {
   }
 
   apiLoadDataEvaluation(): Observable<any> {
-    this.globalUrl = this.utils.globalUrl + "evaluation/updateQuantityQuestions";
+    this.globalUrl = this.utils.globalUrl + "evaluation/getevaluation";
     let headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
       .set('token', this.utils.token);
     return this._http.post(this.globalUrl, {
-      "quantity_question": this.idEvaluation,
-      "id_evaluation": "",
-      "id_question_category": ""
+      "id_evaluation": this.idEvaluation
     }, {headers: headers});
   }
 

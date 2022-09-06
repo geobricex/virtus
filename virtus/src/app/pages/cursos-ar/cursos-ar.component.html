@@ -86,6 +86,12 @@
                   <button pButton icon="pi pi-info-circle"
                           class="mb-2 p-button p-button-info p-button-rounded cursor-pointer masinfo"
                           pTooltip="Saber más" tooltipPosition="bottom" (click)="saberMas(course.id)"></button>
+                  <button pButton icon="pi pi-pencil"
+                          class="mb-2 p-button p-button-success p-button-rounded cursor-pointer editar"
+                          pTooltip="Editar" tooltipPosition="bottom" (click)="selectedCourse(course)"></button>
+                  <button pButton icon="pi pi-trash"
+                          class="mb-2 p-button p-button-danger p-button-rounded cursor-pointer eliminar"
+                          pTooltip="Eliminar" tooltipPosition="bottom" (click)="saberMas(course.id)"></button>
                 </div>
                 <div class="text-2xl font-bold">{{course.nameCourse}}</div>
                 <div class="mb-3">{{course.descriptionCourse}}</div>

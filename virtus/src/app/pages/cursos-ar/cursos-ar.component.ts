@@ -68,6 +68,11 @@ export class CursosArComponent implements OnInit {
     );
   }
 
+  selectedCourse(course: any) {
+    this.newcourse_dialog = true;
+    this.form["name"].setValue(course.nameCourse);
+  }
+
   validateText(text: string) {
     if (text.length > 10) {
 
