@@ -24,31 +24,50 @@ public class TopicService {
     public String[] saveTopic(Topic topic) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
         System.out.println(topic);
-        topic.setDateregTopic(Methods.nowLocalDateTime());
-        topic.setDateupdateTopic(Methods.nowLocalDateTime());
-        topic.setStateTopic("A");
-        topic = topicDAO.save(topic);
+        if (Methods.verifyMaxLength(topic.getDescriptionTopic(), 500)
+                && Methods.verifyMaxLength(topic.getNameTopic(), 100)) {
+            if (Methods.verifyMaxLength(topic.getPathimgTopic(), 250)) {
+                topic.setDateregTopic(Methods.nowLocalDateTime());
+                topic.setDateupdateTopic(Methods.nowLocalDateTime());
+                topic.setStateTopic("A");
+                topic = topicDAO.save(topic);
 
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("id_topic", topic.getId());
-        status = "2";
-        message = "Tema registrado con éxito.";
-        data = jsonObject.toString();
-
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("id_topic", topic.getId());
+                status = "2";
+                message = "Tema registrado con éxito.";
+                data = jsonObject.toString();
+            } else {
+                status = "3";
+                message = "Longitud excedida del enlace generado.";
+            }
+        } else {
+            status = "3";
+            message = "Longitud excedida en uno de los campos ingresados.";
+        }
         return new String[]{status, message, data};
     }
 
     public String[] updateTopic(Topic topic) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
-
-        topic.setDateupdateTopic(Methods.nowLocalDateTime());
-        topic = topicDAO.save(topic);
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("id_topic", topic.getId());
-        status = "2";
-        message = "Tema actualizado con éxito.";
-        data = jsonObject.toString();
-
+        if (Methods.verifyMaxLength(topic.getDescriptionTopic(), 500)
+                && Methods.verifyMaxLength(topic.getNameTopic(), 100)) {
+            if (Methods.verifyMaxLength(topic.getPathimgTopic(), 250)) {
+                topic.setDateupdateTopic(Methods.nowLocalDateTime());
+                topic = topicDAO.save(topic);
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("id_topic", topic.getId());
+                status = "2";
+                message = "Tema actualizado con éxito.";
+                data = jsonObject.toString();
+            } else {
+                status = "3";
+                message = "Longitud excedida del enlace generado.";
+            }
+        } else {
+            status = "3";
+            message = "Longitud excedida en uno de los campos ingresados.";
+        }
         return new String[]{status, message, data};
     }
 
@@ -74,7 +93,7 @@ public class TopicService {
     public String[] getTopic(String id_topic) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
 
-        List<Map<String, Object>>  topics = topicDAO.findIdTopic(Long.parseLong(id_topic));
+        List<Map<String, Object>> topics = topicDAO.findIdTopic(Long.parseLong(id_topic));
         if (topics.size() > 0) {
             Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();
             data = gson.toJson(topics);

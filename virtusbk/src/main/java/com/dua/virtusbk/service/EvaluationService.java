@@ -30,58 +30,66 @@ public class EvaluationService {
     public String[] saveEvaluation(Evaluation evaluation) {
         System.out.println("saveEvaluation");
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
+        if (Methods.verifyMaxLength(evaluation.getNameEvaluation(), 500)
+                && Methods.verifyMaxLength(evaluation.getDescriptionEvaluation(), 500)) {
+            evaluation.setDateregEvaluation(Methods.nowLocalDateTime());
+            evaluation.setDateupdateEvaluation(Methods.nowLocalDateTime());
+            evaluation.setState_evaluation("A");
+            evaluation.setNumberquestionEvaluation(120);
+            System.out.println(evaluation);
+            evaluation = evaluationDAO.save(evaluation);
 
-        evaluation.setDateregEvaluation(Methods.nowLocalDateTime());
-        evaluation.setDateupdateEvaluation(Methods.nowLocalDateTime());
-        evaluation.setState_evaluation("A");
-        evaluation.setNumberquestionEvaluation(120);
-        System.out.println(evaluation);
-        evaluation = evaluationDAO.save(evaluation);
+            //*TABLA INTERMEDIA*//
+            //*1 EVLUACIÓN CON MUCHOS TIPOS DE PREGUNTA*//
+            List<EvaluationQuestionCategory> evaluationQuestionCategories = new ArrayList<>();
+            for (int typeQuestion = 1; typeQuestion <= 7; typeQuestion++) {
+                evaluationQuestionCategories.add
+                        (new EvaluationQuestionCategory
+                                (evaluation, new QuestionCategory((long) typeQuestion), 0));
+            }
+            evaluationQuestionCategories = evaluationQuestionCategoryDAO.saveAll(evaluationQuestionCategories);
+            //*FIN TABLA INTERMEDIA*//
 
-        //*TABLA INTERMEDIA*//
-        //*1 EVLUACIÓN CON MUCHOS TIPOS DE PREGUNTA*//
-        List<EvaluationQuestionCategory> evaluationQuestionCategories = new ArrayList<>();
-        for (int typeQuestion = 1; typeQuestion <= 7; typeQuestion++) {
-            evaluationQuestionCategories.add
-                    (new EvaluationQuestionCategory
-                            (evaluation, new QuestionCategory((long) typeQuestion), 0));
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("id_evaluation", evaluation.getId());
+            status = "2";
+            message = "Evaluación registrada con éxito.";
+            data = jsonObject.toString();
+        } else {
+            status = "3";
+            message = "Longitud excedida en uno de los campos ingresados.";
         }
-        evaluationQuestionCategories = evaluationQuestionCategoryDAO.saveAll(evaluationQuestionCategories);
-        //*FIN TABLA INTERMEDIA*//
-
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("id_evaluation", evaluation.getId());
-        status = "2";
-        message = "Evaluación registrada con éxito.";
-        data = jsonObject.toString();
-
         return new String[]{status, message, data};
     }
 
     public String[] updateEvaluation(Evaluation evaluation) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
+        if (Methods.verifyMaxLength(evaluation.getNameEvaluation(), 500)
+                && Methods.verifyMaxLength(evaluation.getDescriptionEvaluation(), 500)) {
+            evaluation.setDateupdateEvaluation(Methods.nowLocalDateTime());
+            evaluation.setState_evaluation("A");
+            evaluation = evaluationDAO.save(evaluation);
 
-        evaluation.setDateupdateEvaluation(Methods.nowLocalDateTime());
-        evaluation.setState_evaluation("A");
-        evaluation = evaluationDAO.save(evaluation);
+            //*TABLA INTERMEDIA*//
+            //*1 EVLUACIÓN CON MUCHOS TIPOS DE PREGUNTA*//
+            List<EvaluationQuestionCategory> evaluationQuestionCategories = new ArrayList<>();
+            for (int typeQuestion = 1; typeQuestion <= 6; typeQuestion++) {
+                evaluationQuestionCategories.add
+                        (new EvaluationQuestionCategory
+                                (evaluation, new QuestionCategory((long) typeQuestion), 0));
+            }
+            evaluationQuestionCategories = evaluationQuestionCategoryDAO.saveAll(evaluationQuestionCategories);
+            //*FIN TABLA INTERMEDIA*//
 
-        //*TABLA INTERMEDIA*//
-        //*1 EVLUACIÓN CON MUCHOS TIPOS DE PREGUNTA*//
-        List<EvaluationQuestionCategory> evaluationQuestionCategories = new ArrayList<>();
-        for (int typeQuestion = 1; typeQuestion <= 6; typeQuestion++) {
-            evaluationQuestionCategories.add
-                    (new EvaluationQuestionCategory
-                            (evaluation, new QuestionCategory((long) typeQuestion), 0));
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("id_evaluation", evaluation.getId());
+            status = "2";
+            message = "Evaluación actualizada con éxito.";
+            data = jsonObject.toString();
+        } else {
+            status = "3";
+            message = "Longitud excedida en uno de los campos ingresados.";
         }
-        evaluationQuestionCategories = evaluationQuestionCategoryDAO.saveAll(evaluationQuestionCategories);
-        //*FIN TABLA INTERMEDIA*//
-
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("id_evaluation", evaluation.getId());
-        status = "2";
-        message = "Evaluación actualizada con éxito.";
-        data = jsonObject.toString();
-
         return new String[]{status, message, data};
 
     }

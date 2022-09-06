@@ -18,17 +18,20 @@ public class AnswerService {
 
     public String[] saveAnswers(Answer answer) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
+        if (Methods.verifyMaxLength(answer.getOptionsAnswer(), 80000)) {
+            answer.setDateregAnswer(Methods.nowLocalDateTime());
+            answer.setDateupdateAnswer(Methods.nowLocalDateTime());
+            answer = answerDAO.save(answer);
 
-        answer.setDateregAnswer(Methods.nowLocalDateTime());
-        answer.setDateupdateAnswer(Methods.nowLocalDateTime());
-        answer = answerDAO.save(answer);
-
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("id_answer", answer.getId());
-        status = "2";
-        message = "Respuestas registradas con éxito.";
-        data = jsonObject.toString();
-
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("id_answer", answer.getId());
+            status = "2";
+            message = "Respuestas registradas con éxito.";
+            data = jsonObject.toString();
+        } else {
+            status = "3";
+            message = "Longitud excedida en uno de los campos ingresados.";
+        }
         return new String[]{status, message, data};
     }
 

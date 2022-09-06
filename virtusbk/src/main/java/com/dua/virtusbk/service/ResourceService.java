@@ -23,34 +23,60 @@ public class ResourceService {
 
     public String[] saveResource(Resource resource) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
+        if (Methods.verifyMaxLength(resource.getDescriptionResource(), 500)
+                && Methods.verifyMaxLength(resource.getNameResource(), 200)) {
+            if (Methods.verifyMaxLength(resource.getPathfileResource(), 200)
+                    && Methods.verifyMaxLength(resource.getPathurlremoteResource(), 200)
+                    && Methods.verifyMaxLength(resource.getPathurlsignResource(), 200)
+                    && Methods.verifyMaxLength(resource.getPathvideoResource(), 200)) {
 
-        resource.setDateregResource(Methods.nowLocalDateTime());
-        resource.setDateupdateResource(Methods.nowLocalDateTime());
-        resource.setStateResource("A");
-        resource = resourceDAO.save(resource);
+                resource.setDateregResource(Methods.nowLocalDateTime());
+                resource.setDateupdateResource(Methods.nowLocalDateTime());
+                resource.setStateResource("A");
+                resource = resourceDAO.save(resource);
 
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("id_resource", resource.getId());
-        status = "2";
-        message = "Recurso agregado con éxito.";
-        data = jsonObject.toString();
-
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("id_resource", resource.getId());
+                status = "2";
+                message = "Recurso agregado con éxito.";
+                data = jsonObject.toString();
+            } else {
+                status = "3";
+                message = "Longitud excedida del enlace generado.";
+            }
+        } else {
+            status = "3";
+            message = "Longitud excedida en uno de los campos ingresados.";
+        }
         return new String[]{status, message, data};
     }
 
     public String[] updateResource(Resource resource) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
+        if (Methods.verifyMaxLength(resource.getDescriptionResource(), 500)
+                && Methods.verifyMaxLength(resource.getNameResource(), 200)) {
+            if (Methods.verifyMaxLength(resource.getPathfileResource(), 200)
+                    && Methods.verifyMaxLength(resource.getPathurlremoteResource(), 300)
+                    && Methods.verifyMaxLength(resource.getPathurlsignResource(), 300)
+                    && Methods.verifyMaxLength(resource.getPathvideoResource(), 300)) {
 
-        resource.setDateupdateResource(Methods.nowLocalDateTime());
-        resource.setStateResource("A");
-        resource = resourceDAO.save(resource);
+                resource.setDateupdateResource(Methods.nowLocalDateTime());
+                resource.setStateResource("A");
+                resource = resourceDAO.save(resource);
 
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("id_resource", resource.getId());
-        status = "2";
-        message = "Recurso actualizado con éxito.";
-        data = jsonObject.toString();
-
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("id_resource", resource.getId());
+                status = "2";
+                message = "Recurso actualizado con éxito.";
+                data = jsonObject.toString();
+            } else {
+                status = "3";
+                message = "Longitud excedida del enlace generado.";
+            }
+        } else {
+            status = "3";
+            message = "Longitud excedida en uno de los campos ingresados.";
+        }
         return new String[]{status, message, data};
     }
 
@@ -73,7 +99,7 @@ public class ResourceService {
 
     public String[] getResource(String id_resource) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
-        List<Map<String, Object>>  evaluations = resourceDAO.findIdResource(Long.parseLong(id_resource));
+        List<Map<String, Object>> evaluations = resourceDAO.findIdResource(Long.parseLong(id_resource));
         if (evaluations.size() > 0) {
             Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();
             data = gson.toJson(evaluations);
