@@ -252,7 +252,7 @@ public class PersonApi {//implements UserDetailsService {
         if (res[0].equals("2")) {
             res = personService.updatePerson(person);
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
-            if (res[0].equals("2")) {
+            if (res[0].equals("2") || res[0].equals("3")) {
                 return new ResponseEntity<>(message, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);

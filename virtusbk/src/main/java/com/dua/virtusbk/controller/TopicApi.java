@@ -46,7 +46,7 @@ public class TopicApi {
         if (res[0].equals("2")) {
             res = topicService.saveTopic(topic);
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
-            if (res[0].equals("2")) {
+            if (res[0].equals("2") || res[0].equals("3")) {
                 return new ResponseEntity<>(message, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
@@ -66,7 +66,7 @@ public class TopicApi {
         if (res[0].equals("2")) {
             res = topicService.updateTopic(topic);
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
-            if (res[0].equals("2")) {
+            if (res[0].equals("2") || res[0].equals("3")) {
                 return new ResponseEntity<>(message, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
@@ -91,7 +91,7 @@ public class TopicApi {
         String course_id_syllabu = Methods.JsonToString(jso, "syllabu_id_topic", "");
         String[] res = topicService.getTopics(course_id_syllabu);
         message = Methods.getJsonMessage(res[0], res[1], res[2]);
-        if (res[0].equals("2")|| res[0].equals("3")) {
+        if (res[0].equals("2") || res[0].equals("3")) {
             return new ResponseEntity<>(message, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
@@ -114,7 +114,7 @@ public class TopicApi {
         String id_topic_aux = Methods.JsonToString(jso, "id_topic", "");
         String[] res = topicService.getTopic(id_topic_aux);
         message = Methods.getJsonMessage(res[0], res[1], res[2]);
-        if (res[0].equals("2")|| res[0].equals("3")) {
+        if (res[0].equals("2") || res[0].equals("3")) {
             return new ResponseEntity<>(message, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);

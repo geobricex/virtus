@@ -69,7 +69,7 @@ public class CourseApi {
         if (res[0].equals("2")) {
             res = courseService.saveCourse(course, clains[0]);
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
-            if (res[0].equals("2")) {
+            if (res[0].equals("2") || res[0].equals("3")) {
                 return new ResponseEntity<>(message, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
@@ -89,7 +89,7 @@ public class CourseApi {
         if (res[0].equals("2")) {
             res = courseService.updateCourse(course, clains[0]);
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
-            if (res[0].equals("2")) {
+            if (res[0].equals("2") || res[0].equals("3")) {
                 return new ResponseEntity<>(message, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
