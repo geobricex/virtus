@@ -37,7 +37,6 @@ export class IntentreviewComponent implements OnInit {
   }
 
   loadgetReviews() {
-    console.log("DATA EVALUATION")
     this.apiGetDataReview(3).subscribe({
       next: response => {
         this.dataReviews = response.data;
