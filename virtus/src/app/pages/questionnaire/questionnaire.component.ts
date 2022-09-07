@@ -283,7 +283,7 @@ export class QuestionnaireComponent implements OnInit {
             }
           }
           if (this.storageService.getCurrentUser().email == "anthony.pachay2017@uteq.edu.ec") {
-            this.cambiarPregunta(11, true);
+            this.cambiarPregunta(0, true);
           } else {
             this.cambiarPregunta(0, true);
           }
@@ -332,75 +332,82 @@ export class QuestionnaireComponent implements OnInit {
         resp[0] == resp[1],
         questionItem.maximumpoints_question * ((resp[0] / resp[1]) / 100)];
     } else {
-      if (questionItem.answers_[0].options_answer[0].response !== undefined &&
-        questionItem.answers_[0].options_answer[0].response.length > 0)
+      // console.log("apachurra-----------------------------------------------0");
+      if ((questionItem.answers_[0].options_answer[0].response !== undefined &&
+          questionItem.answers_[0].options_answer[0].response.length > 0) ||
+        questionItem.answers_[0].responses != undefined)
         //verdadero o falso O unica seleccion
-        if (questionItem.name_questioncategory == this.tipoPregunta(2)
-          || questionItem.name_questioncategory == this.tipoPregunta(1)) {
-          return [
-            // @ts-ignore
-            questionItem.answers_[0].responses.correct == "Yes", // questionItem.answers_[0].responses.correct !== undefined
-            // @ts-ignore
-            questionItem.answers_[0].responses.correct == "Yes" ? questionItem.maximumpoints_question : 0];
-        } else if (questionItem.name_questioncategory == this.tipoPregunta(3)) {
-          let flagAlltrue: boolean = true;
-          let indT = 0;
-          let indTS = 0;
-          for (let ind = 0; ind < questionItem.answers_[0].responses.length; ind++) {
-            if (questionItem.answers_[0].responses[ind].correct == "Yes") {
-              indTS++;
-            } else {
-              flagAlltrue = false;
-            }
+        // console.log("apachurra-----------------------------------------------1");
+      if ((questionItem.name_questioncategory == this.tipoPregunta(2)
+          || questionItem.name_questioncategory == this.tipoPregunta(1))
+        && questionItem.answers_[0].responses != undefined) {
+        // console.log("apachurra-----------------------------------------------2");
+        return [
+          // @ts-ignore
+          questionItem.answers_[0].responses.correct == "Yes", // questionItem.answers_[0].responses.correct !== undefined
+          // @ts-ignore
+          questionItem.answers_[0].responses.correct == "Yes" ? questionItem.maximumpoints_question : 0];
+      } else if (questionItem.name_questioncategory == this.tipoPregunta(3) && questionItem.answers_[0].responses !== undefined) {
+        let flagAlltrue: boolean = true;
+        let indT = 0;
+        let indTS = 0;
+        for (let ind = 0; ind < questionItem.answers_[0].responses.length; ind++) {
+          if (questionItem.answers_[0].responses[ind].correct == "Yes") {
+            indTS++;
+          } else {
+            flagAlltrue = false;
           }
-          for (let ind = 0; ind < questionItem.answers_[0].options_answer.length; ind++) {
-            if (questionItem.answers_[0].options_answer[ind].correct == "Yes") {
-              indT++;
-            }
-          }
-          return [ // en caso de las evaluaciones,
-            // cambiar "flagAlltrue && indTS == indT"
-            // por "questionItem.answers_[0].responses.length > 0"
-            flagAlltrue && indTS == indT,
-            questionItem.maximumpoints_question * ((indTS / indT) / 100)];
-        } else if (questionItem.name_questioncategory == this.tipoPregunta(4)) {
-          // console.log("objeto:", questionItem);
-          let elemento: string[] = [];
-          for (let ind = 0; ind < questionItem.answers_[0].complete_parts!.length; ind++) {
-            if (questionItem.answers_[0].complete_parts![ind] != "$option$") {
-              elemento.push(questionItem.answers_[0].complete_parts![ind]);
-            } else {
-              if (questionItem.answers_[0].options_answer[0].response[ind] != undefined)
-                elemento.push(questionItem.answers_[0].options_answer[0].response[ind].option);
-            }
-          }
-          // console.log("Respuseta final: ", elemento);
-          let flag: boolean = elemento.join('') == questionItem.answers_[0].options_answer[0].description_question_R;
-          return [flag, flag ? questionItem.maximumpoints_question : 0];
-        } else if (questionItem.name_questioncategory == this.tipoPregunta(5)) {
-          //this.questionObject.answers_[0].options_answer
-          //this.questionObject.answers_[0].right_parts
-          let flagAlltrue: boolean = true;
-          let indT = 0;
-          let indTS = 0;
-          for (let ind = 0; ind < questionItem.answers_[0].options_answer.length; ind++) {
-            if (questionItem.answers_[0].options_answer[ind].rightSide
-              == questionItem.answers_[0].responses[ind].rightSide &&
-              questionItem.answers_[0].options_answer[ind].resourse_rightSide
-              == questionItem.answers_[0].responses[ind].resourse_rightSide
-            ) {
-              indTS++;
-            } else {
-              flagAlltrue = false;
-            }
-          }
-          indT = questionItem.answers_[0].options_answer.length;
-          return [ // en caso de las evaluaciones,
-            // cambiar "flagAlltrue && indTS == indT"
-            // por "questionItem.answers_[0].responses.length > 0"
-            flagAlltrue && indTS == indT,
-            questionItem.maximumpoints_question * ((indTS / indT) / 100)];
         }
+        for (let ind = 0; ind < questionItem.answers_[0].options_answer.length; ind++) {
+          if (questionItem.answers_[0].options_answer[ind].correct == "Yes") {
+            indT++;
+          }
+        }
+        return [ // en caso de las evaluaciones,
+          // cambiar "flagAlltrue && indTS == indT"
+          // por "questionItem.answers_[0].responses.length > 0"
+          flagAlltrue && indTS == indT,
+          questionItem.maximumpoints_question * ((indTS / indT) / 100)];
+      } else if (questionItem.name_questioncategory == this.tipoPregunta(4) &&
+        questionItem.answers_[0].complete_parts !== undefined) {
+        // console.log("objeto:", questionItem);
+        let elemento: string[] = [];
+        for (let ind = 0; ind < questionItem.answers_[0].complete_parts!.length; ind++) {
+          if (questionItem.answers_[0].complete_parts![ind] != "$option$") {
+            elemento.push(questionItem.answers_[0].complete_parts![ind]);
+          } else {
+            if (questionItem.answers_[0].options_answer[0].response[ind] != undefined)
+              elemento.push(questionItem.answers_[0].options_answer[0].response[ind].option);
+          }
+        }
+        let flag: boolean = elemento.join('') == questionItem.answers_[0].options_answer[0].description_question_R;
+        console.log(flag, "Respuseta final: ", elemento);
+        return [flag, flag ? questionItem.maximumpoints_question : 0];
+      } else if (questionItem.name_questioncategory == this.tipoPregunta(5)) {
+        //this.questionObject.answers_[0].options_answer
+        //this.questionObject.answers_[0].right_parts
+        let flagAlltrue: boolean = true;
+        let indT = 0;
+        let indTS = 0;
+        for (let ind = 0; ind < questionItem.answers_[0].options_answer.length; ind++) {
+          if ( questionItem.answers_[0].responses !== undefined &&
+             questionItem.answers_[0].options_answer[ind].rightSide
+            == questionItem.answers_[0].responses[ind].rightSide &&
+            questionItem.answers_[0].options_answer[ind].resourse_rightSide
+            == questionItem.answers_[0].responses[ind].resourse_rightSide
+          ) {
+            indTS++;
+          } else {
+            flagAlltrue = false;
+          }
+        }
+        indT = questionItem.answers_[0].options_answer.length;
+        return [ // en caso de las evaluaciones,
+          // cambiar "flagAlltrue && indTS == indT"
+          // por "questionItem.answers_[0].responses.length > 0"
+          flagAlltrue && indTS == indT,
+          questionItem.maximumpoints_question * ((indTS / indT) / 100)];
+      }
     }
     return [false, 0];
   }
