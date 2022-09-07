@@ -32,7 +32,11 @@ from resources
 where topics_id_topic = 29;
 select *
 from answers
-         inner join questions q on answers.questions_id_question = q.id_question;
+        where answers.options_answer ilike  '%11%'
+   inner join questions q on answers.questions_id_question = q.id_question
+    where q.title_question ilike  '%11%'
+select *
+from courses
 
 select *
 from utils;

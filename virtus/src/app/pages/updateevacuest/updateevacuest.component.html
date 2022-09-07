@@ -95,6 +95,8 @@
                  class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2">
               <span>
                 <div style="float: right">
+                  <span class="pi pi-eye mr-3 text-yellow-500 cursor-pointer" pTooltip="Visualizar"
+                        tooltipPosition="top" (click)="previewQuestion(question)"></span>
                   <span class="pi pi-pencil mr-3 text-blue-500 cursor-pointer" pTooltip="Editar"
                         tooltipPosition="top"></span>
                   <span class="pi pi-trash text-pink-500 cursor-pointer" pTooltip="Eliminar"
@@ -116,6 +118,8 @@
                  class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2">
               <span>
                 <div style="float: right">
+                  <span class="pi pi-eye mr-3 text-yellow-500 cursor-pointer" pTooltip="Visualizar"
+                        tooltipPosition="top" (click)="previewQuestion(question)"></span>
                   <span class="pi pi-pencil mr-3 text-blue-500 cursor-pointer" pTooltip="Editar"
                         tooltipPosition="top"></span>
                   <span class="pi pi-trash text-pink-500 cursor-pointer" pTooltip="Eliminar"
@@ -137,6 +141,10 @@
                  class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2">
               <span>
                 <div style="float: right">
+                   <span class="pi pi-eye mr-3 text-yellow-500 cursor-pointer"
+                         pTooltip="Visualizar"
+                         tooltipPosition="top"
+                         (click)="previewQuestion(question)"></span>
                   <span class="pi pi-pencil mr-3 text-blue-500 cursor-pointer" pTooltip="Editar"
                         tooltipPosition="top"></span>
                   <span class="pi pi-trash text-pink-500 cursor-pointer" pTooltip="Eliminar"
@@ -157,6 +165,10 @@
                  class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2">
               <span>
                 <div style="float: right">
+                  <span class="pi pi-eye mr-3 text-yellow-500 cursor-pointer"
+                        pTooltip="Visualizar"
+                        tooltipPosition="top"
+                        (click)="previewQuestion(question)"></span>
                   <span class="pi pi-pencil mr-3 text-blue-500 cursor-pointer" pTooltip="Editar"
                         tooltipPosition="top"></span>
                   <span class="pi pi-trash text-pink-500 cursor-pointer" pTooltip="Eliminar"
@@ -177,6 +189,10 @@
                  class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2">
               <span>
                 <div style="float: right">
+                  <span class="pi pi-eye mr-3 text-yellow-500 cursor-pointer"
+                        pTooltip="Visualizar"
+                        tooltipPosition="top"
+                        (click)="previewQuestion(question)"></span>
                   <span class="pi pi-pencil mr-3 text-blue-500 cursor-pointer" pTooltip="Editar"
                         tooltipPosition="top"></span>
                   <span class="pi pi-trash text-pink-500 cursor-pointer" pTooltip="Eliminar"
@@ -197,6 +213,10 @@
                  class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2">
               <span>
                 <div style="float: right">
+                  <span class="pi pi-eye mr-3 text-yellow-500 cursor-pointer"
+                        pTooltip="Visualizar"
+                        tooltipPosition="top"
+                        (click)="previewQuestion(question)"></span>
                   <span class="pi pi-pencil mr-3 text-blue-500 cursor-pointer" pTooltip="Editar"
                         tooltipPosition="top"></span>
                   <span class="pi pi-trash text-pink-500 cursor-pointer" pTooltip="Eliminar"
@@ -217,6 +237,10 @@
                  class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2">
               <span>
                 <div style="float: right">
+                 <span class="pi pi-eye mr-3 text-yellow-500 cursor-pointer"
+                       pTooltip="Visualizar"
+                       tooltipPosition="top"
+                       (click)="previewQuestion(question)"></span>
                   <span class="pi pi-pencil mr-3 text-blue-500 cursor-pointer" pTooltip="Editar"
                         tooltipPosition="top"></span>
                   <span class="pi pi-trash text-pink-500 cursor-pointer" pTooltip="Eliminar"
@@ -230,6 +254,245 @@
     </p-tabPanel>
   </p-tabView>
 </div>
+<p-dialog [(visible)]="new_question_view_dialog" [style]="{width: '500px'}" header="Visualizar pregunta"
+          [modal]="true"
+          class="p-fluid">
+  <ng-template pTemplate="content">
+    <div>
+      <strong>Título: </strong>
+      <p>{{questionObject.title_question}}</p>
+      <strong>Descripción: </strong>
+      <p>{{questionObject.description_question}}</p><br>
+    </div>
+    <!--verdadero o falso-->
+    <div>
+      <div *ngIf="questionObject.name_questioncategory == 'True or False' && !questionObject.canResource">
+        <div *ngFor="let option of questionObject.answers_[0].options_answer; let i = index">
+          <div class="field-radiobutton">
+            <p-radioButton name="Simple_Option" [value]="option"
+                           [(ngModel)]="questionObject.answers_[0].responses">
+            </p-radioButton>
+            <label [for]="'option_vf_' + alphabet[i]">{{alphabet[i].toUpperCase() + ")\t" + option.opcion}}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Selección unica normal-->
+    <div *ngIf="questionObject.name_questioncategory == 'Simple Option' && !questionObject.canResource">
+      <div *ngFor="let option of questionObject.answers_[0].options_answer; let i = index">
+        <div class="field-radiobutton">
+          <p-radioButton [inputId]="'option_rd_' + alphabet[i]" name="Simple_Option" [value]="option"
+                         [(ngModel)]="questionObject.answers_[0].responses"
+          ></p-radioButton>
+          <label [for]="'option_rd_' + alphabet[i]">{{alphabet[i].toUpperCase() + ")\t" + option.opcion}}</label>
+        </div>
+      </div>
+    </div>
+    <!--Selección unica normal con imagenes-->
+    <div *ngIf="questionObject.name_questioncategory  == 'Simple Option' && questionObject.canResource"
+         class="flex align-items-center justify-content-center">
+
+      <p-card *ngFor="let option of questionObject.answers_[0].options_answer; let i = index"
+              [attr.data-index]="i" [style]="{width: '120px'}" styleClass="p-card-shadow">
+        <ng-template pTemplate="header">
+          <img class="img-color" alt="Card" [src]="option.resource" width="100">
+        </ng-template>
+        <p>{{option.opcion}}</p>
+        <ng-template pTemplate="footer">
+          <div class="field-radiobutton">
+            <p-radioButton [inputId]="'option_rd_2_' + alphabet[i]" name="Simple_Option_img" [value]="option"
+                           [(ngModel)]="questionObject.answers_[0].responses"
+            ></p-radioButton>
+            <label
+              [for]="'option_rd_2_' + alphabet[i]"><strong>{{'Literal ' + alphabet[i].toUpperCase()}}</strong></label>
+          </div>
+        </ng-template>
+      </p-card>
+    </div>
+    <!--Selección múltiple normal-->
+    <div *ngIf="questionObject.name_questioncategory == 'Multiple Option' && !questionObject.canResource">
+      <div *ngFor="let option of questionObject.answers_[0].options_answer; let i = index"
+           [attr.data-index]="i">
+        <div class="field-radiobutton">
+          <p-checkbox [inputId]="'option_ck_' + alphabet[i]" name="multiple_Option" [value]="option"
+                      [(ngModel)]="questionObject.answers_[0].responses"
+          ></p-checkbox>
+          <label [for]="'option_ck_' + alphabet[i]">{{alphabet[i].toUpperCase() + ")\t" + option.opcion}}</label>
+        </div>
+      </div>
+    </div>
+    <!--Selección múltiple normal con imagenes-->
+    <div *ngIf="questionObject.name_questioncategory == 'Multiple Option' && questionObject.canResource"
+         class="flex align-items-center justify-content-center">
+
+      <p-card *ngFor="let option of questionObject.answers_[0].options_answer; let i = index"
+              [attr.data-index]="i" [style]="{width: '120px'}" styleClass="p-card-shadow">
+        <ng-template pTemplate="header">
+          <img alt="Card" [src]="option.resource" width="100">
+        </ng-template>
+        <p>{{option.opcion}}</p>
+        <ng-template pTemplate="footer">
+          <div class="field-radiobutton">
+            <p-checkbox [inputId]="'option_ck_2_' + alphabet[i]" name="multiple_Option_img" [value]="option"
+                        [(ngModel)]="questionObject.answers_[0].responses"
+            ></p-checkbox>
+            <label
+              [for]="'option_ck_2_' + alphabet[i]"><strong>{{'Literal ' + alphabet[i].toUpperCase()}}</strong></label>
+          </div>
+        </ng-template>
+      </p-card>
+    </div>
+    <!--Complete-->
+    <div *ngIf="questionObject.name_questioncategory ==  'Complete'  && !questionObject.canResource">
+      <div *ngFor="let option of questionObject.answers_[0].options_answer; let i = index"
+           [attr.data-index]="i">
+        <div class="flex-auto">
+            <span *ngFor="let wg of questionObject.answers_[0].complete_parts; let ic = index"
+                  [attr.data-index]="ic"
+                  [style]="{color: (wg == '$option$'?'#FF0000':'#000'), 'font-weight': (wg == '$option$'?'bold;':'normal;')}">
+                {{wg != '$option$' ? wg : ('(')}}
+              <!--                <input type="text" pInputText *ngIf="wg == '$option$'"/>-->
+              <!--                no tiene imagenes-->
+                <p-dropdown [inputId]="'relation_input_' + ic"
+                            [options]="option.options"
+                            [(ngModel)]="questionObject.answers_[0].options_answer[0].response[ic]"
+                            optionLabel="option" placeholder=" -- Seleccione una opcíón --"
+                            *ngIf="wg == '$option$'" [filter]="true" filterBy="rightSide"
+                            [showClear]="true" [style]="{'minWidth':'20vw', 'width': '20vw'}"
+                >
+                  <ng-template pTemplate="selectedItem">
+                    <div class="country-item country-item-value"
+                         *ngIf="questionObject.answers_[0].options_answer[0].response[ic]">
+                      <img [src]="questionObject.answers_[0].options_answer[0].response[ic].resource" height="25"
+                           [class]="'flag flag-FR'"
+                           *ngIf="questionObject.answers_[0].options_answer[0].response[ic].resource.length > 0"
+                      />
+                      <div>{{questionObject.answers_[0].options_answer[0].response[ic].option}}</div>
+                    </div>
+                    </ng-template>
+                    <ng-template let-option pTemplate="item">
+                      <div class="ui-helper-clearfix template-border">
+                        <img [src]="option.resource" [class]="'flag flag-FR'" alt=""
+                             *ngIf="option.resource.length > 0"/>
+                        <div>{{option.option}}</div>
+                      </div>
+                    </ng-template>
+                </p-dropdown>
+              <!--                Tiene imagenes-->
+              {{wg != '$option$' ? '' : ') '}}
+            </span>
+        </div>
+      </div>
+    </div>
+    <!--Armar la Palabra-->
+    <div *ngIf="questionObject.name_questioncategory == 'Build word'">
+      <div class="col-12">
+        <p-messages severity="warn" [enableService]="true" [closable]="true">
+          <ng-template pTemplate>
+            <img src="assets/imgresource/empty/notification.png" width="25"/>
+            <div class="ml-2">Actualmente este tipo de preguntas <strong>no soporta</strong> caracteristicas de
+              accesibilidad como comandos de voz, acceso por teclado u otros.
+            </div>
+          </ng-template>
+        </p-messages>
+      </div>
+      <h5>Palabra:</h5>
+      <div class="centar-botones">
+        <button pButton pRipple
+                *ngFor="let option of questionObject.answers_[0].options_answer[0].opcion.toString().split(''); let i = index"
+                class="p-button-info" [ngClass]="i != palabra.release ? 'p-button-outlined': ''"
+                [disabled]="showLetra(option, i) == 'space'" (click)="clickUp(i)">
+          <img height="35" [src]="'assets/imgresource/alfabeto/' + showLetra(option, i) + '.png'"/>
+        </button>
+      </div>
+
+      <div class="col-12 justify-content-center align-content-center" style="margin-bottom: 50px!important;">
+        <h5>Alfabeto español</h5>
+        <div class="centar-botones">
+          <button pButton pRipple *ngFor="let letra of alphabet; let indL = index;" [attr.data-index]="indL"
+                  class="p-button-info" [ngClass]="indL != palabra.press ? 'p-button-outlined': ''"
+                  (click)="clickDown(indL)">
+            <img height="35" [src]="'assets/imgresource/alfabeto/' + letra + '.png'"/>
+          </button>
+        </div>
+      </div>
+    </div>
+    <!--Relacionar-->
+    <div *ngIf="questionObject.name_questioncategory == 'Relate'">
+
+      <!--        <div class="flex align-items-center justify-content-between">-->
+      <div class="grid justify-content-between"
+           *ngFor="let option of questionObject.answers_[0].options_answer; let i = index"
+           [attr.data-index]="i">
+        <div class="col-12 md:col-8 justify-content-end grid">
+          <div class="col-12 md:col-{{option.resourse_leftSide.length > 0?'4':'0'}} justify-content-center">
+            <img class="img-color" alt="Card" *ngIf="option.resourse_leftSide.length > 0"
+                 [src]="option.resourse_leftSide" height="100">
+          </div>
+          <div class="col-12 md:col-{{option.resourse_leftSide.length > 0?'8':'12'}} justify-content-start">
+            <p>{{alphabet[i].toUpperCase() + ")\t" + (option.leftSide.length > 0 ? option.leftSide : 'Foto')}}</p>
+          </div>
+        </div>
+        <div class="col-12 md:col-4">
+          <p-dropdown [inputId]="'relation_input_' + i"
+                      [options]="questionObject.answers_[0].right_parts!"
+                      [(ngModel)]="questionObject.answers_[0].responses[i]"
+                      optionLabel="rightSide" [filter]="true" filterBy="rightSide"
+                      [showClear]="true" placeholder=" -- - --" [style]="{'minWidth':'20vw', 'width': '20vw'}"
+          >
+            <ng-template pTemplate="selectedItem">
+              <div class="country-item country-item-value" *ngIf="questionObject.answers_[0].responses[i]">
+                <img [src]="questionObject.answers_[0].responses[i].resourse_rightSide" height="25"
+                     [class]="'flag flag-FR'" *ngIf="questionObject.answers_[0].responses[i].resourse_rightSide"
+                />
+                <div>{{questionObject.answers_[0].responses[i].rightSide}}</div>
+              </div>
+            </ng-template>
+            <ng-template let-item pTemplate="item">
+              <div class="ui-helper-clearfix template-border">
+                <img [src]="item.resourse_rightSide" [class]="'flag flag-FR'" alt=""/>
+                <div>{{alphabet[item.ind].toUpperCase() + ".\t" + (item.rightSide.length > 0 ? item.rightSide : 'Opción')}}</div>
+              </div>
+            </ng-template>
+          </p-dropdown>
+        </div>
+        <div class="col-12 justify-content-center align-content-center" style="padding-top: 0px;"
+             *ngIf="i < questionObject.answers_[0].options_answer.length - 1">
+          <p-divider></p-divider>
+        </div>
+      </div>
+    </div>
+    <!--Puzzle-->
+    <div *ngIf="questionObject.name_questioncategory == 'Puzzle'">
+      <div class="col-12">
+        <p-messages severity="warn" [enableService]="true" [closable]="true">
+          <ng-template pTemplate>
+            <img src="assets/imgresource/empty/notification.png" width="25"
+            />
+            <div class="ml-2">Actualmente este tipo de preguntas <strong>no soporta</strong> caracteristicas de
+              accesibilidad como comandos de voz, acceso por teclado u otros.
+            </div>
+          </ng-template>
+        </p-messages>
+      </div>
+      <h5>Palabra:</h5>
+      <div class="centar-botones">
+        <div *ngFor="let rowImgPz of tmpPuzzle.arrayImagePuzzle; let y = index">
+          <button pButton pRipple *ngFor="let elem of rowImgPz; let x = index"
+                  class="p-button-info" [ngClass]="!tmpPuzzle.isActive(x, y) ? 'p-button-outlined': ''"
+                  style="padding: 1px!important;" (click)="tmpPuzzle.mover(x, y)">
+            <img height="35" [src]="elem"/>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <strong>Retroalimentación: </strong>
+    <p>{{questionObject.feedback_question}}</p>
+    <strong>Pista: </strong>
+    <p>{{questionObject.hint_question}}</p><br>
+  </ng-template>
+</p-dialog>
 
 <p-dialog [(visible)]="new_question_dialog" [style]="{width: '500px'}" header="Seleccione el tipo de pregunta"
           [modal]="true"

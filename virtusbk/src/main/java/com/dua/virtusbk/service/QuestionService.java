@@ -19,7 +19,7 @@ public class QuestionService {
     public String[] saveQuestion(Question question) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
         if (Methods.verifyMaxLength(question.getFeedbackQuestion(), 500)
-                && Methods.verifyMaxLength(question.getHintQuestion(), 200)
+                && Methods.verifyMaxLength(question.getHintQuestion(), 300)
                 && Methods.verifyMaxLength(question.getDescriptionQuestion(), 500)
                 && Methods.verifyMaxLength(question.getTitleQuestion(), 200)
                 && Methods.verifyMaxLength(question.getTitleQuestion(), 200)) {
@@ -48,7 +48,7 @@ public class QuestionService {
     public String[] updateQuestion(Question question) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
         if (Methods.verifyMaxLength(question.getFeedbackQuestion(), 500)
-                && Methods.verifyMaxLength(question.getHintQuestion(), 200)
+                && Methods.verifyMaxLength(question.getHintQuestion(), 300)
                 && Methods.verifyMaxLength(question.getDescriptionQuestion(), 500)
                 && Methods.verifyMaxLength(question.getTitleQuestion(), 200)
                 && Methods.verifyMaxLength(question.getTitleQuestion(), 200)) {

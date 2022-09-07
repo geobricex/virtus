@@ -65,6 +65,7 @@ public class CourseService implements ReportCertificateCours {
 
     public String[] updateCourse(Course course, String id_person) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
+        System.out.println("updateCourse");
         if (Methods.verifyMaxLength(course.getDescriptionCourse(), 250)
                 && Methods.verifyMaxLength(course.getNameCourse(), 75)) {
             if (Methods.verifyMaxLength(course.getPathimgCourse(), 400)) {
