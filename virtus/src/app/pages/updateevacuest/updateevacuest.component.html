@@ -254,9 +254,9 @@
     </p-tabPanel>
   </p-tabView>
 </div>
-<p-dialog [(visible)]="new_question_view_dialog" [style]="{width: '500px'}" header="Visualizar pregunta"
+<p-dialog [(visible)]="new_question_view_dialog" [style]="{width: '1000px'}" header="Visualizar pregunta"
           [modal]="true"
-          class="p-fluid">
+>
   <ng-template pTemplate="content">
     <div>
       <strong>Título: </strong>
@@ -343,23 +343,23 @@
       </p-card>
     </div>
     <!--Complete-->
-    <div *ngIf="questionObject.name_questioncategory ==  'Complete'  && !questionObject.canResource">
+    <div *ngIf="questionObject.name_questioncategory == 'Complete' && !questionObject.canResource">
       <div *ngFor="let option of questionObject.answers_[0].options_answer; let i = index"
            [attr.data-index]="i">
         <div class="flex-auto">
-            <span *ngFor="let wg of questionObject.answers_[0].complete_parts; let ic = index"
-                  [attr.data-index]="ic"
-                  [style]="{color: (wg == '$option$'?'#FF0000':'#000'), 'font-weight': (wg == '$option$'?'bold;':'normal;')}">
+          <span> {{questionObject.answers_[0].options_answer[0].description_question}}</span><br>
+          <span> {{questionObject.answers_[0].options_answer[0].description_question_R}}</span><br><li>
+          <span *ngFor="let wg of questionObject.answers_[0].complete_parts; let ic = index"
+                [attr.data-index]="ic"
+                [style]="{color: (wg == '$option$'?'#FF0000':'#000'), 'font-weight': (wg == '$option$'?'bold;':'normal;')}">
                 {{wg != '$option$' ? wg : ('(')}}
-              <!--                <input type="text" pInputText *ngIf="wg == '$option$'"/>-->
-              <!--                no tiene imagenes-->
-                <p-dropdown [inputId]="'relation_input_' + ic"
-                            [options]="option.options"
-                            [(ngModel)]="questionObject.answers_[0].options_answer[0].response[ic]"
-                            optionLabel="option" placeholder=" -- Seleccione una opcíón --"
-                            *ngIf="wg == '$option$'" [filter]="true" filterBy="rightSide"
-                            [showClear]="true" [style]="{'minWidth':'20vw', 'width': '20vw'}"
-                >
+            <p-dropdown [inputId]="'relation_input_' + ic"
+                        [options]="option.options"
+                        [(ngModel)]="questionObject.answers_[0].options_answer[0].response[ic]"
+                        optionLabel="option" placeholder=" -- Seleccione una opcíón --"
+                        *ngIf="wg == '$option$'" [filter]="true" filterBy="rightSide"
+                        [showClear]="true" [style]="{'minWidth':'20vw', 'width': '20vw'}"
+            >
                   <ng-template pTemplate="selectedItem">
                     <div class="country-item country-item-value"
                          *ngIf="questionObject.answers_[0].options_answer[0].response[ic]">
@@ -378,14 +378,14 @@
                       </div>
                     </ng-template>
                 </p-dropdown>
-              <!--                Tiene imagenes-->
-              {{wg != '$option$' ? '' : ') '}}
+            <!--                Tiene imagenes-->
+            {{wg != '$option$' ? '' : ') '}}
             </span>
         </div>
       </div>
     </div>
     <!--Armar la Palabra-->
-    <div *ngIf="questionObject.name_questioncategory == 'Build word'">
+    <div *ngIf="questionObject.name_questioncategory == tipoPregunta(7)">
       <div class="col-12">
         <p-messages severity="warn" [enableService]="true" [closable]="true">
           <ng-template pTemplate>
@@ -398,22 +398,26 @@
       </div>
       <h5>Palabra:</h5>
       <div class="centar-botones">
-        <button pButton pRipple
-                *ngFor="let option of questionObject.answers_[0].options_answer[0].opcion.toString().split(''); let i = index"
-                class="p-button-info" [ngClass]="i != palabra.release ? 'p-button-outlined': ''"
-                [disabled]="showLetra(option, i) == 'space'" (click)="clickUp(i)">
-          <img height="35" [src]="'assets/imgresource/alfabeto/' + showLetra(option, i) + '.png'"/>
-        </button>
+        <div>
+          <button pButton pRipple
+                  *ngFor="let option of questionObject.answers_[0].options_answer[0].opcion.toString().split(''); let i = index"
+                  class="p-button-info" [ngClass]="i != palabra.release ? 'p-button-outlined': ''"
+                  [disabled]="showLetra(option, i) == 'space'" (click)="clickUp(i)">
+            <img height="35" [src]="'assets/imgresource/alfabeto/' + showLetra(option, i) + '.png'"/>
+          </button>
+        </div>
       </div>
 
       <div class="col-12 justify-content-center align-content-center" style="margin-bottom: 50px!important;">
         <h5>Alfabeto español</h5>
         <div class="centar-botones">
-          <button pButton pRipple *ngFor="let letra of alphabet; let indL = index;" [attr.data-index]="indL"
-                  class="p-button-info" [ngClass]="indL != palabra.press ? 'p-button-outlined': ''"
-                  (click)="clickDown(indL)">
-            <img height="35" [src]="'assets/imgresource/alfabeto/' + letra + '.png'"/>
-          </button>
+          <div>
+            <button pButton pRipple *ngFor="let letra of alphabet; let indL = index;" [attr.data-index]="indL"
+                    class="p-button-info" [ngClass]="indL != palabra.press ? 'p-button-outlined': ''"
+                    (click)="clickDown(indL)">
+              <img height="35" [src]="'assets/imgresource/alfabeto/' + letra + '.png'"/>
+            </button>
+          </div>
         </div>
       </div>
     </div>
