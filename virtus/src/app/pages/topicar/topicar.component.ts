@@ -7,6 +7,8 @@ import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Modules} from "../../models/Modules";
 import {Topic} from "../../models/Topic";
+import {Course} from "../../models/Course";
+import {ConfirmationService} from "primeng/api";
 
 
 @Component({
@@ -29,6 +31,7 @@ export class TopicarComponent implements OnInit {
   loadingDataCourse: boolean = true;
   dataCourse: any;
   dataModule: any;
+  updateTopic: boolean = false;
 
   registerFormTopic: FormGroup;
   topicSuccessful = false;
@@ -42,7 +45,8 @@ export class TopicarComponent implements OnInit {
     private _route: ActivatedRoute,
     private utils: Utils,
     private _http: HttpClient,
-    private formBuilder: FormBuilder) {
+    private formBuilder: FormBuilder,
+    private confirmationService: ConfirmationService) {
     this.idCourse = this._route.snapshot.paramMap.get("idcourse");
     this.idModule = this._route.snapshot.paramMap.get("idmodule");
     this.breadcrumbService.setItems([
@@ -64,6 +68,60 @@ export class TopicarComponent implements OnInit {
         keywords: ["", Validators.required]
       }
     );
+  }
+
+  selectedTopic(topic: any) {
+    console.log(topic);
+    this.updateTopic = true;
+    this.newTopicDialog = true;
+    this.form["name"].setValue(topic.name_topic);
+    this.form["description"].setValue(topic.description_topic);
+    this.form["keywords"].setValue(topic.keywords_topic);
+    this.urlimageupload = topic.pathimg_topic;
+    this.topic = new Topic(topic.id_topic,
+      "", "", "",
+      topic.pathimg_topic, topic.datereg_topic.replace(".0", ""), topic.dateupdate_topic.replace(".0", ""), topic.state_topic);
+    let moduleAux = new Modules(
+      parseInt(this.idModule === null ? "0" : this.idModule),
+      "", "", "",
+      "", "", "", ""
+    )
+    this.topic._syllabuIdSyllabu = moduleAux;
+  }
+
+  deleteTopic(topic: any) {
+    this.confirmationService.confirm({
+      message: '¿Seguro que desea deshabilitar el tema?',
+      header: 'Mensaje de confirmación',
+      icon: 'pi pi-info-circle',
+      acceptLabel: "Si",
+      rejectLabel: "No",
+      accept: () => {
+        this.utils.loading;
+        this.topic = new Topic(topic.id_topic,
+          topic.name_topic, topic.description_topic, topic.keywords_topic,
+          topic.pathimg_topic, topic.datereg_topic.replace(".0", ""), topic.dateupdate_topic.replace(".0", ""), "I");
+        let moduleAux = new Modules(
+          parseInt(this.idModule === null ? "0" : this.idModule),
+          "", "", "",
+          "", "", "", ""
+        )
+        this.topic._syllabuIdSyllabu = moduleAux;
+        console.log(this.topic);
+        this.apiUpdateTopic(this.topic).subscribe({
+          next: response => {
+            console.log(response);
+            this.utils.showMessages(response.status, response.information, "tst");
+            this.resetTopic();
+            this.loadTopics();
+            this.utils.closeLoading;
+          }
+        })
+      },
+      reject: () => {
+      },
+      key: "positionDialog"
+    });
   }
 
   loadDataCourse() {
@@ -102,40 +160,85 @@ export class TopicarComponent implements OnInit {
   }
 
   saveTopic() {
+    this.utils.loading;
     this.topicSuccessful = true;
+    let urlPhoto: string = "";
 
     if (this.registerFormTopic.invalid) {
       return;
     }
 
-    console.log(this.form['name'].value);
-    console.log(this.form['description'].value);
-    console.log(this.form['keywords'].value);
+    if (this.updateTopic) {
+      if (this.tmpFile === undefined) {
+        this.topic.set_nameTopic(this.form["name"].value);
+        this.topic.set_descriptionTopic(this.form["description"].value);
+        this.topic.set_keywordsTopic(this.form["keywords"].value);
+        this.apiUpdateTopic(this.topic).subscribe({
+          next: response => {
+            console.log(response);
+            this.utils.showMessages(response.status, response.information, "tst");
+            this.resetTopic();
+            this.loadTopics();
+            this.utils.closeLoading;
+          }
+        })
+      } else {
+        this.utils.changeImage(this.tmpFile).then(response => {
+          urlPhoto = this.utils.makePathRecurso(response);
+          this.topic.set_pathimgTopic(urlPhoto);
+          this.topic.set_nameTopic(this.form["name"].value);
+          this.topic.set_descriptionTopic(this.form["description"].value);
+          this.topic.set_keywordsTopic(this.form["keywords"].value);
+          this.apiSaveTopic(this.topic).subscribe(response => {
+            this.utils.showMessages(response.status, response.information, "tst");
+            this.resetTopic();
+            this.loadTopics();
+            this.utils.closeLoading;
+          });
+        });
+      }
+    } else {
 
-    let urlPhoto: string = "";
-    this.utils.changeImage(this.tmpFile).then(response => {
-      urlPhoto = this.utils.makePathRecurso(response);
-      this.topic = new Topic(0,
-        this.form['name'].value,
-        this.form['description'].value,
-        this.form['keywords'].value,
-        urlPhoto, "", "", "");
-      let moduleAux = new Modules(
-        parseInt(this.idModule === null ? "0" : this.idModule),
-        "", "", "",
-        "", "", "", ""
-      )
-      this.topic._syllabuIdSyllabu = moduleAux;
-      this.apiSaveTopic(this.topic).subscribe(response => {
-        this.utils.showMessages(response.status, response.information, "tst");
-        this.resetTopic();
-        this.loadTopics();
+      if (this.urlimageupload.length === 0) {
+        this.utils.showMessages(3, "Ingrese una foto relacionada al tema.", "tst");
+        this.utils.closeLoading;
+        return;
+      }
+
+      this.utils.changeImage(this.tmpFile).then(response => {
+        urlPhoto = this.utils.makePathRecurso(response);
+        this.topic = new Topic(0,
+          this.form['name'].value,
+          this.form['description'].value,
+          this.form['keywords'].value,
+          urlPhoto, "", "", "");
+        let moduleAux = new Modules(
+          parseInt(this.idModule === null ? "0" : this.idModule),
+          "", "", "",
+          "", "", "", ""
+        )
+        this.topic._syllabuIdSyllabu = moduleAux;
+        this.apiSaveTopic(this.topic).subscribe(response => {
+          this.utils.showMessages(response.status, response.information, "tst");
+          this.resetTopic();
+          this.loadTopics();
+          this.utils.closeLoading;
+        });
       });
-    });
+    }
   }
 
   apiSaveTopic(topic: Topic): Observable<any> {
     this.globalUri = this.utils.globalUrl + "topic/inserttopic";
+    var headers = new HttpHeaders()
+      .set('Access-Control-Allow-Origin', '*')
+      .set('provider', 'native')
+      .set('token', this.utils.token);
+    return this._http.post<any>(this.globalUri, topic, {headers: headers});
+  }
+
+  apiUpdateTopic(topic: Topic): Observable<any> {
+    this.globalUri = this.utils.globalUrl + "topic/updatetopic";
     var headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
@@ -180,6 +283,8 @@ export class TopicarComponent implements OnInit {
 
   openNew() {
     this.newTopicDialog = true;
+    this.updateTopic = false;
+    this.urlimageupload = "";
   }
 
   onFileChange(event: any) {

@@ -45,7 +45,7 @@ public class PersonsEvaluationsApi {
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
         if (res[0].equals("2")) {
             System.out.println("getPersonsevaluations");
-            res = personsEvaluationsService.getPersonsEvaluations(type, id_evaluation,Long.parseLong(clains[0]));
+            res = personsEvaluationsService.getPersonsEvaluations(type, id_evaluation, Long.parseLong(clains[0]));
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
             return new ResponseEntity<>(message, HttpStatus.OK);
         } else {
@@ -56,12 +56,21 @@ public class PersonsEvaluationsApi {
     }
 
     @PostMapping("/insertpersonsevaluations")
-    public ResponseEntity<String> insertPersonsEvaluations(@RequestBody @Validated PersonsEvaluations personsEvaluations, @RequestHeader("token") String sessionToken) {
+    public ResponseEntity<String> insertPersonsEvaluations(@RequestBody @Validated String personsEvaluations, @RequestHeader("token") String sessionToken) {
+        System.out.println("insertpersonsevaluations...");
+        System.out.println(personsEvaluations);
         String message;
         String[] clains = Methods.getDataToJwt(sessionToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
         if (res[0].equals("2")) {
-            res = personsEvaluationsService.savePersonsEvaluations(personsEvaluations, new Person(Long.parseLong(clains[0])));
+            JsonObject jso = Methods.stringToJSON(personsEvaluations);
+            String result_evaluation = Methods.JsonToString(jso, "result_evaluation", "");
+            String qualification_person_evaluation = Methods.JsonToString(jso, "qualification_person_evaluation", "0.0");
+            String timespent_person_evaluation = Methods.JsonToString(jso, "timespent_person_evaluation", "0.0");
+            String evaluations_id_evaluation = Methods.JsonToString(jso, "evaluations_id_evaluation", "");
+
+            res = personsEvaluationsService.savePersonsEvaluations(result_evaluation, qualification_person_evaluation,
+                    timespent_person_evaluation, evaluations_id_evaluation, clains[0]);
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
             if (res[0].equals("2")) {
                 return new ResponseEntity<>(message, HttpStatus.OK);

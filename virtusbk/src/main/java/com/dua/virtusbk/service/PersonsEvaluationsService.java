@@ -24,20 +24,21 @@ public class PersonsEvaluationsService {
     @Autowired
     private PersonsEvaluationsRepository personsEvaluationsDAO;
 
-    public String[] savePersonsEvaluations(PersonsEvaluations personsEvaluations, Person person) {
+    public String[] savePersonsEvaluations(String result_evaluation, String qualification_person_evaluation,
+                                           String timespent_person_evaluation, String evaluations_id_evaluation,
+                                           String persons_id_person) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
-
-        System.out.println(personsEvaluations);
-
-        personsEvaluations.setPersonsIdPerson(person);
+        PersonsEvaluations personsEvaluations = new PersonsEvaluations();
+        personsEvaluations.setResultEvaluation(result_evaluation);
+        personsEvaluations.setQualificationPersonEvaluation(Double.parseDouble(qualification_person_evaluation));
+        personsEvaluations.setTimespentPersonEvaluation(Double.parseDouble(timespent_person_evaluation));
+        personsEvaluations.setPersonsIdPerson(new Person(Long.parseLong(persons_id_person)));
+        personsEvaluations.setEvaluationsIdEvaluation(new Evaluation(Long.parseLong(evaluations_id_evaluation)));
         personsEvaluations.setDateregPersonEvaluation(Methods.nowLocalDateTime());
-
-//        Evaluation evaluation = new Evaluation();
-//        List<PersonsEvaluations> personsEvaluationsList = personsEvaluationsDAO.findByPersonsIdPersonAndEvaluationsIdEvaluation(person, evaluation);
-//        personsEvaluations.setTrynumberPersonEvaluation(personsEvaluationsList.size() + 1);
-
+        List<PersonsEvaluations> personsEvaluationsList = personsEvaluationsDAO.findByPersonsIdPersonAndEvaluationsIdEvaluation(new Person(Long.parseLong(persons_id_person)), new Evaluation(Long.parseLong(evaluations_id_evaluation)));
+        personsEvaluations.setTrynumberPersonEvaluation(personsEvaluationsList.size() + 1);
         personsEvaluations = personsEvaluationsDAO.save(personsEvaluations);
-
+        System.out.println(personsEvaluations);
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("id_person_evaluation", personsEvaluations.getId());
         status = "2";

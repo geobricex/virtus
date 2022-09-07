@@ -83,6 +83,7 @@ export class AppLoginComponent {
         this.storageService.setCurrentSession(this.sessionLog);
         console.log(this.sessionLog);
         this.router.navigateByUrl('/app');
+        //location.reload();
       }
     });
   }

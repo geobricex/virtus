@@ -7,11 +7,13 @@
     <list default="true" id="bbc5533f-4237-4b82-99c8-ccd5e9e0c413" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/querys.sql" beforeDir="false" afterPath="$PROJECT_DIR$/querys.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routines.sql" beforeDir="false" afterPath="$PROJECT_DIR$/routines.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/QuestionApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/QuestionApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/repository/QuestionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/repository/QuestionRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/service/CourseService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/service/CourseService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/service/QuestionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/service/QuestionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtus/proxy.conf.json" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/proxy.conf.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtus/src/app/models/evaluation_questionarie.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/src/app/models/evaluation_questionarie.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtus/src/app/pages/questionnaire/questionnaire.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/src/app/pages/questionnaire/questionnaire.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtus/src/app/pages/updateevacuest/updateevacuest.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/src/app/pages/updateevacuest/updateevacuest.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtus/src/app/pages/updateevacuest/updateevacuest.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/src/app/pages/updateevacuest/updateevacuest.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/PersonsEvaluationsApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/PersonsEvaluationsApi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/service/PersonsEvaluationsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/service/PersonsEvaluationsService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

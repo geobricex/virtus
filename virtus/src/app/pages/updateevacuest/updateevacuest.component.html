@@ -337,8 +337,7 @@
         <ng-template pTemplate="footer">
           <div class="field-radiobutton">
             <p-checkbox [inputId]="'option_ck_2_' + alphabet[i]" name="multiple_Option_img" [value]="option"
-                        [(ngModel)]="questionObject.answers_[0].responses"
-            ></p-checkbox>
+                        [(ngModel)]="questionObject.answers_[0].responses"></p-checkbox>
             <label
               [for]="'option_ck_2_' + alphabet[i]"><strong>{{'Literal ' + alphabet[i].toUpperCase()}}</strong></label>
           </div>
@@ -471,7 +470,7 @@
       </div>
     </div>
     <!--Puzzle-->
-    <div *ngIf="questionObject.name_questioncategory == 'Puzzle'">
+    <div *ngIf="questionObject.name_questioncategory == tipoPregunta(6)">
       <div class="col-12">
         <p-messages severity="warn" [enableService]="true" [closable]="true">
           <ng-template pTemplate>
@@ -483,13 +482,16 @@
           </ng-template>
         </p-messages>
       </div>
-      <h5>Palabra:</h5>
+      <div class="flex align-items-center justify-content-center">
+        <img class="img-color" alt="Card" [src]="questionObject.answers_[0].options_answer[0].resource" height="150">
+      </div>
+      <h5>Puzzle:</h5>
       <div class="centar-botones">
         <div *ngFor="let rowImgPz of tmpPuzzle.arrayImagePuzzle; let y = index">
           <button pButton pRipple *ngFor="let elem of rowImgPz; let x = index"
                   class="p-button-info" [ngClass]="!tmpPuzzle.isActive(x, y) ? 'p-button-outlined': ''"
-                  style="padding: 1px!important;" (click)="tmpPuzzle.mover(x, y)">
-            <img height="35" [src]="elem"/>
+                  style="padding: 1px!important;" (click)="tmpPuzzle.mover(x, y)" >
+            <img [src]="elem"/>
           </button>
         </div>
       </div>
