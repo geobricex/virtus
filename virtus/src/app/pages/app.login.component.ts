@@ -11,6 +11,13 @@ import PocketBase from 'pocketbase';
 import {Person} from "../models/Person";
 import {MessageService} from "primeng/api";
 
+import { initializeApp } from "firebase/app";
+import * as auth from 'firebase/auth';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import {Parser} from "@angular/compiler";
+import firebase from "firebase/compat";
+import UserCredential = firebase.auth.UserCredential;
+
 @Component({
   selector: 'app-login',
   templateUrl: './app.login.component.html',
@@ -28,7 +35,8 @@ export class AppLoginComponent {
     public router: Router,
     private storageService: StorageService,
     private _http: HttpClient,
-    private service: MessageService
+    private service: MessageService,
+    public fAuth: AngularFireAuth
   ) {
     this.forgotPassword_dialog = false;
     this.alreadyHasCode = false;
@@ -127,6 +135,104 @@ export class AppLoginComponent {
       summary: 'Virtus',
       detail: info
     });
+  }
+
+  loginWithFacebook():void{
+    console.log("iniciame con facebook");
+    this.iniciarSesion(new auth.FacebookAuthProvider());
+  }
+
+  loginWithGoogle():void{
+    console.log("iniciame con google");
+    this.iniciarSesion(new auth.GoogleAuthProvider());
+  }
+
+  iniciarSesion(provider: any): void{
+    this.fAuth.signInWithPopup(provider).then(function (result: UserCredential) {
+      let userinfo = result.additionalUserInfo;
+      let userprofile = userinfo!.profile;
+
+
+      let datosUser = {
+        isNewUser: userinfo!.isNewUser,
+        provider: userinfo!.providerId,
+        // @ts-ignore
+        userid: String(userinfo!.profile!.id),
+        userimage: "",
+        useremail: "",
+        username: "",
+        userlastname: "",
+      };
+           console.log(userinfo);
+      switch (userinfo!.providerId) {
+        case "google.com":
+        {
+          // @ts-ignore
+          datosUser['userimage'] = userprofile!.picture;
+          // @ts-ignore
+          datosUser['useremail'] = userprofile!.email;
+          // @ts-ignore
+          datosUser['username'] = userprofile!.given_name;
+          // @ts-ignore
+          datosUser['userlastname'] = userprofile!.family_name;
+        }
+          break;
+        case "facebook.com":
+        {
+          // @ts-ignore
+          datosUser['userimage'] = ("https://graph.facebook.com/" + userprofile.id + "/picture?type=large&amp;width=1080");
+          // @ts-ignore
+          datosUser['useremail'] = userprofile.email;
+          // @ts-ignore
+          datosUser['username'] = userprofile.first_name;
+          // @ts-ignore
+          datosUser['userlastname'] = userprofile.last_name;
+        }
+          break;
+        default:
+          break;
+      }
+      if (datosUser['userlastname'] === undefined)
+      {
+        // @ts-ignore
+        let {username, ...datos} = datosUser;
+        // @ts-ignore
+        username = this.operarnombre(username) as JSON;//dividir el name de forma pro
+        // @ts-ignore
+        datosUser = {...datos, ...username};//juntar ambos json en uno solo :3
+      }
+      console.log("usuario logeado [linea 204]:", datosUser);
+    }).catch(function (error) {
+      console.log("error", error)
+      /*swalDelay({
+        status: 4,
+        tittle: "Service provider error!",
+        information: error.message
+      });*/
+
+    });
+    this.showMessages(4, "Service provider error!", "");
+  }
+
+  operarnombre(paramName: string): any {
+    let partes = paramName.toString().trim().split(" ");
+    let obj = {
+      username: '',
+      userlastname: ''
+    };
+    let limit: number = parseInt((partes.length / 2).toFixed(0), 10);
+    for (let ind = 0; ind < partes.length; ind++) {
+      let minpart = partes[ind];
+      if (minpart.length > 0)
+      {
+        if (ind < limit) {
+          obj['username'] = obj['username'].length > 0 ? " " : "" + minpart;
+        } else {
+          obj['userlastname'] = obj['userlastname'].length > 0 ? " " : "" + minpart;
+        }
+      }
+    }
+    return obj;
   }
 
 }
