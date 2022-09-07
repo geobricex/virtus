@@ -338,76 +338,77 @@ export class QuestionnaireComponent implements OnInit {
         questionItem.answers_[0].responses != undefined)
         //verdadero o falso O unica seleccion
         // console.log("apachurra-----------------------------------------------1");
-      if ((questionItem.name_questioncategory == this.tipoPregunta(2)
-          || questionItem.name_questioncategory == this.tipoPregunta(1))
-        && questionItem.answers_[0].responses != undefined) {
-        // console.log("apachurra-----------------------------------------------2");
-        return [
-          // @ts-ignore
-          questionItem.answers_[0].responses.correct == "Yes", // questionItem.answers_[0].responses.correct !== undefined
-          // @ts-ignore
-          questionItem.answers_[0].responses.correct == "Yes" ? questionItem.maximumpoints_question : 0];
-      } else if (questionItem.name_questioncategory == this.tipoPregunta(3) && questionItem.answers_[0].responses !== undefined) {
-        let flagAlltrue: boolean = true;
-        let indT = 0;
-        let indTS = 0;
-        for (let ind = 0; ind < questionItem.answers_[0].responses.length; ind++) {
-          if (questionItem.answers_[0].responses[ind].correct == "Yes") {
-            indTS++;
-          } else {
-            flagAlltrue = false;
+        if ((questionItem.name_questioncategory == this.tipoPregunta(2)
+            || questionItem.name_questioncategory == this.tipoPregunta(1))
+          && questionItem.answers_[0].responses != undefined) {
+          // console.log("apachurra-----------------------------------------------2");
+          return [
+            // @ts-ignore
+            questionItem.answers_[0].responses.correct == "Yes", // questionItem.answers_[0].responses.correct !== undefined
+            // @ts-ignore
+            questionItem.answers_[0].responses.correct == "Yes" ? questionItem.maximumpoints_question : 0];
+        } else if (questionItem.name_questioncategory == this.tipoPregunta(3) && questionItem.answers_[0].responses !== undefined) {
+          let flagAlltrue: boolean = true;
+          let indT = 0;
+          let indTS = 0;
+          for (let ind = 0; ind < questionItem.answers_[0].responses.length; ind++) {
+            if (questionItem.answers_[0].responses[ind].correct == "Yes") {
+              indTS++;
+            } else {
+              flagAlltrue = false;
+            }
           }
-        }
-        for (let ind = 0; ind < questionItem.answers_[0].options_answer.length; ind++) {
-          if (questionItem.answers_[0].options_answer[ind].correct == "Yes") {
-            indT++;
+          for (let ind = 0; ind < questionItem.answers_[0].options_answer.length; ind++) {
+            if (questionItem.answers_[0].options_answer[ind].correct == "Yes") {
+              indT++;
+            }
           }
-        }
-        return [ // en caso de las evaluaciones,
-          // cambiar "flagAlltrue && indTS == indT"
-          // por "questionItem.answers_[0].responses.length > 0"
-          flagAlltrue && indTS == indT,
-          questionItem.maximumpoints_question * ((indTS / indT) / 100)];
-      } else if (questionItem.name_questioncategory == this.tipoPregunta(4) &&
-        questionItem.answers_[0].complete_parts !== undefined) {
-        // console.log("objeto:", questionItem);
-        let elemento: string[] = [];
-        for (let ind = 0; ind < questionItem.answers_[0].complete_parts!.length; ind++) {
-          if (questionItem.answers_[0].complete_parts![ind] != "$option$") {
-            elemento.push(questionItem.answers_[0].complete_parts![ind]);
-          } else {
-            if (questionItem.answers_[0].options_answer[0].response[ind] != undefined)
-              elemento.push(questionItem.answers_[0].options_answer[0].response[ind].option);
+          return [ // en caso de las evaluaciones,
+            // cambiar "flagAlltrue && indTS == indT"
+            // por "questionItem.answers_[0].responses.length > 0"
+            flagAlltrue && indTS == indT,
+            questionItem.maximumpoints_question * ((indTS / indT) / 100)];
+        } else if (questionItem.name_questioncategory == this.tipoPregunta(4) &&
+          questionItem.answers_[0].complete_parts !== undefined) {
+          // console.log("objeto:", questionItem);
+          let elemento: string[] = [];
+          for (let ind = 0; ind < questionItem.answers_[0].complete_parts!.length; ind++) {
+            if (questionItem.answers_[0].complete_parts![ind] != "$option$") {
+              elemento.push(questionItem.answers_[0].complete_parts![ind]);
+            } else {
+              if (questionItem.answers_[0].options_answer[0].response[ind] != undefined)
+                elemento.push(questionItem.answers_[0].options_answer[0].response[ind].option);
+            }
           }
-        }
-        let flag: boolean = elemento.join('') == questionItem.answers_[0].options_answer[0].description_question_R;
-        console.log(flag, "Respuseta final: ", elemento);
-        return [flag, flag ? questionItem.maximumpoints_question : 0];
-      } else if (questionItem.name_questioncategory == this.tipoPregunta(5)) {
-        //this.questionObject.answers_[0].options_answer
-        //this.questionObject.answers_[0].right_parts
-        let flagAlltrue: boolean = true;
-        let indT = 0;
-        let indTS = 0;
-        for (let ind = 0; ind < questionItem.answers_[0].options_answer.length; ind++) {
-          if ( questionItem.answers_[0].responses !== undefined &&
-             questionItem.answers_[0].options_answer[ind].rightSide
-            == questionItem.answers_[0].responses[ind].rightSide &&
-            questionItem.answers_[0].options_answer[ind].resourse_rightSide
-            == questionItem.answers_[0].responses[ind].resourse_rightSide
-          ) {
-            indTS++;
-          } else {
-            flagAlltrue = false;
+          let flag: boolean = elemento.join('') == questionItem.answers_[0].options_answer[0].description_question_R;
+          console.log(flag, "Respuseta final: ", elemento);
+          return [flag, flag ? questionItem.maximumpoints_question : 0];
+        } else if (questionItem.name_questioncategory == this.tipoPregunta(5)) {
+          //this.questionObject.answers_[0].options_answer
+          //this.questionObject.answers_[0].right_parts
+          let flagAlltrue: boolean = true;
+          let indT = 0;
+          let indTS = 0;
+          for (let ind = 0; ind < questionItem.answers_[0].options_answer.length; ind++) {
+            if (questionItem.answers_[0].options_answer[ind] !== undefined &&
+              questionItem.answers_[0].responses[ind] !== undefined &&
+              questionItem.answers_[0].options_answer[ind].rightSide
+              == questionItem.answers_[0].responses[ind].rightSide &&
+              questionItem.answers_[0].options_answer[ind].resourse_rightSide
+              == questionItem.answers_[0].responses[ind].resourse_rightSide
+            ) {
+              indTS++;
+            } else {
+              flagAlltrue = false;
+            }
           }
+          indT = questionItem.answers_[0].options_answer.length;
+          return [ // en caso de las evaluaciones,
+            // cambiar "flagAlltrue && indTS == indT"
+            // por "questionItem.answers_[0].responses.length > 0"
+            flagAlltrue && indTS == indT,
+            questionItem.maximumpoints_question * ((indTS / indT) / 100)];
         }
-        indT = questionItem.answers_[0].options_answer.length;
-        return [ // en caso de las evaluaciones,
-          // cambiar "flagAlltrue && indTS == indT"
-          // por "questionItem.answers_[0].responses.length > 0"
-          flagAlltrue && indTS == indT,
-          questionItem.maximumpoints_question * ((indTS / indT) / 100)];
-      }
     }
     return [false, 0];
   }
