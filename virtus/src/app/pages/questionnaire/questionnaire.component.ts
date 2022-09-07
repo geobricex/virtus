@@ -283,7 +283,7 @@ export class QuestionnaireComponent implements OnInit {
             }
           }
           if (this.storageService.getCurrentUser().email == "anthony.pachay2017@uteq.edu.ec") {
-            this.cambiarPregunta(14, true);
+            this.cambiarPregunta(11, true);
           } else {
             this.cambiarPregunta(0, true);
           }
@@ -325,7 +325,7 @@ export class QuestionnaireComponent implements OnInit {
       } else {
         return [false, 0];
       }
-    } else if (questionItem.name_questioncategory == this.tipoPregunta(6)) {
+    } else if (questionItem.name_questioncategory == this.tipoPregunta(6) && this.tmpPuzzle !== undefined) {
       let resp: number[] = this.tmpPuzzle.comprobarResultado();
       return [ // en caso de las evaluaciones,
         // cambiar resp[0] == resp[1] por this.tmpPuzzle.primerMovimiento
@@ -364,16 +364,17 @@ export class QuestionnaireComponent implements OnInit {
             flagAlltrue && indTS == indT,
             questionItem.maximumpoints_question * ((indTS / indT) / 100)];
         } else if (questionItem.name_questioncategory == this.tipoPregunta(4)) {
-          console.log("objeto:", questionItem);
+          // console.log("objeto:", questionItem);
           let elemento: string[] = [];
           for (let ind = 0; ind < questionItem.answers_[0].complete_parts!.length; ind++) {
             if (questionItem.answers_[0].complete_parts![ind] != "$option$") {
               elemento.push(questionItem.answers_[0].complete_parts![ind]);
             } else {
-              elemento.push(questionItem.answers_[0].options_answer[0].response[ind].option);
+              if (questionItem.answers_[0].options_answer[0].response[ind] != undefined)
+                elemento.push(questionItem.answers_[0].options_answer[0].response[ind].option);
             }
           }
-          console.log("Respuseta final: ", elemento);
+          // console.log("Respuseta final: ", elemento);
           let flag: boolean = elemento.join('') == questionItem.answers_[0].options_answer[0].description_question_R;
           return [flag, flag ? questionItem.maximumpoints_question : 0];
         } else if (questionItem.name_questioncategory == this.tipoPregunta(5)) {
@@ -399,7 +400,6 @@ export class QuestionnaireComponent implements OnInit {
             // por "questionItem.answers_[0].responses.length > 0"
             flagAlltrue && indTS == indT,
             questionItem.maximumpoints_question * ((indTS / indT) / 100)];
-        } else {
         }
     }
     return [false, 0];
@@ -409,11 +409,12 @@ export class QuestionnaireComponent implements OnInit {
     if (questionItem.name_questioncategory == this.tipoPregunta(4)) {
       return (questionItem.answers_[0].options_answer[0].response !== undefined
         && questionItem.answers_[0].options_answer[0].response.length > 0);
+
     } else if (questionItem.name_questioncategory == this.tipoPregunta(7)) {
       return (questionItem.answers_[0].complete_parts !== undefined
         && questionItem.answers_[0].complete_parts.length > 0);
     } else if (questionItem.name_questioncategory == this.tipoPregunta(6)) {
-      return true;
+      return questionItem.answers_[0].tmpPuzzle !== undefined && questionItem.answers_[0].tmpPuzzle.primerMovimiento;
     } else {
       if (questionItem.answers_[0].responses != undefined)
         return (questionItem.answers_[0].responses.length > 0
@@ -526,6 +527,7 @@ export class QuestionnaireComponent implements OnInit {
         this.tmpPuzzle = new Puzzle();
         // imgPath = "assets/imgresource/empty/notification.png";
         this.tmpPuzzle.crearPuzzle(dimensions, imgPath);
+        this.questionObject.answers_[0].tmpPuzzle = this.tmpPuzzle;
       }
       if (this.questionObject.name_questioncategory == this.tipoPregunta(7)) {
 
@@ -1276,7 +1278,7 @@ export class QuestionnaireComponent implements OnInit {
       } else {
         this.palabra.press = val;
         this.palabra.release = -1;
-        if(this.palabra.firstMovimiento){
+        if (this.palabra.firstMovimiento) {
           this.palabra.firstMovimiento = true;
         }
       }
