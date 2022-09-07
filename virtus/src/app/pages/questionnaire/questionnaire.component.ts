@@ -283,7 +283,7 @@ export class QuestionnaireComponent implements OnInit {
             }
           }
           if (this.storageService.getCurrentUser().email == "anthony.pachay2017@uteq.edu.ec") {
-            this.cambiarPregunta(0, true);
+            this.cambiarPregunta(14, true);
           } else {
             this.cambiarPregunta(0, true);
           }
@@ -381,7 +381,7 @@ export class QuestionnaireComponent implements OnInit {
             }
           }
           let flag: boolean = elemento.join('') == questionItem.answers_[0].options_answer[0].description_question_R;
-          console.log(flag, "Respuseta final: ", elemento);
+          // console.log(flag, "Respuseta final: ", elemento);
           return [flag, flag ? questionItem.maximumpoints_question : 0];
         } else if (questionItem.name_questioncategory == this.tipoPregunta(5)) {
           //this.questionObject.answers_[0].options_answer
@@ -1317,6 +1317,7 @@ function desordenarRow(unArray: any[]): any[] {
   return [...t];
 }
 
+
 class Puzzle {
 
   private maxSizeImg: number = 75;
@@ -1413,6 +1414,36 @@ class Puzzle {
           local_this.arrayPositionPuzzle[x][y] = changeInd;
         }
       }
+      //desordenar las filas
+      for (let y = 0; y < local_this.dimens; y++) {
+        arrayDesorden = desordenarRow(arrayDesorden);
+        for (let x = 0; x < local_this.dimens; x++) {
+          let changeimg: string, changeInd: number;
+          changeimg = local_this.arrayImagePuzzle[y][arrayDesorden[x]];
+          local_this.arrayImagePuzzle[y][arrayDesorden[x]] = local_this.arrayImagePuzzle[y][x];
+          local_this.arrayImagePuzzle[y][x] = changeimg;
+
+          changeInd = local_this.arrayPositionPuzzle[y][arrayDesorden[x]];
+          local_this.arrayPositionPuzzle[y][arrayDesorden[x]] = local_this.arrayPositionPuzzle[y][x];
+          local_this.arrayPositionPuzzle[y][x] = changeInd;
+        }
+      }
+      //console.log("filas ", local_this.arrayPositionPuzzle);
+      //desordenar las columnas
+      for (let y = 0; y < local_this.dimens; y++) {
+        arrayDesorden = desordenarRow(arrayDesorden);
+        for (let x = 0; x < local_this.dimens; x++) {
+          let changeimg: string, changeInd: number;
+          changeimg = local_this.arrayImagePuzzle[arrayDesorden[x]][y];
+          local_this.arrayImagePuzzle[arrayDesorden[x]][y] = local_this.arrayImagePuzzle[x][y];
+          local_this.arrayImagePuzzle[x][y] = changeimg;
+
+          changeInd = local_this.arrayPositionPuzzle[arrayDesorden[x]][y];
+          local_this.arrayPositionPuzzle[arrayDesorden[x]][y] = local_this.arrayPositionPuzzle[x][y];
+          local_this.arrayPositionPuzzle[x][y] = changeInd;
+        }
+      }
+
     };
     img.crossOrigin = "Anonymous";
     img.src = url;
