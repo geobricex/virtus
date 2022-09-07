@@ -69,6 +69,7 @@ public class CourseService implements ReportCertificateCours {
         if (Methods.verifyMaxLength(course.getDescriptionCourse(), 250)
                 && Methods.verifyMaxLength(course.getNameCourse(), 75)) {
             if (Methods.verifyMaxLength(course.getPathimgCourse(), 400)) {
+                course.setDateupdateCourse(Methods.nowLocalDateTime());
                 course = courseDAO.save(course);
 
                 status = "2";

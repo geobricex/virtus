@@ -106,7 +106,6 @@
             <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
               <div *ngIf="question.name_questioncategory == tipoPregunta(7)"
                    class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
-                   (click)="cambiarPregunta(i2)"
               >
                 <span> {{"N°" + (i2 + 1)}} </span>
                 <i
@@ -119,8 +118,7 @@
                           *ngIf="contarTipoPregunta(4) > 0">
             <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
               <div *ngIf="question.name_questioncategory == tipoPregunta(4)"
-                   class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
-                   (click)="cambiarPregunta(i2)">
+                   class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2">
                 <span> {{"N°" + (i2 + 1)}} </span>
                 <i
                   class="pi pi-circle-on mt-1 text-sm {{validarPreguntaResuelta(question)?'text-green-600': 'text-pink-600'}}"
@@ -133,7 +131,6 @@
             <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
               <div *ngIf="question.name_questioncategory == tipoPregunta(5)"
                    class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
-                   (click)="cambiarPregunta(i2)"
               >
                 <span> {{"N°" + (i2 + 1)}} </span>
                 <i
@@ -147,7 +144,6 @@
             <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
               <div *ngIf="question.name_questioncategory == tipoPregunta(6)"
                    class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
-                   (click)="cambiarPregunta(i2)"
               >
                 <span> {{"N°" + (i2 + 1)}} </span>
                 <i
@@ -395,13 +391,16 @@
             </ng-template>
           </p-messages>
         </div>
-        <h5>Palabra:</h5>
+        <div class="flex align-items-center justify-content-center">
+          <img class="img-color" alt="Card" [src]="questionObject.answers_[0].options_answer[0].resource" height="150">
+        </div>
+        <h5>Puzzle:</h5>
         <div class="centar-botones">
           <div *ngFor="let rowImgPz of tmpPuzzle.arrayImagePuzzle; let y = index">
             <button pButton pRipple *ngFor="let elem of rowImgPz; let x = index"
                     class="p-button-info" [ngClass]="!tmpPuzzle.isActive(x, y) ? 'p-button-outlined': ''"
                     style="padding: 1px!important;" (click)="tmpPuzzle.mover(x, y)" >
-              <img height="35" [src]="elem"/>
+              <img [src]="elem"/>
             </button>
           </div>
         </div>
@@ -501,12 +500,12 @@
       <hr>
       <!--      <button pButton pRipple icon="pi pi-step-backward-alt" label="Anterior"-->
       <!--              *ngIf="indexQuestionObject > 0"-->
-      <!--              class="p-button-info mr-2 mb-2" (click)="siguientePregunta()"></button>-->
+      <!--              class="p-button-info mr-2 mb-2" (click)="anteriorPregunta()"></button>-->
       <div class="text-right">
         <button pButton pRipple icon="pi pi-step-forward" id="evt_control_siguiente" label="Siguiente"
                 class="p-button-info mr-2 mb-2"
                 *ngIf="indexQuestionObject < evaluationObject.questions_.length"
-                (click)="anteriorPregunta()"></button>
+                (click)="siguientePregunta()"></button>
       </div>
     </div>
   </div>
