@@ -1,4 +1,7 @@
 <p-toast key="tst" [baseZIndex]="99999"></p-toast>
+<p-confirmDialog [style]="{width: '50vw'}" key="positionDialog" position="bottom" [baseZIndex]="10000"
+                 rejectButtonStyleClass="p-button-outlined"></p-confirmDialog>
+
 <div class="grid">
   <div class="col-12">
     <div class="card">
@@ -141,6 +144,13 @@
                   <img [src]="topic.pathimg_topic" [alt]="topic.name_topic" width="200"
                        pTooltip="Click para subir recursos y evaluaciones" tooltipPosition="right"
                        routerLink="resourcesar/{{topic.id_topic}}"/>
+
+                  <button pButton icon="pi pi-pencil"
+                          class="mb-2 p-button p-button-success p-button-rounded cursor-pointer masinfo"
+                          pTooltip="Editar" tooltipPosition="bottom" (click)="selectedTopic(topic)"></button>
+                  <button pButton icon="pi pi-trash"
+                          class="mb-2 p-button p-button-danger p-button-rounded cursor-pointer editar"
+                          pTooltip="Eliminar" tooltipPosition="bottom" (click)="deleteTopic(topic)"></button>
                 </div>
                 <div class="text-2xl font-bold">{{topic.name_topic}}</div>
                 <div class="mb-3">{{topic.description_topic}}</div>
@@ -157,7 +167,8 @@
 
 </div>
 
-<p-dialog [(visible)]="newTopicDialog" [style]="{width: '450px'}" header="Nuevo tema" [modal]="true"
+<p-dialog [(visible)]="newTopicDialog" [style]="{width: '450px'}" [header]="updateTopic ? 'Editar tema' : 'Editar tema'"
+          [modal]="true"
           class="p-fluid">
   <ng-template pTemplate="content">
     <form [formGroup]="registerFormTopic">
