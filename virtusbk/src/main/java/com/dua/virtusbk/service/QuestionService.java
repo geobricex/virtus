@@ -1,13 +1,20 @@
 package com.dua.virtusbk.service;
 
+import com.dua.virtusbk.ExcludeProxiedFields;
 import com.dua.virtusbk.entity.Question;
 import com.dua.virtusbk.repository.QuestionRepository;
 import com.dua.virtusbk.util.Methods;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -73,15 +80,38 @@ public class QuestionService {
         return new String[]{status, message, data};
     }
 
-    public String[] getQuestion(String id_question) {
+    public String[] getQuestion(String id_question, String id_person) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
+        String questionDAOIdSyllabu = questionDAO.findByIdQuestion(Long.parseLong(id_question), Integer.parseInt(id_person));
+        JsonArray jso = Methods.stringToJsonArray(questionDAOIdSyllabu);
+        if (!jso.toString().equals("[]")) {
+            JSONArray jsonArray = new JSONArray(questionDAOIdSyllabu);
+            data = jsonArray.toString();
+            status = "2";
+            message = "Información obetnida con éxito.";
+            System.out.println(data);
 
+        } else {
+            status = "3";
+            message = "No se ha encontrado información.";
+        }
         return new String[]{status, message, data};
     }
 
     public String[] getQuestions(String id_evaluation) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
+        List<Map<String, Object>> questionDAOIdSyllabu = questionDAO.findByEvaluationsIdEvaluation(Long.parseLong(id_evaluation));
+        if (questionDAOIdSyllabu.size() > 0) {
+            JSONArray jsonArray = new JSONArray(questionDAOIdSyllabu);
+            data = jsonArray.toString();
+            status = "2";
+            message = "Información obetnida con éxito.";
+            System.out.println(data);
 
+        } else {
+            status = "3";
+            message = "No se ha encontrado información.";
+        }
         return new String[]{status, message, data};
     }
 

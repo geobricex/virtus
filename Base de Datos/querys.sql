@@ -30,14 +30,19 @@ select * from evaluation_question_category;
 select *
 from resources
 where topics_id_topic = 29;
+
 select *
 from answers
-        where answers.options_answer ilike  '%11%'
+       -- where answers.options_answer ilike  '%11%'
+
    inner join questions q on answers.questions_id_question = q.id_question
     where q.title_question ilike  '%11%'
-select *
-from courses
 
+select *
+from courses;
+SELECT * FROM questions
+         INNER JOIN answers a on questions.id_question = a.questions_id_question
+         WHERE id_e =
 select *
 from utils;
 

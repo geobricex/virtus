@@ -121,7 +121,7 @@ public class QuestionApi {
             JsonObject jso = Methods.stringToJSON(data);
             if (jso.size() > 0) {
                 String id_question = Methods.JsonToString(jso, "id_question", "");
-                res = questionService.getQuestion(id_question);
+                res = questionService.getQuestion(id_question, clains[0]);
                 message = Methods.getJsonMessage(res[0], res[1], res[2]);
                 if (res[0].equals("2") || res[0].equals("3")) {
                     return new ResponseEntity<>(message, HttpStatus.OK);
