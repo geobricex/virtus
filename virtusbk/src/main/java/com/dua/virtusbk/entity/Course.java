@@ -59,7 +59,7 @@ public class Course {
     @ManyToOne
 //    @Cascade(value={org.hibernate.annotations.CascadeType.ALL})
     @JoinColumn(name = "persons_id_person", nullable = false)
-    @JsonIgnore// No traer toda la relación en una consulta
+    //@JsonIgnore// No traer toda la relación en una consulta
     private Person personsIdPerson;
 
 }
