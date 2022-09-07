@@ -551,14 +551,13 @@
          width="250">
   </div>
   <div class="col-12 text-center"
-       *ngIf="(sweetFakeAlert[1] && questionObject.feedback_question.length > 0 && questionObject.feedback_question !== undefined )
-          || (!sweetFakeAlert[1] && questionObject.hint_question.length > 0 && questionObject.hint_question!== undefined)">
+       *ngIf="(sweetFakeAlerttxt !== undefined && sweetFakeAlerttxt.length > 0)">
     <p-tag styleClass="mr-2" severity="success"
            value="{{sweetFakeAlert[1]?'¿Quieres saber porqué?':'Te daremos una pista'}}"></p-tag>
   </div>
   <div class="col-12 text-center">
     <p class="justify-content-start">
-      {{sweetFakeAlert[1] ? questionObject.feedback_question : questionObject.hint_question}}
+      {{sweetFakeAlerttxt}}
     </p>
   </div>
 </p-dialog>
