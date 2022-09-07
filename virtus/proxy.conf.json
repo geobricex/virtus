@@ -5,7 +5,7 @@
     "logLevel": "debug"
   },
   "/virtus_bk/*": {
-    "target": "http://localhost:8888/",
+    "target": "https://bioforest.uteq.edu.ec/",
     "secure": false,
     "logLevel": "debug"
   }
