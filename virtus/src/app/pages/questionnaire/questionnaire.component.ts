@@ -12,7 +12,7 @@ import {
   EvaluationQuestionsResponse,
   Options,
   OptionsAnswer,
-  Questions
+  Questions, QuestionsModel
 } from "../../models/evaluation_questionarie";
 import {FormBuilder} from '@angular/forms';
 import {StorageService} from "../../authentication/StorageService";
@@ -62,6 +62,7 @@ export class QuestionnaireComponent implements OnInit {
 
   public sweetFakeAlert: boolean[] = [false, true];
   public sweetFakeAlertFin: boolean = false;
+  public sweetFakeAlerttxt: string = "";
 
   public palabra: any = {
     firstMovimiento: false,
@@ -283,7 +284,7 @@ export class QuestionnaireComponent implements OnInit {
             }
           }
           if (this.storageService.getCurrentUser().email == "anthony.pachay2017@uteq.edu.ec") {
-            this.cambiarPregunta(14, true);
+            this.cambiarPregunta(0, true);
           } else {
             this.cambiarPregunta(0, true);
           }
@@ -479,7 +480,7 @@ export class QuestionnaireComponent implements OnInit {
         let [flagCorrect, points] = this.verificarRespuestasCorrectas(this.questionObject);
         this.questionObject.response_points = points;
         console.log(this.questionObject);
-        this.showSwal(flagCorrect);
+        this.showSwal(flagCorrect, this.indexQuestionObject);
         if (!flagCorrect) {
           return;
         } else {
@@ -592,9 +593,13 @@ export class QuestionnaireComponent implements OnInit {
     if (btnStart) (btnStart as HTMLFormElement).click();
   }
 
-  showSwal(correcta: boolean): void {
+  public feedBackQuestionObject: Questions;
+  showSwal(correcta: boolean, indexQuestionObject: number): void {
     this.sweetFakeAlert[0] = true;
     this.sweetFakeAlert[1] = correcta;
+    this.sweetFakeAlerttxt = this.sweetFakeAlert[1] ? this.evaluationObject.questions_[indexQuestionObject].feedback_question :
+      this.evaluationObject.questions_[indexQuestionObject].hint_question
+    this.feedBackQuestionObject = this.evaluationObject.questions_[indexQuestionObject];
     let tiempoSwal$ = timer(0, 1000)
       .subscribe((iter: any) => {
         if (iter >= 10) {

@@ -107,3 +107,12 @@ export interface Options {
   option: string;
   resource: string;
 }
+
+export interface EvaluationResponse{
+  result_evaluation: string; //json
+  qualification_person_evaluation: number
+
+  timespent_person_evaluation: number
+  persons_id_person: number
+  evaluations_id_evaluation: number
+}
