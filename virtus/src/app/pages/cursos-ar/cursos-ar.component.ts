@@ -25,7 +25,7 @@ export class CursosArComponent implements OnInit {
   sortOrder: number;
   sortField: string;
   tmpFile: any;
-  urlimageupload: any;
+  urlimageupload: string = "";
   idiomas: any [];
   loading: boolean = true;
 
@@ -186,15 +186,14 @@ export class CursosArComponent implements OnInit {
   saveCourse() {
     this.utils.loading;
     this.courseSuccessful = true;
+    let urlPhoto: string = "";
 
     if (this.reegisterFormCourse.invalid) {
       return;
     }
 
     if (this.updateCourse) {
-      console.log(this.tmpFile);
       if (this.tmpFile === undefined) {
-        console.log(this.course);
         this.course._nameCourse = this.form['name'].value;
         this.course._descriptionCourse = this.form['description'].value;
         this.course._languageCourse = this.form['language'].value;
@@ -208,9 +207,26 @@ export class CursosArComponent implements OnInit {
             this.utils.closeLoading;
           }
         })
+      } else {
+        this.utils.changeImage(this.tmpFile).then(response => {
+          urlPhoto = this.utils.makePathRecurso(response);
+          this.course._pathimgCourse = urlPhoto;
+          this.apiUpdateCoruse(this.course).subscribe(response => {
+            console.log(response);
+            this.utils.showMessages(response.status, response.information, "tst");
+            this.resetCourse();
+            this.loadCourse();
+            this.utils.closeLoading;
+          });
+        });
       }
     } else {
-      let urlPhoto: string = "";
+      if (this.urlimageupload.length === 0) {
+        this.utils.showMessages(3, "Ingrese una foto relacionada al curso.", "tst");
+        this.utils.closeLoading;
+        return;
+      }
+
       this.utils.changeImage(this.tmpFile).then(response => {
         urlPhoto = this.utils.makePathRecurso(response);
         this.course = new Course(
@@ -266,7 +282,7 @@ export class CursosArComponent implements OnInit {
       //this.imagePath = files;
       reader.readAsDataURL(file);
       reader.onload = (_event) => {
-        this.urlimageupload = reader.result;
+        this.urlimageupload = String(reader.result);
       }
 
       const objectURL = URL.createObjectURL(file);
@@ -285,6 +301,8 @@ export class CursosArComponent implements OnInit {
     this.reegisterFormCourse.reset();
     this.urlimageupload = "";
     this.updateCourse = false;
+    this.urlimageupload = "";
+    console.log(this.urlimageupload);
   }
 
 
