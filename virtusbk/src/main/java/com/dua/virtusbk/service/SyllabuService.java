@@ -7,6 +7,7 @@ import com.dua.virtusbk.util.Methods;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,32 +25,51 @@ public class SyllabuService {
     public String[] saveSyllabu(Syllabu syllabu) {
         System.out.println("saveSyllabu");
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
-        System.out.println(syllabu);
-        syllabu.setDateregSyllabu(Methods.nowLocalDateTime());
-        syllabu.setDateupdateSyllabu(Methods.nowLocalDateTime());
-        syllabu.setStateSyllabu("A");
-        syllabu = syllabuDAO.save(syllabu);
+        if (Methods.verifyMaxLength(syllabu.getDescriptionSyllabu(), 500)
+                && Methods.verifyMaxLength(syllabu.getNameSyllabu(), 100)) {
+            if (Methods.verifyMaxLength(syllabu.getPathimgSyllabus(), 250)) {
+                System.out.println(syllabu);
+                syllabu.setDateregSyllabu(Methods.nowLocalDateTime());
+                syllabu.setDateupdateSyllabu(Methods.nowLocalDateTime());
+                syllabu.setStateSyllabu("A");
+                syllabu = syllabuDAO.save(syllabu);
 
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("id_syllabu", syllabu.getId());
-        status = "2";
-        message = "Módulo registrado con éxito.";
-        data = jsonObject.toString();
-
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("id_syllabu", syllabu.getId());
+                status = "2";
+                message = "Módulo registrado con éxito.";
+                data = jsonObject.toString();
+            } else {
+                status = "3";
+                message = "Longitud excedida del enlace generado.";
+            }
+        } else {
+            status = "3";
+            message = "Longitud excedida en uno de los campos ingresados.";
+        }
         return new String[]{status, message, data};
     }
 
     public String[] updateSyllabu(Syllabu syllabu) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
-
-        syllabu.setDateupdateSyllabu(Methods.nowLocalDateTime());
-        syllabu = syllabuDAO.save(syllabu);
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("id_syllabu", syllabu.getId());
-        status = "2";
-        message = "Módulo actualizado con éxito.";
-        data = jsonObject.toString();
-
+        if (Methods.verifyMaxLength(syllabu.getDescriptionSyllabu(), 500)
+                && Methods.verifyMaxLength(syllabu.getNameSyllabu(), 100)) {
+            if (Methods.verifyMaxLength(syllabu.getPathimgSyllabus(), 250)) {
+                syllabu.setDateupdateSyllabu(Methods.nowLocalDateTime());
+                syllabu = syllabuDAO.save(syllabu);
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("id_syllabu", syllabu.getId());
+                status = "2";
+                message = "Módulo actualizado con éxito.";
+                data = jsonObject.toString();
+            } else {
+                status = "3";
+                message = "Longitud excedida del enlace generado.";
+            }
+        } else {
+            status = "3";
+            message = "Longitud excedida en uno de los campos ingresados.";
+        }
         return new String[]{status, message, data};
     }
 
@@ -59,8 +79,10 @@ public class SyllabuService {
 
         List<Map<String, Object>> syllabus = syllabuDAO.findByIdCourseList(Long.parseLong(id_course));
         if (syllabus.size() > 0) {
-            Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();
-            data = gson.toJson(syllabus);
+//            Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();
+//            data = gson.toJson(syllabus);
+            JSONArray jsonArray = new JSONArray(syllabus);
+            data = jsonArray.toString();
             status = "2";
             message = "Información obetnida con éxito.";
             System.out.println(data);

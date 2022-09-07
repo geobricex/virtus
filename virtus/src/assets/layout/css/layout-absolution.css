@@ -5453,6 +5453,22 @@ p:last-child {
   margin-top: 1rem !important;
 }
 
+.editar {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  margin-left: 1rem !important;
+  margin-top: 4rem !important;
+}
+
+.eliminar {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  margin-left: 1rem !important;
+  margin-top: 7rem !important;
+}
+
 .container-masinfo {
   position: absolute;
   top: 0;

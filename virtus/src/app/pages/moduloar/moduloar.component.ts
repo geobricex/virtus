@@ -7,6 +7,8 @@ import {Course} from "../../models/Course";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {ActivatedRoute} from "@angular/router";
 import {Modules} from "../../models/Modules";
+import {Person} from "../../models/Person";
+import {ConfirmationService} from "primeng/api";
 
 
 @Component({
@@ -28,6 +30,7 @@ export class ModuloarComponent implements OnInit {
   loading: boolean = true;
   loadingDataCourse: boolean = true;
   dataCourse: any;
+  updateModule: boolean = false;
 
   registerFormModule: FormGroup;
   moduleSuccessful = false;
@@ -41,7 +44,8 @@ export class ModuloarComponent implements OnInit {
     private utils: Utils,
     private _http: HttpClient,
     private _route: ActivatedRoute,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private confirmationService: ConfirmationService
   ) {
     this.idCourse = this._route.snapshot.paramMap.get("idcourse");
     this.breadcrumbService.setItems([
@@ -61,6 +65,64 @@ export class ModuloarComponent implements OnInit {
       }
     );
     this.loadDataCourse();
+  }
+
+  selectedModule(module: any) {
+    this.updateModule = true;
+    this.newModuleDialog = true;
+    this.form["name"].setValue(module.name_syllabu);
+    this.form["description"].setValue(module.description_syllabu);
+    this.form["keywords"].setValue(module.keywords_syllabu);
+    this.urlimageupload = module.pathimg_syllabus
+
+    this.module = new Modules(
+      module.id_syllabu,
+      this.form['name'].value,
+      this.form['description'].value,
+      this.form['keywords'].value,
+      this.urlimageupload, module.datereg_syllabu.toString().replaceAll(".0", ""),
+      module.dateupdate_syllabu.toString().replaceAll(".0", ""), module.state_syllabu);
+    let courseAux = new Course(parseInt(this.idCourse === null ? "0" : this.idCourse),
+      "", "", "", "",
+      "", "", "", "", "");
+    this.module._coursesIdCourse = courseAux;
+
+  }
+
+  deleteModule(module: any) {
+    this.confirmationService.confirm({
+      message: '¿Seguro que desea deshabilitar el curso?',
+      header: 'Mensaje de confirmación',
+      icon: 'pi pi-info-circle',
+      acceptLabel: "Si",
+      rejectLabel: "No",
+      accept: () => {
+        this.utils.loading;
+        this.module = new Modules(
+          module.id_syllabu,
+          module.name_syllabu,
+          module.description_syllabu,
+          module.keywords_syllabu,
+          module.pathimg_syllabus, module.datereg_syllabu.toString().replaceAll(".0", ""),
+          module.dateupdate_syllabu.toString().replaceAll(".0", ""), "I");
+        let courseAux = new Course(parseInt(this.idCourse === null ? "0" : this.idCourse),
+          "", "", "", "",
+          "", "", "", "", "");
+        this.module._coursesIdCourse = courseAux;
+        console.log(this.module);
+        this.apiUpdateModule(this.module).subscribe({
+          next: response => {
+            this.utils.showMessages(response.status, response.information, "tst");
+            this.loadCourse();
+            this.resetModule();
+            this.utils.closeLoading;
+          }
+        })
+      },
+      reject: () => {
+      },
+      key: "positionDialog"
+    });
   }
 
   loadDataCourse() {
@@ -83,37 +145,54 @@ export class ModuloarComponent implements OnInit {
   }
 
   saveModule() {
+    this.utils.loading;
     this.moduleSuccessful = true;
 
     if (this.registerFormModule.invalid) {
       return;
     }
 
-    console.log(this.form['name'].value);
-    console.log(this.form['description'].value);
-    console.log(this.form['keywords'].value);
-    let urlPhoto: string = "";
-    this.utils.changeImage(this.tmpFile).then(response => {
-      urlPhoto = this.utils.makePathRecurso(response);
-      this.module = new Modules(
-        0,
-        this.form['name'].value,
-        this.form['description'].value,
-        this.form['keywords'].value,
-        urlPhoto, "", "", ""
-      )
-      let courseAux = new Course(parseInt(this.idCourse === null ? "0" : this.idCourse),
-        "", "", "", "",
-        "", "", "", "", "");
-      this.module._coursesIdCourse = courseAux;
-      console.log(this.module)
-      this.apiSaveCourse(this.module).subscribe(response => {
-        this.utils.showMessages(response.status, response.information, "tst");
-        this.loadCourse();
-        this.resetModule();
-      });
-    });
+    if (this.updateModule) {
+      if (this.tmpFile === undefined) {
+        this.module._nameSyllabu = this.form['name'].value;
+        this.module._descriptionSyllabu = this.form['description'].value;
+        this.module._keywordsSyllabu = this.form['keywords'].value;
+        console.log(this.module);
+        this.apiUpdateModule(this.module).subscribe({
+          next: response => {
+            this.utils.showMessages(response.status, response.information, "tst");
+            this.loadCourse();
+            this.resetModule();
+            this.utils.closeLoading;
+          }
+        })
+      } else {
 
+      }
+    } else {
+      let urlPhoto: string = "";
+      this.utils.changeImage(this.tmpFile).then(response => {
+        urlPhoto = this.utils.makePathRecurso(response);
+        this.module = new Modules(
+          0,
+          this.form['name'].value,
+          this.form['description'].value,
+          this.form['keywords'].value,
+          urlPhoto, "", "", ""
+        )
+        let courseAux = new Course(parseInt(this.idCourse === null ? "0" : this.idCourse),
+          "", "", "", "",
+          "", "", "", "", "");
+        this.module._coursesIdCourse = courseAux;
+        console.log(this.module)
+        this.apiSaveCourse(this.module).subscribe(response => {
+          this.utils.showMessages(response.status, response.information, "tst");
+          this.loadCourse();
+          this.resetModule();
+          this.utils.closeLoading;
+        });
+      });
+    }
   }
 
   resetModule() {
@@ -124,6 +203,8 @@ export class ModuloarComponent implements OnInit {
 
   openNew() {
     this.newModuleDialog = true;
+    this.updateModule = false;
+    this.urlimageupload = "";
   }
 
   loadCourse() {
@@ -143,6 +224,15 @@ export class ModuloarComponent implements OnInit {
 
   apiSaveCourse(module: Modules): Observable<any> {
     this.globalUri = this.utils.globalUrl + "syllabu/insertsyllabu";
+    var headers = new HttpHeaders()
+      .set('Access-Control-Allow-Origin', '*')
+      .set('provider', 'native')
+      .set('token', this.utils.token);
+    return this._http.post<any>(this.globalUri, module, {headers: headers});
+  }
+
+  apiUpdateModule(module: Modules): Observable<any> {
+    this.globalUri = this.utils.globalUrl + "syllabu/updatesyllabu";
     var headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')

@@ -49,6 +49,7 @@ export interface QuestionsModel {
   pointsQuestion: boolean;
   stateQuestion: string;
   titleQuestion: string;
+  levelQuestion: number;
   evaluationsIdEvaluation: EvaluationModel;
   questionCategoryIdQuestionCategory: QuestionCategory
 }

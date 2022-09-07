@@ -86,7 +86,9 @@ public class PersonService {
         if (Methods.comprobeEmail(person.getEmailPerson())
                 && ((Methods.comprobePassword(person.getPasswordPerson())
                 && person.getProviderPerson().equals("native")))
-                && Methods.testregex("[0-9]+\\-[0-9]+\\-[0-9]+", person.getIdLocation())) {
+                && Methods.testregex("[0-9]+\\-[0-9]+\\-[0-9]+", person.getIdLocation())
+                && Methods.verifyMaxLength(person.getNamePerson(), 50)
+                && Methods.verifyMaxLength(person.getLastnamePerson(), 50)) {
             System.out.println("sigUp...");
             List<Person> Persons = personDAO.findByEmailList(person.getEmailPerson());
             if (Persons.size() == 0) {// no exista un usuario con el correo electrónico
@@ -140,9 +142,11 @@ public class PersonService {
 
         if (Methods.isInteger(person.getId().toString())
                 //Methods.testregex("[0-9]+\\-[0-9]+\\-[0-9]+", person.getIdLocation()
-            // && Methods.comprobeEmail(person.getEmailPerson())
-            // && ((Methods.comprobePassword(person.getPasswordPerson())
-            // && person.getProviderPerson().equals("native")))
+                // && Methods.comprobeEmail(person.getEmailPerson())
+                // && ((Methods.comprobePassword(person.getPasswordPerson())
+                // && person.getProviderPerson().equals("native")))
+                && Methods.verifyMaxLength(person.getNamePerson(), 50)
+                && Methods.verifyMaxLength(person.getLastnamePerson(), 50)
         ) {
             System.out.println(person);
 

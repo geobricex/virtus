@@ -5,7 +5,16 @@ import {Utils} from "../../util/Utils";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Observable} from "rxjs";
-import {Evaluation, EvaluationQuestionsResponse, Questions} from "../../models/evaluation_questionarie";
+import {
+  Evaluation, EvaluationModel,
+  EvaluationQuestionsResponse,
+  Options,
+  OptionsAnswer, QuestionCategory,
+  Questions, QuestionsModel
+} from "../../models/evaluation_questionarie";
+import {Modules} from "../../models/Modules";
+import {Course} from "../../models/Course";
+import {ConfirmationService} from "primeng/api";
 
 @Component({
   selector: 'app-updateevacuest',
@@ -21,20 +30,31 @@ export class UpdateevacuestComponent implements OnInit {
   globalUrl: string = "";
   typeEvalutionform: any[];
   new_question_dialog: boolean = false;
+  new_question_view_dialog: boolean = false;
   quantity_true: number;
   quantityQuestions: any[];
-
+  public tmpPuzzle: Puzzle;
   public evaluationObject: Evaluation;
   public questionObject: Questions;
+  public objectQuestionModule = {} as QuestionsModel;
+  public objetctEvaluation = {} as EvaluationModel;
+  public objectQuestionCategory = {} as QuestionCategory;
+  globalUri: string = "";
 
   frmEvaliationCuestionary: FormGroup;
+  public alphabet: string[] = [
+    "a", "b", "c", "d", "e", "f", "g", "h", "i", "j",
+    "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s",
+    "t", "u", "v", "w", "x", "y", "z"
+  ];
 
   constructor(
     private _route: ActivatedRoute,
     private breadcrumbService: BreadcrumbService,
     private utils: Utils,
     private _http: HttpClient,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private confirmationService: ConfirmationService
   ) {
     this.idCourse = this._route.snapshot.paramMap.get("idcourse");
     this.idModule = this._route.snapshot.paramMap.get("idmodule");
@@ -54,7 +74,7 @@ export class UpdateevacuestComponent implements OnInit {
         routerLink: ['/app/coursear/modulear/' + this.idCourse + '/topicar/' + this.idModule + '/resourcesar/' + this.idTopic]
       },
       {
-        label: 'Edicion de evaluaciones',
+        label: 'Edición de evaluaciones',
         routerLink: ['/app/coursear/modulear/' + this.idCourse + '/topicar/' + this.idModule + '/resourcesar/' + this.idTopic + '/update_evaluation/' + this.idEvaluation]
       }
     ]);
@@ -83,16 +103,67 @@ export class UpdateevacuestComponent implements OnInit {
     this.selectQuantityQuestions();
   }
 
+  deleteQuestion(question: Questions, idcategory: number) {
+    this.confirmationService.confirm({
+      message: '¿Seguro que desea eliminar la pregunta?',
+      header: 'Mensaje de confirmación',
+      icon: 'pi pi-info-circle',
+      acceptLabel: "Si",
+      rejectLabel: "No",
+      accept: () => {
+        this.utils.loading;
+        console.log("pregunta", question);
+        this.objectQuestionModule.id = question.id_question;
+        this.objectQuestionModule.feedbackQuestion = question.feedback_question;
+        this.objectQuestionModule.hintQuestion = question.hint_question;
+        this.objectQuestionModule.descriptionQuestion = question.description_question;
+        this.objectQuestionModule.titleQuestion = question.title_question;
+        this.objectQuestionModule.maximumpointsQuestion = question.maximumpoints_question;
+        this.objectQuestionModule.pointsQuestion = question.points_question;
+        this.objectQuestionModule.pathurlfileQuestion = question.pathurlfile_question;
+        this.objectQuestionModule.pathurlsignQuestion = question.pathurlsign_question;
+        this.objectQuestionModule.pathurlvideoQuestion = question.pathurlvideo_question;
+        this.objectQuestionModule.levelQuestion = question.level_question;
+        this.objetctEvaluation.id = this.idEvaluation;
+        this.objectQuestionModule.evaluationsIdEvaluation = this.objetctEvaluation;
+        this.objectQuestionCategory.id = idcategory
+        this.objectQuestionModule.questionCategoryIdQuestionCategory = this.objectQuestionCategory;
+        this.objectQuestionModule.stateQuestion = "I";
+        console.log(this.objectQuestionModule);
+        this.apiUpdateQuestion(this.objectQuestionModule).subscribe({
+          next: response => {
+            console.log(response);
+            this.utils.showMessages(response.status, response.information, "tst");
+            this.loadQuestions();
+            this.utils.closeLoading;
+          }
+        })
+      },
+      reject: () => {
+      },
+      key: "positionDialog"
+    });
+  }
+
+  apiUpdateQuestion(question = {} as QuestionsModel) {
+    this.globalUri = this.utils.globalUrl + "question/updatequestion";
+    var headers = new HttpHeaders()
+      .set('Access-Control-Allow-Origin', '*')
+      .set('provider', 'native')
+      .set('token', this.utils.token);
+    return this._http.post<any>(this.globalUri, question, {headers: headers});
+  }
+
   selectQuantityQuestions() {
-    this.utils.loading;
+    //this.utils.loading;
     this.apiSelectQuantityQuestions().subscribe({
       next: response => {
         this.quantityQuestions = response.data;
         console.log(this.quantityQuestions);
         // console.log(this.quantityQuestions[0].number_question);
 
-        this.utils.showMessages(response.status, response.information, "tst")
-        this.utils.closeLoading;
+        //this.utils.showMessages(response.status, response.information, "tst")
+        //this.utils.closeLoading;
       }
     })
   }
@@ -113,20 +184,21 @@ export class UpdateevacuestComponent implements OnInit {
     }, {headers: headers});
   }
 
-  updateQuantityQuestions(idcategory: number) {
+  updateQuantityQuestions(idcategory: number, pos: number) {
     this.utils.loading;
-    this.apiUpdateQuantityQuestions(idcategory).subscribe({
+    this.apiUpdateQuantityQuestions(idcategory, pos).subscribe({
       next: response => {
         console.log(response);
         this.quantity_true = 0;
         this.utils.showMessages(response.status, response.information, "tst")
         this.utils.closeLoading;
+        this.selectQuantityQuestions();
       }
     })
   }
 
-  apiUpdateQuantityQuestions(idcategory: number): Observable<any> {
-    console.log(this.quantity_true);
+  apiUpdateQuantityQuestions(idcategory: number, pos: number): Observable<any> {
+    console.log(this.quantityQuestions[pos].number_question);
     let url_gq: string;
     url_gq = this.utils.globalUrl;
     url_gq += "evaluation/updateQuantityQuestions";
@@ -142,7 +214,7 @@ export class UpdateevacuestComponent implements OnInit {
     }
 
     return this._http.post<any>(url_gq, {
-      "quantity_question": this.quantity_true,
+      "quantity_question": this.quantityQuestions[pos].number_question,
       "id_evaluation": (String(this.idEvaluation)),
       "id_question_category": String(idcategory)
     }, {headers: headers});
@@ -182,15 +254,13 @@ export class UpdateevacuestComponent implements OnInit {
   }
 
   apiLoadDataEvaluation(): Observable<any> {
-    this.globalUrl = this.utils.globalUrl + "evaluation/updateQuantityQuestions";
+    this.globalUrl = this.utils.globalUrl + "evaluation/getevaluation";
     let headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
       .set('token', this.utils.token);
     return this._http.post(this.globalUrl, {
-      "quantity_question": this.idEvaluation,
-      "id_evaluation": "",
-      "id_question_category": ""
+      "id_evaluation": this.idEvaluation
     }, {headers: headers});
   }
 
@@ -233,4 +303,229 @@ export class UpdateevacuestComponent implements OnInit {
     return resp;
   }
 
+  public palabra: any = {
+    press: -1,
+    released: -1
+  };
+
+  clickUp(val: number): void {
+    console.log(" set", val);
+    if (val !== undefined && this.questionObject.answers_[0].complete_parts![val] !== "space") {
+      if (this.palabra.release === val) {
+        this.palabra.release = -1;
+      } else {
+        this.palabra.release = val;
+        console.log("poner", this.alphabet[this.palabra.press], "en ", this.palabra.release);
+        this.questionObject.answers_[0].complete_parts![this.palabra.release] = this.alphabet[this.palabra.press];
+        this.palabra.press = -1;
+        this.palabra.release = -1;
+      }
+    }
+  }
+
+  clickDown(val: number): void {
+    console.log("key", val, this.palabra.press === val);
+    if (val !== undefined) {
+      if (this.palabra.press === val) {
+        this.palabra.press = -1;
+      } else {
+        this.palabra.press = val;
+        this.palabra.release = -1;
+      }
+    }
+  }
+
+  showLetra(letra: string, indice: number): string {
+    if (letra === ' ')
+      return 'space';
+    if (this.questionObject.answers_[0].complete_parts![indice] == undefined)
+      return 'void';
+    else {
+      return this.questionObject.answers_[0].complete_parts![indice];
+    }
+  }
+
+  partirPreguntaComplete(quest: string): string[] {
+    return quest.split(/[\{\}]/);
+  }
+
+  desordenar(unArray: any[]): any[] {
+    let t = unArray.sort(function (a, b) {
+      return (Math.random() - 0.5)
+    });
+    return [...t];
+  }
+
+  previewQuestion(question: Questions) {
+    this.new_question_view_dialog = true;
+    this.questionObject = question;
+
+    console.log(this.questionObject != undefined && this.questionObject != null);
+
+
+    let rec: string = "";
+    if (this.questionObject.name_questioncategory !== this.tipoPregunta(7)) {
+      rec = this.questionObject.answers_[0].options_answer[0].resource!;
+    }
+    rec = rec != undefined ? rec : "";
+    this.questionObject.canResource = (rec.length > 0);
+
+    if (this.questionObject.name_questioncategory == this.tipoPregunta(4)) {
+      for (let i = 0; i < this.questionObject.answers_[0].options_answer.length; i++) {
+        this.questionObject.answers_[0].complete_parts = this.partirPreguntaComplete(this.questionObject.answers_[0].options_answer[i].description_question);
+      }
+    }
+
+    if (this.questionObject.name_questioncategory == this.tipoPregunta(5)) {
+      this.questionObject.answers_[0].right_parts = Array<OptionsAnswer>(0);
+      let tmp: OptionsAnswer;
+      for (let index = 0; index < this.questionObject.answers_[0].options_answer.length; index++) {
+
+        tmp = this.questionObject.answers_[0].options_answer[index];
+        tmp.ind = index;
+        this.questionObject.answers_[0].right_parts.push(tmp);
+      }
+      this.questionObject.answers_[0].right_parts = this.desordenar(this.questionObject.answers_[0].right_parts);
+      console.log("tipo pregujnta 5", this.questionObject.answers_[0].right_parts);
+      this.questionObject.answers_[0].responses = Array<OptionsAnswer>(this.questionObject.answers_[0].options_answer.length - 1);
+    }
+    if (this.questionObject.name_questioncategory == this.tipoPregunta(6)) {
+      let imgPath: string = this.questionObject.answers_[0].options_answer[0].resource!;
+      let dimensions: number = this.questionObject.answers_[0].options_answer[0].piece_questionarie!;
+      this.tmpPuzzle = new Puzzle();
+      this.tmpPuzzle.crearPuzzle(dimensions, imgPath);
+    }
+    if (this.questionObject.name_questioncategory == this.tipoPregunta(7)) {
+
+      let tmpOpcion: OptionsAnswer = this.questionObject.answers_[0].options_answer[0];
+      console.log("pregunta tipo 7:", tmpOpcion);
+
+      this.questionObject.answers_[0].complete_parts = Array<string>(tmpOpcion.opcion.split("").length);
+
+    }
+    console.log("pregunta: ", this.questionObject);
+
+
+  }
+}
+
+class Puzzle {
+
+  private maxSizeImg: number = 25;
+  private dimens: number = 3;
+
+  public arrayImagePuzzle: string[][];
+  public arrayPositionPuzzle: number[][];
+
+  // public objImagePuzzleuzzle: string;
+
+  public puzzleControls: any = {
+    complete: false,
+    pressed: {x: -1, y: -1},
+    released: {x: -1, y: -1}
+  };
+
+  crearPuzzle(cantidad: number, url: string): void {
+    this.dimens = Math.sqrt(cantidad);
+
+    let maxSizeImg = this.maxSizeImg * this.dimens;
+    this.arrayImagePuzzle = new Array<string[]>(cantidad);
+    this.arrayPositionPuzzle = new Array<number[]>(cantidad);
+    let mecanvas = document.createElement("canvas") as HTMLCanvasElement;
+    //let mecanvas = document.getElementById("tmpImagenCanvas") as HTMLCanvasElement;
+    console.log(mecanvas);
+    mecanvas.width = maxSizeImg;
+    mecanvas.height = maxSizeImg;
+    let ctx = mecanvas.getContext('2d')!;
+    let local_this = this;
+    let img = new Image();
+    img.onload = function () {
+      img.width = maxSizeImg;
+      img.height = maxSizeImg;
+
+      ctx.drawImage(img, 0, 0, maxSizeImg, maxSizeImg);
+      let ind = 0;
+      for (let y = 0; y < local_this.dimens; y++) {
+        local_this.arrayImagePuzzle[y] = new Array<string>(local_this.dimens);
+        local_this.arrayPositionPuzzle[y] = new Array<number>(local_this.dimens);
+        for (let x = 0; x < local_this.dimens; x++) {
+          let imgData = ctx.getImageData(x * local_this.maxSizeImg, y * local_this.maxSizeImg,
+            (x * local_this.maxSizeImg) + local_this.maxSizeImg,
+            (y * local_this.maxSizeImg) + local_this.maxSizeImg);
+          let mincanvas = document.createElement("canvas") as HTMLCanvasElement;
+          mincanvas.width = local_this.maxSizeImg;
+          mincanvas.height = local_this.maxSizeImg;
+          let minctx = mincanvas.getContext('2d')!;
+          minctx.putImageData(imgData, 0, 0);
+
+          console.log("base64: ", mincanvas.toDataURL());
+          local_this.arrayImagePuzzle[y][x] = mincanvas.toDataURL();
+          local_this.arrayPositionPuzzle[y][x] = ind++;
+        }
+      }
+      /*let imgData = ctx.getImageData(0, 0, local_this.maxSizeImg, local_this.maxSizeImg);
+      let mincanvas = document.createElement("canvas") as HTMLCanvasElement;
+      mincanvas.width = local_this.maxSizeImg;
+      mincanvas.height = local_this.maxSizeImg;
+      let minctx = mincanvas.getContext('2d')!;
+      minctx.putImageData(imgData, 0, 0);
+
+      console.log("base64: ", mincanvas.toDataURL());
+      local_this.objImagePuzzle = mincanvas.toDataURL();*/
+    };
+    img.crossOrigin = "Anonymous";
+    img.src = url;
+  }
+
+  mover(x: number, y: number) {
+    if (!this.puzzleControls.complete) {
+      this.puzzleControls.pressed = {x: x, y: y};
+      this.puzzleControls.complete = true;
+    } else {
+      this.puzzleControls.released = {x: x, y: y};
+
+      let auxInd = this.arrayPositionPuzzle[this.puzzleControls.released.y][this.puzzleControls.released.x];
+      this.arrayPositionPuzzle[this.puzzleControls.released.y][this.puzzleControls.released.x] =
+        this.arrayPositionPuzzle[this.puzzleControls.pressed.y][this.puzzleControls.pressed.x];
+      this.arrayPositionPuzzle[this.puzzleControls.pressed.y][this.puzzleControls.pressed.x] = auxInd;
+
+      let auxbase64 = this.arrayImagePuzzle[this.puzzleControls.released.y][this.puzzleControls.released.x];
+      this.arrayImagePuzzle[this.puzzleControls.released.y][this.puzzleControls.released.x] =
+        this.arrayImagePuzzle[this.puzzleControls.pressed.y][this.puzzleControls.pressed.x];
+      this.arrayImagePuzzle[this.puzzleControls.pressed.y][this.puzzleControls.pressed.x] = auxbase64;
+
+      //hacer truco de cambio
+      this.puzzleControls.pressed = {x: -1, y: -1};
+      this.puzzleControls.released = {x: -1, y: -1};
+      this.puzzleControls.complete = false;
+    }
+  }
+
+  isActive(x: number, y: number) {
+    //if(!this.puzzleControls.complete){
+    return (this.puzzleControls.pressed.x === x && this.puzzleControls.pressed.y === y);
+    //(this.puzzleControls.rel.x === x && this.puzzleControls.pressed.y === y)
+    /*}
+    return false;*/
+  }
+
+  desordenar(unArray: any[]): any[] {
+    let t = unArray.sort(function (a, b) {
+      return (Math.random() - 0.5)
+    });
+    return [...t];
+  }
+
+  comprobarResultado(): number[] {
+    let ind = 0, success = 0;
+    for (let y = 0; y < this.dimens; y++) {
+      for (let x = 0; x < this.dimens; x++) {
+        if (this.arrayPositionPuzzle[y][x] == ind) {
+          success++; //fichas en el lugar correcto
+        }
+        ind++;
+      }
+    }
+    return [success, this.dimens * this.dimens];
+  }
 }

@@ -1,3 +1,5 @@
+import {Person} from "./Person";
+
 export class Course {
   private id: number;
   private nameCourse: string;
@@ -9,6 +11,7 @@ export class Course {
   private stateCourse: string;
   private languageCourse: string;
   private priceCourse: string;
+  private personsIdPerson: Person;
 
 
   constructor(id: number, nameCourse: string, descriptionCourse: string, keywordsCourse: string, pathimgCourse: string, dateregCourse: string, dateupdateCourse: string, stateCourse: string, languageCourse: string, priceCourse: string) {
@@ -102,5 +105,14 @@ export class Course {
 
   set _priceCourse(value: string) {
     this.priceCourse = value;
+  }
+
+
+  get _personsIdPerson(): Person {
+    return this.personsIdPerson;
+  }
+
+  set _personsIdPerson(value: Person) {
+    this.personsIdPerson = value;
   }
 }

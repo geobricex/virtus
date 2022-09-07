@@ -38,31 +38,51 @@ public class CourseService implements ReportCertificateCours {
 
     public String[] saveCourse(Course course, String id_person) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
+        if (Methods.verifyMaxLength(course.getDescriptionCourse(), 250)
+                && Methods.verifyMaxLength(course.getNameCourse(), 75)) {
+            if (Methods.verifyMaxLength(course.getPathimgCourse(), 400)) {
+                course.setPersonsIdPerson(new Person(Long.parseLong(id_person)));
+                course.setDateregCourse(Methods.nowLocalDateTime());
+                course.setDateupdateCourse(Methods.nowLocalDateTime());
+                course.setStateCourse("A");
+                course = courseDAO.save(course);
 
-        course.setPersonsIdPerson(new Person(Long.parseLong(id_person)));
-        course.setDateregCourse(Methods.nowLocalDateTime());
-        course.setDateupdateCourse(Methods.nowLocalDateTime());
-        course.setStateCourse("A");
-        course = courseDAO.save(course);
-
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("id_course", course.getId());
-        status = "2";
-        message = "Curso registrado con éxito.";
-        data = jsonObject.toString();
-
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("id_course", course.getId());
+                status = "2";
+                message = "Curso registrado con éxito.";
+                data = jsonObject.toString();
+            } else {
+                status = "3";
+                message = "Longitud excedida del enlace generado.";
+            }
+        } else {
+            status = "3";
+            message = "Longitud excedida en uno de los campos ingresados.";
+        }
         return new String[]{status, message, data};
     }
 
     public String[] updateCourse(Course course, String id_person) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
+        System.out.println("updateCourse");
+        if (Methods.verifyMaxLength(course.getDescriptionCourse(), 250)
+                && Methods.verifyMaxLength(course.getNameCourse(), 75)) {
+            if (Methods.verifyMaxLength(course.getPathimgCourse(), 400)) {
+                course.setDateupdateCourse(Methods.nowLocalDateTime());
+                course = courseDAO.save(course);
 
-        course = courseDAO.save(course);
-
-        status = "2";
-        message = "Curso actualizado con éxito.";
-        data = "[{\"id_course\":" + course.getId() + "}]";
-
+                status = "2";
+                message = "Curso actualizado con éxito.";
+                data = "[{\"id_course\":" + course.getId() + "}]";
+            } else {
+                status = "3";
+                message = "Longitud excedida del enlace generado.";
+            }
+        } else {
+            status = "3";
+            message = "Longitud excedida en uno de los campos ingresados.";
+        }
         return new String[]{status, message, data};
     }
 

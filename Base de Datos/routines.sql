@@ -1,18 +1,17 @@
-create function questions_all_select(id_parameter_evaluation integer, id_parameter_person integer)
+create function question_select(id_parameter_question integer, id_parameter_person integer)
     returns TABLE(information text)
     language plpgsql
 as
 $$
 DECLARE
-    --trueorFalse record:= null;
-    --simpleOption record:= null;
+
   BEGIN
   	BEGIN
-    --topic -
+    --question -
 
-    -- SELECT information FROM questions_select(11,1);
+    -- SELECT information FROM question_select(1,1);
 
-    -- select * from evaluations;
+    -- select * from question;
 
 			return query select (select COALESCE(array_to_json(array_agg(row_to_json(evaluation_.*))),'[]') as evaluation
 			 from (
@@ -33,10 +32,10 @@ DECLARE
 			                       where questions.evaluations_id_evaluation = evaluations.id_evaluation
 			                             and state_question = 'A' and qc.id_questioncategory = 1 and qc.state_questioncategory = 'A'
 			                       order by question_category_id_questioncategory, order_question
--- 			                       limit ( select eqc2.number_question
---                                            from evaluation_question_category as eqc2
---                                            where eqc2.evaluations_id_evaluation = evaluations.id_evaluation
---                                            and eqc2.question_category_id_questioncategory = 1)
+			                       limit ( select eqc2.number_question
+                                           from evaluation_question_category as eqc2
+                                           where eqc2.evaluations_id_evaluation = evaluations.id_evaluation
+                                           and eqc2.question_category_id_questioncategory = 1)
 
 			                       ) as questions_1
 
@@ -54,10 +53,10 @@ DECLARE
 			                       where questions.evaluations_id_evaluation = evaluations.id_evaluation
 			                             and state_question = 'A' and qc.id_questioncategory = 2 and qc.state_questioncategory = 'A'
 			                       order by question_category_id_questioncategory, order_question
--- 			                       limit ( select eqc2.number_question
---                                            from evaluation_question_category as eqc2
---                                            where eqc2.evaluations_id_evaluation = evaluations.id_evaluation
---                                            and eqc2.question_category_id_questioncategory = 2)
+			                       limit ( select eqc2.number_question
+                                           from evaluation_question_category as eqc2
+                                           where eqc2.evaluations_id_evaluation = evaluations.id_evaluation
+                                           and eqc2.question_category_id_questioncategory = 2)
 
 			                       ) as questions_2
 
@@ -75,10 +74,10 @@ DECLARE
 			                       where questions.evaluations_id_evaluation = evaluations.id_evaluation
 			                             and state_question = 'A' and qc.id_questioncategory = 3 and qc.state_questioncategory = 'A'
 			                       order by question_category_id_questioncategory, order_question
--- 			                       limit ( select eqc2.number_question
---                                            from evaluation_question_category as eqc2
---                                            where eqc2.evaluations_id_evaluation = evaluations.id_evaluation
---                                            and eqc2.question_category_id_questioncategory = 3)
+			                       limit ( select eqc2.number_question
+                                           from evaluation_question_category as eqc2
+                                           where eqc2.evaluations_id_evaluation = evaluations.id_evaluation
+                                           and eqc2.question_category_id_questioncategory = 3)
 
 			                       ) as questions_3
 
@@ -96,10 +95,10 @@ DECLARE
 			                       where questions.evaluations_id_evaluation = evaluations.id_evaluation
 			                             and state_question = 'A' and qc.id_questioncategory = 7 and qc.state_questioncategory = 'A'
 			                       order by question_category_id_questioncategory, order_question
--- 			                       limit ( select eqc2.number_question
---                                            from evaluation_question_category as eqc2
---                                            where eqc2.evaluations_id_evaluation = evaluations.id_evaluation
---                                            and eqc2.question_category_id_questioncategory = 7)
+			                       limit ( select eqc2.number_question
+                                           from evaluation_question_category as eqc2
+                                           where eqc2.evaluations_id_evaluation = evaluations.id_evaluation
+                                           and eqc2.question_category_id_questioncategory = 7)
 
 			                       ) as questions_7
 
@@ -117,10 +116,10 @@ DECLARE
 			                       where questions.evaluations_id_evaluation = evaluations.id_evaluation
 			                             and state_question = 'A' and qc.id_questioncategory = 4 and qc.state_questioncategory = 'A'
 			                       order by question_category_id_questioncategory, order_question
--- 			                       limit ( select eqc2.number_question
---                                            from evaluation_question_category as eqc2
---                                            where eqc2.evaluations_id_evaluation = evaluations.id_evaluation
---                                            and eqc2.question_category_id_questioncategory = 4)
+			                       limit ( select eqc2.number_question
+                                           from evaluation_question_category as eqc2
+                                           where eqc2.evaluations_id_evaluation = evaluations.id_evaluation
+                                           and eqc2.question_category_id_questioncategory = 4)
 
 			                       ) as questions_4
 
@@ -138,10 +137,10 @@ DECLARE
 			                       where questions.evaluations_id_evaluation = evaluations.id_evaluation
 			                             and state_question = 'A' and qc.id_questioncategory = 5 and qc.state_questioncategory = 'A'
 			                       order by question_category_id_questioncategory, order_question
--- 			                       limit ( select eqc2.number_question
---                                            from evaluation_question_category as eqc2
---                                            where eqc2.evaluations_id_evaluation = evaluations.id_evaluation
---                                            and eqc2.question_category_id_questioncategory = 5)
+			                       limit ( select eqc2.number_question
+                                           from evaluation_question_category as eqc2
+                                           where eqc2.evaluations_id_evaluation = evaluations.id_evaluation
+                                           and eqc2.question_category_id_questioncategory = 5)
 
 			                       ) as questions_5
 
@@ -159,10 +158,10 @@ DECLARE
 			                       where questions.evaluations_id_evaluation = evaluations.id_evaluation
 			                             and state_question = 'A' and qc.id_questioncategory = 6 and qc.state_questioncategory = 'A'
 			                       order by question_category_id_questioncategory, order_question
--- 			                       limit ( select eqc2.number_question
---                                            from evaluation_question_category as eqc2
---                                            where eqc2.evaluations_id_evaluation = evaluations.id_evaluation
---                                            and eqc2.question_category_id_questioncategory = 6)
+			                       limit ( select eqc2.number_question
+                                           from evaluation_question_category as eqc2
+                                           where eqc2.evaluations_id_evaluation = evaluations.id_evaluation
+                                           and eqc2.question_category_id_questioncategory = 6)
 
 			                       ) as questions_6
 
@@ -184,4 +183,5 @@ DECLARE
 END;
 $$;
 
+alter function question_select(integer, integer) owner to postgres;
 

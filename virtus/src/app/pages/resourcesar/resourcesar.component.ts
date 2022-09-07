@@ -118,7 +118,7 @@ export class ResourcesarComponent implements OnInit {
     this.typeEvalutionform = [
       {label: "---:---", value: null},
       {label: "Evaluación", value: 1},
-      {label: "Cuestionario", value: 2},
+      {label: "Autoevaluación", value: 2},
     ]
     this.loadResources();
     this.loadEvaluations();
