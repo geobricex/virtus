@@ -1,3 +1,5 @@
+import {Person} from "./Person";
+
 export interface EvaluationQuestionsResponse {
   data: Evaluation[];
   information: string;
@@ -13,6 +15,18 @@ export interface Evaluation {
   timeminutes_evaluation: number;
   order_category: boolean;
   response_all_time: number;
+  id: number;
+}
+
+export interface PersonsEvaluations {
+  id: number;
+  resultEvaluation: Evaluation;
+  dateregPersonEvaluation: string;
+  qualificationPersonEvaluation: any;
+  trynumberPersonEvaluation: number;
+  timespentPersonEvaluation: any;
+  personsIdPerson: Person;
+  evaluationsIdEvaluation: Evaluation;
 }
 
 export interface Questions {

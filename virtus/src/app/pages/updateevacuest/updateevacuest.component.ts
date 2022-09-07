@@ -393,7 +393,9 @@ export class UpdateevacuestComponent implements OnInit {
       let imgPath: string = this.questionObject.answers_[0].options_answer[0].resource!;
       let dimensions: number = this.questionObject.answers_[0].options_answer[0].piece_questionarie!;
       this.tmpPuzzle = new Puzzle();
+      // imgPath = "assets/imgresource/empty/notification.png";
       this.tmpPuzzle.crearPuzzle(dimensions, imgPath);
+      this.questionObject.answers_[0].tmpPuzzle = this.tmpPuzzle;
     }
     if (this.questionObject.name_questioncategory == this.tipoPregunta(7)) {
 
@@ -409,20 +411,27 @@ export class UpdateevacuestComponent implements OnInit {
   }
 }
 
+function desordenarRow(unArray: any[]): any[] {
+  let t = unArray.sort(function (a, b) {
+    return (Math.random() - 0.5)
+  });
+  return [...t];
+}
+
 class Puzzle {
 
-  private maxSizeImg: number = 25;
+  private maxSizeImg: number = 75;
   private dimens: number = 3;
 
   public arrayImagePuzzle: string[][];
   public arrayPositionPuzzle: number[][];
 
-  // public objImagePuzzleuzzle: string;
+  public primerMovimiento: boolean = false;
 
   public puzzleControls: any = {
     complete: false,
     pressed: {x: -1, y: -1},
-    released: {x: -1, y: -1}
+    release: {x: -1, y: -1}
   };
 
   crearPuzzle(cantidad: number, url: string): void {
@@ -458,7 +467,7 @@ class Puzzle {
           let minctx = mincanvas.getContext('2d')!;
           minctx.putImageData(imgData, 0, 0);
 
-          console.log("base64: ", mincanvas.toDataURL());
+          // console.log("base64: ", mincanvas.toDataURL());
           local_this.arrayImagePuzzle[y][x] = mincanvas.toDataURL();
           local_this.arrayPositionPuzzle[y][x] = ind++;
         }
@@ -472,6 +481,39 @@ class Puzzle {
 
       console.log("base64: ", mincanvas.toDataURL());
       local_this.objImagePuzzle = mincanvas.toDataURL();*/
+      let arrayDesorden: number[] = new Array<number>(local_this.dimens);
+      for (let x = 0; x < local_this.dimens; x++) {
+        arrayDesorden[x] = x;
+      }
+      //desordenar las filas
+      for (let y = 0; y < local_this.dimens; y++) {
+        arrayDesorden = desordenarRow(arrayDesorden);
+        for (let x = 0; x < local_this.dimens; x++) {
+          let changeimg: string, changeInd: number;
+          changeimg = local_this.arrayImagePuzzle[y][arrayDesorden[x]];
+          local_this.arrayImagePuzzle[y][arrayDesorden[x]] = local_this.arrayImagePuzzle[y][x];
+          local_this.arrayImagePuzzle[y][x] = changeimg;
+
+          changeInd = local_this.arrayPositionPuzzle[y][arrayDesorden[x]];
+          local_this.arrayPositionPuzzle[y][arrayDesorden[x]] = local_this.arrayPositionPuzzle[y][x];
+          local_this.arrayPositionPuzzle[y][x] = changeInd;
+        }
+      }
+      //console.log("filas ", local_this.arrayPositionPuzzle);
+      //desordenar las columnas
+      for (let y = 0; y < local_this.dimens; y++) {
+        arrayDesorden = desordenarRow(arrayDesorden);
+        for (let x = 0; x < local_this.dimens; x++) {
+          let changeimg: string, changeInd: number;
+          changeimg = local_this.arrayImagePuzzle[arrayDesorden[x]][y];
+          local_this.arrayImagePuzzle[arrayDesorden[x]][y] = local_this.arrayImagePuzzle[x][y];
+          local_this.arrayImagePuzzle[x][y] = changeimg;
+
+          changeInd = local_this.arrayPositionPuzzle[arrayDesorden[x]][y];
+          local_this.arrayPositionPuzzle[arrayDesorden[x]][y] = local_this.arrayPositionPuzzle[x][y];
+          local_this.arrayPositionPuzzle[x][y] = changeInd;
+        }
+      }
     };
     img.crossOrigin = "Anonymous";
     img.src = url;
@@ -498,6 +540,10 @@ class Puzzle {
       this.puzzleControls.pressed = {x: -1, y: -1};
       this.puzzleControls.released = {x: -1, y: -1};
       this.puzzleControls.complete = false;
+
+      if (!this.primerMovimiento) {
+        this.primerMovimiento = true;
+      }
     }
   }
 
@@ -509,21 +555,16 @@ class Puzzle {
     return false;*/
   }
 
-  desordenar(unArray: any[]): any[] {
-    let t = unArray.sort(function (a, b) {
-      return (Math.random() - 0.5)
-    });
-    return [...t];
-  }
-
   comprobarResultado(): number[] {
     let ind = 0, success = 0;
     for (let y = 0; y < this.dimens; y++) {
-      for (let x = 0; x < this.dimens; x++) {
-        if (this.arrayPositionPuzzle[y][x] == ind) {
-          success++; //fichas en el lugar correcto
+      if (this.arrayPositionPuzzle[y] !== undefined) {
+        for (let x = 0; x < this.dimens; x++) {
+          if (this.arrayPositionPuzzle[y][x] == ind) {
+            success++; //fichas en el lugar correcto
+          }
+          ind++;
         }
-        ind++;
       }
     }
     return [success, this.dimens * this.dimens];
