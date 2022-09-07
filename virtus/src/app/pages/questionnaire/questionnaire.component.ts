@@ -64,6 +64,7 @@ export class QuestionnaireComponent implements OnInit {
   public sweetFakeAlertFin: boolean = false;
 
   public palabra: any = {
+    firstMovimiento: false,
     press: -1,
     released: -1
   };
@@ -224,7 +225,11 @@ export class QuestionnaireComponent implements OnInit {
     let total = this.evaluationObject.questions_.length;
     let respondidas = 0;
     for (let ind = 0; ind < total; ind++) {
-      if (this.evaluationObject.questions_[ind].canResource != undefined) {
+      /*if (this.evaluationObject.questions_[ind].canResource != undefined) {
+        respondidas++;
+      }*/
+      let [resueltoStado, _] = this.verificarRespuestasCorrectas(this.evaluationObject.questions_[ind]);
+      if (resueltoStado) {
         respondidas++;
       }
     }
@@ -246,7 +251,7 @@ export class QuestionnaireComponent implements OnInit {
       resp = "Difícil";
     }
     if (level == 5) {
-      resp = "Imposible";
+      resp = "Avanzado";
     }
     return resp;
   }
@@ -296,43 +301,45 @@ export class QuestionnaireComponent implements OnInit {
 
   verificarRespuestasCorrectas(questionItem: Questions): [boolean, number] {
     if (questionItem.name_questioncategory == this.tipoPregunta(7)) {
-      let flagAlltrue: boolean = true;
-      let indT = 0;
-      let indTS = 0;
-      let palabra = "";
-      for (let ind = 0; ind < questionItem.answers_[0].options_answer[0].opcion.length; ind++) {
-        let tmp = questionItem.answers_[0].complete_parts![ind];
-        tmp = tmp == undefined ? ' ' : tmp.toUpperCase();
-        if (questionItem.answers_[0].options_answer[0].opcion[ind] == tmp) {
-          indTS++;
-        } else {
-          flagAlltrue = false;
+      if (questionItem.answers_[0].complete_parts !== undefined) {
+        let flagAlltrue: boolean = true;
+        let indT = 0;
+        let indTS = 0;
+        let palabra = "";
+        for (let ind = 0; ind < questionItem.answers_[0].options_answer[0].opcion.length; ind++) {
+          let tmp = questionItem.answers_[0].complete_parts![ind];
+          tmp = tmp == undefined ? ' ' : tmp.toUpperCase();
+          if (questionItem.answers_[0].options_answer[0].opcion[ind] == tmp) {
+            indTS++;
+          } else {
+            flagAlltrue = false;
+          }
+          palabra += tmp;
         }
-        palabra += tmp;
+        questionItem.answers_[0].responses = [<OptionsAnswer>{opcion: palabra}];
+        indT = questionItem.answers_[0].options_answer[0].opcion.length;
+        return [ // en caso de las evaluaciones,
+          // cambiar "flagAlltrue && indTS == indT" por "this.palabra.firstMovimiento"
+          flagAlltrue && indTS == indT,
+          questionItem.maximumpoints_question * ((indTS / indT) / 100)];
+      } else {
+        return [false, 0];
       }
-      questionItem.answers_[0].responses = [<OptionsAnswer>{opcion: palabra}];
-      indT = questionItem.answers_[0].options_answer[0].opcion.length;
-      return [ // en caso de las evaluaciones,
-        // cambiar "flagAlltrue && indTS == indT"
-        flagAlltrue && indTS == indT,
-        questionItem.maximumpoints_question * ((indTS / indT) / 100)];
-
-    } else if (questionItem.name_questioncategory == this.tipoPregunta(7)) {
+    } else if (questionItem.name_questioncategory == this.tipoPregunta(6)) {
       let resp: number[] = this.tmpPuzzle.comprobarResultado();
       return [ // en caso de las evaluaciones,
-        // cambiar resp[0] == resp[1] por siempre TRUE
+        // cambiar resp[0] == resp[1] por this.tmpPuzzle.primerMovimiento
         resp[0] == resp[1],
         questionItem.maximumpoints_question * ((resp[0] / resp[1]) / 100)];
-    }else
-    {
-      if (questionItem.answers_[0].responses != undefined ||
+    } else {
+      if (questionItem.answers_[0].options_answer[0].response !== undefined &&
         questionItem.answers_[0].options_answer[0].response.length > 0)
         //verdadero o falso O unica seleccion
         if (questionItem.name_questioncategory == this.tipoPregunta(2)
           || questionItem.name_questioncategory == this.tipoPregunta(1)) {
           return [
             // @ts-ignore
-            questionItem.answers_[0].responses.correct == "Yes",
+            questionItem.answers_[0].responses.correct == "Yes", // questionItem.answers_[0].responses.correct !== undefined
             // @ts-ignore
             questionItem.answers_[0].responses.correct == "Yes" ? questionItem.maximumpoints_question : 0];
         } else if (questionItem.name_questioncategory == this.tipoPregunta(3)) {
@@ -405,8 +412,8 @@ export class QuestionnaireComponent implements OnInit {
     } else if (questionItem.name_questioncategory == this.tipoPregunta(7)) {
       return (questionItem.answers_[0].complete_parts !== undefined
         && questionItem.answers_[0].complete_parts.length > 0);
-    } else if (questionItem.name_questioncategory == this.tipoPregunta(7)) {
-      return false;
+    } else if (questionItem.name_questioncategory == this.tipoPregunta(6)) {
+      return true;
     } else {
       if (questionItem.answers_[0].responses != undefined)
         return (questionItem.answers_[0].responses.length > 0
@@ -507,6 +514,9 @@ export class QuestionnaireComponent implements OnInit {
           this.questionObject.answers_[0].right_parts.push(tmp);
         }
         this.questionObject.answers_[0].right_parts = this.desordenar(this.questionObject.answers_[0].right_parts);
+        for (let index = 0; index < this.questionObject.answers_[0].right_parts.length; index++) {
+          this.questionObject.answers_[0].right_parts[index].ind = index;
+        }
         console.log("tipo pregujnta 5", this.questionObject.answers_[0].right_parts);
         this.questionObject.answers_[0].responses = Array<OptionsAnswer>(this.questionObject.answers_[0].options_answer.length - 1);
       }
@@ -593,7 +603,7 @@ export class QuestionnaireComponent implements OnInit {
 
 
   /*Paginar preguntas*/
-  anteriorPregunta(): void {
+  siguientePregunta(): void {
 
     let ind = this.indexQuestionObject + 1;
     if (ind >= this.evaluationObject.questions_.length) {
@@ -604,7 +614,7 @@ export class QuestionnaireComponent implements OnInit {
     this.cambiarPregunta(ind);
   }
 
-  siguientePregunta(): void {
+  anteriorPregunta(): void {
     console.log("siguiente pregunta");
     let ind = this.indexQuestionObject - 1;
     if (ind < 0) {
@@ -1266,6 +1276,9 @@ export class QuestionnaireComponent implements OnInit {
       } else {
         this.palabra.press = val;
         this.palabra.release = -1;
+        if(this.palabra.firstMovimiento){
+          this.palabra.firstMovimiento = true;
+        }
       }
     }
   }
@@ -1287,20 +1300,27 @@ export class QuestionnaireComponent implements OnInit {
   }
 }
 
+function desordenarRow(unArray: any[]): any[] {
+  let t = unArray.sort(function (a, b) {
+    return (Math.random() - 0.5)
+  });
+  return [...t];
+}
+
 class Puzzle {
 
-  private maxSizeImg: number = 25;
+  private maxSizeImg: number = 75;
   private dimens: number = 3;
 
   public arrayImagePuzzle: string[][];
   public arrayPositionPuzzle: number[][];
 
-  // public objImagePuzzleuzzle: string;
+  public primerMovimiento: boolean = false;
 
   public puzzleControls: any = {
     complete: false,
     pressed: {x: -1, y: -1},
-    released: {x: -1, y: -1}
+    release: {x: -1, y: -1}
   };
 
   crearPuzzle(cantidad: number, url: string): void {
@@ -1336,7 +1356,7 @@ class Puzzle {
           let minctx = mincanvas.getContext('2d')!;
           minctx.putImageData(imgData, 0, 0);
 
-          console.log("base64: ", mincanvas.toDataURL());
+          // console.log("base64: ", mincanvas.toDataURL());
           local_this.arrayImagePuzzle[y][x] = mincanvas.toDataURL();
           local_this.arrayPositionPuzzle[y][x] = ind++;
         }
@@ -1350,6 +1370,39 @@ class Puzzle {
 
       console.log("base64: ", mincanvas.toDataURL());
       local_this.objImagePuzzle = mincanvas.toDataURL();*/
+      let arrayDesorden: number[] = new Array<number>(local_this.dimens);
+      for (let x = 0; x < local_this.dimens; x++) {
+        arrayDesorden[x] = x;
+      }
+      //desordenar las filas
+      for (let y = 0; y < local_this.dimens; y++) {
+        arrayDesorden = desordenarRow(arrayDesorden);
+        for (let x = 0; x < local_this.dimens; x++) {
+          let changeimg: string, changeInd: number;
+          changeimg = local_this.arrayImagePuzzle[y][arrayDesorden[x]];
+          local_this.arrayImagePuzzle[y][arrayDesorden[x]] = local_this.arrayImagePuzzle[y][x];
+          local_this.arrayImagePuzzle[y][x] = changeimg;
+
+          changeInd = local_this.arrayPositionPuzzle[y][arrayDesorden[x]];
+          local_this.arrayPositionPuzzle[y][arrayDesorden[x]] = local_this.arrayPositionPuzzle[y][x];
+          local_this.arrayPositionPuzzle[y][x] = changeInd;
+        }
+      }
+      //console.log("filas ", local_this.arrayPositionPuzzle);
+      //desordenar las columnas
+      for (let y = 0; y < local_this.dimens; y++) {
+        arrayDesorden = desordenarRow(arrayDesorden);
+        for (let x = 0; x < local_this.dimens; x++) {
+          let changeimg: string, changeInd: number;
+          changeimg = local_this.arrayImagePuzzle[arrayDesorden[x]][y];
+          local_this.arrayImagePuzzle[arrayDesorden[x]][y] = local_this.arrayImagePuzzle[x][y];
+          local_this.arrayImagePuzzle[x][y] = changeimg;
+
+          changeInd = local_this.arrayPositionPuzzle[arrayDesorden[x]][y];
+          local_this.arrayPositionPuzzle[arrayDesorden[x]][y] = local_this.arrayPositionPuzzle[x][y];
+          local_this.arrayPositionPuzzle[x][y] = changeInd;
+        }
+      }
     };
     img.crossOrigin = "Anonymous";
     img.src = url;
@@ -1376,32 +1429,31 @@ class Puzzle {
       this.puzzleControls.pressed = {x: -1, y: -1};
       this.puzzleControls.released = {x: -1, y: -1};
       this.puzzleControls.complete = false;
+
+      if (!this.primerMovimiento) {
+        this.primerMovimiento = true;
+      }
     }
   }
 
-  isActive(x: number, y: number){
+  isActive(x: number, y: number) {
     //if(!this.puzzleControls.complete){
-      return (this.puzzleControls.pressed.x === x && this.puzzleControls.pressed.y === y);
-      //(this.puzzleControls.rel.x === x && this.puzzleControls.pressed.y === y)
+    return (this.puzzleControls.pressed.x === x && this.puzzleControls.pressed.y === y);
+    //(this.puzzleControls.rel.x === x && this.puzzleControls.pressed.y === y)
     /*}
     return false;*/
   }
 
-  desordenar(unArray: any[]): any[] {
-    let t = unArray.sort(function (a, b) {
-      return (Math.random() - 0.5)
-    });
-    return [...t];
-  }
-
-  comprobarResultado(): number[]{
+  comprobarResultado(): number[] {
     let ind = 0, success = 0;
     for (let y = 0; y < this.dimens; y++) {
-      for (let x = 0; x < this.dimens; x++) {
-        if(this.arrayPositionPuzzle[y][x] == ind){
-          success++; //fichas en el lugar correcto
+      if (this.arrayPositionPuzzle[y] !== undefined) {
+        for (let x = 0; x < this.dimens; x++) {
+          if (this.arrayPositionPuzzle[y][x] == ind) {
+            success++; //fichas en el lugar correcto
+          }
+          ind++;
         }
-        ind++;
       }
     }
     return [success, this.dimens * this.dimens];
