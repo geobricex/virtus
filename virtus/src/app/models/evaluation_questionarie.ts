@@ -67,6 +67,7 @@ export interface Answers {
   responses: OptionsAnswer[];//interface
   complete_parts?: string[];//interface
   right_parts?: OptionsAnswer[];//interface
+  tmpPuzzle: any;
 }
 
 export interface AnswersModel {
