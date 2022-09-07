@@ -65,11 +65,11 @@ export class QuestionnaireComponent implements OnInit {
   public sweetFakeAlerttxt: string = "";
 
   public palabra: any = {
-    firstMovimiento: false,
+    firstMovimiento: 0,
     press: -1,
     released: -1
   };
-
+  public intentosEnvio: number = 0;
 
   public tmpPuzzle: Puzzle;
 
@@ -210,6 +210,18 @@ export class QuestionnaireComponent implements OnInit {
     return tpuntos;
   }
 
+  calcularTotales(): number {
+    let total: number = 0;
+    for (let ind = 0; ind < this.evaluationObject.questions_.length; ind++) {
+      let tmp = this.evaluationObject.questions_[ind].response_points!;
+      if (typeof (tmp) === "number") {
+        total += tmp;
+      }
+    }
+    //return tiempo;
+    return total;
+  }
+
   calcularTiempos(): number {
     let tiempos: number = 0;
     for (let ind = 0; ind < this.evaluationObject.questions_.length; ind++) {
@@ -319,8 +331,9 @@ export class QuestionnaireComponent implements OnInit {
         }
         questionItem.answers_[0].responses = [<OptionsAnswer>{opcion: palabra}];
         indT = questionItem.answers_[0].options_answer[0].opcion.length;
+        questionItem.num_mov = this.intentosEnvio;
         return [ // en caso de las evaluaciones,
-          // cambiar "flagAlltrue && indTS == indT" por "this.palabra.firstMovimiento"
+          // cambiar "flagAlltrue && indTS == indT" por "this.palabra.firstMovimiento > 0"
           flagAlltrue && indTS == indT,
           questionItem.maximumpoints_question * ((indTS / indT) / 100)];
       } else {
@@ -328,8 +341,9 @@ export class QuestionnaireComponent implements OnInit {
       }
     } else if (questionItem.name_questioncategory == this.tipoPregunta(6) && this.tmpPuzzle !== undefined) {
       let resp: number[] = this.tmpPuzzle.comprobarResultado();
+      questionItem.num_mov = this.tmpPuzzle.primerMovimiento;
       return [ // en caso de las evaluaciones,
-        // cambiar resp[0] == resp[1] por this.tmpPuzzle.primerMovimiento
+        // cambiar resp[0] == resp[1] por this.tmpPuzzle.primerMovimiento > 0
         resp[0] == resp[1],
         questionItem.maximumpoints_question * ((resp[0] / resp[1]) / 100)];
     } else {
@@ -481,9 +495,13 @@ export class QuestionnaireComponent implements OnInit {
         this.questionObject.response_points = points;
         console.log(this.questionObject);
         this.showSwal(flagCorrect, this.indexQuestionObject);
+        this.intentosEnvio++;
+        this.questionObject.num_intentos = this.intentosEnvio;
+
         if (!flagCorrect) {
           return;
         } else {
+          this.intentosEnvio = 0;
           if (this.valueProgress < 100) {
             this.valueProgress = this.valueProgress + ((100) / this.evaluationObject.questions_.length);
           }
@@ -503,6 +521,8 @@ export class QuestionnaireComponent implements OnInit {
       let rec: string = "";
       if (this.questionObject.name_questioncategory !== this.tipoPregunta(7)) {
         rec = this.questionObject.answers_[0].options_answer[0].resource!;
+      } else{
+        this.palabra.firstMovimiento = 0;
       }
       rec = rec != undefined ? rec : "";
       this.questionObject.canResource = (rec.length > 0);
@@ -552,6 +572,8 @@ export class QuestionnaireComponent implements OnInit {
       console.log("pregunta: ", this.questionObject);
     }
     this.initCanvas(flag);
+    //reiniciamos los intentos
+    this.palabra.totalIntentos = 0;
     // el browser es comantible con el speaker?
     if (this.text2SpeakSupport()) {
       if (this.storageService.getCurrentUser().email != "anthony.pachay2017@uteq.edu.ec") {
@@ -1270,6 +1292,25 @@ export class QuestionnaireComponent implements OnInit {
     console.log("##########################################################################");
     console.log(this.evaluationObject);
     this.sweetFakeAlertFin = true;
+
+    let urlServicio = this.utils.globalUrl + "personsevaluations/insertpersonsevaluations";
+
+    let headers = new HttpHeaders()
+      //.set('Content-Type', 'application/json')
+      .set('Access-Control-Allow-Origin', '*')
+      .set('provider', 'native')
+      .set('token', this.utils.token);
+
+    this._http.post<any>(urlServicio, {
+      "result_evaluation": this.evaluationObject,
+      "qualification_person_evaluation": this.calcularTotales(),
+      "timespent_person_evaluation": this.calcularTiempos(),
+      "evaluations_id_evaluation": this.idEvaluation,
+      "persons_id_person": -1,
+    }, {headers: headers}).subscribe(response => {
+
+    })
+
   }
 
 
@@ -1291,9 +1332,10 @@ export class QuestionnaireComponent implements OnInit {
       } else {
         this.palabra.press = val;
         this.palabra.release = -1;
-        if (this.palabra.firstMovimiento) {
+        this.palabra.firstMovimiento++;
+        /*if (this.palabra.firstMovimiento) {
           this.palabra.firstMovimiento = true;
-        }
+        }*/
       }
     }
   }
@@ -1331,7 +1373,7 @@ class Puzzle {
   public arrayImagePuzzle: string[][];
   public arrayPositionPuzzle: number[][];
 
-  public primerMovimiento: boolean = false;
+  public primerMovimiento: number = 0;
 
   public puzzleControls: any = {
     complete: false,
@@ -1476,9 +1518,10 @@ class Puzzle {
       this.puzzleControls.released = {x: -1, y: -1};
       this.puzzleControls.complete = false;
 
-      if (!this.primerMovimiento) {
+      /*if (!this.primerMovimiento) {
         this.primerMovimiento = true;
-      }
+      }*/
+      this.primerMovimiento++;
     }
   }
 

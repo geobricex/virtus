@@ -33,6 +33,8 @@ export interface Questions {
   canResource: boolean;//de front
   response_points?: number;
   response_time?: number;
+  num_intentos: number //numero de intentos
+  num_mov: number //para puzzle y contrucción de palabras
 }
 
 export interface QuestionsModel {
