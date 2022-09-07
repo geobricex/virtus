@@ -5,7 +5,13 @@ import {Utils} from "../../util/Utils";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Observable} from "rxjs";
-import {Evaluation, EvaluationQuestionsResponse, Questions} from "../../models/evaluation_questionarie";
+import {
+  Evaluation,
+  EvaluationQuestionsResponse,
+  Options,
+  OptionsAnswer,
+  Questions
+} from "../../models/evaluation_questionarie";
 
 @Component({
   selector: 'app-updateevacuest',
@@ -60,7 +66,7 @@ export class UpdateevacuestComponent implements OnInit {
         routerLink: ['/app/coursear/modulear/' + this.idCourse + '/topicar/' + this.idModule + '/resourcesar/' + this.idTopic]
       },
       {
-        label: 'Edicion de evaluaciones',
+        label: 'Edición de evaluaciones',
         routerLink: ['/app/coursear/modulear/' + this.idCourse + '/topicar/' + this.idModule + '/resourcesar/' + this.idTopic + '/update_evaluation/' + this.idEvaluation]
       }
     ]);
@@ -280,12 +286,66 @@ export class UpdateevacuestComponent implements OnInit {
     }
   }
 
+  partirPreguntaComplete(quest: string): string[] {
+    return quest.split(/[\{\}]/);
+  }
+
+  desordenar(unArray: any[]): any[] {
+    let t = unArray.sort(function (a, b) {
+      return (Math.random() - 0.5)
+    });
+    return [...t];
+  }
+
   previewQuestion(question: Questions) {
     this.new_question_view_dialog = true;
-
     this.questionObject = question;
-    console.log(this.questionObject);
-    console.log(this.questionObject.answers_[0].options_answer);
+
+    console.log(this.questionObject != undefined && this.questionObject != null);
+
+
+    let rec: string = "";
+    if (this.questionObject.name_questioncategory !== this.tipoPregunta(7)) {
+      rec = this.questionObject.answers_[0].options_answer[0].resource!;
+    }
+    rec = rec != undefined ? rec : "";
+    this.questionObject.canResource = (rec.length > 0);
+
+    if (this.questionObject.name_questioncategory == this.tipoPregunta(4)) {
+      for (let i = 0; i < this.questionObject.answers_[0].options_answer.length; i++) {
+        this.questionObject.answers_[0].complete_parts = this.partirPreguntaComplete(this.questionObject.answers_[0].options_answer[i].description_question);
+      }
+    }
+
+    if (this.questionObject.name_questioncategory == this.tipoPregunta(5)) {
+      this.questionObject.answers_[0].right_parts = Array<OptionsAnswer>(0);
+      let tmp: OptionsAnswer;
+      for (let index = 0; index < this.questionObject.answers_[0].options_answer.length; index++) {
+
+        tmp = this.questionObject.answers_[0].options_answer[index];
+        tmp.ind = index;
+        this.questionObject.answers_[0].right_parts.push(tmp);
+      }
+      this.questionObject.answers_[0].right_parts = this.desordenar(this.questionObject.answers_[0].right_parts);
+      console.log("tipo pregujnta 5", this.questionObject.answers_[0].right_parts);
+      this.questionObject.answers_[0].responses = Array<OptionsAnswer>(this.questionObject.answers_[0].options_answer.length - 1);
+    }
+    if (this.questionObject.name_questioncategory == this.tipoPregunta(6)) {
+      let imgPath: string = this.questionObject.answers_[0].options_answer[0].resource!;
+      let dimensions: number = this.questionObject.answers_[0].options_answer[0].piece_questionarie!;
+      this.tmpPuzzle = new Puzzle();
+      this.tmpPuzzle.crearPuzzle(dimensions, imgPath);
+    }
+    if (this.questionObject.name_questioncategory == this.tipoPregunta(7)) {
+
+      let tmpOpcion: OptionsAnswer = this.questionObject.answers_[0].options_answer[0];
+      console.log("pregunta tipo 7:", tmpOpcion);
+
+      this.questionObject.answers_[0].complete_parts = Array<string>(tmpOpcion.opcion.split("").length);
+
+    }
+    console.log("pregunta: ", this.questionObject);
+
 
   }
 }

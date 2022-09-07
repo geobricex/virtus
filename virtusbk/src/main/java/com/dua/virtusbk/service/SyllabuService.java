@@ -7,6 +7,7 @@ import com.dua.virtusbk.util.Methods;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -78,8 +79,10 @@ public class SyllabuService {
 
         List<Map<String, Object>> syllabus = syllabuDAO.findByIdCourseList(Long.parseLong(id_course));
         if (syllabus.size() > 0) {
-            Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();
-            data = gson.toJson(syllabus);
+//            Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();
+//            data = gson.toJson(syllabus);
+            JSONArray jsonArray = new JSONArray(syllabus);
+            data = jsonArray.toString();
             status = "2";
             message = "Información obetnida con éxito.";
             System.out.println(data);

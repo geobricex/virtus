@@ -7,6 +7,7 @@ import com.dua.virtusbk.util.Methods;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -76,8 +77,10 @@ public class TopicService {
 
         List<Map<String, Object>> topics = topicDAO.findByIdTopicList(Long.parseLong(id_syllabu));
         if (topics.size() > 0) {
-            Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();
-            data = gson.toJson(topics).toString();
+//            Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();
+//            data = gson.toJson(topics).toString();
+            JSONArray jsonArray = new JSONArray(topics);
+            data = jsonArray.toString();
             status = "2";
             message = "Información obetnida con éxito.";
             System.out.println("getTopics=" + data);
