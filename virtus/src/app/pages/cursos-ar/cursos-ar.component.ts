@@ -6,6 +6,8 @@ import {FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule, Fo
 
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Utils} from "../../util/Utils";
+import {Person} from "../../models/Person";
+import {ConfirmationService} from "primeng/api";
 
 
 @Component({
@@ -18,11 +20,12 @@ export class CursosArComponent implements OnInit {
   newcourse_dialog: boolean;
   globalUri: string = "";
   course: Course;
+  person: Person;
   courses: Course[];
   sortOrder: number;
   sortField: string;
   tmpFile: any;
-  urlimageupload: any;
+  urlimageupload: string = "";
   idiomas: any [];
   loading: boolean = true;
 
@@ -34,6 +37,8 @@ export class CursosArComponent implements OnInit {
 
   reegisterFormCourse: FormGroup;
   courseSuccessful = false;
+  updateCourse = false;
+
 
   frmPhoto = new FormGroup({
     firstName: new FormControl()
@@ -43,7 +48,8 @@ export class CursosArComponent implements OnInit {
     private breadcrumbService: BreadcrumbService,
     private _http: HttpClient,
     private formBuilder: FormBuilder,
-    private utils: Utils) {
+    private utils: Utils,
+    private confirmationService: ConfirmationService) {
     this.breadcrumbService.setItems([
       {label: '', routerLink: ['/app']},
       {label: 'Cursos Activos', routerLink: ['/app/coursear']}
@@ -70,7 +76,60 @@ export class CursosArComponent implements OnInit {
 
   selectedCourse(course: any) {
     this.newcourse_dialog = true;
+    this.updateCourse = true;
     this.form["name"].setValue(course.nameCourse);
+    this.form["description"].setValue(course.descriptionCourse);
+    this.form["language"].setValue(course.languageCourse);
+    this.form["keywords"].setValue(course.keywordsCourse);
+    this.urlimageupload = course.pathimgCourse;
+    this.person = new Person(course.personsIdPerson.id, "", "", "", "", "",
+      "", "", "", "", "");
+    this.course = new Course(
+      course.id,
+      this.form['name'].value,
+      this.form['description'].value,
+      this.form['keywords'].value,
+      course.pathimgCourse, course.dateregCourse, course.dateupdateCourse,
+      course.stateCourse, this.form['language'].value, "0.0"
+    );
+    this.course._personsIdPerson = this.person;
+  }
+
+  disabledCourse(course: any) {
+    this.confirmationService.confirm({
+      message: '¿Seguro que desea deshabilitar el curso?',
+      header: 'Mensaje de confirmación',
+      icon: 'pi pi-info-circle',
+      acceptLabel: "Si",
+      rejectLabel: "No",
+      accept: () => {
+        this.utils.loading;
+        this.person = new Person(course.personsIdPerson.id, "", "", "", "", "",
+          "", "", "", "", "");
+        this.course = new Course(
+          course.id,
+          course.nameCourse,
+          course.descriptionCourse,
+          course.keywordsCourse,
+          course.pathimgCourse, course.dateregCourse, course.dateupdateCourse,
+          "I", course.languageCourse, "0.0"
+        );
+        this.course._personsIdPerson = this.person;
+        console.log(this.course);
+        this.apiUpdateCoruse(this.course).subscribe({
+          next: response => {
+            console.log(response);
+            this.utils.showMessages(response.status, response.information, "tst");
+            this.resetCourse();
+            this.loadCourse();
+            this.utils.closeLoading;
+          }
+        })
+      },
+      reject: () => {
+      },
+      key: "positionDialog"
+    });
   }
 
   validateText(text: string) {
@@ -125,39 +184,81 @@ export class CursosArComponent implements OnInit {
   }
 
   saveCourse() {
+    this.utils.loading;
     this.courseSuccessful = true;
+    let urlPhoto: string = "";
 
     if (this.reegisterFormCourse.invalid) {
       return;
     }
 
-    console.log(this.form['name'].value);
-    console.log(this.form['description'].value);
-    console.log(this.form['keywords'].value);
-    console.log(this.form['language'].value);
-    let urlPhoto: string = "";
-    this.utils.changeImage(this.tmpFile).then(response => {
-      urlPhoto = this.utils.makePathRecurso(response);
-      this.course = new Course(
-        0,
-        this.form['name'].value,
-        this.form['description'].value,
-        this.form['keywords'].value,
-        urlPhoto, "", "",
-        "", this.form['language'].value, "0.0"
-      );
-      this.apiSaveCoruse(this.course).subscribe(response => {
-        console.log(response);
-        this.utils.showMessages(response.status, response.information, "tst");
-        this.resetCourse();
-        this.loadCourse();
-      });
-    });
+    if (this.updateCourse) {
+      if (this.tmpFile === undefined) {
+        this.course._nameCourse = this.form['name'].value;
+        this.course._descriptionCourse = this.form['description'].value;
+        this.course._languageCourse = this.form['language'].value;
+        this.course._keywordsCourse = this.form['keywords'].value;
+        this.apiUpdateCoruse(this.course).subscribe({
+          next: response => {
+            console.log(response);
+            this.utils.showMessages(response.status, response.information, "tst");
+            this.resetCourse();
+            this.loadCourse();
+            this.utils.closeLoading;
+          }
+        })
+      } else {
+        this.utils.changeImage(this.tmpFile).then(response => {
+          urlPhoto = this.utils.makePathRecurso(response);
+          this.course._pathimgCourse = urlPhoto;
+          this.apiUpdateCoruse(this.course).subscribe(response => {
+            console.log(response);
+            this.utils.showMessages(response.status, response.information, "tst");
+            this.resetCourse();
+            this.loadCourse();
+            this.utils.closeLoading;
+          });
+        });
+      }
+    } else {
+      if (this.urlimageupload.length === 0) {
+        this.utils.showMessages(3, "Ingrese una foto relacionada al curso.", "tst");
+        this.utils.closeLoading;
+        return;
+      }
 
+      this.utils.changeImage(this.tmpFile).then(response => {
+        urlPhoto = this.utils.makePathRecurso(response);
+        this.course = new Course(
+          0,
+          this.form['name'].value,
+          this.form['description'].value,
+          this.form['keywords'].value,
+          urlPhoto, "", "",
+          "", this.form['language'].value, "0.0"
+        );
+        this.apiSaveCoruse(this.course).subscribe(response => {
+          console.log(response);
+          this.utils.showMessages(response.status, response.information, "tst");
+          this.resetCourse();
+          this.loadCourse();
+          this.utils.closeLoading;
+        });
+      });
+    }
   }
 
   apiSaveCoruse(course: Course): Observable<any> {
     this.globalUri = this.utils.globalUrl + "course/insertcourse";
+    var headers = new HttpHeaders()
+      .set('Access-Control-Allow-Origin', '*')
+      .set('provider', 'native')
+      .set('token', this.utils.token);
+    return this._http.post(this.globalUri, course, {headers: headers});
+  }
+
+  apiUpdateCoruse(course: Course): Observable<any> {
+    this.globalUri = this.utils.globalUrl + "course/updatecourse";
     var headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
@@ -181,7 +282,7 @@ export class CursosArComponent implements OnInit {
       //this.imagePath = files;
       reader.readAsDataURL(file);
       reader.onload = (_event) => {
-        this.urlimageupload = reader.result;
+        this.urlimageupload = String(reader.result);
       }
 
       const objectURL = URL.createObjectURL(file);
@@ -197,6 +298,11 @@ export class CursosArComponent implements OnInit {
 
   openNew() {
     this.newcourse_dialog = true;
+    this.reegisterFormCourse.reset();
+    this.urlimageupload = "";
+    this.updateCourse = false;
+    this.urlimageupload = "";
+    console.log(this.urlimageupload);
   }
 
 

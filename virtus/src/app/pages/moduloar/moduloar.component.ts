@@ -28,6 +28,7 @@ export class ModuloarComponent implements OnInit {
   loading: boolean = true;
   loadingDataCourse: boolean = true;
   dataCourse: any;
+  updateModule: boolean = false;
 
   registerFormModule: FormGroup;
   moduleSuccessful = false;
@@ -63,6 +64,31 @@ export class ModuloarComponent implements OnInit {
     this.loadDataCourse();
   }
 
+  selectedModule(module: any) {
+    this.updateModule = true;
+    this.newModuleDialog = true;
+    this.form["name"].setValue(module.name_syllabu);
+    this.form["description"].setValue(module.description_syllabu);
+    this.form["keywords"].setValue(module.keywords_syllabu);
+    this.urlimageupload = module.pathimg_syllabus
+
+    this.module = new Modules(
+      module.id_syllabu,
+      this.form['name'].value,
+      this.form['description'].value,
+      this.form['keywords'].value,
+      this.urlimageupload, module.datereg_syllabu, module.dateupdate_syllabu, "");
+    let courseAux = new Course(parseInt(this.idCourse === null ? "0" : this.idCourse),
+      "", "", "", "",
+      "", "", "", "", "");
+    this.module._coursesIdCourse = courseAux;
+
+  }
+
+  deleteModule(module: any) {
+
+  }
+
   loadDataCourse() {
     this.loadingDataCourse = true;
     this.apiGetDataCourse(this.idCourse).subscribe({
@@ -89,31 +115,44 @@ export class ModuloarComponent implements OnInit {
       return;
     }
 
-    console.log(this.form['name'].value);
-    console.log(this.form['description'].value);
-    console.log(this.form['keywords'].value);
-    let urlPhoto: string = "";
-    this.utils.changeImage(this.tmpFile).then(response => {
-      urlPhoto = this.utils.makePathRecurso(response);
-      this.module = new Modules(
-        0,
-        this.form['name'].value,
-        this.form['description'].value,
-        this.form['keywords'].value,
-        urlPhoto, "", "", ""
-      )
-      let courseAux = new Course(parseInt(this.idCourse === null ? "0" : this.idCourse),
-        "", "", "", "",
-        "", "", "", "", "");
-      this.module._coursesIdCourse = courseAux;
-      console.log(this.module)
-      this.apiSaveCourse(this.module).subscribe(response => {
-        this.utils.showMessages(response.status, response.information, "tst");
-        this.loadCourse();
-        this.resetModule();
-      });
-    });
+    if (this.updateModule) {
+      if (this.tmpFile === undefined) {
+        this.module._nameSyllabu = this.form['name'].value;
+        this.module._descriptionSyllabu = this.form['description'].value;
+        this.module._keywordsSyllabu = this.form['keywords'].value;
+        this.apiUpdateModule(this.module).subscribe({
+          next: response => {
+            this.utils.showMessages(response.status, response.information, "tst");
+            this.loadCourse();
+            this.resetModule();
+          }
+        })
+      } else {
 
+      }
+    } else {
+      let urlPhoto: string = "";
+      this.utils.changeImage(this.tmpFile).then(response => {
+        urlPhoto = this.utils.makePathRecurso(response);
+        this.module = new Modules(
+          0,
+          this.form['name'].value,
+          this.form['description'].value,
+          this.form['keywords'].value,
+          urlPhoto, "", "", ""
+        )
+        let courseAux = new Course(parseInt(this.idCourse === null ? "0" : this.idCourse),
+          "", "", "", "",
+          "", "", "", "", "");
+        this.module._coursesIdCourse = courseAux;
+        console.log(this.module)
+        this.apiSaveCourse(this.module).subscribe(response => {
+          this.utils.showMessages(response.status, response.information, "tst");
+          this.loadCourse();
+          this.resetModule();
+        });
+      });
+    }
   }
 
   resetModule() {
@@ -124,6 +163,8 @@ export class ModuloarComponent implements OnInit {
 
   openNew() {
     this.newModuleDialog = true;
+    this.updateModule = false;
+    this.urlimageupload = "";
   }
 
   loadCourse() {
@@ -143,6 +184,15 @@ export class ModuloarComponent implements OnInit {
 
   apiSaveCourse(module: Modules): Observable<any> {
     this.globalUri = this.utils.globalUrl + "syllabu/insertsyllabu";
+    var headers = new HttpHeaders()
+      .set('Access-Control-Allow-Origin', '*')
+      .set('provider', 'native')
+      .set('token', this.utils.token);
+    return this._http.post<any>(this.globalUri, module, {headers: headers});
+  }
+
+  apiUpdateModule(module: Modules): Observable<any> {
+    this.globalUri = this.utils.globalUrl + "syllabu/updatesyllabu";
     var headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
