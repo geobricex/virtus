@@ -147,6 +147,7 @@ export class ModuloarComponent implements OnInit {
   saveModule() {
     this.utils.loading;
     this.moduleSuccessful = true;
+    let urlPhoto: string = "";
 
     if (this.registerFormModule.invalid) {
       return;
@@ -164,13 +165,31 @@ export class ModuloarComponent implements OnInit {
             this.loadCourse();
             this.resetModule();
             this.utils.closeLoading;
+            this.updateModule = false;
           }
         })
       } else {
-
+        this.utils.changeImage(this.tmpFile).then(response => {
+          urlPhoto = this.utils.makePathRecurso(response);
+          this.module._pathimgSyllabus = urlPhoto;
+          console.log(this.module)
+          this.apiUpdateModule(this.module).subscribe(response => {
+            this.utils.showMessages(response.status, response.information, "tst");
+            this.loadCourse();
+            this.resetModule();
+            this.utils.closeLoading;
+            this.updateModule = false;
+          });
+        });
       }
     } else {
-      let urlPhoto: string = "";
+
+      if (this.urlimageupload.toString().length === 0) {
+        this.utils.showMessages(3, "Ingrese una foto relacionada al modulo.", "tst");
+        this.utils.closeLoading;
+        return;
+      }
+
       this.utils.changeImage(this.tmpFile).then(response => {
         urlPhoto = this.utils.makePathRecurso(response);
         this.module = new Modules(
@@ -190,6 +209,7 @@ export class ModuloarComponent implements OnInit {
           this.loadCourse();
           this.resetModule();
           this.utils.closeLoading;
+          this.updateModule = false;
         });
       });
     }
@@ -203,6 +223,7 @@ export class ModuloarComponent implements OnInit {
 
   openNew() {
     this.newModuleDialog = true;
+    this.registerFormModule.reset();
     this.updateModule = false;
     this.urlimageupload = "";
   }
