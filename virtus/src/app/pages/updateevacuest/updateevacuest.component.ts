@@ -6,12 +6,15 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Observable} from "rxjs";
 import {
-  Evaluation,
+  Evaluation, EvaluationModel,
   EvaluationQuestionsResponse,
   Options,
-  OptionsAnswer,
-  Questions
+  OptionsAnswer, QuestionCategory,
+  Questions, QuestionsModel
 } from "../../models/evaluation_questionarie";
+import {Modules} from "../../models/Modules";
+import {Course} from "../../models/Course";
+import {ConfirmationService} from "primeng/api";
 
 @Component({
   selector: 'app-updateevacuest',
@@ -33,6 +36,10 @@ export class UpdateevacuestComponent implements OnInit {
   public tmpPuzzle: Puzzle;
   public evaluationObject: Evaluation;
   public questionObject: Questions;
+  public objectQuestionModule = {} as QuestionsModel;
+  public objetctEvaluation = {} as EvaluationModel;
+  public objectQuestionCategory = {} as QuestionCategory;
+  globalUri: string = "";
 
   frmEvaliationCuestionary: FormGroup;
   public alphabet: string[] = [
@@ -46,7 +53,8 @@ export class UpdateevacuestComponent implements OnInit {
     private breadcrumbService: BreadcrumbService,
     private utils: Utils,
     private _http: HttpClient,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private confirmationService: ConfirmationService
   ) {
     this.idCourse = this._route.snapshot.paramMap.get("idcourse");
     this.idModule = this._route.snapshot.paramMap.get("idmodule");
@@ -93,6 +101,57 @@ export class UpdateevacuestComponent implements OnInit {
       {label: "Cuestionario", value: 2},
     ]
     this.selectQuantityQuestions();
+  }
+
+  deleteQuestion(question: Questions, idcategory: number) {
+    this.confirmationService.confirm({
+      message: '¿Seguro que desea eliminar la pregunta?',
+      header: 'Mensaje de confirmación',
+      icon: 'pi pi-info-circle',
+      acceptLabel: "Si",
+      rejectLabel: "No",
+      accept: () => {
+        this.utils.loading;
+        console.log("pregunta", question);
+        this.objectQuestionModule.id = question.id_question;
+        this.objectQuestionModule.feedbackQuestion = question.feedback_question;
+        this.objectQuestionModule.hintQuestion = question.hint_question;
+        this.objectQuestionModule.descriptionQuestion = question.description_question;
+        this.objectQuestionModule.titleQuestion = question.title_question;
+        this.objectQuestionModule.maximumpointsQuestion = question.maximumpoints_question;
+        this.objectQuestionModule.pointsQuestion = question.points_question;
+        this.objectQuestionModule.pathurlfileQuestion = question.pathurlfile_question;
+        this.objectQuestionModule.pathurlsignQuestion = question.pathurlsign_question;
+        this.objectQuestionModule.pathurlvideoQuestion = question.pathurlvideo_question;
+        this.objectQuestionModule.levelQuestion = question.level_question;
+        this.objetctEvaluation.id = this.idEvaluation;
+        this.objectQuestionModule.evaluationsIdEvaluation = this.objetctEvaluation;
+        this.objectQuestionCategory.id = idcategory
+        this.objectQuestionModule.questionCategoryIdQuestionCategory = this.objectQuestionCategory;
+        this.objectQuestionModule.stateQuestion = "I";
+        console.log(this.objectQuestionModule);
+        this.apiUpdateQuestion(this.objectQuestionModule).subscribe({
+          next: response => {
+            console.log(response);
+            this.utils.showMessages(response.status, response.information, "tst");
+            this.loadQuestions();
+            this.utils.closeLoading;
+          }
+        })
+      },
+      reject: () => {
+      },
+      key: "positionDialog"
+    });
+  }
+
+  apiUpdateQuestion(question = {} as QuestionsModel) {
+    this.globalUri = this.utils.globalUrl + "question/updatequestion";
+    var headers = new HttpHeaders()
+      .set('Access-Control-Allow-Origin', '*')
+      .set('provider', 'native')
+      .set('token', this.utils.token);
+    return this._http.post<any>(this.globalUri, question, {headers: headers});
   }
 
   selectQuantityQuestions() {

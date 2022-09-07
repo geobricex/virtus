@@ -106,7 +106,7 @@ export class QuestionNuComponent implements OnInit {
         description_question: ["", Validators.required],
         feedback_question: ["", Validators.required],
         hint_question: ["", Validators.required],
-        level_question: [this.levelQuestion, Validators.required],
+        level_question: [1, Validators.required],
         points_question: ["", Validators.required],
         maximumpoints_question: [""],
         pathurlfile_question: [""],
@@ -135,7 +135,6 @@ export class QuestionNuComponent implements OnInit {
 
   saveQuestion() {
     this.utils.loading;
-    this.msgs.push({severity: 'info', summary: 'Virtus', detail: 'Procesando...'});
     console.log(this.structure);
     this.objectQuestion.descriptionQuestion = this.form["description_question"].value;
     this.objectQuestion.feedbackQuestion = this.form["feedback_question"].value;
@@ -146,6 +145,7 @@ export class QuestionNuComponent implements OnInit {
     this.objectQuestion.pathurlsignQuestion = this.form["pathurlsign_question"].value;
     this.objectQuestion.pathurlvideoQuestion = this.form["pathurlvideo_question"].value;
     this.objectQuestion.pointsQuestion = this.form["points_question"].value;
+    this.objectQuestion.levelQuestion = this.levelQuestion;
     this.objectQuestion.stateQuestion = "";
     this.objectQuestion.titleQuestion = this.form["title_question"].value;
     this.objetctEvaluation.id = parseInt(this.idEvaluation === null ? "" : this.idEvaluation);

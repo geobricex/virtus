@@ -192,7 +192,8 @@
     <div class="p-fluid">
       <div class="field">
         <label> Ingrese la palabra a armar </label>
-        <input style="text-transform:uppercase; font-size: 5rem; letter-spacing: 1.5px !important;" pInputText type="text"
+        <input style="text-transform:uppercase; font-size: 5rem; letter-spacing: 1.5px !important;" pInputText
+               type="text"
                value="{{structure[0].opcion}}" [(ngModel)]="structure[0].opcion">
       </div>
     </div>
@@ -243,5 +244,5 @@
     <button pButton pRipple [disabled]="registerFormQuestion.invalid" label="Guardar cambios" icon="pi pi-check"
             class="p-button-success" (click)="saveQuestion()"></button>
   </div>
-  <p-messages [value]="msgs"></p-messages>
+
 </div>
