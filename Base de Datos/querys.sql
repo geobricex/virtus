@@ -65,6 +65,6 @@ select * from question_category;
 select * from persons;
 
 select * from persons_evaluations;
-
+select * from evaluations;
 
 
