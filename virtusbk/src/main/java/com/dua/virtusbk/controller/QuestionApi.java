@@ -117,6 +117,7 @@ public class QuestionApi {
 //        String sessionToken = Methods.JsonToString(jso, "sessionToken", "");
         String[] clains = Methods.getDataToJwt(sessionToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
+        System.out.println(data);
         if (res[0].equals("2")) {
             JsonObject jso = Methods.stringToJSON(data);
             if (jso.size() > 0) {

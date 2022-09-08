@@ -2,11 +2,49 @@
 <div class="card">
   <h5> Encabezado pregunta </h5>
   <form [formGroup]="registerFormQuestion">
-    <label for="uploadFileQues" class="bg-indigo-100 p-1 border-1 border-round cursor-pointer mr-2">
-      Examinar... </label>
-    <span> {{form["pathurlfile_question"].value}} </span>
-    <input style="display: none" id="uploadFileQues" type="file"
-           (change)="uploadFileQuest($event)">
+
+    <div class="grid">
+      <div class="col-11">
+        <input type="text" autocomplete="off" pInputText class="w-full" formControlName="pathurlfile_question"
+               readonly placeholder="Seleccionar archivo"/>
+        <small class="text-blue-500">Se permiten archivos .pdf .doc .xls .txt .zip</small>
+      </div>
+      <div class="col-1">
+        <label for="uploadFile" class="p-button p-button-secondary">
+          <i class="pi pi-folder m-auto"></i>
+          <input style="display: none" id="uploadFile" type="file" (change)="onUploadFile($event)">
+        </label>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="col-11">
+        <input type="text" autocomplete="off" pInputText class="w-full" formControlName="pathurlsign_question"
+               readonly
+               placeholder="Seleccionar video con lenguaje de señas"/>
+        <small class="text-blue-500">Se permiten videos con formato .mp3 o .mp4.</small>
+      </div>
+      <div class="col-1">
+        <label for="uploadVideoSenia" class="p-button p-button-success"> <i
+          class="pi pi-folder m-auto"></i> </label>
+        <input style="display: none" id="uploadVideoSenia" type="file" (change)="onUploadVideoSenia($event)">
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="col-11">
+        <input type="text" autocomplete="off" pInputText class="w-full" formControlName="pathurlvideo_question"
+               readonly
+               placeholder="Seleccionar video"/>
+        <small class="text-blue-500">Se permiten videos con formato .mp3 o .mp4.</small>
+      </div>
+      <div class="col-1">
+        <label for="uploadVideo" class="p-button p-button-info"> <i class="pi pi-folder m-auto"></i>
+        </label>
+        <input style="display: none" id="uploadVideo" type="file" (change)="onUploadVideo($event)">
+      </div>
+    </div>
+
     <div class="p-fluid mt-3">
       <div class="field">
         <label for="titulo"> Titulo: </label>
@@ -79,7 +117,8 @@
     <div class="p-fluid mt-3">
       <div class="field" *ngFor="let option of structure; let i = index">
         <label> {{option.opcion}} </label>
-        <p-dropdown [options]="options" optionLabel="label" optionValue="value"></p-dropdown>
+        <p-dropdown [options]="options" optionLabel="label" optionValue="value"
+                    [(ngModel)]="option.correct"></p-dropdown>
       </div>
     </div>
   </div>
@@ -93,7 +132,10 @@
         <strong class="mr-3"> LITERAL {{literales[i]}}) </strong>
         <label for="uploadFileAns{{i}}" class="bg-indigo-100 p-1 border-1 border-round cursor-pointer mr-2">
           Examinar... </label>
-        <span> {{option.resource}} </span>
+        <i *ngIf="option.resource !== ''"
+           class="pi pi-eye cursor-pointer font-bold text-white bg-green-500 p-1 border-round"
+           pTooltip="Visualizar"
+           tooltipPosition="right" (click)="openViewFile(option.resource)"></i>
         <input style="display: none" id="uploadFileAns{{i}}" type="file"
                (change)="uploadFileResp($event, i)">
         <div class="grid mt-2">
@@ -125,7 +167,10 @@
         <strong> LITERAL {{literales[i]}}) </strong>
         <label for="uploadFileAns{{i}}" class="bg-indigo-100 p-1 border-1 border-round cursor-pointer mr-2">
           Examinar... </label>
-        <span> {{option.resource}} </span>
+        <i *ngIf="option.resource !== ''"
+           class="pi pi-eye cursor-pointer font-bold text-white bg-green-500 p-1 border-round"
+           pTooltip="Visualizar"
+           tooltipPosition="right" (click)="openViewFile(option.resource)"></i>
         <input style="display: none" id="uploadFileAns{{i}}" type="file"
                (change)="uploadFileResp($event, i)">
         <div class="grid mt-2">
@@ -160,10 +205,13 @@
             <label> Ingrese el texto a relacionar </label>
             <label for="uploadFileAnsR{{i}}" class="bg-indigo-100 p-1 border-1 border-round cursor-pointer mr-2">
               Examinar... </label>
-            <span> {{option.resourse_rightSide === '' ? '' : 'Archivo seleccionado'}} </span>
+            <i *ngIf="option.resourse_leftSide !== ''"
+               class="pi pi-eye cursor-pointer font-bold text-white bg-green-500 p-1 border-round"
+               pTooltip="Visualizar"
+               tooltipPosition="right" (click)="openViewFile(option.resourse_leftSide)"></i>
             <input style="display: none" id="uploadFileAnsR{{i}}" type="file"
-                   (change)="uploadFileRespR($event, i)">
-            <input class="mt-2" pInputText type="text" value="{{option.rightSide}}" [(ngModel)]="option.rightSide">
+                   (change)="uploadFileRespL($event, i)">
+            <input class="mt-2" pInputText type="text" value="{{option.leftSide}}" [(ngModel)]="option.leftSide">
           </div>
           <div class="col-1 text-center">
             <img src="assets/layout/images/imagesVirtus/resize.png" alt="" width="60">
@@ -172,10 +220,13 @@
             <label> Ingrese el texto a relacionar </label>
             <label for="uploadFileAnsL{{i}}" class="bg-indigo-100 p-1 border-1 border-round cursor-pointer mr-2">
               Examinar... </label>
-            <span> {{option.resourse_leftSide === '' ? '' : 'Archivo seleccionado'}} </span>
+            <i *ngIf="option.resourse_rightSide !== ''"
+               class="pi pi-eye cursor-pointer font-bold text-white bg-green-500 p-1 border-round"
+               pTooltip="Visualizar"
+               tooltipPosition="right" (click)="openViewFile(option.resourse_rightSide)"></i>
             <input style="display: none" id="uploadFileAnsL{{i}}" type="file"
-                   (change)="uploadFileRespL($event, i)">
-            <input class="mt-2" pInputText type="text" value="{{option.leftSide}}" [(ngModel)]="option.leftSide">
+                   (change)="uploadFileRespR($event, i)">
+            <input class="mt-2" pInputText type="text" value="{{option.rightSide}}" [(ngModel)]="option.rightSide">
           </div>
           <div class="col-1">
             <label> Acción </label> <br>
@@ -244,5 +295,11 @@
     <button pButton pRipple [disabled]="registerFormQuestion.invalid" label="Guardar cambios" icon="pi pi-check"
             class="p-button-success" (click)="saveQuestion()"></button>
   </div>
-
 </div>
+
+<p-dialog [(visible)]="viewFile" [style]="{width: '500px'}" header="Visualizar recurso"
+          [modal]="true">
+  <div class="text-center">
+    <img [src]="urlImg" alt="" width="400">
+  </div>
+</p-dialog>

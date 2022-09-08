@@ -91,11 +91,11 @@ export class ResourcesarComponent implements OnInit {
       {
         name: ["", Validators.required],
         description: ["", Validators.required],
-        timeEvaluation: ["", Validators.required],
-        timeminutesEvaluation: ["",],
+        timeEvaluation: [false, Validators.required],
+        timeminutesEvaluation: [0,],
         typeEvaluation: ["", Validators.required],
-        opportunityEvaluation: ["", Validators.required],
-        opportunitiesEvaluation: [""],
+        opportunityEvaluation: [false, Validators.required],
+        opportunitiesEvaluation: [0],
         orderByCategory: [true, Validators.required],
         allowsReview: [true, Validators.required]
       }

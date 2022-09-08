@@ -29,6 +29,7 @@ export class QuestionNuComponent implements OnInit {
   typeQuestion: number;
   levelQuestion: number = 1;
   textComplete: string | null;
+  idQuestion: number = 0;
 
   literales: any [];
 
@@ -60,6 +61,10 @@ export class QuestionNuComponent implements OnInit {
   structure: any [];
   tmpfiles: any [];
 
+  updateQuestion: boolean = false;
+  viewFile: boolean = false;
+  urlImg: string = "";
+
   constructor(
     private _route: ActivatedRoute,
     private breadcrumbService: BreadcrumbService,
@@ -74,6 +79,57 @@ export class QuestionNuComponent implements OnInit {
     let type: string | null = this._route.snapshot.paramMap.get("type");
     this.typeQuestion = parseInt(type !== null ? type : "0");
     console.log("tipo de pregunta ", this.typeQuestion);
+    let idquestion: string | null = this._route.snapshot.paramMap.get("idquestion");
+    this.idQuestion = parseInt(idquestion !== null ? idquestion : "0");
+
+    if (this.idQuestion !== 0) {
+      // buscar la esrtuctura de la pretunta por el id
+      this.updateQuestion = true;
+      this.apiGetDataQuestion().subscribe({
+        next: response => {
+          console.log(response);
+          this.form["title_question"].setValue(response.data[0].title_question);
+          this.form["description_question"].setValue(response.data[0].description_question);
+          this.form["feedback_question"].setValue(response.data[0].feedback_question);
+          this.form["hint_question"].setValue(response.data[0].hint_question);
+          this.form["level_question"].setValue(response.data[0].level_question);
+          this.form["points_question"].setValue(response.data[0].points_question);
+          this.form["maximumpoints_question"].setValue(response.data[0].maximumpoints_question);
+          this.form["pathurlfile_question"].setValue(response.data[0].pathurlfile_question);
+          this.form["pathurlsign_question"].setValue(response.data[0].pathurlsign_question);
+          this.form["pathurlvideo_question"].setValue(response.data[0].pathurlvideo_question);
+          this.structure = response.data[0].options_answer
+          // objeto question
+          this.objectQuestion.id = response.data[0].id_question;
+          this.objectQuestion.stateQuestion = response.data[0].state_question;
+          this.objetctEvaluation.id = response.data[0].evaluations_id_evaluation;
+          this.objectQuestion.evaluationsIdEvaluation = this.objetctEvaluation;
+          this.objectQuestionCategory.id = response.data[0].question_category_id_questioncategory
+          this.objectQuestion.questionCategoryIdQuestionCategory = this.objectQuestionCategory;
+          // objeto responses
+          this.objectAnswer.id = response.data[0].id_answer;
+          this.objectAnswer.dateregAnswer = response.data[0].datereg_answer;
+          this.objectAnswer.dateupdateAnswer = response.data[0].dateupdate_answer;
+          this.objectAnswer.optionsAnswer = JSON.stringify(this.structure);
+          this.objectAnswer.questionsIdQuestion = this.objectQuestion;
+          console.log(this.structure);
+
+          if (this.typeQuestion === 2 || this.typeQuestion === 3) {
+            for (let i = 0; i < this.structure.length; i++) {
+              this.tmpfiles.push({tmp: {}});
+            }
+          } else if (this.typeQuestion === 5) {
+            for (let i = 0; i < this.structure.length; i++) {
+              this.tmpfiles.push({tmpright: {}}, {tmpleft: {}});
+            }
+          } else if (this.typeQuestion === 6) {
+            this.urlimageupload = this.structure[0].resource;
+          }
+
+        }
+      })
+    }
+
     this.breadcrumbService.setItems([
       {
         label: '',
@@ -104,11 +160,11 @@ export class QuestionNuComponent implements OnInit {
       {
         title_question: ["", Validators.required],
         description_question: ["", Validators.required],
-        feedback_question: ["", Validators.required],
-        hint_question: ["", Validators.required],
+        feedback_question: [""],
+        hint_question: [""],
         level_question: [1, Validators.required],
-        points_question: ["", Validators.required],
-        maximumpoints_question: [""],
+        points_question: [false, Validators.required],
+        maximumpoints_question: [0],
         pathurlfile_question: [""],
         pathurlsign_question: [""],
         pathurlvideo_question: [""]
@@ -133,63 +189,75 @@ export class QuestionNuComponent implements OnInit {
     this.validateAnswer(this.typeQuestion);
   }
 
+  openViewFile(url: string) {
+    console.log(url);
+    this.urlImg = url;
+    this.viewFile = true;
+  }
+
+  apiGetDataQuestion(): Observable<any> {
+    this.globalUri = this.utils.globalUrl + "question/getQuestion";
+    var headers = new HttpHeaders()
+      .set('Access-Control-Allow-Origin', '*')
+      .set('provider', 'native')
+      .set('token', this.utils.token);
+    return this._http.post<any>(this.globalUri, {
+      id_question: this.idQuestion
+    }, {headers: headers});
+  }
+
   saveQuestion() {
     this.utils.loading;
-    console.log(this.structure);
+
+    if (this.form["points_question"].value && this.form["maximumpoints_question"].value === 0) {
+      this.utils.showMessages(3, "La cantidad de puntaje debe ser mayor a cero.", "tst");
+      this.utils.closeLoading;
+      return;
+    }
+
     this.objectQuestion.descriptionQuestion = this.form["description_question"].value;
     this.objectQuestion.feedbackQuestion = this.form["feedback_question"].value;
     this.objectQuestion.hintQuestion = this.form["hint_question"].value;
-    this.objectQuestion.id = 0;
-    this.objectQuestion.maximumpointsQuestion = this.form["maximumpoints_question"].value;
+    this.objectQuestion.maximumpointsQuestion = !this.form["points_question"].value ? 0 : this.form["maximumpoints_question"].value;
     this.objectQuestion.pathurlfileQuestion = this.form["pathurlfile_question"].value;
     this.objectQuestion.pathurlsignQuestion = this.form["pathurlsign_question"].value;
     this.objectQuestion.pathurlvideoQuestion = this.form["pathurlvideo_question"].value;
     this.objectQuestion.pointsQuestion = this.form["points_question"].value;
     this.objectQuestion.levelQuestion = this.levelQuestion;
-    this.objectQuestion.stateQuestion = "";
     this.objectQuestion.titleQuestion = this.form["title_question"].value;
-    this.objetctEvaluation.id = parseInt(this.idEvaluation === null ? "" : this.idEvaluation);
-    this.objectQuestion.evaluationsIdEvaluation = this.objetctEvaluation;
-    this.objectQuestionCategory.id = this.typeQuestion
-    this.objectQuestion.questionCategoryIdQuestionCategory = this.objectQuestionCategory;
-    console.log(this.objectQuestion);
-
-    // guardar la imagen
-    if (this.objectQuestion.pathurlfileQuestion !== "") {
-      let urlPhoto: string = "";
-      this.utils.changeImage(this.tmpFileQuest).then(response => {
-        urlPhoto = this.utils.makePathRecurso(response);
-        console.log(urlPhoto);
-        this.objectQuestion.pathurlfileQuestion = urlPhoto;
-        this.apiSaveQuestion().subscribe({
-          next: response => {
-            if (response.data.id_question !== 0) {
+    if (this.updateQuestion) {
+      // editar
+      console.log("EDITAR PREGUNTA ENCABEZADO: ", this.objectQuestion);
+      this.apiUpadateQuestion().subscribe({
+        next: response => {
+          if (response.data.id_question !== 0) {
+            console.log(response);
+            this.objectAnswer.optionsAnswer = JSON.stringify(this.structure);
+            console.log("EDITAR  PREGUNTA DETALLE: ", this.objectAnswer);
+            this.apiUpdateResponses().subscribe(response => {
               console.log(response);
-              // verificar si la pregunta permite archivos en las respuestas
-              // console.log(this.structure);
-              this.objectQuestion.id = response.data.id_question;
-              this.objectAnswer.id = 0;
-              this.objectAnswer.dateregAnswer = "";
-              this.objectAnswer.dateupdateAnswer = "";
-              this.objectAnswer.optionsAnswer = JSON.stringify(this.structure);
-              this.objectAnswer.questionsIdQuestion = this.objectQuestion;
-              this.apiSaveResponses().subscribe(response => {
-                console.log(response);
-                this.utils.showMessages(1, "Pregunta agregara correctamente.", "tst");
-                this.registerFormQuestion.reset();
-                this.validateAnswer(this.typeQuestion);
-                this.urlimageupload = "";
-                this.objectQuestion = {} as QuestionsModel;
-                this.form["pathurlfile_question"].setValue("");
-                this.utils.closeLoading;
-              });
-            } else {
-              this.utils.showMessages(3, "Ocurrio un error.", "tst");
-            }
+              this.utils.showMessages(2, "Pregunta actualizada correctamente.", "tst");
+              this.registerFormQuestion.reset();
+              this.validateAnswer(this.typeQuestion);
+              this.form["pathurlfile_question"].setValue("");
+              this.utils.closeLoading;
+            });
+          } else {
+            this.msgs = [];
+            this.utils.showMessages(3, "Ocurrio un error.", "tst");
           }
-        })
+        }
       });
     } else {
+      // nuevo
+      console.log(this.structure);
+      this.objectQuestion.id = 0;
+      this.objectQuestion.stateQuestion = "";
+      this.objetctEvaluation.id = parseInt(this.idEvaluation === null ? "" : this.idEvaluation);
+      this.objectQuestion.evaluationsIdEvaluation = this.objetctEvaluation;
+      this.objectQuestionCategory.id = this.typeQuestion
+      this.objectQuestion.questionCategoryIdQuestionCategory = this.objectQuestionCategory;
+      console.log(this.objectQuestion);
       this.apiSaveQuestion().subscribe({
         next: response => {
           if (response.data.id_question !== 0) {
@@ -204,7 +272,7 @@ export class QuestionNuComponent implements OnInit {
             this.objectAnswer.questionsIdQuestion = this.objectQuestion;
             this.apiSaveResponses().subscribe(response => {
               console.log(response);
-              this.utils.showMessages(1, "Pregunta agregara correctamente.", "tst");
+              this.utils.showMessages(2, "Pregunta agregara correctamente.", "tst");
               this.registerFormQuestion.reset();
               this.validateAnswer(this.typeQuestion);
               this.form["pathurlfile_question"].setValue("");
@@ -228,8 +296,26 @@ export class QuestionNuComponent implements OnInit {
     return this._http.post<any>(this.globalUri, this.objectQuestion, {headers: headers});
   }
 
+  apiUpadateQuestion(): Observable<any> {
+    this.globalUri = this.utils.globalUrl + "question/updatequestion";
+    var headers = new HttpHeaders()
+      .set('Access-Control-Allow-Origin', '*')
+      .set('provider', 'native')
+      .set('token', this.utils.token);
+    return this._http.post<any>(this.globalUri, this.objectQuestion, {headers: headers});
+  }
+
   apiSaveResponses(): Observable<any> {
     this.globalUri = this.utils.globalUrl + "answer/insertanswer";
+    var headers = new HttpHeaders()
+      .set('Access-Control-Allow-Origin', '*')
+      .set('provider', 'native')
+      .set('token', this.utils.token);
+    return this._http.post<any>(this.globalUri, this.objectAnswer, {headers: headers});
+  }
+
+  apiUpdateResponses(): Observable<any> {
+    this.globalUri = this.utils.globalUrl + "answer/updateanswer";
     var headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
@@ -273,6 +359,7 @@ export class QuestionNuComponent implements OnInit {
   }
 
   uploadFileResp(event: any, index: number) {
+    this.utils.loading;
     event.target.files.length > 0;
     const file = event.target.files[0];
     console.log(file);
@@ -281,16 +368,57 @@ export class QuestionNuComponent implements OnInit {
     this.utils.changeImage(this.tmpfiles[index].tmp).then(response => {
       urlPhoto = this.utils.makePathRecurso(response);
       this.structure[index].resource = urlPhoto;
+      this.utils.showMessages(2, "Archivo subido extosamente.", "tst");
+      this.utils.closeLoading;
     });
   }
 
-  uploadFileQuest(event: any) {
+  onUploadFile(event: any) {
+    this.utils.loading;
     event.target.files.length > 0;
     const file = event.target.files[0];
-    console.log(file);
-    this.tmpFileQuest = file;
-    this.form["pathurlfile_question"].setValue(this.tmpFileQuest.name);
+
+    if (file.type === "application/pdf" || file.type === "application/x-zip-compressed" || file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+      || file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+      let urlPhoto: string = "";
+      this.utils.changeImage(file).then(response => {
+        urlPhoto = this.utils.makePathRecurso(response);
+        this.form["pathurlfile_question"].setValue(urlPhoto);
+        this.utils.closeLoading;
+      });
+    }
   }
+
+  onUploadVideoSenia(event: any) {
+    this.utils.loading;
+    event.target.files.length > 0;
+    const file = event.target.files[0];
+
+    if (file.type === "video/mp4" || file.type === "video/mp3") {
+      let urlPhoto: string = "";
+      this.utils.changeImage(file).then(response => {
+        urlPhoto = this.utils.makePathRecurso(response);
+        this.form["pathurlsign_question"].setValue(urlPhoto);
+        this.utils.closeLoading;
+      });
+    }
+  }
+
+  onUploadVideo(event: any) {
+    this.utils.loading;
+    event.target.files.length > 0;
+    const file = event.target.files[0];
+
+    if (file.type === "video/mp4" || file.type === "video/mp3") {
+      let urlPhoto: string = "";
+      this.utils.changeImage(file).then(response => {
+        urlPhoto = this.utils.makePathRecurso(response);
+        this.form["pathurlvideo_question"].setValue(urlPhoto);
+        this.utils.closeLoading;
+      });
+    }
+  }
+
 
   // metodos para la estructura de relcionar
   addNewAlternativeRel() {
@@ -310,6 +438,7 @@ export class QuestionNuComponent implements OnInit {
   }
 
   uploadFileRespR(event: any, index: number) {
+    this.utils.loading;
     event.target.files.length > 0;
     const file = event.target.files[0];
     console.log(file);
@@ -318,10 +447,13 @@ export class QuestionNuComponent implements OnInit {
     this.utils.changeImage(this.tmpfiles[index].tmpright).then(response => {
       urlPhoto = this.utils.makePathRecurso(response);
       this.structure[index].resourse_rightSide = urlPhoto;
+      this.utils.closeLoading;
+      this.utils.showMessages(2, "Archivo subido extosamente.", "tst");
     });
   }
 
   uploadFileRespL(event: any, index: number) {
+    this.utils.loading;
     event.target.files.length > 0;
     const file = event.target.files[0];
     console.log(file);
@@ -330,11 +462,14 @@ export class QuestionNuComponent implements OnInit {
     this.utils.changeImage(this.tmpfiles[index].tmpleft).then(response => {
       urlPhoto = this.utils.makePathRecurso(response);
       this.structure[index].resourse_leftSide = urlPhoto;
+      this.utils.showMessages(2, "Archivo subido extosamente.", "tst");
+      this.utils.closeLoading;
     });
   }
 
   // metodos para la estructura de puzzle
   onFileChange(event: any) {
+    this.utils.loading;
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
       console.log(file);
@@ -358,6 +493,8 @@ export class QuestionNuComponent implements OnInit {
       this.utils.changeImage(this.tmpFile).then(response => {
         urlPhoto = this.utils.makePathRecurso(response);
         this.structure[0].resource = urlPhoto;
+        this.utils.showMessages(2, "Archivo subido extosamente.", "tst");
+        this.utils.closeLoading;
       });
     }
   }

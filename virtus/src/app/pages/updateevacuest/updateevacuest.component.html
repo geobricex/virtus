@@ -101,7 +101,7 @@
                   <span class="pi pi-eye mr-3 text-yellow-500 cursor-pointer" pTooltip="Visualizar"
                         tooltipPosition="top" (click)="previewQuestion(question)"></span>
                   <span class="pi pi-pencil mr-3 text-blue-500 cursor-pointer" pTooltip="Editar"
-                        tooltipPosition="top"></span>
+                        tooltipPosition="top" routerLink="question_nu/1/{{question.id_question}}"></span>
                   <span class="pi pi-trash text-pink-500 cursor-pointer" pTooltip="Eliminar"
                         tooltipPosition="top" (click)="deleteQuestion(question, 1)"></span>
                 </div>
@@ -124,7 +124,7 @@
                   <span class="pi pi-eye mr-3 text-yellow-500 cursor-pointer" pTooltip="Visualizar"
                         tooltipPosition="top" (click)="previewQuestion(question)"></span>
                   <span class="pi pi-pencil mr-3 text-blue-500 cursor-pointer" pTooltip="Editar"
-                        tooltipPosition="top"></span>
+                        tooltipPosition="top" routerLink="question_nu/2/{{question.id_question}}"></span>
                   <span class="pi pi-trash text-pink-500 cursor-pointer" pTooltip="Eliminar"
                         tooltipPosition="top" (click)="deleteQuestion(question, 2)"></span>
                 </div>
@@ -149,7 +149,7 @@
                          tooltipPosition="top"
                          (click)="previewQuestion(question)"></span>
                   <span class="pi pi-pencil mr-3 text-blue-500 cursor-pointer" pTooltip="Editar"
-                        tooltipPosition="top"></span>
+                        tooltipPosition="top" routerLink="question_nu/3/{{question.id_question}}"></span>
                   <span class="pi pi-trash text-pink-500 cursor-pointer" pTooltip="Eliminar"
                         tooltipPosition="top" (click)="deleteQuestion(question, 3)"></span>
                 </div>
@@ -173,7 +173,7 @@
                         tooltipPosition="top"
                         (click)="previewQuestion(question)"></span>
                   <span class="pi pi-pencil mr-3 text-blue-500 cursor-pointer" pTooltip="Editar"
-                        tooltipPosition="top"></span>
+                        tooltipPosition="top" routerLink="question_nu/4/{{question.id_question}}"></span>
                   <span class="pi pi-trash text-pink-500 cursor-pointer" pTooltip="Eliminar"
                         tooltipPosition="top" (click)="deleteQuestion(question, 4)"></span>
                 </div>
@@ -197,7 +197,7 @@
                         tooltipPosition="top"
                         (click)="previewQuestion(question)"></span>
                   <span class="pi pi-pencil mr-3 text-blue-500 cursor-pointer" pTooltip="Editar"
-                        tooltipPosition="top"></span>
+                        tooltipPosition="top" routerLink="question_nu/5/{{question.id_question}}"></span>
                   <span class="pi pi-trash text-pink-500 cursor-pointer" pTooltip="Eliminar"
                         tooltipPosition="top" (click)="deleteQuestion(question, 5)"></span>
                 </div>
@@ -221,7 +221,7 @@
                         tooltipPosition="top"
                         (click)="previewQuestion(question)"></span>
                   <span class="pi pi-pencil mr-3 text-blue-500 cursor-pointer" pTooltip="Editar"
-                        tooltipPosition="top"></span>
+                        tooltipPosition="top" routerLink="question_nu/6/{{question.id_question}}"></span>
                   <span class="pi pi-trash text-pink-500 cursor-pointer" pTooltip="Eliminar"
                         tooltipPosition="top" (click)="deleteQuestion(question, 6)"></span>
                 </div>
@@ -245,7 +245,7 @@
                        tooltipPosition="top"
                        (click)="previewQuestion(question)"></span>
                   <span class="pi pi-pencil mr-3 text-blue-500 cursor-pointer" pTooltip="Editar"
-                        tooltipPosition="top"></span>
+                        tooltipPosition="top" routerLink="question_nu/7/{{question.id_question}}"></span>
                   <span class="pi pi-trash text-pink-500 cursor-pointer" pTooltip="Eliminar"
                         tooltipPosition="top" (click)="deleteQuestion(question, 7)"></span>
                 </div>
@@ -512,19 +512,19 @@
       <div class="col">
         <div class="shadow-2 p-3 text-center">
           <img src="assets/layout/images/imagesVirtus/choice.png" alt="" width="100" class="cursor-pointer"
-               pTooltip="Verdadero o falso" tooltipPosition="top" routerLink="question_nu/1">
+               pTooltip="Verdadero o falso" tooltipPosition="top" routerLink="question_nu/1/0">
         </div>
       </div>
       <div class="col">
         <div class="shadow-2 p-3 text-center">
           <img src="assets/layout/images/imagesVirtus/buttons.png" alt="" width="100" class="cursor-pointer"
-               pTooltip="Unica opción" tooltipPosition="top" routerLink="question_nu/2">
+               pTooltip="Unica opción" tooltipPosition="top" routerLink="question_nu/2/0">
         </div>
       </div>
       <div class="col">
         <div class="shadow-2 p-3 text-center">
           <img src="../../../assets/layout/images/imagesVirtus/completed.png" alt="" width="100" class="cursor-pointer"
-               pTooltip="Opciones multiples" tooltipPosition="top" routerLink="question_nu/3">
+               pTooltip="Opciones multiples" tooltipPosition="top" routerLink="question_nu/3/0">
         </div>
       </div>
     </div>
@@ -532,19 +532,19 @@
       <div class="col">
         <div class="shadow-2 p-3 text-center">
           <img src="assets/layout/images/imagesVirtus/text-box.png" alt="" width="100" class="cursor-pointer"
-               pTooltip="Completar" tooltipPosition="top" routerLink="question_nu/4">
+               pTooltip="Completar" tooltipPosition="top" routerLink="question_nu/4/0">
         </div>
       </div>
       <div class="col">
         <div class="shadow-2 p-3 text-center">
           <img src="assets/layout/images/imagesVirtus/archivo.png" alt="" width="100" class="cursor-pointer"
-               pTooltip="Armar la palabra" tooltipPosition="top" routerLink="question_nu/7">
+               pTooltip="Armar la palabra" tooltipPosition="top" routerLink="question_nu/7/0">
         </div>
       </div>
       <div class="col">
         <div class="shadow-2 p-3 text-center">
           <img src="../../../assets/layout/images/imagesVirtus/relaciones.png" alt="" width="100"
-               class="cursor-pointer" pTooltip="Relacionar" tooltipPosition="top" routerLink="question_nu/5">
+               class="cursor-pointer" pTooltip="Relacionar" tooltipPosition="top" routerLink="question_nu/5/0">
         </div>
       </div>
     </div>
@@ -552,7 +552,7 @@
       <div class="col">
         <div class="shadow-2 p-3 text-center">
           <img src="assets/layout/images/imagesVirtus/rompecabezas.png" alt="" width="100" class="cursor-pointer"
-               pTooltip="Puzzle" tooltipPosition="top" routerLink="question_nu/6">
+               pTooltip="Puzzle" tooltipPosition="top" routerLink="question_nu/6/0">
         </div>
       </div>
     </div>
