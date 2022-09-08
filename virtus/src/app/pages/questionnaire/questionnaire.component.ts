@@ -1309,6 +1309,15 @@ export class QuestionnaireComponent implements OnInit {
 
   // función
   enviarEvaluacion(): void {
+    // ultima pregunta
+    let [flagCorrect, points] = this.verificarRespuestasCorrectas(this.questionObject);
+    this.questionObject.response_points = points;
+    console.log(this.questionObject);
+    this.showSwal(flagCorrect, this.indexQuestionObject);
+    this.intentosEnvio++;
+    this.questionObject.num_intentos = this.intentosEnvio;
+    //valida ultima pregunta
+
     console.log(this.getCountReplied()[0] + '/' + this.getCountReplied()[1])
     if (this.getCountReplied()[0] === this.getCountReplied()[1]) {
       console.log("##########################################################################");
