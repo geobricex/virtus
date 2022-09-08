@@ -242,7 +242,7 @@ export class EvaluationComponent implements OnInit {
       /*if (this.evaluationObject.questions_[ind].canResource != undefined) {
         respondidas++;
       }*/
-      let resueltoStado= this.validarPreguntaResuelta(this.evaluationObject.questions_[ind]);
+      let resueltoStado = this.validarPreguntaResuelta(this.evaluationObject.questions_[ind]);
       if (resueltoStado) {
         respondidas++;
       }
@@ -257,7 +257,7 @@ export class EvaluationComponent implements OnInit {
       /*if (this.evaluationObject.questions_[ind].canResource != undefined) {
         respondidas++;
       }*/
-      let [resueltoStado, _] = this.verificarRespuestasCorrectas(this.evaluationObject.questions_[ind]);
+      let resueltoStado = this.validarPreguntaResuelta(this.evaluationObject.questions_[ind]);
       if (resueltoStado) {
         respondidas++;
       }
@@ -296,6 +296,8 @@ export class EvaluationComponent implements OnInit {
 
           //if (this.evaluationObject.time_evaluation) {
           this.tiempoEvaluacion = this.evaluationObject.timeminutes_evaluation * 60;
+          this.tiempoEvaluacion_lastQ = this.evaluationObject.timeminutes_evaluation * 60;
+
           this.tiempoEvaluacion$ = timer(0, 1000)
             .subscribe((iter: any) => {
               if (this.tiempoEvaluacion <= 0) {
@@ -505,89 +507,86 @@ export class EvaluationComponent implements OnInit {
       console.log(this.validarPreguntaResuelta(this.questionObject));
       // if (this.validarPreguntaResuelta(this.questionObject)) {
 
-        //La preguntaha sido contestada
-        //validar las respuestas que he dado
-        // console.log("FeedBack: ", this.questionObject.feedback_question);
-        //this.utils.showMessages(1, "FeedBack: " + this.questionObject.feedback_question);
-        // let [flagCorrect, points] = this.verificarRespuestasCorrectas(this.questionObject);
-        // this.questionObject.response_points = points;
-        // console.log(this.questionObject);
-        // this.showSwal(flagCorrect, this.indexQuestionObject);
-        // this.intentosEnvio++;
-        //this.questionObject.num_intentos = this.intentosEnvio;
+      //La preguntaha sido contestada
+      //validar las respuestas que he dado
 
-        // if (!flagCorrect) {
-        //   return;
-        // } else {
-        //   this.intentosEnvio = 0;
-        //   if (this.valueProgress < 100) {
-        //     this.valueProgress = this.valueProgress + ((100) / this.evaluationObject.questions_.length);
-        //   }
-        //   this.questionObject.response_time = (this.tiempoEvaluacion - (flag ? 10 : 0)) - this.tiempoEvaluacion_lastQ;
-        //   this.tiempoEvaluacion_lastQ = this.tiempoEvaluacion;
-        // }
-      // } else {
-      //   console.log("Primero debes responder la pregunta");
-      //   this.utils.showMessages(3, "Primero debe responder la pregunta");
+      let [flagCorrect, points] = this.verificarRespuestasCorrectas(this.questionObject);
+      this.questionObject.response_points = points;
+      // this.showSwal(flagCorrect, this.indexQuestionObject);
+      this.intentosEnvio++;
+      this.questionObject.num_intentos = this.intentosEnvio;
+
+      // if (!flagCorrect) {
       //   return;
-      // }
+      // } else {
+      //   this.intentosEnvio = 0;
+      if (this.valueProgress < 100) {
+        this.valueProgress = this.valueProgress + ((100) / this.evaluationObject.questions_.length);
+        // }
+        this.questionObject.response_time = (this.tiempoEvaluacion + (flag ? 10 : 0)) - this.tiempoEvaluacion_lastQ;
+        this.questionObject.response_time = Math.abs(this.questionObject.response_time);
+        this.tiempoEvaluacion_lastQ = this.tiempoEvaluacion;
+      }
     }
+
     if (indice != this.indexQuestionObject) {
       this.indexQuestionObject = indice;
       this.questionObject = this.evaluationObject.questions_[this.indexQuestionObject];
       console.log("cambia a pregunta:", this.questionObject);
       let rec: string = "";
-      if (this.questionObject.name_questioncategory !== this.tipoPregunta(7)) {
-        rec = this.questionObject.answers_[0].options_answer[0].resource!;
-      } else {
-        this.palabra.firstMovimiento = 0;
-      }
-      rec = rec != undefined ? rec : "";
-      this.questionObject.canResource = (rec.length > 0);
-      if (this.questionObject.name_questioncategory == this.tipoPregunta(4)) {
-        for (let i = 0; i < this.questionObject.answers_[0].options_answer.length; i++) {
-          this.questionObject.answers_[0].complete_parts = this.partirPreguntaComplete(this.questionObject.answers_[0].options_answer[i].description_question);
+      if (!this.validarPreguntaResuelta(this.questionObject)) {
+        if (this.questionObject.name_questioncategory !== this.tipoPregunta(7)) {
+          rec = this.questionObject.answers_[0].options_answer[0].resource!;
+        } else {
+          this.palabra.firstMovimiento = 0;
         }
-        this.questionObject.answers_[0].options_answer[0].response = Array<Options>(this.questionObject.answers_[0].complete_parts!.length - 1);
-      }
-      if (this.questionObject.name_questioncategory == this.tipoPregunta(5)) {
-        //this.questionObject.answers_[0].right_parts = [...this.questionObject.answers_[0].options_answer];
-        this.questionObject.answers_[0].right_parts = Array<OptionsAnswer>(0);
-        let tmp: OptionsAnswer;
-        for (let index = 0; index < this.questionObject.answers_[0].options_answer.length; index++) {
-          //tmp.opcion = this.questionObject.answers_[0].options_answer[index].rightSide;
-          //tmp.resource = this.questionObject.answers_[0].options_answer[index].resourse_rightSide;
-          tmp = this.questionObject.answers_[0].options_answer[index];
-          tmp.ind = index;
-          this.questionObject.answers_[0].right_parts.push(tmp);
+        rec = rec != undefined ? rec : "";
+        this.questionObject.canResource = (rec.length > 0);
+        if (this.questionObject.name_questioncategory == this.tipoPregunta(4)) {
+          for (let i = 0; i < this.questionObject.answers_[0].options_answer.length; i++) {
+            this.questionObject.answers_[0].complete_parts = this.partirPreguntaComplete(this.questionObject.answers_[0].options_answer[i].description_question);
+          }
+          this.questionObject.answers_[0].options_answer[0].response = Array<Options>(this.questionObject.answers_[0].complete_parts!.length - 1);
         }
-        this.questionObject.answers_[0].right_parts = this.desordenar(this.questionObject.answers_[0].right_parts);
-        for (let index = 0; index < this.questionObject.answers_[0].right_parts.length; index++) {
-          this.questionObject.answers_[0].right_parts[index].ind = index;
+        if (this.questionObject.name_questioncategory == this.tipoPregunta(5)) {
+          //this.questionObject.answers_[0].right_parts = [...this.questionObject.answers_[0].options_answer];
+          this.questionObject.answers_[0].right_parts = Array<OptionsAnswer>(0);
+          let tmp: OptionsAnswer;
+          for (let index = 0; index < this.questionObject.answers_[0].options_answer.length; index++) {
+            //tmp.opcion = this.questionObject.answers_[0].options_answer[index].rightSide;
+            //tmp.resource = this.questionObject.answers_[0].options_answer[index].resourse_rightSide;
+            tmp = this.questionObject.answers_[0].options_answer[index];
+            tmp.ind = index;
+            this.questionObject.answers_[0].right_parts.push(tmp);
+          }
+          this.questionObject.answers_[0].right_parts = this.desordenar(this.questionObject.answers_[0].right_parts);
+          for (let index = 0; index < this.questionObject.answers_[0].right_parts.length; index++) {
+            this.questionObject.answers_[0].right_parts[index].ind = index;
+          }
+          console.log("tipo pregujnta 5", this.questionObject.answers_[0].right_parts);
+          this.questionObject.answers_[0].responses = Array<OptionsAnswer>(this.questionObject.answers_[0].options_answer.length - 1);
         }
-        console.log("tipo pregujnta 5", this.questionObject.answers_[0].right_parts);
-        this.questionObject.answers_[0].responses = Array<OptionsAnswer>(this.questionObject.answers_[0].options_answer.length - 1);
-      }
-      if (this.questionObject.name_questioncategory == this.tipoPregunta(6)) {
-        let imgPath: string = this.questionObject.answers_[0].options_answer[0].resource!;
-        let dimensions: number = this.questionObject.answers_[0].options_answer[0].piece_questionarie!;
-        this.tmpPuzzle = new Puzzle();
-        // imgPath = "assets/imgresource/empty/notification.png";
-        this.tmpPuzzle.crearPuzzle(dimensions, imgPath);
-        this.questionObject.answers_[0].tmpPuzzle = this.tmpPuzzle;
-      }
-      if (this.questionObject.name_questioncategory == this.tipoPregunta(7)) {
+        if (this.questionObject.name_questioncategory == this.tipoPregunta(6)) {
+          let imgPath: string = this.questionObject.answers_[0].options_answer[0].resource!;
+          let dimensions: number = this.questionObject.answers_[0].options_answer[0].piece_questionarie!;
+          this.tmpPuzzle = new Puzzle();
+          // imgPath = "assets/imgresource/empty/notification.png";
+          this.tmpPuzzle.crearPuzzle(dimensions, imgPath);
+          this.questionObject.answers_[0].tmpPuzzle = this.tmpPuzzle;
+        }
+        if (this.questionObject.name_questioncategory == this.tipoPregunta(7)) {
 
-        let tmpOpcion: OptionsAnswer = this.questionObject.answers_[0].options_answer[0];
-        console.log("pregunta tipo 7:", tmpOpcion);
-        // this.questionObject.answers_[0].complete_parts = this.desordenar(tmpOpcion.opcion.split(""));
-        // this.questionObject.answers_[0].complete_parts = tmpOpcion.opcion.split("");
-        this.questionObject.answers_[0].complete_parts = Array<string>(tmpOpcion.opcion.split("").length);
+          let tmpOpcion: OptionsAnswer = this.questionObject.answers_[0].options_answer[0];
+          console.log("pregunta tipo 7:", tmpOpcion);
+          // this.questionObject.answers_[0].complete_parts = this.desordenar(tmpOpcion.opcion.split(""));
+          // this.questionObject.answers_[0].complete_parts = tmpOpcion.opcion.split("");
+          this.questionObject.answers_[0].complete_parts = Array<string>(tmpOpcion.opcion.split("").length);
 
-        // let x:OptionsAnswer = {opcion: ""};
-        // this.questionObject.answers_[0].responses = Array<OptionsAnswer>(tmpOpcion.opcion.split("").length);
+          // let x:OptionsAnswer = {opcion: ""};
+          // this.questionObject.answers_[0].responses = Array<OptionsAnswer>(tmpOpcion.opcion.split("").length);
+        }
+        console.log("pregunta: ", this.questionObject);
       }
-      console.log("pregunta: ", this.questionObject);
     }
     this.initCanvas(flag);
     //reiniciamos los intentos
@@ -1307,6 +1306,14 @@ export class EvaluationComponent implements OnInit {
 
   // función
   enviarEvaluacion(): void {
+    // ultima pregunta
+    let [flagCorrect, points] = this.verificarRespuestasCorrectas(this.questionObject);
+    this.questionObject.response_points = points;
+    console.log(this.questionObject);
+    // this.showSwal(flagCorrect, this.indexQuestionObject);
+    this.intentosEnvio++;
+    this.questionObject.num_intentos = this.intentosEnvio;
+    //valida ultima pregunta
     console.log(this.getCountReplied()[0] + '/' + this.getCountReplied()[1])
     if (this.getCountReplied()[0] === this.getCountReplied()[1]) {
       console.log("##########################################################################");

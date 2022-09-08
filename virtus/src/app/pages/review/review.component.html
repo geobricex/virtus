@@ -18,10 +18,10 @@
           <span>Tiempo</span> <br>
           <span><strong>{{miliseguntos2Segundos(dataReviews.timespent_person_evaluation)}}</strong></span>
         </div>
-<!--        <div class="xl:col-1 md:col-2 sm:col-2 text-center">-->
-<!--          <button pButton pRipple label="Exportar"-->
-<!--                  class="p-button-success mt-2"></button>-->
-<!--        </div>-->
+        <!--        <div class="xl:col-1 md:col-2 sm:col-2 text-center">-->
+        <!--          <button pButton pRipple label="Exportar"-->
+        <!--                  class="p-button-success mt-2"></button>-->
+        <!--        </div>-->
         <div class="col-12 p-fieldset-content">
           <p>{{dataReviews.description_evaluation}}</p>
         </div>
@@ -29,7 +29,8 @@
     </div>
   </div>
   <div class="col-12 md:col-12">
-    <div class="card" *ngFor="let questionObject of dataReviews.result_evaluation.questions_; let indexQuestionObject = index"
+    <div class="card"
+         *ngFor="let questionObject of dataReviews.result_evaluation.questions_; let indexQuestionObject = index"
          [attr.data-index]="indexQuestionObject">
       <h4> {{'Pregunta N° ' + (indexQuestionObject + 1 || 0) + ' : ' + questionObject.title_question}} </h4>
 
@@ -40,16 +41,23 @@
               image="{{'assets/imgresource/empty/shield.png'}}"
       ></p-chip>
       <div class="flex align-items-center">
-        <p-chip label="{{'Calificación: ' + questionObject.response_points + ' / '+ questionObject.maximumpoints_question}}"
-                icon="pi pi-star-fill" styleClass="mr-2 custom-chip" *ngIf="questionObject.response_points!==undefined"></p-chip>
+        <p-chip
+          label="{{'Calificación: ' + questionObject.response_points + ' / '+ questionObject.maximumpoints_question}}"
+          icon="pi pi-star-fill" styleClass="mr-2 custom-chip"
+          *ngIf="questionObject.response_points!==undefined"></p-chip>
         <p-chip label="{{'Tiempo: ' + miliseguntos2Segundos(questionObject.response_time)}}"
-                icon="pi pi-clock" styleClass="mr-2 custom-chip" *ngIf="questionObject.response_time!==undefined"></p-chip>
+                icon="pi pi-clock" styleClass="mr-2 custom-chip"
+                *ngIf="questionObject.response_time!==undefined"
+                ></p-chip>
 
         <p-chip label="{{'Nª Intentos: ' + questionObject.num_intentos}}"
-                icon="pi pi-send" styleClass="mr-2 custom-chip" *ngIf="questionObject.num_intentos!==undefined"></p-chip>
+                icon="pi pi-send" styleClass="mr-2 custom-chip"
+                *ngIf="questionObject.type_evaluation == 1"></p-chip>
 
         <p-chip label="{{'Nª Movimientos: ' + questionObject.num_mov}}"
-                icon="pi pi-microsoft" styleClass="mr-2 custom-chip" *ngIf="questionObject.num_mov!==undefined"></p-chip>
+                icon="pi pi-microsoft" styleClass="mr-2 custom-chip"
+                *ngIf="questionObject.num_mov!==undefined"
+                ></p-chip>
 
       </div>
       <div *ngIf="validarPreguntaRecurso(questionObject.pathurlfile_question)" class="col-12">
@@ -98,7 +106,7 @@
           <div class="field-radiobutton">
             <p-radioButton [inputId]="'option_vf_' + alphabet[i]" name="Simple_Option" [value]="option"
                            [(ngModel)]="questionObject.answers_[0].options_answer[buscarLiteral(questionObject)] "
-                           [disabled]="true" ></p-radioButton>
+                           [disabled]="true"></p-radioButton>
             <label [for]="'option_vf_' + alphabet[i]">{{alphabet[i].toUpperCase() + ")\t" + option.opcion}}</label>
           </div>
         </div>
@@ -109,7 +117,7 @@
           <div class="field-radiobutton">
             <p-radioButton [inputId]="'option_rd_' + alphabet[i]" name="Simple_Option" [value]="option"
                            [(ngModel)]="questionObject.answers_[0].options_answer[buscarLiteral(questionObject)] "
-                           [disabled]="true" ></p-radioButton>
+                           [disabled]="true"></p-radioButton>
             <label [for]="'option_rd_' + alphabet[i]">{{alphabet[i].toUpperCase() + ")\t" + option.opcion}}</label>
           </div>
         </div>
@@ -128,7 +136,7 @@
             <div class="field-radiobutton">
               <p-radioButton [inputId]="'option_rd_2_' + alphabet[i]" name="Simple_Option_img" [value]="option"
                              [(ngModel)]="questionObject.answers_[0].options_answer[buscarLiteral(questionObject)] "
-                             [disabled]="true" ></p-radioButton>
+                             [disabled]="true"></p-radioButton>
               <label
                 [for]="'option_rd_2_' + alphabet[i]"><strong>{{'Literal ' + alphabet[i].toUpperCase()}}</strong></label>
             </div>
@@ -142,7 +150,7 @@
           <div class="field-radiobutton">
             <p-checkbox [inputId]="'option_ck_' + alphabet[i]" name="multiple_Option" [value]="option"
                         [(ngModel)]="questionObject.answers_[0].responses"
-                        [disabled]="true" ></p-checkbox>
+                        [disabled]="true"></p-checkbox>
             <label [for]="'option_ck_' + alphabet[i]">{{alphabet[i].toUpperCase() + ")\t" + option.opcion}}</label>
           </div>
         </div>
@@ -161,7 +169,7 @@
             <div class="field-radiobutton">
               <p-checkbox [inputId]="'option_ck_2_' + alphabet[i]" name="multiple_Option_img" [value]="option"
                           [(ngModel)]="questionObject.answers_[0].responses"
-                          [disabled]="true" ></p-checkbox>
+                          [disabled]="true"></p-checkbox>
               <label
                 [for]="'option_ck_2_' + alphabet[i]"><strong>{{'Literal ' + alphabet[i].toUpperCase()}}</strong></label>
             </div>
@@ -262,7 +270,7 @@
           <div *ngFor="let rowImgPz of questionObject.answers_[0].tmpPuzzle.arrayImagePuzzle; let y = index">
             <button pButton pRipple *ngFor="let elem of rowImgPz; let x = index"
                     class="p-button-info" [ngClass]="'p-button-outlined'"
-                    style="padding: 1px!important;" >
+                    style="padding: 1px!important;">
               <img [src]="elem"/>
             </button>
           </div>
@@ -274,7 +282,7 @@
           <button pButton pRipple
                   *ngFor="let option of questionObject.answers_[0].options_answer[0].opcion.toString().split(''); let i = index"
                   class="p-button-info" [ngClass]="'p-button-outlined'"
-                  [disabled]="true" >
+                  [disabled]="true">
             <img height="35" [src]="'assets/imgresource/alfabeto/' + showLetra(option, i, questionObject) + '.png'"/>
           </button>
         </div>
