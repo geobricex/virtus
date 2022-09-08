@@ -1,3 +1,5 @@
+import {Person} from "./Person";
+
 export interface EvaluationQuestionsResponse {
   data: Evaluation[];
   information: string;
@@ -13,6 +15,18 @@ export interface Evaluation {
   timeminutes_evaluation: number;
   order_category: boolean;
   response_all_time: number;
+  id: number;
+}
+
+export interface PersonsEvaluations {
+  id: number;
+  resultEvaluation: Evaluation;
+  dateregPersonEvaluation: string;
+  qualificationPersonEvaluation: any;
+  trynumberPersonEvaluation: number;
+  timespentPersonEvaluation: any;
+  personsIdPerson: Person;
+  evaluationsIdEvaluation: Evaluation;
 }
 
 export interface Questions {
@@ -33,6 +47,8 @@ export interface Questions {
   canResource: boolean;//de front
   response_points?: number;
   response_time?: number;
+  num_intentos: number //numero de intentos
+  num_mov: number //para puzzle y contrucción de palabras
 }
 
 export interface QuestionsModel {
@@ -107,4 +123,13 @@ export enum Correct {
 export interface Options {
   option: string;
   resource: string;
+}
+
+export interface EvaluationResponse{
+  result_evaluation: string; //json
+  qualification_person_evaluation: number
+
+  timespent_person_evaluation: number
+  persons_id_person: number
+  evaluations_id_evaluation: number
 }

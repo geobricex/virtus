@@ -116,6 +116,9 @@ import { SliderModule } from "primeng/slider";
 import { HotkeyModule } from 'angular2-hotkeys';
 import { AcercadeComponent } from './pages/acercade/acercade.component';
 import { ComandosComponent } from './pages/comandos/comandos.component';
+// firebase
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 
 
 FullCalendarModule.registerPlugins([
@@ -123,6 +126,16 @@ FullCalendarModule.registerPlugins([
   timeGridPlugin,
   interactionPlugin
 ]);
+
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAbyfu-z_fCQITb4PjMK1XHuwXVeixDJWc",
+  authDomain: "virtus-v1.firebaseapp.com",
+  projectId: "virtus-v1",
+  storageBucket: "virtus-v1.appspot.com",
+  messagingSenderId: "636432508839",
+  appId: "1:636432508839:web:8f5e7acb1f392068473882"
+};
 
 @NgModule({
   declarations: [
@@ -220,7 +233,9 @@ FullCalendarModule.registerPlugins([
     HotkeyModule.forRoot(),
     SelectButtonModule,
     AutoCompleteModule,
-    SliderModule
+    SliderModule,
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireAuthModule
   ],
 
   providers: [

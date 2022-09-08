@@ -4,15 +4,15 @@ import {BreadcrumbService} from "../../app.breadcrumb.service";
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, Subscription, timer} from 'rxjs';
 import {Utils} from "../../util/Utils";
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 import {
   Correct,
   Evaluation,
   EvaluationQuestionsResponse,
   Options,
-  OptionsAnswer,
-  Questions
+  OptionsAnswer, PersonsEvaluations,
+  Questions, QuestionsModel
 } from "../../models/evaluation_questionarie";
 import {FormBuilder} from '@angular/forms';
 import {StorageService} from "../../authentication/StorageService";
@@ -35,6 +35,7 @@ export class QuestionnaireComponent implements OnInit {
   //valRadio: string;
   public vistaVideoSenias: boolean = true;
   viewQuestionBank: boolean = true;
+  personsEvaluations = {} as PersonsEvaluations
 
   private artyom: any = new Artyom();
 
@@ -62,13 +63,14 @@ export class QuestionnaireComponent implements OnInit {
 
   public sweetFakeAlert: boolean[] = [false, true];
   public sweetFakeAlertFin: boolean = false;
+  public sweetFakeAlerttxt: string = "";
 
   public palabra: any = {
-    firstMovimiento: false,
+    firstMovimiento: 0,
     press: -1,
     released: -1
   };
-
+  public intentosEnvio: number = 0;
 
   public tmpPuzzle: Puzzle;
 
@@ -77,6 +79,7 @@ export class QuestionnaireComponent implements OnInit {
 
 
   constructor(private breadcrumbService: BreadcrumbService,
+              public router: Router,
               private _http: HttpClient,
               private _route: ActivatedRoute,
               private utils: Utils,
@@ -87,8 +90,8 @@ export class QuestionnaireComponent implements OnInit {
     this.idCourse = this._route.snapshot.paramMap.get("idcourse");
     this.idModule = this._route.snapshot.paramMap.get("idmodule");
     this.idTopic = this._route.snapshot.paramMap.get("idTopic");
-    this.idEvaluation = this._route.snapshot.paramMap.get("idEvaluation");
-    this.idResource = this._route.snapshot.paramMap.get("idResource");
+    this.idEvaluation = this._route.snapshot.paramMap.get("ideva");
+    this.idResource = this._route.snapshot.paramMap.get("idTopic");
     this.breadcrumbService.setItems([
       {
         label: '',
@@ -209,6 +212,18 @@ export class QuestionnaireComponent implements OnInit {
     return tpuntos;
   }
 
+  calcularTotales(): number {
+    let total: number = 0;
+    for (let ind = 0; ind < this.evaluationObject.questions_.length; ind++) {
+      let tmp = this.evaluationObject.questions_[ind].response_points!;
+      if (typeof (tmp) === "number") {
+        total += tmp;
+      }
+    }
+    //return tiempo;
+    return total;
+  }
+
   calcularTiempos(): number {
     let tiempos: number = 0;
     for (let ind = 0; ind < this.evaluationObject.questions_.length; ind++) {
@@ -228,12 +243,28 @@ export class QuestionnaireComponent implements OnInit {
       /*if (this.evaluationObject.questions_[ind].canResource != undefined) {
         respondidas++;
       }*/
-      let [resueltoStado, _] = this.verificarRespuestasCorrectas(this.evaluationObject.questions_[ind]);
+      // let [resueltoStado, _] = this.verificarRespuestasCorrectas(this.evaluationObject.questions_[ind]);
+      let resueltoStado= this.validarPreguntaResuelta(this.evaluationObject.questions_[ind]);
       if (resueltoStado) {
         respondidas++;
       }
     }
     return respondidas + " / " + total;
+  }
+
+  getCountReplied(): any {
+    let total = this.evaluationObject.questions_.length;
+    let respondidas = 0;
+    for (let ind = 0; ind < total; ind++) {
+      /*if (this.evaluationObject.questions_[ind].canResource != undefined) {
+        respondidas++;
+      }*/
+      let [resueltoStado, _] = this.verificarRespuestasCorrectas(this.evaluationObject.questions_[ind]);
+      if (resueltoStado) {
+        respondidas++;
+      }
+    }
+    return [respondidas, total];
   }
 
   getNivelQuestion(level: number): string {
@@ -318,19 +349,23 @@ export class QuestionnaireComponent implements OnInit {
         }
         questionItem.answers_[0].responses = [<OptionsAnswer>{opcion: palabra}];
         indT = questionItem.answers_[0].options_answer[0].opcion.length;
+        questionItem.num_intentos = this.intentosEnvio;
+        questionItem.num_mov = this.palabra.firstMovimiento;
         return [ // en caso de las evaluaciones,
-          // cambiar "flagAlltrue && indTS == indT" por "this.palabra.firstMovimiento"
+          // cambiar "flagAlltrue && indTS == indT" por "this.palabra.firstMovimiento > 0"
           flagAlltrue && indTS == indT,
-          questionItem.maximumpoints_question * ((indTS / indT) / 100)];
+          questionItem.maximumpoints_question * ((indTS / indT))];
       } else {
         return [false, 0];
       }
     } else if (questionItem.name_questioncategory == this.tipoPregunta(6) && this.tmpPuzzle !== undefined) {
       let resp: number[] = this.tmpPuzzle.comprobarResultado();
+      questionItem.num_mov = this.tmpPuzzle.primerMovimiento;
+      questionItem.num_intentos = this.intentosEnvio;
       return [ // en caso de las evaluaciones,
-        // cambiar resp[0] == resp[1] por this.tmpPuzzle.primerMovimiento
+        // cambiar resp[0] == resp[1] por this.tmpPuzzle.primerMovimiento > 0
         resp[0] == resp[1],
-        questionItem.maximumpoints_question * ((resp[0] / resp[1]) / 100)];
+        questionItem.maximumpoints_question * ((resp[0] / resp[1]))];
     } else {
       // console.log("apachurra-----------------------------------------------0");
       if ((questionItem.answers_[0].options_answer[0].response !== undefined &&
@@ -367,7 +402,7 @@ export class QuestionnaireComponent implements OnInit {
             // cambiar "flagAlltrue && indTS == indT"
             // por "questionItem.answers_[0].responses.length > 0"
             flagAlltrue && indTS == indT,
-            questionItem.maximumpoints_question * ((indTS / indT) / 100)];
+            questionItem.maximumpoints_question * ((indTS / indT))];
         } else if (questionItem.name_questioncategory == this.tipoPregunta(4) &&
           questionItem.answers_[0].complete_parts !== undefined) {
           // console.log("objeto:", questionItem);
@@ -381,7 +416,7 @@ export class QuestionnaireComponent implements OnInit {
             }
           }
           let flag: boolean = elemento.join('') == questionItem.answers_[0].options_answer[0].description_question_R;
-          console.log(flag, "Respuseta final: ", elemento);
+          // console.log(flag, "Respuseta final: ", elemento);
           return [flag, flag ? questionItem.maximumpoints_question : 0];
         } else if (questionItem.name_questioncategory == this.tipoPregunta(5)) {
           //this.questionObject.answers_[0].options_answer
@@ -407,7 +442,7 @@ export class QuestionnaireComponent implements OnInit {
             // cambiar "flagAlltrue && indTS == indT"
             // por "questionItem.answers_[0].responses.length > 0"
             flagAlltrue && indTS == indT,
-            questionItem.maximumpoints_question * ((indTS / indT) / 100)];
+            questionItem.maximumpoints_question * ((indTS / indT))];
         }
     }
     return [false, 0];
@@ -479,10 +514,14 @@ export class QuestionnaireComponent implements OnInit {
         let [flagCorrect, points] = this.verificarRespuestasCorrectas(this.questionObject);
         this.questionObject.response_points = points;
         console.log(this.questionObject);
-        this.showSwal(flagCorrect);
+        this.showSwal(flagCorrect, this.indexQuestionObject);
+        this.intentosEnvio++;
+        this.questionObject.num_intentos = this.intentosEnvio;
+
         if (!flagCorrect) {
           return;
         } else {
+          this.intentosEnvio = 0;
           if (this.valueProgress < 100) {
             this.valueProgress = this.valueProgress + ((100) / this.evaluationObject.questions_.length);
           }
@@ -491,7 +530,7 @@ export class QuestionnaireComponent implements OnInit {
         }
       } else {
         console.log("Primero debes responder la pregunta");
-        this.utils.showMessages(3, "Primero debes responder la pregunta");
+        this.utils.showMessages(3, "Primero debe responder la pregunta");
         return;
       }
     }
@@ -502,6 +541,8 @@ export class QuestionnaireComponent implements OnInit {
       let rec: string = "";
       if (this.questionObject.name_questioncategory !== this.tipoPregunta(7)) {
         rec = this.questionObject.answers_[0].options_answer[0].resource!;
+      } else {
+        this.palabra.firstMovimiento = 0;
       }
       rec = rec != undefined ? rec : "";
       this.questionObject.canResource = (rec.length > 0);
@@ -551,6 +592,8 @@ export class QuestionnaireComponent implements OnInit {
       console.log("pregunta: ", this.questionObject);
     }
     this.initCanvas(flag);
+    //reiniciamos los intentos
+    this.palabra.totalIntentos = 0;
     // el browser es comantible con el speaker?
     if (this.text2SpeakSupport()) {
       if (this.storageService.getCurrentUser().email != "anthony.pachay2017@uteq.edu.ec") {
@@ -592,9 +635,14 @@ export class QuestionnaireComponent implements OnInit {
     if (btnStart) (btnStart as HTMLFormElement).click();
   }
 
-  showSwal(correcta: boolean): void {
+  public feedBackQuestionObject: Questions;
+
+  showSwal(correcta: boolean, indexQuestionObject: number): void {
     this.sweetFakeAlert[0] = true;
     this.sweetFakeAlert[1] = correcta;
+    this.sweetFakeAlerttxt = this.sweetFakeAlert[1] ? this.evaluationObject.questions_[indexQuestionObject].feedback_question :
+      this.evaluationObject.questions_[indexQuestionObject].hint_question
+    this.feedBackQuestionObject = this.evaluationObject.questions_[indexQuestionObject];
     let tiempoSwal$ = timer(0, 1000)
       .subscribe((iter: any) => {
         if (iter >= 10) {
@@ -1262,11 +1310,40 @@ export class QuestionnaireComponent implements OnInit {
 
   // función
   enviarEvaluacion(): void {
-    console.log("##########################################################################");
-    console.log(this.evaluationObject);
-    this.sweetFakeAlertFin = true;
-  }
+    // ultima pregunta
+    let [flagCorrect, points] = this.verificarRespuestasCorrectas(this.questionObject);
+    this.questionObject.response_points = points;
+    console.log(this.questionObject);
+    this.showSwal(flagCorrect, this.indexQuestionObject);
+    this.intentosEnvio++;
+    this.questionObject.num_intentos = this.intentosEnvio;
+    //valida ultima pregunta
 
+    console.log(this.getCountReplied()[0] + '/' + this.getCountReplied()[1])
+    if (this.getCountReplied()[0] === this.getCountReplied()[1]) {
+      console.log("##########################################################################");
+      console.log(this.evaluationObject);
+      this.sweetFakeAlertFin = true;
+      let urlServicio = this.utils.globalUrl + "personsevaluations/insertpersonsevaluations";
+      let headers = new HttpHeaders()
+        .set('Access-Control-Allow-Origin', '*')
+        .set('provider', 'native')
+        .set('token', this.utils.token);
+      console.log(this.evaluationObject);
+      this._http.post<any>(urlServicio, {
+        "result_evaluation": JSON.stringify(this.evaluationObject),
+        "qualification_person_evaluation": this.calcularTotales(),
+        "timespent_person_evaluation": this.calcularTiempos(),
+        "evaluations_id_evaluation": this.idEvaluation,
+      }, {headers: headers}).subscribe(response => {
+      })
+      this.sweetFakeAlertFin = false;
+      this.utils.showMessages(2, "Se ha registrado la evaluación");
+      this.router.navigateByUrl('/app/mycourse/modules/' + this.idCourse + '/themes/' + this.idModule + '/resources/' + this.idTopic);
+    } else {
+      this.utils.showMessages(3, "Faltan preguntas por resolver");
+    }
+  }
 
   showLetra(letra: string, indice: number): string {
     if (letra === ' ')
@@ -1286,9 +1363,10 @@ export class QuestionnaireComponent implements OnInit {
       } else {
         this.palabra.press = val;
         this.palabra.release = -1;
-        if (this.palabra.firstMovimiento) {
+        this.palabra.firstMovimiento++;
+        /*if (this.palabra.firstMovimiento) {
           this.palabra.firstMovimiento = true;
-        }
+        }*/
       }
     }
   }
@@ -1317,6 +1395,7 @@ function desordenarRow(unArray: any[]): any[] {
   return [...t];
 }
 
+
 class Puzzle {
 
   private maxSizeImg: number = 75;
@@ -1325,7 +1404,7 @@ class Puzzle {
   public arrayImagePuzzle: string[][];
   public arrayPositionPuzzle: number[][];
 
-  public primerMovimiento: boolean = false;
+  public primerMovimiento: number = 0;
 
   public puzzleControls: any = {
     complete: false,
@@ -1413,6 +1492,36 @@ class Puzzle {
           local_this.arrayPositionPuzzle[x][y] = changeInd;
         }
       }
+      //desordenar las filas
+      for (let y = 0; y < local_this.dimens; y++) {
+        arrayDesorden = desordenarRow(arrayDesorden);
+        for (let x = 0; x < local_this.dimens; x++) {
+          let changeimg: string, changeInd: number;
+          changeimg = local_this.arrayImagePuzzle[y][arrayDesorden[x]];
+          local_this.arrayImagePuzzle[y][arrayDesorden[x]] = local_this.arrayImagePuzzle[y][x];
+          local_this.arrayImagePuzzle[y][x] = changeimg;
+
+          changeInd = local_this.arrayPositionPuzzle[y][arrayDesorden[x]];
+          local_this.arrayPositionPuzzle[y][arrayDesorden[x]] = local_this.arrayPositionPuzzle[y][x];
+          local_this.arrayPositionPuzzle[y][x] = changeInd;
+        }
+      }
+      //console.log("filas ", local_this.arrayPositionPuzzle);
+      //desordenar las columnas
+      for (let y = 0; y < local_this.dimens; y++) {
+        arrayDesorden = desordenarRow(arrayDesorden);
+        for (let x = 0; x < local_this.dimens; x++) {
+          let changeimg: string, changeInd: number;
+          changeimg = local_this.arrayImagePuzzle[arrayDesorden[x]][y];
+          local_this.arrayImagePuzzle[arrayDesorden[x]][y] = local_this.arrayImagePuzzle[x][y];
+          local_this.arrayImagePuzzle[x][y] = changeimg;
+
+          changeInd = local_this.arrayPositionPuzzle[arrayDesorden[x]][y];
+          local_this.arrayPositionPuzzle[arrayDesorden[x]][y] = local_this.arrayPositionPuzzle[x][y];
+          local_this.arrayPositionPuzzle[x][y] = changeInd;
+        }
+      }
+
     };
     img.crossOrigin = "Anonymous";
     img.src = url;
@@ -1440,9 +1549,10 @@ class Puzzle {
       this.puzzleControls.released = {x: -1, y: -1};
       this.puzzleControls.complete = false;
 
-      if (!this.primerMovimiento) {
+      /*if (!this.primerMovimiento) {
         this.primerMovimiento = true;
-      }
+      }*/
+      this.primerMovimiento++;
     }
   }
 

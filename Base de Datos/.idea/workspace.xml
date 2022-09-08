@@ -6,12 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="bbc5533f-4237-4b82-99c8-ccd5e9e0c413" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/querys.sql" beforeDir="false" afterPath="$PROJECT_DIR$/querys.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routines.sql" beforeDir="false" afterPath="$PROJECT_DIR$/routines.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/QuestionApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/QuestionApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/repository/QuestionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/repository/QuestionRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/service/CourseService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/service/CourseService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/service/QuestionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/service/QuestionService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
