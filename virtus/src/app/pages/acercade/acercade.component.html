@@ -1,1 +1,32 @@
-<p>acercade works!</p>
+<div class="card">
+  <p-tabView orientation="left">
+    <p-tabPanel header="Autoridades" class="line-height-3 m-0">
+
+    </p-tabPanel>
+    <p-tabPanel header="Desarrolladores" class="line-height-3 m-0">
+      <p-dataView #dv [value]="developments" [rows]="4" filterBy="name" layout="grid">
+        <ng-template let-development pTemplate="gridItem">
+          <div class="col-12 md:col-6">
+            <div class="card m-3 border-1 surface-border shadow-1 border-top-3">
+              <div class="flex align-items-center justify-content-between">
+              </div>
+              <div class="text-center">
+                <img [src]="'assets/layout/images/desarrolladores/' + development.image" [alt]="development.name"
+                     class="shadow-2 my-3 mx-0" style="border-radius: 50%" width="100" height="100"/>
+                <div class="text-2xl font-bold">{{development.name}} {{development.lastname}}</div>
+                <div class="bg-green-400 p-2">
+                  <span class="text-2xl font-semibold border-round text-white">{{development.cargo}}</span>
+                </div>
+              </div>
+              <div class="flex align-items-center justify-content-between">
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </p-dataView>
+    </p-tabPanel>
+    <p-tabPanel header="Agradecimientos" class="line-height-3 m-0">
+
+    </p-tabPanel>
+  </p-tabView>
+</div>
