@@ -23,6 +23,7 @@
         </div>
         <div class="xl:col-1 md:col-2 sm:col-2 text-center">
           <button id="evt_control_enviar" pButton pRipple label="Enviar"
+                  [disabled]="indexQuestionObject < evaluationObject.questions_.length - 1"
                   (click)="enviarEvaluacion()" class="p-button-success mt-2"></button>
         </div>
         <div class="col-12 p-fieldset-content">
@@ -506,7 +507,7 @@
       <div class="text-right">
         <button pButton pRipple icon="pi pi-step-forward" id="evt_control_siguiente" label="Siguiente"
                 class="p-button-info mr-2 mb-2"
-                *ngIf="indexQuestionObject < evaluationObject.questions_.length"
+                *ngIf="indexQuestionObject < evaluationObject.questions_.length - 1"
                 (click)="siguientePregunta()"></button>
       </div>
     </div>

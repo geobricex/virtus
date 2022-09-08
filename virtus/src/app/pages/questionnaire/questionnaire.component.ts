@@ -348,21 +348,23 @@ export class QuestionnaireComponent implements OnInit {
         }
         questionItem.answers_[0].responses = [<OptionsAnswer>{opcion: palabra}];
         indT = questionItem.answers_[0].options_answer[0].opcion.length;
-        questionItem.num_mov = this.intentosEnvio;
+        questionItem.num_intentos = this.intentosEnvio;
+        questionItem.num_mov = this.palabra.firstMovimiento;
         return [ // en caso de las evaluaciones,
           // cambiar "flagAlltrue && indTS == indT" por "this.palabra.firstMovimiento > 0"
           flagAlltrue && indTS == indT,
-          questionItem.maximumpoints_question * ((indTS / indT) / 100)];
+          questionItem.maximumpoints_question * ((indTS / indT))];
       } else {
         return [false, 0];
       }
     } else if (questionItem.name_questioncategory == this.tipoPregunta(6) && this.tmpPuzzle !== undefined) {
       let resp: number[] = this.tmpPuzzle.comprobarResultado();
       questionItem.num_mov = this.tmpPuzzle.primerMovimiento;
+      questionItem.num_intentos = this.intentosEnvio;
       return [ // en caso de las evaluaciones,
         // cambiar resp[0] == resp[1] por this.tmpPuzzle.primerMovimiento > 0
         resp[0] == resp[1],
-        questionItem.maximumpoints_question * ((resp[0] / resp[1]) / 100)];
+        questionItem.maximumpoints_question * ((resp[0] / resp[1]))];
     } else {
       // console.log("apachurra-----------------------------------------------0");
       if ((questionItem.answers_[0].options_answer[0].response !== undefined &&
@@ -399,7 +401,7 @@ export class QuestionnaireComponent implements OnInit {
             // cambiar "flagAlltrue && indTS == indT"
             // por "questionItem.answers_[0].responses.length > 0"
             flagAlltrue && indTS == indT,
-            questionItem.maximumpoints_question * ((indTS / indT) / 100)];
+            questionItem.maximumpoints_question * ((indTS / indT))];
         } else if (questionItem.name_questioncategory == this.tipoPregunta(4) &&
           questionItem.answers_[0].complete_parts !== undefined) {
           // console.log("objeto:", questionItem);
@@ -439,7 +441,7 @@ export class QuestionnaireComponent implements OnInit {
             // cambiar "flagAlltrue && indTS == indT"
             // por "questionItem.answers_[0].responses.length > 0"
             flagAlltrue && indTS == indT,
-            questionItem.maximumpoints_question * ((indTS / indT) / 100)];
+            questionItem.maximumpoints_question * ((indTS / indT))];
         }
     }
     return [false, 0];

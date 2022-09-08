@@ -99,3 +99,7 @@ span, strong, td, h1, h2, h3, h4, h5, h6, a, img, label, div, p, pre {
   float:none;
   text-align:center;
 }
+.p-chip.custom-chip {
+  background: #a12929;
+  color: var(--primary-color-text);
+}

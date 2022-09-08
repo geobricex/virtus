@@ -167,7 +167,7 @@ export class ReviewComponent implements OnInit {
     }
   }
 
-  showLetra(letra: string, indice: number, questionObject:any): string {
+  showLetra(letra: string, indice: number, questionObject: any): string {
     if (letra === ' ')
       return 'space';
     if (questionObject.answers_[0].complete_parts![indice] == undefined)
@@ -177,15 +177,24 @@ export class ReviewComponent implements OnInit {
     }
   }
 
-  buscarLiteral(questionObject: any){
+  buscarLiteral(questionObject: any) {
     let index = -1;
-    for(let ind = 0; ind < questionObject.answers_[0].options_answer.length; ind++){
-      if(JSON.stringify(questionObject.answers_[0].options_answer[ind]) ==
-        JSON.stringify(questionObject.answers_[0].responses)){
+    for (let ind = 0; ind < questionObject.answers_[0].options_answer.length; ind++) {
+      if (JSON.stringify(questionObject.answers_[0].options_answer[ind]) ==
+        JSON.stringify(questionObject.answers_[0].responses)) {
         index = ind;
       }
     }
     return index;
   }
 
+  totalPuntos(): number {
+    let max = 0;
+    for (let ind = 0; ind < this.dataReviews.result_evaluation.questions_.length; ind++) {
+      if (this.dataReviews.result_evaluation.questions_[ind].points_question)
+        max += this.dataReviews.result_evaluation.questions_[ind].maximumpoints_question;
+      // console.log(ind, ": =>", this.dataReviews.result_evaluation.questions_[ind].maximumpoints_question);
+    }
+    return max;
+  }
 }

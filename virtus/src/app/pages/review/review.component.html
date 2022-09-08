@@ -12,7 +12,7 @@
         </div>
         <div class="xl:col-1 md:col-2 sm:col-2 text-center border-right-1 line-height-3">
           <span>Resueltas</span> <br>
-          <span><strong>{{dataReviews.qualification_person_evaluation + ' / 100'}}</strong></span>
+          <span><strong>{{dataReviews.qualification_person_evaluation + ' / ' + totalPuntos()}}</strong></span>
         </div>
         <div class="xl:col-1 md:col-2 sm:col-2 text-center border-right-1 line-height-3">
           <span>Tiempo</span> <br>
@@ -39,6 +39,19 @@
       <p-chip *ngIf="questionObject.points_question == false" label="Piloto"
               image="{{'assets/imgresource/empty/shield.png'}}"
       ></p-chip>
+      <div class="flex align-items-center">
+        <p-chip label="{{'Calificación: ' + questionObject.response_points + ' / '+ questionObject.maximumpoints_question}}"
+                icon="pi pi-star-fill" styleClass="mr-2 custom-chip" *ngIf="questionObject.response_points!==undefined"></p-chip>
+        <p-chip label="{{'Tiempo: ' + miliseguntos2Segundos(questionObject.response_time)}}"
+                icon="pi pi-clock" styleClass="mr-2 custom-chip" *ngIf="questionObject.response_time!==undefined"></p-chip>
+
+        <p-chip label="{{'Nª Intentos: ' + questionObject.num_intentos}}"
+                icon="pi pi-send" styleClass="mr-2 custom-chip" *ngIf="questionObject.num_intentos!==undefined"></p-chip>
+
+        <p-chip label="{{'Nª Movimientos: ' + questionObject.num_mov}}"
+                icon="pi pi-microsoft" styleClass="mr-2 custom-chip" *ngIf="questionObject.num_mov!==undefined"></p-chip>
+
+      </div>
       <div *ngIf="validarPreguntaRecurso(questionObject.pathurlfile_question)" class="col-12">
         <div class="col-12 text-center">
           <object type="application/pdf" *ngIf="isPdf(questionObject.pathurlfile_question)"
