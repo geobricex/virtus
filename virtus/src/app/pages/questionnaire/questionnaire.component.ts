@@ -309,15 +309,15 @@ export class QuestionnaireComponent implements OnInit {
             });
           //}
           if (this.voiceComandsSupport()) {
-            if (this.storageService.getCurrentUser().email != "anthony.pachay2017@uteq.edu.ec") {
+            // if (this.storageService.getCurrentUser().email != "anthony.pachay2017@uteq.edu.ec") {
               this.startContinuousArtyom();
-            }
+            // }
           }
-          if (this.storageService.getCurrentUser().email == "anthony.pachay2017@uteq.edu.ec") {
+          // if (this.storageService.getCurrentUser().email == "anthony.pachay2017@uteq.edu.ec") {
+          //   this.cambiarPregunta(0, true);
+          // } else {
             this.cambiarPregunta(0, true);
-          } else {
-            this.cambiarPregunta(0, true);
-          }
+          // }
           //this.initCanvas(false);
           setTimeout(() => {
             console.log("silenciar video")
@@ -596,9 +596,9 @@ export class QuestionnaireComponent implements OnInit {
     this.palabra.totalIntentos = 0;
     // el browser es comantible con el speaker?
     if (this.text2SpeakSupport()) {
-      if (this.storageService.getCurrentUser().email != "anthony.pachay2017@uteq.edu.ec") {
+      // if (this.storageService.getCurrentUser().email != "anthony.pachay2017@uteq.edu.ec") {
         this.leerPregunta();
-      }
+      // }
     }
   }
 
