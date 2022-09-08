@@ -1,14 +1,23 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {BreadcrumbService} from "../../app.breadcrumb.service";
 
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, Subscription, timer} from 'rxjs';
-import {Person} from "../../models/Person";
 import {Utils} from "../../util/Utils";
-import {ActivatedRoute} from '@angular/router';
-import {Evaluation, EvaluationQuestionsResponse, Questions} from "../../models/evaluation_questionarie";
+import {ActivatedRoute, Router} from '@angular/router';
+
+import {
+  Correct,
+  Evaluation,
+  EvaluationQuestionsResponse,
+  Options,
+  OptionsAnswer, PersonsEvaluations,
+  Questions, QuestionsModel
+} from "../../models/evaluation_questionarie";
+import {FormBuilder} from '@angular/forms';
 import {StorageService} from "../../authentication/StorageService";
-import {FormBuilder} from '@angular/forms'
+import {ExtendedKeyboardEvent, Hotkey, HotkeysService} from "angular2-hotkeys";
+
 
 declare var Artyom: any;
 
@@ -18,14 +27,14 @@ declare var Artyom: any;
   styleUrls: ['./evaluation.component.scss']
 })
 export class EvaluationComponent implements OnInit {
-
   idCourse: string | null = "";
   idModule: string | null = "";
   idTopic: string | null = "";
   idEvaluation: string | null = "";
   idResource: string | null = "";
   //valRadio: string;
-
+  public vistaVideoSenias: boolean = true;
+  viewQuestionBank: boolean = false;
 
   private artyom: any = new Artyom();
 
@@ -43,31 +52,45 @@ export class EvaluationComponent implements OnInit {
     "t", "u", "v", "w", "x", "y", "z"
   ];
   //
-  public tiempoEvaluacion$: Subscription;
+  public tiempoEvaluacion$: Subscription | any;
   public tiempoEvaluacion: number = 0;
-
-  viewQuestionBank: boolean = true;
+  public tiempoEvaluacion_lastQ: number = 0;
 
   public literalSeleccionado: any;
+
+  valueProgress = 0;
+
+  public sweetFakeAlert: boolean[] = [false, true];
+  public sweetFakeAlertFin: boolean = false;
+  public sweetFakeAlerttxt: string = "";
+
+  public palabra: any = {
+    firstMovimiento: 0,
+    press: -1,
+    released: -1
+  };
+  public intentosEnvio: number = 0;
+
+  public tmpPuzzle: Puzzle;
 
   @ViewChild('canvasEl', {static: true}) CanvasEl: ElementRef<HTMLCanvasElement>;
   private contex: CanvasRenderingContext2D | null;
 
 
   constructor(private breadcrumbService: BreadcrumbService,
+              public router: Router,
               private _http: HttpClient,
               private _route: ActivatedRoute,
               private utils: Utils,
               private activatedRoute: ActivatedRoute,
               private storageService: StorageService,
-              private fb: FormBuilder
-  ) {
+              private _hotkeysService: HotkeysService) {
 
     this.idCourse = this._route.snapshot.paramMap.get("idcourse");
     this.idModule = this._route.snapshot.paramMap.get("idmodule");
     this.idTopic = this._route.snapshot.paramMap.get("idTopic");
-    this.idEvaluation = this._route.snapshot.paramMap.get("idEvaluation");
-    this.idResource = this._route.snapshot.paramMap.get("idResource");
+    this.idEvaluation = this._route.snapshot.paramMap.get("ideva");
+    this.idResource = this._route.snapshot.paramMap.get("idTopic");
     this.breadcrumbService.setItems([
       {
         label: '',
@@ -82,8 +105,8 @@ export class EvaluationComponent implements OnInit {
         routerLink: ['/app/mycourse/modules/' + this.idCourse + '/themes/' + this.idModule + '/resources/' + this.idTopic]
       },
       {
-        label: 'Evaluación',
-        routerLink: ['/app/mycourse/modules/' + this.idCourse + '/themes/' + this.idModule + '/resources/' + this.idResource + '/evaluation/' + this.idEvaluation]
+        label: 'Cuestionario',
+        routerLink: ['/app/mycourse/modules/' + this.idCourse + '/themes/' + this.idModule + '/resources/' + this.idResource + '/questionnaire/' + this.idEvaluation]
       },
     ]);
 
@@ -103,27 +126,59 @@ export class EvaluationComponent implements OnInit {
       }
     });
     console.log("canvas, ", this.CanvasEl);
+    this.startHotKeysCommands();
+    //Rompecabezas
 
+
+  }
+
+  repetirPregunta() {
+    if (this.text2SpeakSupport()) {
+      if (this.artyom.isSpeaking()) {
+        this.artyom.shutUp();
+      }
+      this.artyom.repeatLastSay();
+    }
   }
 
   openClose() {
     this.viewQuestionBank = !this.viewQuestionBank;
   }
 
-  /*ngAfterViewInit(): void {
-    // Call the method creating a child component of class 'ComponentA' inside the template
-    console.log("ejecutar despues de terminar carga");
-    this.startContinuousArtyom();
-  }*/
+  ngAfterViewInit(): void {
+    //this.showSwal(true);
+    //this.changeDetector.detectChanges();
+  }
 
   ngOnDestroy() {
-    this.tiempoEvaluacion$.unsubscribe();
+    if (this.tiempoEvaluacion$ !== undefined) {
+      this.tiempoEvaluacion$.unsubscribe();
+    }
+    if (this.text2SpeakSupport() && this.artyom.isSpeaking()) {
+      this.artyom.shutUp();
+    }
+    //Quitar el reconocimiento de voz
+    if (this.voiceComandsSupport()) {
+      this.artyom.fatality().then(() => {
+        this.artyom.clearGarbageCollection();
+      });
+    }
+  }
+
+  contarTipoPregunta(tipo: number): number {
+    let cantidad: number = 0;
+    for (let ind: number = 0; ind < this.evaluationObject.questions_.length; ind++) {
+      if (this.evaluationObject.questions_[ind].name_questioncategory == this.tipoPregunta(tipo)) {
+        cantidad++;
+      }
+    }
+    return cantidad;
   }
 
   tipoPregunta(typo: number): string {
     let resp: string = "";
     if (typo == 1) {
-      resp = "Complete";
+      resp = "True or False";
     }
     if (typo == 2) {
       resp = "Simple Option";
@@ -132,7 +187,16 @@ export class EvaluationComponent implements OnInit {
       resp = "Multiple Option";
     }
     if (typo == 4) {
+      resp = "Complete";
+    }
+    if (typo == 5) {
       resp = "Relate";
+    }
+    if (typo == 6) {
+      resp = "Puzzle";
+    }
+    if (typo == 7) {
+      resp = "Build word";
     }
     return resp;
   }
@@ -147,15 +211,58 @@ export class EvaluationComponent implements OnInit {
     return tpuntos;
   }
 
+  calcularTotales(): number {
+    let total: number = 0;
+    for (let ind = 0; ind < this.evaluationObject.questions_.length; ind++) {
+      let tmp = this.evaluationObject.questions_[ind].response_points!;
+      if (typeof (tmp) === "number") {
+        total += tmp;
+      }
+    }
+    //return tiempo;
+    return total;
+  }
+
+  calcularTiempos(): number {
+    let tiempos: number = 0;
+    for (let ind = 0; ind < this.evaluationObject.questions_.length; ind++) {
+      let tmp = this.evaluationObject.questions_[ind].response_time!;
+      if (typeof (tmp) === "number") {
+        tiempos += tmp;
+      }
+    }
+    //return tiempo;
+    return this.tiempoEvaluacion;
+  }
+
   getCountResueltas(): string {
     let total = this.evaluationObject.questions_.length;
     let respondidas = 0;
     for (let ind = 0; ind < total; ind++) {
-      if (this.evaluationObject.questions_[ind].canResource != undefined) {
+      /*if (this.evaluationObject.questions_[ind].canResource != undefined) {
+        respondidas++;
+      }*/
+      let resueltoStado= this.validarPreguntaResuelta(this.evaluationObject.questions_[ind]);
+      if (resueltoStado) {
         respondidas++;
       }
     }
     return respondidas + " / " + total;
+  }
+
+  getCountReplied(): any {
+    let total = this.evaluationObject.questions_.length;
+    let respondidas = 0;
+    for (let ind = 0; ind < total; ind++) {
+      /*if (this.evaluationObject.questions_[ind].canResource != undefined) {
+        respondidas++;
+      }*/
+      let [resueltoStado, _] = this.verificarRespuestasCorrectas(this.evaluationObject.questions_[ind]);
+      if (resueltoStado) {
+        respondidas++;
+      }
+    }
+    return [respondidas, total];
   }
 
   getNivelQuestion(level: number): string {
@@ -173,7 +280,7 @@ export class EvaluationComponent implements OnInit {
       resp = "Difícil";
     }
     if (level == 5) {
-      resp = "Extremo";
+      resp = "Avanzado";
     }
     return resp;
   }
@@ -187,25 +294,27 @@ export class EvaluationComponent implements OnInit {
         if (response.data.length > 0) {
           this.evaluationObject = response.data[0];
 
-          if (this.evaluationObject.time_evaluation) {
-            this.tiempoEvaluacion = this.evaluationObject.timeminutes_evaluation * 60;
-            this.tiempoEvaluacion$ = timer(0, 1000)
-              .subscribe((iter: any) => {
-                //this.time();
-                // console.log("tiempoEvaluacion: " + iter);
-                if (this.tiempoEvaluacion <= 0) {
-                  this.tiempoEvaluacion$.unsubscribe();
-                  /*Código para indicar que se terminó el tiempo*/
-                }
-                this.tiempoEvaluacion--;
-              });
-            if (this.voiceComandsSupport()) {
-              if (this.storageService.getCurrentUser().email != "anthony.pachay2017@uteq.edu.ec") {
-                this.startContinuousArtyom();
+          //if (this.evaluationObject.time_evaluation) {
+          this.tiempoEvaluacion = this.evaluationObject.timeminutes_evaluation * 60;
+          this.tiempoEvaluacion$ = timer(0, 1000)
+            .subscribe((iter: any) => {
+              if (this.tiempoEvaluacion <= 0) {
+                this.tiempoEvaluacion$.unsubscribe();
+                /*Código para indicar que se terminó el tiempo*/
               }
+              this.tiempoEvaluacion--;
+            });
+          //}
+          if (this.voiceComandsSupport()) {
+            if (this.storageService.getCurrentUser().email != "anthony.pachay2017@uteq.edu.ec") {
+              this.startContinuousArtyom();
             }
           }
-          this.cambiarPregunta(0, true);
+          if (this.storageService.getCurrentUser().email == "anthony.pachay2017@uteq.edu.ec") {
+            this.cambiarPregunta(0, true);
+          } else {
+            this.cambiarPregunta(0, true);
+          }
           //this.initCanvas(false);
           setTimeout(() => {
             console.log("silenciar video")
@@ -217,12 +326,149 @@ export class EvaluationComponent implements OnInit {
 
   }
 
+
+  verificarRespuestasCorrectas(questionItem: Questions): [boolean, number] {
+    if (questionItem.name_questioncategory == this.tipoPregunta(7)) {
+      if (questionItem.answers_[0].complete_parts !== undefined) {
+        let flagAlltrue: boolean = true;
+        let indT = 0;
+        let indTS = 0;
+        let palabra = "";
+        for (let ind = 0; ind < questionItem.answers_[0].options_answer[0].opcion.length; ind++) {
+          let tmp = questionItem.answers_[0].complete_parts![ind];
+          tmp = tmp == undefined ? ' ' : tmp.toUpperCase();
+          if (questionItem.answers_[0].options_answer[0].opcion[ind] == tmp) {
+            indTS++;
+          } else {
+            flagAlltrue = false;
+          }
+          palabra += tmp;
+        }
+        questionItem.answers_[0].responses = [<OptionsAnswer>{opcion: palabra}];
+        indT = questionItem.answers_[0].options_answer[0].opcion.length;
+        questionItem.num_intentos = this.intentosEnvio;
+        questionItem.num_mov = this.palabra.firstMovimiento;
+        return [ // en caso de las evaluaciones,
+          // cambiar "flagAlltrue && indTS == indT" por "this.palabra.firstMovimiento > 0"
+          flagAlltrue && indTS == indT,
+          questionItem.maximumpoints_question * ((indTS / indT))];
+      } else {
+        return [false, 0];
+      }
+    } else if (questionItem.name_questioncategory == this.tipoPregunta(6) && this.tmpPuzzle !== undefined) {
+      let resp: number[] = this.tmpPuzzle.comprobarResultado();
+      questionItem.num_mov = this.tmpPuzzle.primerMovimiento;
+      questionItem.num_intentos = this.intentosEnvio;
+      return [ // en caso de las evaluaciones,
+        // cambiar resp[0] == resp[1] por this.tmpPuzzle.primerMovimiento > 0
+        resp[0] == resp[1],
+        questionItem.maximumpoints_question * ((resp[0] / resp[1]))];
+    } else {
+      // console.log("apachurra-----------------------------------------------0");
+      if ((questionItem.answers_[0].options_answer[0].response !== undefined &&
+          questionItem.answers_[0].options_answer[0].response.length > 0) ||
+        questionItem.answers_[0].responses != undefined)
+        //verdadero o falso O unica seleccion
+        // console.log("apachurra-----------------------------------------------1");
+        if ((questionItem.name_questioncategory == this.tipoPregunta(2)
+            || questionItem.name_questioncategory == this.tipoPregunta(1))
+          && questionItem.answers_[0].responses != undefined) {
+          // console.log("apachurra-----------------------------------------------2");
+          return [
+            // @ts-ignore
+            questionItem.answers_[0].responses.correct == "Yes", // questionItem.answers_[0].responses.correct !== undefined
+            // @ts-ignore
+            questionItem.answers_[0].responses.correct == "Yes" ? questionItem.maximumpoints_question : 0];
+        } else if (questionItem.name_questioncategory == this.tipoPregunta(3) && questionItem.answers_[0].responses !== undefined) {
+          let flagAlltrue: boolean = true;
+          let indT = 0;
+          let indTS = 0;
+          for (let ind = 0; ind < questionItem.answers_[0].responses.length; ind++) {
+            if (questionItem.answers_[0].responses[ind].correct == "Yes") {
+              indTS++;
+            } else {
+              flagAlltrue = false;
+            }
+          }
+          for (let ind = 0; ind < questionItem.answers_[0].options_answer.length; ind++) {
+            if (questionItem.answers_[0].options_answer[ind].correct == "Yes") {
+              indT++;
+            }
+          }
+          return [ // en caso de las evaluaciones,
+            // cambiar "flagAlltrue && indTS == indT"
+            // por "questionItem.answers_[0].responses.length > 0"
+            flagAlltrue && indTS == indT,
+            questionItem.maximumpoints_question * ((indTS / indT))];
+        } else if (questionItem.name_questioncategory == this.tipoPregunta(4) &&
+          questionItem.answers_[0].complete_parts !== undefined) {
+          // console.log("objeto:", questionItem);
+          let elemento: string[] = [];
+          for (let ind = 0; ind < questionItem.answers_[0].complete_parts!.length; ind++) {
+            if (questionItem.answers_[0].complete_parts![ind] != "$option$") {
+              elemento.push(questionItem.answers_[0].complete_parts![ind]);
+            } else {
+              if (questionItem.answers_[0].options_answer[0].response[ind] != undefined)
+                elemento.push(questionItem.answers_[0].options_answer[0].response[ind].option);
+            }
+          }
+          let flag: boolean = elemento.join('') == questionItem.answers_[0].options_answer[0].description_question_R;
+          // console.log(flag, "Respuseta final: ", elemento);
+          return [flag, flag ? questionItem.maximumpoints_question : 0];
+        } else if (questionItem.name_questioncategory == this.tipoPregunta(5)) {
+          //this.questionObject.answers_[0].options_answer
+          //this.questionObject.answers_[0].right_parts
+          let flagAlltrue: boolean = true;
+          let indT = 0;
+          let indTS = 0;
+          for (let ind = 0; ind < questionItem.answers_[0].options_answer.length; ind++) {
+            if (questionItem.answers_[0].options_answer[ind] !== undefined &&
+              questionItem.answers_[0].responses[ind] !== undefined &&
+              questionItem.answers_[0].options_answer[ind].rightSide
+              == questionItem.answers_[0].responses[ind].rightSide &&
+              questionItem.answers_[0].options_answer[ind].resourse_rightSide
+              == questionItem.answers_[0].responses[ind].resourse_rightSide
+            ) {
+              indTS++;
+            } else {
+              flagAlltrue = false;
+            }
+          }
+          indT = questionItem.answers_[0].options_answer.length;
+          return [ // en caso de las evaluaciones,
+            // cambiar "flagAlltrue && indTS == indT"
+            // por "questionItem.answers_[0].responses.length > 0"
+            flagAlltrue && indTS == indT,
+            questionItem.maximumpoints_question * ((indTS / indT))];
+        }
+    }
+    return [false, 0];
+  }
+
   validarPreguntaResuelta(questionItem: Questions): boolean {
-    // @ts-ignore
-    if (questionItem.answers_[0].responses != undefined)
-      return (questionItem.answers_[0].responses.length > 0);
+    if (questionItem.name_questioncategory == this.tipoPregunta(4)) {
+      return (questionItem.answers_[0].options_answer[0].response !== undefined
+        && questionItem.answers_[0].options_answer[0].response.length > 0);
+
+    } else if (questionItem.name_questioncategory == this.tipoPregunta(7)) {
+      return (questionItem.answers_[0].complete_parts !== undefined
+        && questionItem.answers_[0].complete_parts.length > 0);
+    } else if (questionItem.name_questioncategory == this.tipoPregunta(6)) {
+      return questionItem.answers_[0].tmpPuzzle !== undefined && questionItem.answers_[0].tmpPuzzle.primerMovimiento;
+    } else {
+      if (questionItem.answers_[0].responses != undefined)
+        return (questionItem.answers_[0].responses.length > 0
+          || Object.keys(questionItem.answers_[0].responses).length > 0);
+    }
     return false;
   }
+
+  validarPreguntaRecurso(elemt: string): boolean {
+    if (elemt != undefined && elemt != null)
+      return (elemt.length > 0);
+    return false;
+  }
+
 
   partirPreguntaComplete(quest: string): string[] {
     return quest.split(/[\{\}]/);
@@ -239,20 +485,118 @@ export class EvaluationComponent implements OnInit {
     }
   }
 
+  obtenerExtension(filename: string): string {
+    return filename.substring(filename.lastIndexOf('.') + 1, filename.length) || filename;
+  }
+
+  isImg(filename: string): boolean {
+    let formats = ["gif", "jpeg", "jpg", "png"];
+    return formats.indexOf(this.obtenerExtension(filename)) != -1;
+  }
+
+  isPdf(filename: string): boolean {
+    return "pdf" == this.obtenerExtension(filename);
+  }
+
   cambiarPregunta(indice: number, flag = false): void {
     console.log("cambia a pregunta:" + indice);
+    console.log(this.questionObject != undefined && this.questionObject != null);
+    if (this.questionObject != null && this.questionObject != undefined) {
+      console.log(this.validarPreguntaResuelta(this.questionObject));
+      // if (this.validarPreguntaResuelta(this.questionObject)) {
+
+        //La preguntaha sido contestada
+        //validar las respuestas que he dado
+        // console.log("FeedBack: ", this.questionObject.feedback_question);
+        //this.utils.showMessages(1, "FeedBack: " + this.questionObject.feedback_question);
+        // let [flagCorrect, points] = this.verificarRespuestasCorrectas(this.questionObject);
+        // this.questionObject.response_points = points;
+        // console.log(this.questionObject);
+        // this.showSwal(flagCorrect, this.indexQuestionObject);
+        // this.intentosEnvio++;
+        //this.questionObject.num_intentos = this.intentosEnvio;
+
+        // if (!flagCorrect) {
+        //   return;
+        // } else {
+        //   this.intentosEnvio = 0;
+        //   if (this.valueProgress < 100) {
+        //     this.valueProgress = this.valueProgress + ((100) / this.evaluationObject.questions_.length);
+        //   }
+        //   this.questionObject.response_time = (this.tiempoEvaluacion - (flag ? 10 : 0)) - this.tiempoEvaluacion_lastQ;
+        //   this.tiempoEvaluacion_lastQ = this.tiempoEvaluacion;
+        // }
+      // } else {
+      //   console.log("Primero debes responder la pregunta");
+      //   this.utils.showMessages(3, "Primero debe responder la pregunta");
+      //   return;
+      // }
+    }
     if (indice != this.indexQuestionObject) {
       this.indexQuestionObject = indice;
       this.questionObject = this.evaluationObject.questions_[this.indexQuestionObject];
-      console.log("cambia a pregunta:" + this.questionObject);
-      let rec: string = this.questionObject.answers_[0].options_answer[0].resource!;
+      console.log("cambia a pregunta:", this.questionObject);
+      let rec: string = "";
+      if (this.questionObject.name_questioncategory !== this.tipoPregunta(7)) {
+        rec = this.questionObject.answers_[0].options_answer[0].resource!;
+      } else {
+        this.palabra.firstMovimiento = 0;
+      }
       rec = rec != undefined ? rec : "";
       this.questionObject.canResource = (rec.length > 0);
+      if (this.questionObject.name_questioncategory == this.tipoPregunta(4)) {
+        for (let i = 0; i < this.questionObject.answers_[0].options_answer.length; i++) {
+          this.questionObject.answers_[0].complete_parts = this.partirPreguntaComplete(this.questionObject.answers_[0].options_answer[i].description_question);
+        }
+        this.questionObject.answers_[0].options_answer[0].response = Array<Options>(this.questionObject.answers_[0].complete_parts!.length - 1);
+      }
+      if (this.questionObject.name_questioncategory == this.tipoPregunta(5)) {
+        //this.questionObject.answers_[0].right_parts = [...this.questionObject.answers_[0].options_answer];
+        this.questionObject.answers_[0].right_parts = Array<OptionsAnswer>(0);
+        let tmp: OptionsAnswer;
+        for (let index = 0; index < this.questionObject.answers_[0].options_answer.length; index++) {
+          //tmp.opcion = this.questionObject.answers_[0].options_answer[index].rightSide;
+          //tmp.resource = this.questionObject.answers_[0].options_answer[index].resourse_rightSide;
+          tmp = this.questionObject.answers_[0].options_answer[index];
+          tmp.ind = index;
+          this.questionObject.answers_[0].right_parts.push(tmp);
+        }
+        this.questionObject.answers_[0].right_parts = this.desordenar(this.questionObject.answers_[0].right_parts);
+        for (let index = 0; index < this.questionObject.answers_[0].right_parts.length; index++) {
+          this.questionObject.answers_[0].right_parts[index].ind = index;
+        }
+        console.log("tipo pregujnta 5", this.questionObject.answers_[0].right_parts);
+        this.questionObject.answers_[0].responses = Array<OptionsAnswer>(this.questionObject.answers_[0].options_answer.length - 1);
+      }
+      if (this.questionObject.name_questioncategory == this.tipoPregunta(6)) {
+        let imgPath: string = this.questionObject.answers_[0].options_answer[0].resource!;
+        let dimensions: number = this.questionObject.answers_[0].options_answer[0].piece_questionarie!;
+        this.tmpPuzzle = new Puzzle();
+        // imgPath = "assets/imgresource/empty/notification.png";
+        this.tmpPuzzle.crearPuzzle(dimensions, imgPath);
+        this.questionObject.answers_[0].tmpPuzzle = this.tmpPuzzle;
+      }
+      if (this.questionObject.name_questioncategory == this.tipoPregunta(7)) {
+
+        let tmpOpcion: OptionsAnswer = this.questionObject.answers_[0].options_answer[0];
+        console.log("pregunta tipo 7:", tmpOpcion);
+        // this.questionObject.answers_[0].complete_parts = this.desordenar(tmpOpcion.opcion.split(""));
+        // this.questionObject.answers_[0].complete_parts = tmpOpcion.opcion.split("");
+        this.questionObject.answers_[0].complete_parts = Array<string>(tmpOpcion.opcion.split("").length);
+
+        // let x:OptionsAnswer = {opcion: ""};
+        // this.questionObject.answers_[0].responses = Array<OptionsAnswer>(tmpOpcion.opcion.split("").length);
+      }
       console.log("pregunta: ", this.questionObject);
     }
     this.initCanvas(flag);
-    if (this.storageService.getCurrentUser().email != "anthony.pachay2017@uteq.edu.ec") {
-      this.leerPregunta();
+    //reiniciamos los intentos
+    this.palabra.totalIntentos = 0;
+    // el browser es comantible con el speaker?
+    if (this.text2SpeakSupport()) {
+      if (this.storageService.getCurrentUser().email != "anthony.pachay2017@uteq.edu.ec") {
+        this.leerPregunta();
+      }
     }
   }
 
@@ -289,8 +633,34 @@ export class EvaluationComponent implements OnInit {
     if (btnStart) (btnStart as HTMLFormElement).click();
   }
 
+  public feedBackQuestionObject: Questions;
+
+  showSwal(correcta: boolean, indexQuestionObject: number): void {
+    this.sweetFakeAlert[0] = true;
+    this.sweetFakeAlert[1] = correcta;
+    this.sweetFakeAlerttxt = this.sweetFakeAlert[1] ? this.evaluationObject.questions_[indexQuestionObject].feedback_question :
+      this.evaluationObject.questions_[indexQuestionObject].hint_question
+    this.feedBackQuestionObject = this.evaluationObject.questions_[indexQuestionObject];
+    let tiempoSwal$ = timer(0, 1000)
+      .subscribe((iter: any) => {
+        if (iter >= 10) {
+          tiempoSwal$.unsubscribe();
+          this.sweetFakeAlert[0] = false;
+        }
+      });
+    let cadena = "";
+    if (correcta) {
+      cadena += "¡Geniál!\n recordemos que \n" + this.questionObject.feedback_question;
+    } else {
+      cadena += "¡Oh no!\n Te daremos una pista \n" + this.questionObject.hint_question;
+    }
+    this.decirAlgo(cadena);
+  }
+
+
   /*Paginar preguntas*/
-  anteriorPregunta(): void {
+  siguientePregunta(): void {
+
     let ind = this.indexQuestionObject + 1;
     if (ind >= this.evaluationObject.questions_.length) {
       ind = this.evaluationObject.questions_.length - 1;
@@ -300,8 +670,7 @@ export class EvaluationComponent implements OnInit {
     this.cambiarPregunta(ind);
   }
 
-  siguientePregunta(): void {
-    console.log("siguiente pregunta");
+  anteriorPregunta(): void {
     let ind = this.indexQuestionObject - 1;
     if (ind < 0) {
       ind = 0;
@@ -310,12 +679,34 @@ export class EvaluationComponent implements OnInit {
     this.cambiarPregunta(ind);
   }
 
+  desordenar(unArray: any[]): any[] {
+    let t = unArray.sort(function (a, b) {
+      return (Math.random() - 0.5)
+    });
+    return [...t];
+  }
+
   /*Video Player*/
 
   public btnVideoControl: any;
+  public btnVideoSignControl: any;
 
   initVideoControls(): void {
-    this.btnVideoControl = document.querySelector("#pathurlsign_question");
+    this.btnVideoControl = document.querySelector("#pathurlvideo_question");
+  }
+
+  initVideoSignControls(): void {
+    this.btnVideoSignControl = document.querySelector("#pathurlsign_question");
+  }
+
+  playSignVideo() {
+    this.initVideoSignControls()
+    if (this.btnVideoSignControl) (this.btnVideoSignControl as HTMLFormElement)['play']();
+  }
+
+  pauseSignVideo() {
+    this.initVideoSignControls();
+    if (this.btnVideoSignControl) (this.btnVideoSignControl as HTMLFormElement)['pause']();
   }
 
   playVideo() {
@@ -337,15 +728,21 @@ export class EvaluationComponent implements OnInit {
     }
   }
 
-  evaluar(wildcard: string, i: number): void {
+  evaluarPreguntasSencillas(wildcard: string): void {
     console.log("wilcardOriginal:" + wildcard);
     wildcard = wildcard.trim().replace(/[^a-zA-Z]+/, "");
-    console.log("wildcard:", wildcard, i, this.alphabet.indexOf(wildcard.trim()));
+    console.log("wildcard:", wildcard, this.alphabet.indexOf(wildcard.trim()));
     if (this.alphabet.indexOf(wildcard.trim()) > -1) {
       //this.artyom.say("Ha indicado la selección del literal " + wildcard);
       console.log("Ha indicado la selección del literal " + wildcard);
 
-      if (this.questionObject.name_questioncategory == this.tipoPregunta(2)) {
+      if (this.questionObject.name_questioncategory == this.tipoPregunta(1)) {
+        if (this.questionObject.canResource) {
+          this.autoClick("#option_vf_" + wildcard.trim());
+        } else {
+          this.autoClick("#option_vf_" + wildcard.trim());
+        }
+      } else if (this.questionObject.name_questioncategory == this.tipoPregunta(2)) {
         if (this.questionObject.canResource) {
           this.autoClick("#option_rd_2_" + wildcard.trim());
         } else {
@@ -365,40 +762,178 @@ export class EvaluationComponent implements OnInit {
   }
 
   evaluar_control_video(wildcard: string, i: number, database: string[]): void {
-    console.log("wilcardOriginal:" + wildcard);
     wildcard = wildcard.trim().replace(/[^a-zA-Z]+/, "");
-    console.log("wildcard:", wildcard, i, database.indexOf(wildcard.trim()));
+    console.log("evaluar_control_video:", wildcard, i, database.indexOf(wildcard.trim()));
     if (database.indexOf(wildcard.trim()) > -1) {
       //this.artyom.say("Ha indicado la selección del literal " + wildcard);
-      console.log("Ha indicado la selección del literal " + wildcard);
+      console.log("evaluar_control_video " + wildcard);
+
       console.log("#video_" + wildcard.trim() + ": => click")
-      this.autoClick("#video_" + wildcard.trim());
+      this.autoClick("#" + wildcard.trim().toLowerCase() + "_video_rec");
     } else {
-      console.log("No se encuentra ese literal")
+      console.log("No se encuentra el evaluar_control_video")
+    }
+  }
+
+  evaluar_control_evaluacion(wildcard: string, database: string[]): void {
+    wildcard = wildcard.trim().toLowerCase().replace(/[^a-zñ]+/, "");
+    console.log("evaluar_control_evaluacion:", wildcard, database.indexOf(wildcard.trim()));
+    if (database.indexOf(wildcard.trim()) > -1) {
+      //this.artyom.say("Ha indicado la selección del literal " + wildcard);
+
+      if (wildcard.trim() == "señas") {
+        this.vistaVideoSenias = !this.vistaVideoSenias;
+      } else if (wildcard.trim() == "bancos") {
+        this.viewQuestionBank = !this.viewQuestionBank;
+      } else {
+        this.autoClick("#evt_control_" + wildcard.trim());
+        console.log("evaluar_control_evaluacion: " + "evt_control_" + wildcard);
+      }
+    } else {
+      console.log("No se encuentra es evaluar_control_evaluacion")
     }
   }
 
   /*Comandos de voz*/
 
   voiceComandsSupport(): boolean {
-    let microphoneApi: boolean = window.hasOwnProperty('webkitSpeechRecognition') && window.hasOwnProperty('speechSynthesis');
+    //let microphoneApi: boolean = window.hasOwnProperty('webkitSpeechRecognition') && window.hasOwnProperty('speechSynthesis');
+    let microphoneApi: boolean = this.artyom.recognizingSupported();
     return microphoneApi;
+  }
+
+  text2SpeakSupport(): boolean {
+    let microphoneApi: boolean = this.artyom.speechSupported();
+    return microphoneApi;
+  }
+
+  isDesktopDevice(): boolean {
+    return this.artyom.Device.isMobile();
+  }
+
+  take(values: number): void {
+    console.log("Hola la tecla z" + values);
+  }
+
+  startHotKeysCommands(): void {
+    let keyMaster = "shift";
+    // this._hotkeysService.add(new Hotkey(keyMaster + '+a', (event: KeyboardEvent): boolean => {
+    //   console.log('Typed hotkey');
+    //   return false; // Prevent bubbling
+    // }));
+    //https://npm.io/package/angular2-hotkeys
+    //https://craig.is/killing/mice
+    this._hotkeysService.add(new Hotkey([keyMaster + '+a', keyMaster + '+b', keyMaster + '+c', keyMaster + '+d', keyMaster + '+e', keyMaster + '+f'], (event: KeyboardEvent, combo: string): ExtendedKeyboardEvent => {
+      console.log('Combo: ' + combo); // 'Combo: meta+shift+g' or 'Combo: alt+shift+s'
+      let letra = combo.replace(keyMaster + "+", "");
+      console.log("selecciona el literal [" + combo + "]");
+      if (this.questionObject.name_questioncategory == this.tipoPregunta(1) ||
+        this.questionObject.name_questioncategory == this.tipoPregunta(2) ||
+        this.questionObject.name_questioncategory == this.tipoPregunta(3)) {
+        this.evaluarPreguntasSencillas(letra);
+      } else {
+        //alert("comando actualmente no soportado")
+      }
+      let e: ExtendedKeyboardEvent = event;
+      e.returnValue = false; // Prevent bubbling
+      return e;
+    }));
+    let comandos = ["right", "left", "enter", "esc", "backspace", "tab"];
+    this._hotkeysService.add(new Hotkey([keyMaster + '+' + comandos[0], keyMaster + '+' + comandos[1],
+        keyMaster + '+' + comandos[2], keyMaster + '+' + comandos[3], keyMaster + '+' + comandos[4], 'shift+' + comandos[5]]
+      , (event: KeyboardEvent, combo: string): ExtendedKeyboardEvent => {
+        console.log('Combo: ' + combo); // 'Combo: meta+shift+g' or 'Combo: alt+shift+s'
+
+        let comodin = combo.replace(keyMaster + "+", "");
+        let database: string[] = ["siguiente", "anterior", "enviar", "señas", "repetir", "bancos"];
+        let indice = comandos.indexOf(comodin);
+        if (indice > -1) {
+          this.evaluar_control_evaluacion(database[indice], database);
+        }
+
+        let e: ExtendedKeyboardEvent = event;
+        e.returnValue = false; // Prevent bubbling
+        return e;
+      }));
+
+    this._hotkeysService.add(new Hotkey([
+        keyMaster + ' a a', keyMaster + ' a b', keyMaster + ' a c', keyMaster + ' a d', keyMaster + ' a e', keyMaster + ' a f',
+        keyMaster + ' b a', keyMaster + ' b b', keyMaster + ' b c', keyMaster + ' b d', keyMaster + ' b e', keyMaster + ' b f',
+        keyMaster + ' c a', keyMaster + ' c b', keyMaster + ' c c', keyMaster + ' c d', keyMaster + ' c e', keyMaster + ' c f',
+        keyMaster + ' d a', keyMaster + ' d b', keyMaster + ' d c', keyMaster + ' d d', keyMaster + ' d e', keyMaster + ' d f',
+        keyMaster + ' e a', keyMaster + ' e b', keyMaster + ' e c', keyMaster + ' e d', keyMaster + ' e e', keyMaster + ' e f',
+        keyMaster + ' f a', keyMaster + ' f b', keyMaster + ' f c', keyMaster + ' f d', keyMaster + ' f e', keyMaster + ' f f',
+
+      ]
+      , (event: KeyboardEvent, combo: string): ExtendedKeyboardEvent => {
+        console.log('Combo: ' + combo); // 'Combo: meta+shift+g' or 'Combo: alt+shift+s'
+
+        // combo = combo.replace(keyMaster, "");
+        // combo = combo.replace(/\s/, "");
+        // console.log("combo2:"+ combo);
+        let [lit, opt] = combo.split(" ");
+        console.log("combo2:" + lit + opt);
+        let literal: number = this.alphabet.indexOf(lit);
+        let opcion: number = this.alphabet.indexOf(opt);
+        if (literal != -1 && opcion != -1) {
+          if (this.questionObject.name_questioncategory == this.tipoPregunta(4)) {
+            //this.questionObject.answers_[0].complete_parts![opcion];
+            //buscamos el indice al que se le debería ubicar el valor para que se presente
+            //todo bien en la interfaz, una solución poco elegante pero válida
+            let trueIndex = 0, count = -1;
+            for (let ind = 0; ind < this.questionObject.answers_[0].complete_parts!.length; ind++) {
+              if (this.questionObject.answers_[0].complete_parts![ind] == "$option$") {
+                trueIndex = ind;
+                count++;
+              }
+              if (count == literal) {
+                ind = this.questionObject.answers_[0].complete_parts!.length;
+              }
+            }
+            this.questionObject.answers_[0].options_answer[0].response[trueIndex] = this.questionObject.answers_[0].options_answer[0].options[opcion];
+            console.log("respuseta: ", this.questionObject.answers_[0].options_answer[0].response);
+          } else if (this.questionObject.name_questioncategory == this.tipoPregunta(5)) {
+            this.questionObject.answers_[0].responses[literal] = this.questionObject.answers_[0].right_parts![opcion];
+          }
+        }
+        let e: ExtendedKeyboardEvent = event;
+        e.returnValue = false; // Prevent bubbling
+        return e;
+      }));
   }
 
   startContinuousArtyom(): void {
 
     this.artyom.fatality();
     let local_this = this;
-    let myGroup: any = [{
-      description: "Si el usuario indica un literal que se encuentra en la lista",
-      smart: true, // Activar comando como un comando smart para poder usar comodines
-      indexes: ["literal *", "opción *"],
-      action: function (i: number, wildcard: string) {
-        //let database: string[] = ["a", "b", "c", "d", "e", "f"];
-        local_this.evaluar(wildcard, i);
+    let myGroup: any = [
+      {
+        description: "Si el usuario indica un literal que se encuentra en la lista",
+        smart: true, // Activar comando como un comando smart para poder usar comodines
+        indexes: ["literal *"],//, "opción *"
+        action: function (i: number, wildcard: string) {
+          //let database: string[] = ["a", "b", "c", "d", "e", "f"];
+          console.log("literal_wilcardOriginal:" + wildcard);
+          if (local_this.questionObject.name_questioncategory == local_this.tipoPregunta(1) ||
+            local_this.questionObject.name_questioncategory == local_this.tipoPregunta(2) ||
+            local_this.questionObject.name_questioncategory == local_this.tipoPregunta(3)) {
+            local_this.evaluarPreguntasSencillas(wildcard);
+          } else {
+            alert("Comando actualmente no soportado");
+          }
 
-      }
-    },
+        }
+      },
+      {
+        description: "Si el usuario indica un literal que se encuentra en la lista",
+        smart: true, // Activar comando como un comando smart para poder usar comodines
+        indexes: ["relacionar * opción *"],//, "opción *"
+        action: function (i: number, wildcard: string) {
+          //let database: string[] = ["a", "b", "c", "d", "e", "f"];
+          console.log("literal_wilcardOriginal:", wildcard);
+          //local_this.evaluar(wildcard, i);
+        }
+      },
       {
         description: "controles de video",
         smart: true, // Activar comando como un comando smart para poder usar comodines
@@ -409,33 +944,20 @@ export class EvaluationComponent implements OnInit {
           //pausar_video
           //silenciar_video
           local_this.evaluar_control_video(wildcard, i, database);
-          /*console.log("wilcardOriginal:" + wildcard);
-          wildcard = wildcard.trim().replace(/[^a-zA-Z]+/, "");
-          console.log("wildcard:", wildcard, i, database.indexOf(wildcard.trim()));
-          if (database.indexOf(wildcard.trim()) > -1) {
-            //this.artyom.say("Ha indicado la selección del literal " + wildcard);
-            console.log("Ha indicado la selección del literal " + wildcard);
-            console.log("#video_" + wildcard.trim() + ": => click")
-            // this.autoClick("#video_" + wildcard.trim());
-            let btnStart = document.querySelector("#video_" + wildcard.trim());
-            if (btnStart) (btnStart as HTMLFormElement).click();
-          } else {
-            console.log("No se encuentra ese literal")
-          }*/
+        }
+      }, {
+        description: "controles del contexto evaluativo",
+        smart: true, // Activar comando como un comando smart para poder usar comodines
+        indexes: ["comando *"],
+        action: function (i: number, wildcard: string) {
+          let database: string[] = ["siguiente", "anterior", "enviar", "señas", "repetir", "bancos"];
+          local_this.evaluar_control_evaluacion(wildcard, database);
         }
       }
     ];
 
     this.artyom.addCommands(myGroup);
 
-
-    //setTimeout(() => {
-    //this.probarcomando();
-    //let btnStart = document.querySelector("#btnStart");
-    //if (btnStart) (btnStart as HTMLFormElement).click();
-    //this.autoClick("#btnStart");
-
-    //}, 5000);
 
     this.artyom.initialize({
       lang: "es-ES",
@@ -451,20 +973,99 @@ export class EvaluationComponent implements OnInit {
 
   }
 
+  cancelarEscuchaComandosVoz(): void {
+    if (this.artyom.isObeying()) {
+      this.artyom.dontObey();
+    } else {
+      this.artyom.obey();
+    }
+  }
+
   leerPregunta(): void {
     let reader: string = "";
+    reader += this.questionObject.title_question + " \n";
     reader += this.questionObject.description_question + " \n";
-    for (let i = 0; i < this.questionObject.answers_[0].options_answer.length; i++) {
-      reader += "literal " + this.alphabet[i] + " \n";
-      reader += this.questionObject.answers_[0].options_answer[i].opcion + " \n";
+
+    if (this.questionObject.name_questioncategory == this.tipoPregunta(1) ||
+      this.questionObject.name_questioncategory == this.tipoPregunta(2) ||
+      this.questionObject.name_questioncategory == this.tipoPregunta(3)) {
+      for (let i = 0; i < this.questionObject.answers_[0].options_answer.length; i++) {
+        reader += "literal " + this.alphabet[i] + " \n";
+        reader += this.questionObject.answers_[0].options_answer[i].opcion + " \n";
+      }
+    } else if (this.questionObject.name_questioncategory == this.tipoPregunta(4)) {
+      //completa
+      for (let i = 0; i < this.questionObject.answers_[0].complete_parts!.length; i++) {
+        let tmpString = this.questionObject.answers_[0].complete_parts![i];
+        tmpString = tmpString === "$option$" ? "puntos suspensivos" : tmpString;
+        reader += tmpString;
+      }
+      reader += "\n las posibles respuestas son: \n";
+
+      for (let i = 0; i < this.questionObject.answers_[0].options_answer.length; i++) {
+        reader += "literal " + this.alphabet[i] + " \n";
+        reader += this.questionObject.answers_[0].options_answer[i].leftSide + " \n";
+      }
+
+    } else if (this.questionObject.name_questioncategory == this.tipoPregunta(5)) {
+      //relaciona
+      for (let i = 0; i < this.questionObject.answers_[0].options_answer.length; i++) {
+        reader += "literal " + this.alphabet[i] + " \n";
+        reader += this.questionObject.answers_[0].options_answer[i].leftSide + " \n";
+      }
+      reader += "las posibles respuestas son: \n";
+      for (let i = 0; i < this.questionObject.answers_[0].options_answer.length; i++) {
+        reader += "literal " + this.alphabet[i] + " \n";
+        reader += this.questionObject.answers_[0].options_answer[i].rightSide + " \n";
+      }
+    } else if (this.questionObject.name_questioncategory == this.tipoPregunta(6)) {
+    } else if (this.questionObject.name_questioncategory == this.tipoPregunta(7)) {
+      // y que mas le digo? xd
     }
-    //console.log(reader);
-    this.artyom.say(reader);
+
+    //si están hablando, callarlos
+    if (this.artyom.isSpeaking()) {
+      this.artyom.shutUp();
+    }
+
+    //Desactivar el reconocimiento de comandos cuando empiece la lectura
+    this.artyom.dontObey();
+    let local_artyom = this.artyom;
+    this.artyom.say(reader, {
+      onStart: function () {
+      },
+      onEnd: function () {
+        //activar el reconocimiento de los comandos
+        local_artyom.obey();
+        console.log("vuelve a hablar");
+      }
+    });
+  }
+
+  decirAlgo(cadena: string): void {
+    //si están hablando, callarlos
+    if (this.artyom.isSpeaking()) {
+      this.artyom.shutUp();
+    }
+
+    //Desactivar el reconocimiento de comandos cuando empiece la lectura
+    this.artyom.dontObey();
+    let local_artyom = this.artyom;
+    this.artyom.say(cadena, {
+      onStart: function () {
+      },
+      onEnd: function () {
+        //activar el reconocimiento de los comandos
+        local_artyom.obey();
+        console.log("vuelve a hablar");
+      }
+    });
   }
 
   /*Operaciones en canvas*/
 
   public onoff: boolean;
+  public firstLoc = {x: 0, y: 0};
   public lastLoc = {x: 0, y: 0};
 
   initCanvas(nuevo: boolean): void {
@@ -474,18 +1075,55 @@ export class EvaluationComponent implements OnInit {
     //this.contex = (this.CanvasEl.nativeElement as HTMLCanvasElement).getContext("2d");
     //this.contex = this.CanvasEl.nativeElement.getContext('2d');
     mecanvas.style['cursor'] = 'pointer';
-    let cantidad: number = this.questionObject.answers_[0].options_answer.length;
-    mecanvas.width = (85 * cantidad);
-    mecanvas.getContext('2d')!.clearRect(0, 0, mecanvas.width, mecanvas.height);
 
-    for (let ind = 0; ind < cantidad; ind++) {
-      let img = new Image();
-      img.onload = function () {
-        img.width = 10;
-        let ctx = mecanvas.getContext('2d')!;
-        ctx.drawImage(img, (ind * 85), 0, 85, 85);
-      };
-      img.src = 'assets/imgresource/alfabeto/propio/' + this.alphabet[ind] + '.png';
+
+    let c_tamanio = 85, c_margen = 10;
+    if (this.questionObject.name_questioncategory == this.tipoPregunta(4)) {
+      let parts_p_tmp: string[] = this.questionObject.answers_[0].complete_parts!;
+      let parts_p: string[] = [];
+      for (let ind = 0; ind < parts_p_tmp.length; ind++) {
+        if (parts_p_tmp[ind] == "$option$") {
+          parts_p.push(parts_p_tmp[ind]);
+        }
+      }
+      let parts_o: Options[] = this.questionObject.answers_[0].options_answer[0].options!;
+      let cantidad: number = parts_p.length > parts_o.length ? parts_p.length : parts_o.length;
+      mecanvas.height = (c_tamanio * cantidad) + (c_margen * (cantidad - 1));
+      mecanvas.width = (c_tamanio * 2) + 150;
+      mecanvas.getContext('2d')!.clearRect(0, 0, mecanvas.width, mecanvas.height);
+      let ctx = mecanvas.getContext('2d')!;
+      let colorPan = ["#E3FFFF", "#BFFFC4", "#F6FFA1", "#C5AEFE", "#FDBDB1", "#BEACFF", "#E9CEBB", "#EFA0E7"];
+
+      this.dibujaFilaItemsCanvas(ctx, c_tamanio, c_margen, cantidad, this.alphabet.slice(0, parts_p.length)
+        , true, "-");
+      this.dibujaFilaItemsCanvas(ctx, c_tamanio, c_margen, cantidad, parts_o
+        , false, "+");
+    } else if (this.questionObject.name_questioncategory == this.tipoPregunta(5)) {
+      let parts_o: OptionsAnswer[] = this.questionObject.answers_[0].options_answer;
+      let cantidad: number = parts_o.length;
+      mecanvas.height = (c_tamanio * cantidad) + (c_margen * (cantidad - 1));
+      mecanvas.width = (c_tamanio * 2) + 150;
+      mecanvas.getContext('2d')!.clearRect(0, 0, mecanvas.width, mecanvas.height);
+      let ctx = mecanvas.getContext('2d')!;
+      let colorPan = ["#E3FFFF", "#BFFFC4", "#F6FFA1", "#C5AEFE", "#FDBDB1", "#BEACFF", "#E9CEBB", "#EFA0E7"];
+
+      this.dibujaFilaItemsCanvas(ctx, c_tamanio, c_margen, cantidad, parts_o
+        , true, "-");
+      this.dibujaFilaItemsCanvas(ctx, c_tamanio, c_margen, cantidad, parts_o
+        , false, "+");
+    } else {
+      let cantidad: number = this.questionObject.answers_[0].options_answer.length;
+      mecanvas.width = (c_tamanio * cantidad) + (c_margen * (cantidad - 1));
+      mecanvas.getContext('2d')!.clearRect(0, 0, mecanvas.width, mecanvas.height);
+      for (let ind = 0; ind < cantidad; ind++) {
+        let img = new Image();
+        img.onload = function () {
+          img.width = 10;
+          let ctx = mecanvas.getContext('2d')!;
+          ctx.drawImage(img, (ind * c_tamanio) + (c_margen * ind), 5, c_tamanio, c_tamanio);
+        };
+        img.src = 'assets/imgresource/alfabeto/propio/' + this.alphabet[ind] + '.png';
+      }
     }
     if (nuevo) {
       mecanvas.onmousedown = (e: {
@@ -493,6 +1131,8 @@ export class EvaluationComponent implements OnInit {
       }) => {
         this.onoff = true;
         this.lastLoc = this.windowCanvas(e.clientX, e.clientY);
+        this.firstLoc = this.windowCanvas(e.clientX, e.clientY);
+        this.initCanvas(false);
       };
       mecanvas.onmousemove = (e: any) => {
 
@@ -502,8 +1142,8 @@ export class EvaluationComponent implements OnInit {
           ctx.beginPath();
           ctx.moveTo(this.lastLoc.x, this.lastLoc.y);
           ctx.lineTo(curLoc.x, curLoc.y);
-          ctx.strokeStyle = "#00a186";
-          ctx.lineWidth = 4;
+          ctx.strokeStyle = "rgba(0,0,0,0.25)";
+          ctx.lineWidth = 10;
           ctx.lineCap = "round";
           ctx.stroke();
           this.lastLoc = curLoc;
@@ -516,20 +1156,83 @@ export class EvaluationComponent implements OnInit {
         preventDefault: () => void; pageX: any; pageY: any;
       }) => {
         this.onoff = false;
-        let indice = Math.trunc((this.lastLoc.x) / 75);
+        let indice = Math.trunc((this.lastLoc.x) / c_tamanio);
         console.log(this.lastLoc.x, indice);
         let wildcard: string = this.alphabet[indice];
-        if (this.questionObject.name_questioncategory == this.tipoPregunta(2)) {
-          if (this.questionObject.canResource) {
-            this.autoClick("#option_rd_2_" + wildcard.trim());
+
+        if (this.questionObject.name_questioncategory == this.tipoPregunta(1) ||
+          this.questionObject.name_questioncategory == this.tipoPregunta(2) ||
+          this.questionObject.name_questioncategory == this.tipoPregunta(3)) {
+          this.evaluarPreguntasSencillas(wildcard);
+        } else if (this.questionObject.name_questioncategory == this.tipoPregunta(4) ||
+          this.questionObject.name_questioncategory == this.tipoPregunta(5)) {
+          let mayor: number;
+          let origen = -1, destino = -1;
+
+          let cOp, cPr;
+
+          if (this.questionObject.name_questioncategory == this.tipoPregunta(5)) {
+            cOp = this.questionObject.answers_[0].options_answer.length;
+            cPr = this.questionObject.answers_[0].right_parts!.length;
+            mayor = Math.max(cOp, cPr);
+          } else if (this.questionObject.name_questioncategory == this.tipoPregunta(4)) {
+            cOp = this.questionObject.answers_[0].options_answer[0].options!.length;
+            cPr = this.questionObject.answers_[0].complete_parts!.length;
+            mayor = Math.max(cOp, cPr);
           } else {
-            this.autoClick("#option_rd_" + wildcard.trim());
+            cOp = 1;
+            cPr = 1;
+            mayor = 0;
           }
-        } else if (this.questionObject.name_questioncategory == this.tipoPregunta(3)) {
-          if (this.questionObject.canResource) {
-            this.autoClick("#option_ck_2_" + wildcard.trim());
-          } else {
-            this.autoClick("#option_ck_" + wildcard.trim());
+
+          let saltosBaseOp = (((mayor / cOp)));
+          saltosBaseOp = (mayor == cOp) ? 0 : saltosBaseOp;
+          let saltosBasePr = (((mayor / cPr)));
+          saltosBasePr = (mayor == cPr) ? 0 : saltosBasePr;
+
+          saltosBaseOp = mayor - cOp;
+          saltosBasePr = mayor - cPr;
+          console.log("paneles de mas: ", saltosBaseOp, saltosBasePr);
+
+
+          let c_alto = c_tamanio;
+          let literal = -1, opcion = -1;
+          console.log("Saltos: ", saltosBaseOp, saltosBasePr);
+
+          if (this.firstLoc.x < c_alto && this.lastLoc.x > c_alto + 150) {
+            console.log("izquierda a derecha ");
+            literal = Math.trunc((this.firstLoc.y) / (c_alto + c_margen));
+            opcion = Math.trunc((this.lastLoc.y) / (c_alto + c_margen));
+            literal = literal - saltosBaseOp;
+            opcion = opcion - (saltosBasePr > 1 ? saltosBasePr : 0);
+          } else if (this.lastLoc.x < c_alto && this.firstLoc.x > c_alto + 150) {
+            console.log("derecha a izquierda ");
+            literal = Math.trunc((this.lastLoc.y) / (c_alto + c_margen));
+            opcion = Math.trunc((this.firstLoc.y) / (c_alto + c_margen));
+            literal = literal - saltosBaseOp;
+            opcion = opcion - (saltosBasePr > 1 ? saltosBasePr : 0);
+          }
+          console.log("Indices seleccionados 2: ", literal, opcion);
+          if (literal != -1 && opcion != -1) {
+            if (this.questionObject.name_questioncategory == this.tipoPregunta(4)) {
+              //this.questionObject.answers_[0].complete_parts![opcion];
+              //buscamos el indice al que se le debería ubicar el valor para que se presente
+              //todo bien en la interfaz, una solución poco elegante pero válida
+              let trueIndex = 0, count = -1;
+              for (let ind = 0; ind < this.questionObject.answers_[0].complete_parts!.length; ind++) {
+                if (this.questionObject.answers_[0].complete_parts![ind] == "$option$") {
+                  trueIndex = ind;
+                  count++;
+                }
+                if (count == literal) {
+                  ind = this.questionObject.answers_[0].complete_parts!.length;
+                }
+              }
+              this.questionObject.answers_[0].options_answer[0].response[trueIndex] = this.questionObject.answers_[0].options_answer[0].options[opcion];
+              console.log("respuseta: ", this.questionObject.answers_[0].options_answer[0].response);
+            } else if (this.questionObject.name_questioncategory == this.tipoPregunta(5)) {
+              this.questionObject.answers_[0].responses[literal] = this.questionObject.answers_[0].right_parts![opcion];
+            }
           }
         }
       }
@@ -539,6 +1242,54 @@ export class EvaluationComponent implements OnInit {
 
         this.onoff = false;
       };
+    }
+  }
+
+  //this.alphabet.subarray(parts.length);
+  dibujaFilaItemsCanvas(ctx: CanvasRenderingContext2D, c_tamanio: number, c_margen: number, maxElements: number
+    , parts: any[], isleft: boolean, subProperty: string, subPropertyImg: string = "-"): void {
+    let colorPan = ["#E3FFFF", "#BFFFC4", "#F6FFA1", "#C5AEFE", "#FDBDB1", "#BEACFF", "#E9CEBB", "#EFA0E7"];
+    //console.log("cantidades", maxElements, parts.length, (maxElements / parts.length));
+    let saltosBase = (((maxElements / parts.length)) / 2);
+    saltosBase = (maxElements == parts.length) ? 0 : saltosBase;
+    //console.log("salto base:" + saltosBase);
+    for (let ind = 0; ind < parts.length; ind++) {
+      if (isleft) {
+        ctx.fillStyle = colorPan[ind >= colorPan.length ? Math.trunc(ind / colorPan.length) : ind];
+      } else {
+        ctx.fillStyle = colorPan[colorPan.length - 1 - ind < 0 ? 0 : colorPan.length - ind - 1];
+      }
+      let tmp_y = 0;
+      // if (ind == 0) {
+      //   tmp_y = (maxElements / parts.length) + Math.trunc((c_tamanio / 2) + 7);
+      // } else {
+      tmp_y = ((saltosBase + ind) * c_tamanio) + ((saltosBase + ind) * c_margen);
+      //console.log("cantidades", "((" + maxElements + " / " + parts.length + ") /" + 2 + " + " + ind + "- 0.5)", "= " + ((maxElements / parts.length) / 2 + ind - 0.5));
+      // }
+      ctx.fillRect(isleft ? Math.trunc(c_margen / 2) : (c_tamanio + 150), tmp_y, c_tamanio, c_tamanio);
+      ctx.fillStyle = "black";
+      ctx.strokeStyle = "black";
+      ctx.font = "15px Arial";
+      let lbl: string = "";
+      if (subProperty == "-") {
+        lbl = ("Literal " + this.alphabet[ind] + ".");
+      } else if (subProperty == "+") {
+        lbl = ("Opción " + this.alphabet[ind] + ".");
+      } else {
+        lbl = parts[ind][subProperty];
+      }
+      ctx.fillText(lbl,
+        isleft ? (Math.trunc(c_margen / 2) + 7) : (c_tamanio + 150) + Math.trunc(c_margen / 2), tmp_y + Math.trunc((c_tamanio / 2) + 7));
+      ctx.stroke();
+
+      /*let imgTamanio = c_tamanio * 0.75;
+      let img = new Image();
+      img.onload = function () {
+        img.width = 10;
+        ctx.drawImage(img, (ind * c_tamanio) + (c_margen * ind), 5, c_tamanio * 0.75, c_tamanio);
+      };
+      img.src = 'assets/imgresource/alfabeto/propio/' + this.alphabet[ind] + '.png';*/
+
     }
   }
 
@@ -552,4 +1303,267 @@ export class EvaluationComponent implements OnInit {
     };
   }
 
+  //###########################333
+
+  // función
+  enviarEvaluacion(): void {
+    console.log(this.getCountReplied()[0] + '/' + this.getCountReplied()[1])
+    if (this.getCountReplied()[0] === this.getCountReplied()[1]) {
+      console.log("##########################################################################");
+      console.log(this.evaluationObject);
+      this.sweetFakeAlertFin = true;
+      let urlServicio = this.utils.globalUrl + "personsevaluations/insertpersonsevaluations";
+      let headers = new HttpHeaders()
+        .set('Access-Control-Allow-Origin', '*')
+        .set('provider', 'native')
+        .set('token', this.utils.token);
+      console.log(this.evaluationObject);
+      this._http.post<any>(urlServicio, {
+        "result_evaluation": JSON.stringify(this.evaluationObject),
+        "qualification_person_evaluation": this.calcularTotales(),
+        "timespent_person_evaluation": this.calcularTiempos(),
+        "evaluations_id_evaluation": this.idEvaluation,
+      }, {headers: headers}).subscribe(response => {
+      })
+      this.sweetFakeAlertFin = false;
+      this.utils.showMessages(2, "Se ha registrado la evaluación");
+      this.router.navigateByUrl('/app/mycourse/modules/' + this.idCourse + '/themes/' + this.idModule + '/resources/' + this.idTopic);
+    } else {
+      this.utils.showMessages(3, "Faltan preguntas por resolver");
+    }
+  }
+
+  showLetra(letra: string, indice: number): string {
+    if (letra === ' ')
+      return 'space';
+    if (this.questionObject.answers_[0].complete_parts![indice] == undefined)
+      return 'void';
+    else {
+      return this.questionObject.answers_[0].complete_parts![indice];
+    }
+  }
+
+  clickDown(val: number): void {
+    console.log("key", val, this.palabra.press === val);
+    if (val !== undefined) {
+      if (this.palabra.press === val) {
+        this.palabra.press = -1;
+      } else {
+        this.palabra.press = val;
+        this.palabra.release = -1;
+        this.palabra.firstMovimiento++;
+        /*if (this.palabra.firstMovimiento) {
+          this.palabra.firstMovimiento = true;
+        }*/
+      }
+    }
+  }
+
+
+  clickUp(val: number): void {
+    console.log(" set", val);
+    if (val !== undefined && this.questionObject.answers_[0].complete_parts![val] !== "space") {
+      if (this.palabra.release === val) {
+        this.palabra.release = -1;
+      } else {
+        this.palabra.release = val;
+        console.log("poner", this.alphabet[this.palabra.press], "en ", this.palabra.release);
+        this.questionObject.answers_[0].complete_parts![this.palabra.release] = this.alphabet[this.palabra.press];
+        this.palabra.press = -1;
+        this.palabra.release = -1;
+      }
+    }
+  }
+}
+
+function desordenarRow(unArray: any[]): any[] {
+  let t = unArray.sort(function (a, b) {
+    return (Math.random() - 0.5)
+  });
+  return [...t];
+}
+
+
+class Puzzle {
+
+  private maxSizeImg: number = 75;
+  private dimens: number = 3;
+
+  public arrayImagePuzzle: string[][];
+  public arrayPositionPuzzle: number[][];
+
+  public primerMovimiento: number = 0;
+
+  public puzzleControls: any = {
+    complete: false,
+    pressed: {x: -1, y: -1},
+    release: {x: -1, y: -1}
+  };
+
+  crearPuzzle(cantidad: number, url: string): void {
+    this.dimens = Math.sqrt(cantidad);
+
+    let maxSizeImg = this.maxSizeImg * this.dimens;
+    this.arrayImagePuzzle = new Array<string[]>(cantidad);
+    this.arrayPositionPuzzle = new Array<number[]>(cantidad);
+    let mecanvas = document.createElement("canvas") as HTMLCanvasElement;
+    //let mecanvas = document.getElementById("tmpImagenCanvas") as HTMLCanvasElement;
+    console.log(mecanvas);
+    mecanvas.width = maxSizeImg;
+    mecanvas.height = maxSizeImg;
+    let ctx = mecanvas.getContext('2d')!;
+    let local_this = this;
+    let img = new Image();
+    img.onload = function () {
+      img.width = maxSizeImg;
+      img.height = maxSizeImg;
+
+      ctx.drawImage(img, 0, 0, maxSizeImg, maxSizeImg);
+      let ind = 0;
+      for (let y = 0; y < local_this.dimens; y++) {
+        local_this.arrayImagePuzzle[y] = new Array<string>(local_this.dimens);
+        local_this.arrayPositionPuzzle[y] = new Array<number>(local_this.dimens);
+        for (let x = 0; x < local_this.dimens; x++) {
+          let imgData = ctx.getImageData(x * local_this.maxSizeImg, y * local_this.maxSizeImg,
+            (x * local_this.maxSizeImg) + local_this.maxSizeImg,
+            (y * local_this.maxSizeImg) + local_this.maxSizeImg);
+          let mincanvas = document.createElement("canvas") as HTMLCanvasElement;
+          mincanvas.width = local_this.maxSizeImg;
+          mincanvas.height = local_this.maxSizeImg;
+          let minctx = mincanvas.getContext('2d')!;
+          minctx.putImageData(imgData, 0, 0);
+
+          // console.log("base64: ", mincanvas.toDataURL());
+          local_this.arrayImagePuzzle[y][x] = mincanvas.toDataURL();
+          local_this.arrayPositionPuzzle[y][x] = ind++;
+        }
+      }
+      /*let imgData = ctx.getImageData(0, 0, local_this.maxSizeImg, local_this.maxSizeImg);
+      let mincanvas = document.createElement("canvas") as HTMLCanvasElement;
+      mincanvas.width = local_this.maxSizeImg;
+      mincanvas.height = local_this.maxSizeImg;
+      let minctx = mincanvas.getContext('2d')!;
+      minctx.putImageData(imgData, 0, 0);
+
+      console.log("base64: ", mincanvas.toDataURL());
+      local_this.objImagePuzzle = mincanvas.toDataURL();*/
+      let arrayDesorden: number[] = new Array<number>(local_this.dimens);
+      for (let x = 0; x < local_this.dimens; x++) {
+        arrayDesorden[x] = x;
+      }
+      //desordenar las filas
+      for (let y = 0; y < local_this.dimens; y++) {
+        arrayDesorden = desordenarRow(arrayDesorden);
+        for (let x = 0; x < local_this.dimens; x++) {
+          let changeimg: string, changeInd: number;
+          changeimg = local_this.arrayImagePuzzle[y][arrayDesorden[x]];
+          local_this.arrayImagePuzzle[y][arrayDesorden[x]] = local_this.arrayImagePuzzle[y][x];
+          local_this.arrayImagePuzzle[y][x] = changeimg;
+
+          changeInd = local_this.arrayPositionPuzzle[y][arrayDesorden[x]];
+          local_this.arrayPositionPuzzle[y][arrayDesorden[x]] = local_this.arrayPositionPuzzle[y][x];
+          local_this.arrayPositionPuzzle[y][x] = changeInd;
+        }
+      }
+      //console.log("filas ", local_this.arrayPositionPuzzle);
+      //desordenar las columnas
+      for (let y = 0; y < local_this.dimens; y++) {
+        arrayDesorden = desordenarRow(arrayDesorden);
+        for (let x = 0; x < local_this.dimens; x++) {
+          let changeimg: string, changeInd: number;
+          changeimg = local_this.arrayImagePuzzle[arrayDesorden[x]][y];
+          local_this.arrayImagePuzzle[arrayDesorden[x]][y] = local_this.arrayImagePuzzle[x][y];
+          local_this.arrayImagePuzzle[x][y] = changeimg;
+
+          changeInd = local_this.arrayPositionPuzzle[arrayDesorden[x]][y];
+          local_this.arrayPositionPuzzle[arrayDesorden[x]][y] = local_this.arrayPositionPuzzle[x][y];
+          local_this.arrayPositionPuzzle[x][y] = changeInd;
+        }
+      }
+      //desordenar las filas
+      for (let y = 0; y < local_this.dimens; y++) {
+        arrayDesorden = desordenarRow(arrayDesorden);
+        for (let x = 0; x < local_this.dimens; x++) {
+          let changeimg: string, changeInd: number;
+          changeimg = local_this.arrayImagePuzzle[y][arrayDesorden[x]];
+          local_this.arrayImagePuzzle[y][arrayDesorden[x]] = local_this.arrayImagePuzzle[y][x];
+          local_this.arrayImagePuzzle[y][x] = changeimg;
+
+          changeInd = local_this.arrayPositionPuzzle[y][arrayDesorden[x]];
+          local_this.arrayPositionPuzzle[y][arrayDesorden[x]] = local_this.arrayPositionPuzzle[y][x];
+          local_this.arrayPositionPuzzle[y][x] = changeInd;
+        }
+      }
+      //console.log("filas ", local_this.arrayPositionPuzzle);
+      //desordenar las columnas
+      for (let y = 0; y < local_this.dimens; y++) {
+        arrayDesorden = desordenarRow(arrayDesorden);
+        for (let x = 0; x < local_this.dimens; x++) {
+          let changeimg: string, changeInd: number;
+          changeimg = local_this.arrayImagePuzzle[arrayDesorden[x]][y];
+          local_this.arrayImagePuzzle[arrayDesorden[x]][y] = local_this.arrayImagePuzzle[x][y];
+          local_this.arrayImagePuzzle[x][y] = changeimg;
+
+          changeInd = local_this.arrayPositionPuzzle[arrayDesorden[x]][y];
+          local_this.arrayPositionPuzzle[arrayDesorden[x]][y] = local_this.arrayPositionPuzzle[x][y];
+          local_this.arrayPositionPuzzle[x][y] = changeInd;
+        }
+      }
+
+    };
+    img.crossOrigin = "Anonymous";
+    img.src = url;
+  }
+
+  mover(x: number, y: number) {
+    if (!this.puzzleControls.complete) {
+      this.puzzleControls.pressed = {x: x, y: y};
+      this.puzzleControls.complete = true;
+    } else {
+      this.puzzleControls.released = {x: x, y: y};
+
+      let auxInd = this.arrayPositionPuzzle[this.puzzleControls.released.y][this.puzzleControls.released.x];
+      this.arrayPositionPuzzle[this.puzzleControls.released.y][this.puzzleControls.released.x] =
+        this.arrayPositionPuzzle[this.puzzleControls.pressed.y][this.puzzleControls.pressed.x];
+      this.arrayPositionPuzzle[this.puzzleControls.pressed.y][this.puzzleControls.pressed.x] = auxInd;
+
+      let auxbase64 = this.arrayImagePuzzle[this.puzzleControls.released.y][this.puzzleControls.released.x];
+      this.arrayImagePuzzle[this.puzzleControls.released.y][this.puzzleControls.released.x] =
+        this.arrayImagePuzzle[this.puzzleControls.pressed.y][this.puzzleControls.pressed.x];
+      this.arrayImagePuzzle[this.puzzleControls.pressed.y][this.puzzleControls.pressed.x] = auxbase64;
+
+      //hacer truco de cambio
+      this.puzzleControls.pressed = {x: -1, y: -1};
+      this.puzzleControls.released = {x: -1, y: -1};
+      this.puzzleControls.complete = false;
+
+      /*if (!this.primerMovimiento) {
+        this.primerMovimiento = true;
+      }*/
+      this.primerMovimiento++;
+    }
+  }
+
+  isActive(x: number, y: number) {
+    //if(!this.puzzleControls.complete){
+    return (this.puzzleControls.pressed.x === x && this.puzzleControls.pressed.y === y);
+    //(this.puzzleControls.rel.x === x && this.puzzleControls.pressed.y === y)
+    /*}
+    return false;*/
+  }
+
+  comprobarResultado(): number[] {
+    let ind = 0, success = 0;
+    for (let y = 0; y < this.dimens; y++) {
+      if (this.arrayPositionPuzzle[y] !== undefined) {
+        for (let x = 0; x < this.dimens; x++) {
+          if (this.arrayPositionPuzzle[y][x] == ind) {
+            success++; //fichas en el lugar correcto
+          }
+          ind++;
+        }
+      }
+    }
+    return [success, this.dimens * this.dimens];
+  }
 }
