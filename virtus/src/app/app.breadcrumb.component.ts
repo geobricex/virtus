@@ -11,7 +11,6 @@ export class AppBreadcrumbComponent implements OnDestroy {
 
   subscription: Subscription;
 
-  // @ts-ignore
   items: MenuItem[];
   back: any;
 
