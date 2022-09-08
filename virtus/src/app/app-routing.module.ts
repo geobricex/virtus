@@ -83,7 +83,7 @@ import {C} from "@angular/cdk/keycodes";
           {path: 'mycourse/modules/:idcourse/themes/:idmodule', component: TemasComponent},
           {path: 'mycourse/modules/:idcourse/themes/:idmodule/resources/:idTopic', component: ResourcesComponent},
           {
-            path: 'coursear/modulear/:idcourse/topicar/:idmodule/resourcesar/:idTopic/update_evaluation/:idResource/question_nu/:type',
+            path: 'coursear/modulear/:idcourse/topicar/:idmodule/resourcesar/:idTopic/update_evaluation/:idResource/question_nu/:type/:idquestion',
             component: QuestionNuComponent
           }
         ]
