@@ -32,7 +32,7 @@ export class MiscursosComponent implements OnInit {
               public router: Router) {
     this.breadcrumbService.setItems([
       {label: '', routerLink: ['/app']},
-      {label: 'Cursos', routerLink: ['/']},
+      {label: 'Cursos', routerLink: ['/app/course']},
       {label: 'Mis cursos', routerLink: ['/app/mycourse']}
     ]);
   }

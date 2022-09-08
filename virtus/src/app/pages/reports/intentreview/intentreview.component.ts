@@ -40,7 +40,7 @@ export class IntentreviewComponent implements OnInit {
     this.apiGetDataReview(3).subscribe({
       next: response => {
         this.dataReviews = response.data;
-        console.log( this.dataReviews);
+        console.log(this.dataReviews);
       }
     })
   }
@@ -58,5 +58,15 @@ export class IntentreviewComponent implements OnInit {
 
   }
 
+  miliseguntos2Segundos(tiempo: number): string {
+    let h = Math.floor(tiempo / 3600).toString().padStart(2, '0');
+    let m = Math.floor(tiempo % 3600 / 60).toString().padStart(2, '0');
+    let s = Math.floor(tiempo % 60).toString().padStart(2, '0');
+    if (h == '00') {
+      return m + ":" + s;
+    } else {
+      return h + ":" + m + ":" + s;
+    }
+  }
 }
 
