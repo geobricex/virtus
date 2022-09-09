@@ -63,7 +63,7 @@ WHERE evaluations_id_evaluation = 18 AND question_category_id_questioncategory =
 select * from question_category;
 
 select * from persons;
-
+select * from persons_courses;
 select * from persons_evaluations;
 select * from evaluations;
 

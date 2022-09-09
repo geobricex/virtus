@@ -918,7 +918,7 @@ export class EvaluationComponent implements OnInit {
             local_this.questionObject.name_questioncategory == local_this.tipoPregunta(3)) {
             local_this.evaluarPreguntasSencillas(wildcard);
           } else {
-            alert("Comando actualmente no soportado");
+            this.utils.showMessages(3, "Comando actualmente no soportado");
           }
 
         }
