@@ -44,6 +44,8 @@ import {C} from "@angular/cdk/keycodes";
       {path: 'home', component: AppMainpageComponent},
       {path: 'login', component: AppLoginComponent},
       {path: 'singup', component: SingupComponent},
+      {path: 'about', component: AcercadeComponent},
+      {path: 'information', component: ComandosComponent},
       {path: 'verify/:email/:code', component: VerifyAccountComponent},
       {
         path: 'app', component: AppMainComponent,
