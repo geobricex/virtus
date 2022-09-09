@@ -35,7 +35,7 @@ where topics_id_topic = 29;
 
 select *
 from answers
-       -- where answers.options_answer ilike  '%11%'
+where answers.options_answer ilike  '%piece_questionarie%'
 
    inner join questions q on answers.questions_id_question = q.id_question
     where q.title_question ilike  '%11%'

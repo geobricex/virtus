@@ -245,7 +245,7 @@ export class QuestionnaireComponent implements OnInit {
         respondidas++;
       }*/
       // let [resueltoStado, _] = this.verificarRespuestasCorrectas(this.evaluationObject.questions_[ind]);
-      let resueltoStado= this.validarPreguntaResuelta(this.evaluationObject.questions_[ind]);
+      let resueltoStado = this.validarPreguntaResuelta(this.evaluationObject.questions_[ind]);
       if (resueltoStado) {
         respondidas++;
       }
@@ -311,13 +311,13 @@ export class QuestionnaireComponent implements OnInit {
           //}
           if (this.voiceComandsSupport()) {
             // if (this.storageService.getCurrentUser().email != "anthony.pachay2017@uteq.edu.ec") {
-              this.startContinuousArtyom();
+            this.startContinuousArtyom();
             // }
           }
           // if (this.storageService.getCurrentUser().email == "anthony.pachay2017@uteq.edu.ec") {
           //   this.cambiarPregunta(0, true);
           // } else {
-            this.cambiarPregunta(0, true);
+          this.cambiarPregunta(0, true);
           // }
           //this.initCanvas(false);
           setTimeout(() => {
@@ -598,7 +598,7 @@ export class QuestionnaireComponent implements OnInit {
     // el browser es comantible con el speaker?
     if (this.text2SpeakSupport()) {
       // if (this.storageService.getCurrentUser().email != "anthony.pachay2017@uteq.edu.ec") {
-        this.leerPregunta();
+      this.leerPregunta();
       // }
     }
   }
@@ -923,7 +923,7 @@ export class QuestionnaireComponent implements OnInit {
             local_this.questionObject.name_questioncategory == local_this.tipoPregunta(3)) {
             local_this.evaluarPreguntasSencillas(wildcard);
           } else {
-            alert("Comando actualmente no soportado");
+            this.utils.showMessages(3, "Comando actualmente no soportado");
           }
 
         }
@@ -1062,7 +1062,7 @@ export class QuestionnaireComponent implements OnInit {
       onEnd: function () {
         //activar el reconocimiento de los comandos
         local_artyom.obey();
-        if(loca_sweetFakeAlert[0]){
+        if (loca_sweetFakeAlert[0]) {
           loca_sweetFakeAlert[0] = false;
         }
       }

@@ -1,35 +1,30 @@
 import {Component} from '@angular/core';
 
 @Component({
-    selector: 'app-footer',
-    template: `
-      <div class="layout-footer">
-          <a href="/dashboard" class="logo-container">
-              <span class="app-name">VIRTUS</span> <br>
-                <span class="text-pink-100" style="margin-left: 14px"> Aplicación educativa con enfoque universal. </span>
-          </a>
+  selector: 'app-footer',
+  template: `
+    <div class="layout-footer">
+      <a href="/dashboard" class="logo-container">
+        <span class="app-name">VIRTUS</span> <br>
+        <span class="text-pink-100" style="margin-left: 14px"> Aplicación educativa con enfoque universal. </span>
+      </a>
 
-          <div class="footer-icons">
-              <ul>
-                  <li>
-                      <a>
-                          <i class="pi pi-twitter"></i>
-                      </a>
-                  </li>
-                  <li>
-                      <a>
-                          <i class="pi pi-facebook"></i>
-                      </a>
-                  </li>
-                  <li>
-                      <a>
-                          <i class="pi pi-github"></i>
-                      </a>
-                  </li>
-              </ul>
-          </div>
+      <div class="footer-icons">
+        <ul>
+          <li>
+            <a href="https://www.facebook.com/fycuteq" target="_blank">
+              <i class="pi pi-facebook"></i>
+            </a>
+          </li>
+          <li>
+            <a href="https://www.youtube.com/playlist?list=PL2t9AygoxQ1u9Wjs_Im_CYUvK27DHk5Hq" target="_blank">
+              <i class="pi pi-youtube"></i>
+            </a>
+          </li>
+        </ul>
       </div>
-    `
+    </div>
+  `
 })
 export class AppFooterComponent {
 
