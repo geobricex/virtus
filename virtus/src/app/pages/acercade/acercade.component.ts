@@ -16,7 +16,7 @@ export class AcercadeComponent implements OnInit {
   ) {
     this.breadcrumbService.setItems([
       {label: '', routerLink: ['/app']},
-      {label: 'Acerca de', routerLink: ['/app/course']}
+      {label: 'Acerca de', routerLink: ['/app/about']}
     ]);
   }
 
