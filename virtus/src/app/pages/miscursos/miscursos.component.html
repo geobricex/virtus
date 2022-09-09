@@ -54,7 +54,7 @@
           </div>
           <div
             class="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0">
-            <button pButton icon="pi pi-box" label="Ver modulos" class="mb-2 p-button p-button-success"
+            <button pButton icon="pi pi-box" label="Ver módulos" class="mb-2 p-button p-button-success"
                     routerLink="modules/{{course.id_course}}"></button>
             <button pButton icon="pi pi-info-circle" label="Saber más"
                     class="mb-2 p-button p-button-info cursor-pointer"
@@ -102,7 +102,7 @@
   <h3 style="font-weight:normal">{{infoCourseSelected.name_course}}</h3>
   <h6> {{infoCourseSelected.description_course}} </h6>
 
-  <span class="p-badge p-badge-info"> MODULOS </span>
+  <span class="p-badge p-badge-info"> MÓDULOS </span>
 
   <p-table [value]="infoCourseSelected.syllabus_" dataKey="name" [expandedRowKeys]="expandedRows"
            responsiveLayout="scroll" [style]="{'margin-top':'1rem'}">

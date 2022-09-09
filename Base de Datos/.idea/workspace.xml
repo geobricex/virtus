@@ -5,15 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bbc5533f-4237-4b82-99c8-ccd5e9e0c413" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/df8c8b86-2dab-4442-98ba-1fa49a5319ba.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/df8c8b86-2dab-4442-98ba-1fa49a5319ba.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtus/src/app/pages/admins/useradministration/useradministration.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/src/app/pages/admins/useradministration/useradministration.component.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../virtus/src/app/pages/app.pagemain.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/src/app/pages/app.pagemain.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtus/src/app/pages/miscursos/miscursos.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/src/app/pages/miscursos/miscursos.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtus/src/app/pages/reports/intentreview/intentreview.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/src/app/pages/reports/intentreview/intentreview.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtus/src/app/pages/resources/resources.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/src/app/pages/resources/resources.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtus/src/app/pages/review/review.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/src/app/pages/review/review.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtus/src/app/pages/temas/temas.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/src/app/pages/temas/temas.component.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
