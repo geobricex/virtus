@@ -138,7 +138,8 @@ export class QuestionnaireComponent implements OnInit {
       if (this.artyom.isSpeaking()) {
         this.artyom.shutUp();
       }
-      this.artyom.repeatLastSay();
+      // this.artyom.repeatLastSay();
+      this.leerPregunta();
     }
   }
 
@@ -643,13 +644,13 @@ export class QuestionnaireComponent implements OnInit {
     this.sweetFakeAlerttxt = this.sweetFakeAlert[1] ? this.evaluationObject.questions_[indexQuestionObject].feedback_question :
       this.evaluationObject.questions_[indexQuestionObject].hint_question
     this.feedBackQuestionObject = this.evaluationObject.questions_[indexQuestionObject];
-    let tiempoSwal$ = timer(0, 1000)
+    /*let tiempoSwal$ = timer(0, 1000)
       .subscribe((iter: any) => {
         if (iter >= 10) {
           tiempoSwal$.unsubscribe();
           this.sweetFakeAlert[0] = false;
         }
-      });
+      });*/
     let cadena = "";
     if (correcta) {
       cadena += "¡Geniál!\n recordemos que \n" + this.questionObject.feedback_question;
@@ -1054,13 +1055,16 @@ export class QuestionnaireComponent implements OnInit {
     //Desactivar el reconocimiento de comandos cuando empiece la lectura
     this.artyom.dontObey();
     let local_artyom = this.artyom;
+    let loca_sweetFakeAlert = this.sweetFakeAlert;
     this.artyom.say(cadena, {
       onStart: function () {
       },
       onEnd: function () {
         //activar el reconocimiento de los comandos
         local_artyom.obey();
-        console.log("vuelve a hablar");
+        if(loca_sweetFakeAlert[0]){
+          loca_sweetFakeAlert[0] = false;
+        }
       }
     });
   }
