@@ -31,7 +31,9 @@ export class ReviewComponent implements OnInit {
               private _route: ActivatedRoute,) {
     this.idEvaPers = this._route.snapshot.paramMap.get("idReview");
     this.breadcrumbService.setItems([
+      {label: 'Revisión de intento', routerLink: ['/app/reports/intentreview']},
       {label: '', routerLink: ['/app/']},
+      {label: 'Revisión de intento', routerLink: ['/app/reports/intentreview']},
       {label: 'Detalle de evaluación', routerLink: ['/app/reports/intentreview/review/' + this.idEvaPers]},
     ]);
   }

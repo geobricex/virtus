@@ -3,18 +3,18 @@
 <div class="grid">
   <div class="col-12">
     <p-toast></p-toast>
-    <p-toolbar styleClass="mb-4">
-      <ng-template pTemplate="left">
-        <div class="my-2">
+<!--    <p-toolbar styleClass="mb-4">-->
+<!--      <ng-template pTemplate="left">-->
+<!--        <div class="my-2">-->
 
-        </div>
-      </ng-template>
+<!--        </div>-->
+<!--      </ng-template>-->
 
-      <ng-template pTemplate="right">
-        <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"
-                (click)="dt.exportCSV()"></button>
-      </ng-template>
-    </p-toolbar>
+<!--      <ng-template pTemplate="right">-->
+<!--        <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"-->
+<!--                (click)="dt.exportCSV()"></button>-->
+<!--      </ng-template>-->
+<!--    </p-toolbar>-->
     <p-table #dt [value]="persons" responsiveLayout="scroll" [rows]="5" [columns]="cols"
              [globalFilterFields]="['Nombre','Apellido']"
              [paginator]="true" [rowsPerPageOptions]="[5,10,20,30]" [showCurrentPageReport]="true"
