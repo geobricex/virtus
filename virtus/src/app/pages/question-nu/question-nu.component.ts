@@ -378,7 +378,8 @@ export class QuestionNuComponent implements OnInit {
     event.target.files.length > 0;
     const file = event.target.files[0];
 
-    if (file.type === "application/pdf" || file.type === "application/x-zip-compressed" || file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    if (file.type === "application/pdf" || file.type === "application/x-zip-compressed" ||
+      file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
       || file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
       let urlPhoto: string = "";
       this.utils.changeImage(file).then(response => {
@@ -386,6 +387,8 @@ export class QuestionNuComponent implements OnInit {
         this.form["pathurlfile_question"].setValue(urlPhoto);
         this.utils.closeLoading;
       });
+    } else {
+      this.utils.closeLoading;
     }
   }
 

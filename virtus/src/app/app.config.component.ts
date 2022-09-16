@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {AppComponent} from './app.component';
 import {AppMainComponent} from './app.main.component';
+import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {Utils} from "./util/Utils";
 
 @Component({
   selector: 'app-config',
@@ -110,10 +112,10 @@ import {AppMainComponent} from './app.main.component';
               <button pButton pRipple icon="pi pi-minus"
                       class="p-button-rounded p-button-warning mr-2 mb-2"
                       (click)="app.controlZoom(-1)"></button>
-              <button  pButton pRipple icon="pi pi-window-maximize"
-                       class="p-button-rounded p-button-info mr-2 mb-2"
+              <button pButton pRipple icon="pi pi-window-maximize"
+                      class="p-button-rounded p-button-info mr-2 mb-2"
                       (click)="app.controlZoom(0)"></button>
-              <button  pButton pRipple icon="pi pi-plus"
+              <button pButton pRipple icon="pi pi-plus"
                       class="p-button-rounded p-button-success mr-2 mb-2"
                       (click)="app.controlZoom(1)"></button>
             </div>
@@ -133,27 +135,27 @@ import {AppMainComponent} from './app.main.component';
         </p-accordionTab>
         <p-accordionTab header="Estilos de imagen">
           <div class="field-radiobutton">
-            <p-radioButton name="menuMode" value="none" [(ngModel)]="app.modeStyle"></p-radioButton>
+            <p-radioButton name="menuMode" value="none" [(ngModel)]="app.modeStyle" (ngModelChange)="app.listenConfigChange()" ></p-radioButton>
             <label for="@prevent">Ninguno</label>
           </div>
           <div class="field-radiobutton">
-            <p-radioButton name="menuMode" value="grayscale(100%)" [(ngModel)]="app.modeStyle"></p-radioButton>
+            <p-radioButton name="menuMode" value="grayscale(100%)" [(ngModel)]="app.modeStyle" (ngModelChange)="app.listenConfigChange()" ></p-radioButton>
             <label for="@prevent">Blanco y Negro</label>
           </div>
           <div class="field-radiobutton">
-            <p-radioButton name="menuMode" value="sepia(100%)" [(ngModel)]="app.modeStyle"></p-radioButton>
+            <p-radioButton name="menuMode" value="sepia(100%)" [(ngModel)]="app.modeStyle" (ngModelChange)="app.listenConfigChange()"></p-radioButton>
             <label for="@prevent">Sepia</label>
           </div>
           <div class="field-radiobutton">
-            <p-radioButton name="menuMode" value="brightness(50%)" [(ngModel)]="app.modeStyle"></p-radioButton>
+            <p-radioButton name="menuMode" value="brightness(50%)" [(ngModel)]="app.modeStyle" (ngModelChange)="app.listenConfigChange()"></p-radioButton>
             <label for="@prevent">Brillo Bajo</label>
           </div>
           <div class="field-radiobutton">
-            <p-radioButton name="menuMode" value="contrast(200%)" [(ngModel)]="app.modeStyle"></p-radioButton>
+            <p-radioButton name="menuMode" value="contrast(200%)" [(ngModel)]="app.modeStyle" (ngModelChange)="app.listenConfigChange()"></p-radioButton>
             <label for="@prevent">Contraste Alto</label>
           </div>
           <div class="field-radiobutton">
-            <p-radioButton name="menuMode" value="saturate(250%)" [(ngModel)]="app.modeStyle"></p-radioButton>
+            <p-radioButton name="menuMode" value="saturate(250%)" [(ngModel)]="app.modeStyle" (ngModelChange)="app.listenConfigChange()"></p-radioButton>
             <label for="@prevent">Saturación Alta</label>
           </div>
         </p-accordionTab>
@@ -270,6 +272,7 @@ export class AppConfigComponent implements OnInit {
     ];
   }
 
+
   changeTheme(theme: any) {
     this.app.theme = theme;
 
@@ -282,6 +285,8 @@ export class AppConfigComponent implements OnInit {
     const themeHref = 'assets/theme/theme-' + theme + '.css';
 
     this.replaceLink(themeLink, themeHref);
+
+    this.app.guardarConfiguracion();
   }
 
   isIE() {
@@ -309,4 +314,5 @@ export class AppConfigComponent implements OnInit {
     this.appMain.configClick = true;
     event.preventDefault();
   }
+
 }
