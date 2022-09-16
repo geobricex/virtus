@@ -29,6 +29,10 @@ export class AppComponent {
   //auxiliar
   public textColorChecked: boolean = false;
 
+  @HostBinding("style.--text-font-family")
+  @Input()
+  public testFontFamily: string = "'Exo 2', sans-serif";
+
   @HostBinding("style.--document-zoom-style")
   @Input()
   public documentZoom: string = '100%';
@@ -56,7 +60,6 @@ export class AppComponent {
       this.textColor = "none";
     }
     console.log("checked: ", this.textColorChecked, this.textColor)
-    this.guardarConfiguracion();
   }
 
   /*evento para cambiar colores*/
@@ -65,7 +68,6 @@ export class AppComponent {
       this.textColor = e.value;
     }
     console.log("color: ", this.textColor);
-    this.guardarConfiguracion();
   }
 
   controlZoom(valor: number):void{
@@ -85,7 +87,7 @@ export class AppComponent {
     this.documentZoom = (this.valorDocumentZoom  + '%');
     console.log("nuevo zoom",this.documentZoom);
 
-    this.guardarConfiguracion();
+
   };
 
   listenConfigChange():void{
@@ -111,7 +113,7 @@ export class AppComponent {
         this.textColor = configSaved.textColor;
         this.documentZoom = configSaved.documentZoom;
         this.valorDocumentZoom = configSaved.valorDocumentZoom;
-
+        this.changeTheme(configSaved.theme);
         //AppConfigComponent.changeTheme(configSaved.theme);
       }
 
@@ -125,6 +127,7 @@ export class AppComponent {
         "theme":this.theme,
         "modeStyle": this.modeStyle,
         "textColorChecked": this.textColorChecked,
+        "testFontFamily": this.testFontFamily,
         "textColor": this.textColor,
         "documentZoom": this.documentZoom,
         "valorDocumentZoom": this.valorDocumentZoom
@@ -154,6 +157,43 @@ export class AppComponent {
     }, {headers: headers}).subscribe(response => {
       console.log("guardarConfiguracion: ", response);
     });
+  }
+
+  changeTheme(theme: any) {
+    this.theme = theme;
+
+    const layoutLink: HTMLLinkElement = document.getElementById('layout-css') as HTMLLinkElement;
+    const layoutHref = 'assets/layout/css/layout-' + theme + '.css';
+
+    this.replaceLink(layoutLink, layoutHref);
+
+    const themeLink: HTMLLinkElement = document.getElementById('theme-css') as HTMLLinkElement;
+    const themeHref = 'assets/theme/theme-' + theme + '.css';
+
+    this.replaceLink(themeLink, themeHref);
+
+  }
+
+
+
+  isIE() {
+    return /(MSIE|Trident\/|Edge\/)/i.test(window.navigator.userAgent);
+  }
+
+  replaceLink(linkElement: any, href: any) {
+    if (this.isIE()) {
+      linkElement.setAttribute('href', href);
+    } else {
+      const id = linkElement.getAttribute('id');
+      const cloneLinkElement = linkElement.cloneNode(true);
+      cloneLinkElement.setAttribute('href', href);
+      cloneLinkElement.setAttribute('id', id + '-clone');
+      linkElement.parentNode.insertBefore(cloneLinkElement, linkElement.nextSibling);
+      cloneLinkElement.addEventListener('load', () => {
+        linkElement.remove();
+        cloneLinkElement.setAttribute('id', id);
+      });
+    }
   }
 
 

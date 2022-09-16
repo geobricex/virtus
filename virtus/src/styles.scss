@@ -50,6 +50,7 @@ a span {
 :root {
   --image-video-style: sepia(100%);
   --text-color-style:  none;
+  --text-font-family: 'Exo 2', sans-serif;
   --document-zoom-style:  100%;
 }
 
@@ -59,6 +60,7 @@ img, video {
 
 span, strong, td, h1, h2, h3, h4, h5, h6, a, img, label, div, p, pre {
   color: var(--text-color-style);
+  font-family: var(--text-font-family);
 }
 
 *{
