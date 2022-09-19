@@ -4,6 +4,7 @@ import {Observable} from "rxjs";
 import PocketBase from "pocketbase";
 import {StorageService} from "../authentication/StorageService";
 import Swal from 'sweetalert2'
+import { LoginServicie } from "../pages/loginServicie";
 
 @Injectable()
 export class Utils {
@@ -13,9 +14,9 @@ export class Utils {
   private _globalUrl: string = "";
 
 
-  constructor(private service: MessageService, private storageService: StorageService) {
+  constructor(private service: MessageService, private storageService: StorageService, private loginservicie: LoginServicie) {
     this.validateHost();
-    this._token = this.storageService.getCurrentSession().token;
+    this._token = this.loginservicie.getToken();
   }
 
   get loading() {

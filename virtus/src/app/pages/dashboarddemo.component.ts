@@ -6,6 +6,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Session} from "../models/session";
 import {StorageService} from "../authentication/StorageService";
 import {Utils} from "../util/Utils";
+import {LoginServicie} from "./loginServicie";
 
 @Component({
   templateUrl: './dashboard.component.html'
@@ -20,7 +21,8 @@ export class DashboardDemoComponent implements OnInit {
     private breadcrumbService: BreadcrumbService,
     private _http: HttpClient,
     private storageService: StorageService,
-    private utils: Utils
+    private utils: Utils,
+    private loginservicie: LoginServicie
   ) {
     this.breadcrumbService.setItems([
       {label: '', routerLink: ['/app']},
@@ -32,24 +34,40 @@ export class DashboardDemoComponent implements OnInit {
     console.log("ngOnInit Home");
     this.homedata = [];
     this.statusApi = 0;
-    this.apiInformationHome().subscribe({
+    this.loginservicie.getDataPerson(this.loginservicie.getToken()).subscribe({
       next: response => {
-        console.log(response);
-        this.statusApi = response.status;
-        this.homedata = response.data[0];
+        this.apiInformationHome(response.typePerson).subscribe({
+          next: response => {
+            console.log(response);
+            this.statusApi = response.status;
+            this.homedata = response.data[0];
+          }
+        })
       }
-    })
+    }
+    );
+    this.loginservicie.getDataPerson(this.loginservicie.getToken()).subscribe({
+        next: response => {
+          this.apiInformationHome(response.typePerson).subscribe({
+            next: response => {
+              console.log(response);
+              this.statusApi = response.status;
+              this.homedata = response.data[0];
+            }
+          })
+        }
+      }
+    );
   }
 
-
-  apiInformationHome(): Observable<any> {
+  apiInformationHome(typePerson: string): Observable<any> {
     this.globalUri = this.utils.globalUrl + "utils/gethomeinformation";
     console.log(this.globalUri)
     var headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('token', this.utils.token);
     return this._http.post(this.globalUri, {
-      "id_type": this.utils.getUserSession().type_person === "A" || this.utils.getUserSession().type_person === "R" ? 2 : 1,
+      "id_type": typePerson === "A" || typePerson === "R" ? 2 : 1,
     }, {'headers': headers});
   }
 

@@ -17,6 +17,9 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import {Parser} from "@angular/compiler";
 import firebase from "firebase/compat";
 import UserCredential = firebase.auth.UserCredential;
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import { CookieService } from "ngx-cookie-service";
+import { LoginServicie } from "./loginServicie";
 
 @Component({
   selector: 'app-login',
@@ -30,13 +33,17 @@ export class AppLoginComponent {
   forgotPassword_dialog: boolean;
   alreadyHasCode: boolean;
   globalUri: string = "";
+  frmLogin: FormGroup;
 
   constructor(
     public router: Router,
     private storageService: StorageService,
     private _http: HttpClient,
     private service: MessageService,
-    public fAuth: AngularFireAuth
+    public fAuth: AngularFireAuth,
+    private formBuilder: FormBuilder,
+    private cookies: CookieService,
+    private loginservicie: LoginServicie
   ) {
     this.forgotPassword_dialog = false;
     this.alreadyHasCode = false;
@@ -46,15 +53,20 @@ export class AppLoginComponent {
    * Metodo para inicializar cualquier cosa
    * */
   ngOnInit(): void {
-
-    this.storageService.logout();
-    localStorage.clear()
-    sessionStorage.clear()
+    //this.storageService.logout();
+    //localStorage.clear()
+    //sessionStorage.clear()
     this.sessionLog = new Session("", new User("", "", "", "", "", ""));
     this.user = new User("", "", "", "", "", "");
-
+    this.frmLogin = this.formBuilder.group({
+      email: ["", Validators.required],
+      password: ["", Validators.required],
+    });
   }
 
+  get form() {
+    return this.frmLogin.controls;
+  }
 
   openDialogHasCode() {
     this.forgotPassword_dialog = false;
@@ -66,7 +78,20 @@ export class AppLoginComponent {
   }
 
   login() {
-    this.sessionLog = new Session("", new User("", "", "", "", "", ""));
+    let data = {email: this.form["email"].value, password: this.form["password"].value};
+    console.log(data);
+    this.loginservicie.apiLogin(data.email, data.password).subscribe({
+      next: response => {
+        this.showMessages(response.status, response.information, "tst");
+        if (response.status === 2) {
+          let dataLogin = response.data[0];
+          console.log(dataLogin.user_token);
+          this.loginservicie.setToken(dataLogin.user_token);
+          this.router.navigateByUrl('/app');
+        }
+      }
+    })
+   /* this.sessionLog = new Session("", new User("", "", "", "", "", ""));
     this.storageService.setCurrentSession(this.sessionLog);
 
     this.apiLogin().subscribe(response => {
@@ -85,28 +110,7 @@ export class AppLoginComponent {
         this.router.navigateByUrl('/app');
         //location.reload();
       }
-    });
-  }
-
-
-  apiLogin(): Observable<any> {
-
-    if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
-      this.globalUri = "virtus_bk/persons/login";
-    } else {
-      // this.globalUri = "virtus_bk/persons/login";
-      this.globalUri = "virtusbk/persons/login";
-
-    }
-    console.log(this.user.email, this.user.password);
-
-    var headers = new HttpHeaders()
-      .set('Access-Control-Allow-Origin', '*')
-      .set('provider', 'native');
-    return this._http.post(this.globalUri, {
-      "email": this.user.email,
-      "password": this.user.password
-    }, {'headers': headers});
+    });*/
   }
 
   recoverAccount() {
