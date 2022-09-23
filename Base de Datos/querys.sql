@@ -67,5 +67,6 @@ select * from persons_courses;
 select * from persons_evaluations;
 select * from evaluations;
 select * from settings;
+select * from persons;
 
 
