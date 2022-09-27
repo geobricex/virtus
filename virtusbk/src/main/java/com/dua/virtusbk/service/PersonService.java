@@ -336,6 +336,89 @@ public class PersonService {
         return new String[]{status, message, data};
     }
 
+    public String[] logInOAuth(String useremail, String username, String userlastname, String userid, String userimage, String provider) {
+        System.out.println("logIn Controller");
+        String status = "4", message = "Error en los parámetros introducidos", data = "[]";
+        if (Methods.comprobeEmail(useremail)
+                && provider.equals("google.com")) {
+            Person person = new Person();
+            person.setEmailPerson(useremail.toLowerCase());
+            person.setNamePerson(username.toUpperCase());
+            person.setLastnamePerson(userlastname.toUpperCase());
+            person.setPasswordPerson(bCryptPasswordEncoder.encode(userid.trim()));
+            person.setPathimgPerson(userimage);
+            person.setProviderPerson(provider);
+            person.setCodeverificationPerson("");
+            person.setTypePerson("U");
+            person.setIdLocation("0-0-0");
+            /*FECHA*/
+            person.setDateregPerson(Methods.nowLocalDateTime());
+            person.setDateupdatePerson(Methods.nowLocalDateTime());
+            /*FIN FECHA*/
+            List<Person> Persons = personDAO.findByEmailList(person.getEmailPerson());
+
+            if (Persons.size() == 1) {// solo exista un usuario con el correo electrónico
+                if (Persons.get(0).getProviderPerson().equals("google.com")) {
+                    switch (Persons.get(0).getTypePerson()) {
+                        case "S":
+                            status = "5";
+                            message = "La cuenta no se encuentra verificada.";
+                            break;
+                        case "D":
+                            status = "5";
+                            message = "La cuenta se encuentra inactiva.";
+                            break;
+                        case "A":
+                            status = "2";
+                            message = "Sesión de administración iniciada con éxito.";
+                            break;
+                        case "R":
+                            status = "2";
+                            message = "Sesión de super administrador iniciada con éxito.";
+                            break;
+                        case "U":
+                            status = "2";
+                            message = "Sesión iniciada con éxito.";
+                            break;
+                        case "I":
+                            status = "2";
+                            message = "Sesión de instructor iniciada con éxito.";
+                            break;
+                        case "E":
+                            status = "2";
+                            message = "Sesión de educador iniciada con éxito.";
+                            break;
+                        default:
+                            status = "3";
+                            message = "Los parámetros de acceso no son válidos.";
+                            return new String[]{status, message, data};
+                    }
+                    data = "[" + personToJson(Persons.get(0)).toString() + "]";
+                }else{
+                    status = "3";
+                    message = "Los parámetros de acceso no son válidos, verifique que está accediendo con el proveedor correcto.";
+                }
+            } else {
+                person = personDAO.save(person);
+                message = "Se ha registrado con éxito.";
+                if (utilService.eMessageUser(person.getEmailPerson(), person.getNamePerson(), person.getLastnamePerson(), message)) {
+                    status = "2";
+                    data = personToJson(person).toString();
+                }
+            }
+        } else {
+            if (!provider.equals("google.com")) {
+                status = "3";
+                message = "Los parámetros de acceso no son válidos, verifique que está accediendo con el proveedor correcto.";
+            } else {
+                status = "3";
+                message = "Los parámetros ingresados no son válidos";
+            }
+        }
+
+        return new String[]{status, message, data};
+    }
+
     public JsonObject personToJson(Person person) {
         JsonObject jsonObject = new JsonObject();
 //        jsonObject.addProperty("user_token", getJWTTokenfromUser(person));

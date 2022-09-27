@@ -63,7 +63,7 @@ public class PersonApi {//implements UserDetailsService {
         System.out.println(sToken);
         String[] clains = Methods.getDataToJwt(sToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
-        System.out.println(res[0] + "-"+ res[1]+ "-"+ res[2]);
+        System.out.println(res[0] + "-" + res[1] + "-" + res[2]);
         System.out.println(clains[0]);
         if (res[0].equals("2")) {
             return ResponseEntity.ok(personService.getPerson(Long.parseLong(clains[0])));
@@ -156,6 +156,32 @@ public class PersonApi {//implements UserDetailsService {
             String provider = dataHeader;
 
             String[] res = personService.logIn(email, password, provider);
+
+            message = Methods.getJsonMessage(res[0], res[1], res[2]);
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } else {
+            message = Methods.getJsonMessage("4", "Parametros de entrada vacios.", "[]");
+            return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
+        }
+
+    }
+
+    @PostMapping("/loginoauth")
+    @ResponseBody
+    public ResponseEntity<String> loginByOAuth(@RequestBody @Validated String data, @RequestHeader("provider") String provider) {
+        System.out.println("logIn...");
+        String message;
+        JsonObject jso = Methods.stringToJSON(data);
+        if (jso.size() > 0) {
+            String useremail = Methods.JsonToString(jso, "useremail", "");
+            String username = Methods.JsonToString(jso, "username", "");
+            String userlastname = Methods.JsonToString(jso, "userlastname", "");
+            String userid = Methods.JsonToString(jso, "userid", "");
+            String userimage = Methods.JsonToString(jso, "userimage", "");
+
+//            String provider = dataHeader;
+
+            String[] res = personService.logInOAuth(useremail, username, userlastname, userid, userimage, provider);
 
             message = Methods.getJsonMessage(res[0], res[1], res[2]);
             return new ResponseEntity<>(message, HttpStatus.OK);
