@@ -57,8 +57,9 @@ export class TimereportComponent implements OnInit {
     this.apiGetDataReview(type, param).subscribe({
       next: response => {
         this.dataReviews = response.data;
-        this.timespent_person_evaluation= [];
-        this.qualification_person_evaluation= [];
+        console.log(this.dataReviews);
+        this.timespent_person_evaluation = [];
+        this.qualification_person_evaluation = [];
         this.name_evaluation = [];
         this.viewBarReport();
         this.viewGeneralReport();
@@ -81,10 +82,18 @@ export class TimereportComponent implements OnInit {
 
   viewBarReport() {
     for (let i = 0; i < this.dataReviews.length; i++) {
-      this.timespent_person_evaluation[i] = this.dataReviews[i].timespent_person_evaluation;
+      if (this.dataReviews[i].type_evaluation == 1) {
+        console.log(this.dataReviews[i].timespent_person_evaluation)
+        console.log((this.dataReviews[i].timeminutes_evaluation) + "-" + (this.dataReviews[i].timespent_person_evaluation/60))
+        this.timespent_person_evaluation[i] = (this.dataReviews[i].timeminutes_evaluation ) - (this.dataReviews[i].timespent_person_evaluation/60);
+
+      } else if  (this.dataReviews[i].type_evaluation == 2)  {
+        this.timespent_person_evaluation[i] = this.dataReviews[i].timespent_person_evaluation ;
+      }
       this.qualification_person_evaluation[i] = this.dataReviews[i].qualification_person_evaluation;
       this.name_evaluation[i] = (this.dataReviews[i].name_evaluation + "-" + this.dataReviews[i].name_course);
     }
+
     this.barData = {
       labels: this.name_evaluation,
       datasets: [
@@ -133,12 +142,19 @@ export class TimereportComponent implements OnInit {
   }
 
   viewGeneralReport() {
-
     for (let i = 0; i < this.dataReviews.length; i++) {
-      this.timespent_person_evaluation[i] = this.dataReviews[i].timespent_person_evaluation;
+      if (this.dataReviews[i].type_evaluation == 1) {
+        console.log(this.dataReviews[i].timespent_person_evaluation)
+        console.log((this.dataReviews[i].timeminutes_evaluation) + "-" + (this.dataReviews[i].timespent_person_evaluation/60))
+        this.timespent_person_evaluation[i] = (this.dataReviews[i].timeminutes_evaluation ) - (this.dataReviews[i].timespent_person_evaluation/60);
+
+      } else if  (this.dataReviews[i].type_evaluation == 2)  {
+        this.timespent_person_evaluation[i] = this.dataReviews[i].timespent_person_evaluation ;
+      }
       this.qualification_person_evaluation[i] = this.dataReviews[i].qualification_person_evaluation;
       this.name_evaluation[i] = (this.dataReviews[i].name_evaluation + "-" + this.dataReviews[i].name_course);
     }
+
 
     this.lineData = {
       labels: this.name_evaluation,
@@ -305,7 +321,7 @@ export class TimereportComponent implements OnInit {
               this.courses = response.data;
 
               this.auxPrimaryValue = response.data[0].id_course
-              console.log(  this.auxPrimaryValue)
+              console.log(this.auxPrimaryValue)
               this.loadgetReviews(5, this.auxPrimaryValue);
 
             }
@@ -326,4 +342,14 @@ export class TimereportComponent implements OnInit {
     return this._http.post(this.globalUri, {state_course_person: "A"}, {headers: headers});
   }
 
+  miliseguntos2Segundos(tiempo: number): string {
+    let h = Math.floor(tiempo / 3600).toString().padStart(2, '0');
+    let m = Math.floor(tiempo % 3600 / 60).toString().padStart(2, '0');
+    let s = Math.floor(tiempo % 60).toString().padStart(2, '0');
+    if (h == '00') {
+      return m + ":" + s;
+    } else {
+      return h + ":" + m + ":" + s;
+    }
+  }
 }

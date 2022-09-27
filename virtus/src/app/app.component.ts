@@ -41,6 +41,7 @@ export class AppComponent {
 
 
   constructor(private primengConfig: PrimeNGConfig, private _http: HttpClient, private utils: Utils) {
+
   }
 
   ngOnInit() {
@@ -156,6 +157,8 @@ export class AppComponent {
       )
     }, {headers: headers}).subscribe(response => {
       console.log("guardarConfiguracion: ", response);
+
+      this.utils.showMessages(response.status, response.information, "tst");
     });
   }
 

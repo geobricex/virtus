@@ -57,16 +57,18 @@ public class PersonApi {//implements UserDetailsService {
     @PostMapping("/getperson")
     public ResponseEntity<Person> getPerson(@RequestBody @Validated String sessionToken) {
         System.out.println("getPerson...");
+        System.out.println(sessionToken);
         JsonObject jso = Methods.stringToJSON(sessionToken);
         String sToken = Methods.JsonToString(jso, "sessionToken", "");
         System.out.println(sToken);
         String[] clains = Methods.getDataToJwt(sToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
-
+        System.out.println(res[0] + "-"+ res[1]+ "-"+ res[2]);
+        System.out.println(clains[0]);
         if (res[0].equals("2")) {
             return ResponseEntity.ok(personService.getPerson(Long.parseLong(clains[0])));
         } else {
-            return ResponseEntity.noContent().build();
+            return new ResponseEntity<>(personService.getPerson(Long.parseLong(clains[0])), HttpStatus.BAD_GATEWAY);
         }
 
     }

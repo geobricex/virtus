@@ -38,13 +38,13 @@ from answers
 where answers.options_answer ilike  '%piece_questionarie%'
 
    inner join questions q on answers.questions_id_question = q.id_question
-    where q.title_question ilike  '%11%'
+    where q.title_question ilike  '%11%';
 
 select *
 from courses;
 SELECT * FROM questions
          INNER JOIN answers a on questions.id_question = a.questions_id_question
-         WHERE id_e =
+         WHERE id_e =;
 select *
 from utils;
 
@@ -68,5 +68,8 @@ select * from persons_evaluations;
 select * from evaluations;
 select * from settings;
 select * from persons;
+select * from questions;
+select * from resources order by id_resource desc;
 
+select infor from evaluations_review_select(5,1, 2)
 

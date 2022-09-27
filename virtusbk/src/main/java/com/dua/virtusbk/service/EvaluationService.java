@@ -94,13 +94,14 @@ public class EvaluationService {
 
     }
 
-    public String[] getEvaluations(String id_topic) {
+    public String[] getEvaluations(String id_topic, String id_person) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
 
-        List<Evaluation> evaluations = evaluationDAO.findIdTopicEvaluationList(Long.parseLong(id_topic));
-        if (evaluations.size() > 0) {
+        String evaluations  = evaluationDAO.findIdTopicEvaluationList(Integer.parseInt(id_topic), Integer.parseInt(id_person));
+        JsonArray jso = Methods.stringToJsonArray(evaluations);
+        if (!jso.toString().equals("[]")) {
             Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();
-            data = gson.toJson(evaluations);
+            data = jso.toString();
             status = "2";
             message = "Información obetnida con éxito.";
             System.out.println(data);

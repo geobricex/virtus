@@ -5,16 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bbc5533f-4237-4b82-99c8-ccd5e9e0c413" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/datatypes/Diagrams.local" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/datatypes/Diagrams.local" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/dmd_open.local" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/dmd_open.local" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/logical/Objects.local" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/logical/Objects.local" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/logical/entity/seg_0/306355EE-13C1-3B02-80A6-7C8B3AD2A2B7.xml" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/logical/entity/seg_0/306355EE-13C1-3B02-80A6-7C8B3AD2A2B7.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_bd_virtus/logical/subviews/30C6B78F-2F85-5560-0373-9CE20245471A.xml" beforeDir="false" afterPath="$PROJECT_DIR$/model_bd_virtus/logical/subviews/30C6B78F-2F85-5560-0373-9CE20245471A.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/querys.sql" beforeDir="false" afterPath="$PROJECT_DIR$/querys.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtus/src/app/pages/cursos/cursos.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/src/app/pages/cursos/cursos.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/UtilApis.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/UtilApis.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/util/DataStatic.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/util/DataStatic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routines.sql" beforeDir="false" afterPath="$PROJECT_DIR$/routines.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtus/proxy.conf.json" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/proxy.conf.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtus/src/app/app.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/src/app/app.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtus/src/app/pages/dashboarddemo.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/src/app/pages/dashboarddemo.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtus/src/app/pages/reports/timereport/timereport.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/src/app/pages/reports/timereport/timereport.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtus/src/app/pages/reports/timereport/timereport.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/src/app/pages/reports/timereport/timereport.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtus/src/app/pages/resources/resources.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/../virtus/src/app/pages/resources/resources.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/PersonApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/PersonApi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/SettingApis.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/controller/SettingApis.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/repository/EvaluationRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/repository/EvaluationRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/service/EvaluationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/service/EvaluationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/service/PersonsEvaluationsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/service/PersonsEvaluationsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/service/SettingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../virtusbk/src/main/java/com/dua/virtusbk/service/SettingService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

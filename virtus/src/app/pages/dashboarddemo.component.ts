@@ -7,6 +7,7 @@ import {Session} from "../models/session";
 import {StorageService} from "../authentication/StorageService";
 import {Utils} from "../util/Utils";
 import {LoginServicie} from "./loginServicie";
+import {any} from "codelyzer/util/function";
 
 @Component({
   templateUrl: './dashboard.component.html'
@@ -16,6 +17,7 @@ export class DashboardDemoComponent implements OnInit {
   globalUri: string = "";
   homedata: any = [];
   statusApi: number = 0;
+  responseData: any;
 
   constructor(
     private breadcrumbService: BreadcrumbService,
@@ -34,30 +36,42 @@ export class DashboardDemoComponent implements OnInit {
     console.log("ngOnInit Home");
     this.homedata = [];
     this.statusApi = 0;
-    this.loginservicie.getDataPerson(this.loginservicie.getToken()).subscribe({
-      next: response => {
-        this.apiInformationHome(response.typePerson).subscribe({
-          next: response => {
-            console.log(response);
-            this.statusApi = response.status;
-            this.homedata = response.data[0];
-          }
-        })
-      }
-    }
-    );
+    this.responseData = null;
     this.loginservicie.getDataPerson(this.loginservicie.getToken()).subscribe({
         next: response => {
-          this.apiInformationHome(response.typePerson).subscribe({
+          this.responseData = response;
+        }, error: err => {
+          console.log(err)
+          this.homedata = [];
+        }, complete: () => {
+          this.apiInformationHome(this.responseData.typePerson).subscribe({
             next: response => {
               console.log(response);
               this.statusApi = response.status;
               this.homedata = response.data[0];
+            }, error: err => {
+              console.log(err);
+              this.homedata = [];
+              location.reload();//No debería
+            }, complete: () => {
             }
           })
         }
       }
     );
+
+    // this.loginservicie.getDataPerson(this.loginservicie.getToken()).subscribe({
+    //     next: response => {
+    //       this.apiInformationHome(response.typePerson).subscribe({
+    //         next: response => {
+    //           console.log(response);
+    //           this.statusApi = response.status;
+    //           this.homedata = response.data[0];
+    //         }
+    //       })
+    //     }
+    //   }
+    // );
   }
 
   apiInformationHome(typePerson: string): Observable<any> {

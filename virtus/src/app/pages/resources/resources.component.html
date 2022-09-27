@@ -92,37 +92,52 @@
                   *ngIf="statusEvaluations === 2">
         <ng-template let-evaluation pTemplate="item">
           <div class="border-round m-2 text-center p-2"
-               [ngClass]="evaluation.typeEvaluation === 1 ? 'bg-blue-50' : 'bg-green-50'"
+               [ngClass]="evaluation.type_evaluation === 1 ? 'bg-blue-50' : 'bg-green-50'"
                style="border: 1px solid var(--surface-d)">
             <div>
-              <h5 class="mb-1">{{evaluation.nameEvaluation}}</h5>
-              <span> {{evaluation.descriptionEvaluation}} </span> <br>
+              <h5 class="mb-1">{{evaluation.name_evaluation}}</h5>
+              <span> {{evaluation.description_evaluation}} </span> <br>
               <div class="mt-2">
-                <i *ngIf="evaluation.typeEvaluation === 2" class="pi pi-check-circle lg:font-bold text-green-500"
+                <i *ngIf="evaluation.type_evaluation === 2" class="pi pi-check-circle lg:font-bold text-green-500"
                    style="font-size: 45px"></i>
-                <img *ngIf="evaluation.typeEvaluation === 1" src="assets/layout/images/imagesVirtus/SVG/evaluacion.svg"
+                <img *ngIf="evaluation.type_evaluation === 1" src="assets/layout/images/imagesVirtus/SVG/evaluacion.svg"
                      alt="" width="50">
               </div>
               <span
-                class="text-pink-400 font-italic font-bold"> {{evaluation.typeEvaluation === 1 ? 'Evaluación' : 'Autoevaluación'}} </span>
+                class="text-pink-400 font-italic font-bold"> {{evaluation.type_evaluation === 1 ? 'Evaluación' : 'Autoevaluación'}} </span>
               <div class="mt-3">
-                <span class="p-badge p-badge-warning"> Preguntas: {{evaluation.numberquestionEvaluation}} </span> <br>
-                <span
-                  class="p-badge p-badge-success mt-3"> Tiene tiempo: {{evaluation.timeEvaluation ? 'Si' : 'No'}} </span>
+                <span class="p-badge p-badge-warning"> Preguntas: {{evaluation.numberquestion_evaluation}} </span> <br>
+                <!--                <span-->
+                <!--                  class="p-badge p-badge-success mt-3"> Tiene tiempo: {{evaluation.timeEvaluation ? 'Si' : 'No'}} </span>-->
+                <!--                <br>-->
+                <span *ngIf="evaluation.time_evaluation"
+                      class="p-badge p-badge-success mt-3"> Tiempo (minutos): {{evaluation.timeminutes_evaluation}} </span>
+                <span *ngIf="!evaluation.time_evaluation"
+                      class="p-badge p-badge-success mt-3"> Tiempo (minutos): Ilimitado </span>
                 <br>
-                <span *ngIf="evaluation.timeEvaluation"
-                      class="p-badge p-badge-secondary mt-3"> Tiempo (minutos): {{evaluation.timeminutesEvaluation}} </span>
-                <span *ngIf="!evaluation.timeEvaluation"
-                      class="p-badge p-badge-secondary mt-3"> Tiempo (minutos): Ilimitado </span>
+                <!--                <span-->
+                <!--                  class="p-badge p-badge-success mt-3"> Tiene oportunidades: {{evaluation.opportunitiesEvaluation ? 'Si' : 'No'}} </span>-->
+                <!--                <br>-->
+                <span *ngIf="evaluation.opportunity_evaluation"
+                      class="p-badge p-badge-secondary mt-3"> Intento número: {{evaluation.trynumber_person_evaluation}} de {{evaluation.opportunities_evaluation}} </span>
+                <span *ngIf="!evaluation.opportunity_evaluation"
+                      class="p-badge p-badge-secondary mt-3">Intento número:  {{evaluation.trynumber_person_evaluation}} de Ilimitado </span>
+                <br>
+                <span
+                    class="p-badge p-badge-info mt-3"> Permite revisión: {{evaluation.allows_review ? 'Si' : 'No'}} </span>
+                <br>
+                <span
+                    class="p-badge p-badge-danger mt-3"> Ordenado por categoría: {{evaluation.order_category ? 'Si' : 'No'}} </span>
+
               </div>
               <hr>
-              <div class="my-3">
-                <button *ngIf="evaluation.typeEvaluation==2 " pButton pRipple icon="pi pi-pencil"
+              <div class="my-3" *ngIf="evaluation.numberquestion_evaluation > 0">
+                <button *ngIf="evaluation.type_evaluation==2 " pButton pRipple icon="pi pi-pencil"
                         label="Ingresar a autoevaluación" class="mr-2 p-button-success w-15rem"
-                        routerLink="questionnaire/{{evaluation.id}}"></button>
-                <button *ngIf="evaluation.typeEvaluation==1" pButton pRipple icon="pi pi-pencil"
+                        routerLink="questionnaire/{{evaluation.id_evaluation}}"></button>
+                <button *ngIf="evaluation.type_evaluation==1" pButton pRipple icon="pi pi-pencil"
                         label="Ingresar a evaluación" class="mr-2 p-button-info w-15rem"
-                        routerLink="evaluation/{{evaluation.id}}"></button>
+                        routerLink="evaluation/{{evaluation.id_evaluation}}"></button>
               </div>
             </div>
           </div>

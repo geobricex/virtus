@@ -78,30 +78,28 @@ public class EvaluationApi {
     }
 
     @PostMapping("/getevaluations")
-    public ResponseEntity<String> getEvaluations(@RequestBody @Validated String id_topic) {//, @RequestHeader("token") String sessionToken) {
+    public ResponseEntity<String> getEvaluations(@RequestBody @Validated String id_topic, @RequestHeader("token") String sessionToken) {
         System.out.println("getevaluations...");
         String message = "";
-//        JsonObject jso = Methods.stringToJSON(token);
-//        String sToken = Methods.JsonToString(jso, "token", "");
-//        String[] clains = Methods.getDataToJwt(sToken);
-//        String[] res = Methods.validatePermit(clains[0], clains[1], 1);
-//        if (res[0].equals("2")) {
-        JsonObject jso = Methods.stringToJSON(id_topic);
-        String topic_id_evaluation = Methods.JsonToString(jso, "topic_id_evaluation", "");
-        if (!topic_id_evaluation.equals("")) {
-            String[] res = evaluationService.getEvaluations(topic_id_evaluation);
-            message = Methods.getJsonMessage(res[0], res[1], res[2]);
-            if (res[0].equals("2") || res[0].equals("3")) {
-                return new ResponseEntity<>(message, HttpStatus.OK);
+        String[] clains = Methods.getDataToJwt(sessionToken);
+        String[] res = Methods.validatePermit(clains[0], clains[1], 1);
+        if (res[0].equals("2")) {
+            JsonObject  jso = Methods.stringToJSON(id_topic);
+            String topic_id_evaluation = Methods.JsonToString(jso, "topic_id_evaluation", "");
+            if (!topic_id_evaluation.equals("")) {
+                res = evaluationService.getEvaluations(topic_id_evaluation, clains[0]);
+                message = Methods.getJsonMessage(res[0], res[1], res[2]);
+                if (res[0].equals("2") || res[0].equals("3")) {
+                    return new ResponseEntity<>(message, HttpStatus.OK);
+                } else {
+                    return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
+                }
             } else {
-                return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
+                return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
             }
         } else {
-            return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
+            return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
         }
-//        } else {
-//            return ResponseEntity.noContent().build();
-//        }
     }
 
     @PostMapping("/getevaluation")
