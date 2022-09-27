@@ -153,10 +153,9 @@ export class AppLoginComponent {
   }
 
   iniciarSesion(provider: any): void{
-    this.fAuth.signInWithPopup(provider).then(function (result: UserCredential) {
+    this.fAuth.signInWithPopup(provider).then((result: UserCredential) => {
       let userinfo = result.additionalUserInfo;
       let userprofile = userinfo!.profile;
-
 
       let datosUser = {
         isNewUser: userinfo!.isNewUser,
@@ -168,7 +167,7 @@ export class AppLoginComponent {
         username: "",
         userlastname: "",
       };
-           console.log(userinfo);
+      console.log(userinfo);
       switch (userinfo!.providerId) {
         case "google.com":
         {
@@ -207,6 +206,19 @@ export class AppLoginComponent {
         datosUser = {...datos, ...username};//juntar ambos json en uno solo :3
       }
       console.log("usuario logeado [linea 204]:", datosUser);
+      this.apiRegisterGoogle(datosUser).subscribe({
+        next: (response: any) => {
+          console.log(response);
+          if (response.status === 2) {
+            let dataLogin = response.data[0];
+            console.log(dataLogin.user_token);
+            this.loginservicie.setToken(dataLogin.user_token);
+            this.router.navigateByUrl('/app');
+          }
+        },
+        error: (error: any) => {
+
+        }})
     }).catch(function (error) {
       console.log("error", error)
       /*swalDelay({
@@ -214,9 +226,32 @@ export class AppLoginComponent {
         tittle: "Service provider error!",
         information: error.message
       });*/
-
     });
     this.showMessages(4, "Service provider error!", "");
+  }
+
+  apiRegisterGoogle(data: any): Observable<any> {
+
+    if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+      this.globalUri = "virtus_bk/";
+    } else {
+      this.globalUri = "virtus_bk/";
+    }
+
+    let headers = new HttpHeaders()
+      .set('Access-Control-Allow-Origin', '*')
+      .set('provider', 'native')
+      .set('provider', data.provider);
+
+    this.globalUri = this.globalUri + "persons/loginoauth";
+    return this._http.post<any>(this.globalUri,
+      {
+        "useremail": data.useremail,
+        "username": data.username,
+        "userlastname": data.userlastname,
+        "userid": data.userid,
+        "userimage": data.userimage
+      }, {headers: headers});
   }
 
   operarnombre(paramName: string): any {
