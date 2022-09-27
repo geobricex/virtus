@@ -120,6 +120,7 @@ import { ComandosComponent } from './pages/comandos/comandos.component';
 // firebase
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import {AvatarGroupModule} from "primeng/avatargroup";
 
 
 FullCalendarModule.registerPlugins([
@@ -236,7 +237,8 @@ const firebaseConfig = {
     AutoCompleteModule,
     SliderModule,
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    AvatarGroupModule
   ],
 
   providers: [

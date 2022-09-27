@@ -68,7 +68,7 @@ export class AppMainComponent implements OnInit {
       }
 
       if (this.overlayMenuActive || this.staticMenuMobileActive) {
-        this.hideOverlayMenu();
+       // this.hideOverlayMenu();
       }
 
       this.menuHoverActive = false;
@@ -117,7 +117,7 @@ export class AppMainComponent implements OnInit {
     this.topbarItemClick = true;
     this.topbarMenuActive = !this.topbarMenuActive;
 
-    this.hideOverlayMenu();
+    //this.hideOverlayMenu();
 
     event.preventDefault();
   }

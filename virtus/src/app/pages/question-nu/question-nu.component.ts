@@ -377,15 +377,20 @@ export class QuestionNuComponent implements OnInit {
     this.utils.loading;
     event.target.files.length > 0;
     const file = event.target.files[0];
+    console.log(file.type, file.type.toString().includes("image"));
 
-    if (file.type === "application/pdf" || file.type === "application/x-zip-compressed" || file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-      || file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {
+    if (file.type === "application/pdf" || file.type === "application/x-zip-compressed" ||
+      file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+      || file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      || file.type.toString().includes("image")) {
       let urlPhoto: string = "";
       this.utils.changeImage(file).then(response => {
         urlPhoto = this.utils.makePathRecurso(response);
         this.form["pathurlfile_question"].setValue(urlPhoto);
         this.utils.closeLoading;
       });
+    } else {
+      this.utils.closeLoading;
     }
   }
 

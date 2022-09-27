@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {AppComponent} from './app.component';
 import {AppMainComponent} from './app.main.component';
+import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {Utils} from "./util/Utils";
 
 @Component({
   selector: 'app-config',
@@ -110,13 +112,19 @@ import {AppMainComponent} from './app.main.component';
               <button pButton pRipple icon="pi pi-minus"
                       class="p-button-rounded p-button-warning mr-2 mb-2"
                       (click)="app.controlZoom(-1)"></button>
-              <button  pButton pRipple icon="pi pi-window-maximize"
-                       class="p-button-rounded p-button-info mr-2 mb-2"
+              <button pButton pRipple icon="pi pi-window-maximize"
+                      class="p-button-rounded p-button-info mr-2 mb-2"
                       (click)="app.controlZoom(0)"></button>
-              <button  pButton pRipple icon="pi pi-plus"
+              <button pButton pRipple icon="pi pi-plus"
                       class="p-button-rounded p-button-success mr-2 mb-2"
                       (click)="app.controlZoom(1)"></button>
             </div>
+          </div>
+        </p-accordionTab>
+        <p-accordionTab header="Estilos de Texto">
+          <div class="field-radiobutton" *ngFor="let style of fontStyle">
+            <p-radioButton name="menuMode" [value]="style.value" [(ngModel)]="app.testFontFamily" (ngModelChange)="listenConfigChange()" ></p-radioButton>
+            <label for="@prevent">{{style.label}}</label>
           </div>
         </p-accordionTab>
         <p-accordionTab header="Color de Texto">
@@ -133,27 +141,27 @@ import {AppMainComponent} from './app.main.component';
         </p-accordionTab>
         <p-accordionTab header="Estilos de imagen">
           <div class="field-radiobutton">
-            <p-radioButton name="menuMode" value="none" [(ngModel)]="app.modeStyle"></p-radioButton>
+            <p-radioButton name="menuMode" value="none" [(ngModel)]="app.modeStyle" ></p-radioButton>
             <label for="@prevent">Ninguno</label>
           </div>
           <div class="field-radiobutton">
-            <p-radioButton name="menuMode" value="grayscale(100%)" [(ngModel)]="app.modeStyle"></p-radioButton>
+            <p-radioButton name="menuMode" value="grayscale(100%)" [(ngModel)]="app.modeStyle" ></p-radioButton>
             <label for="@prevent">Blanco y Negro</label>
           </div>
           <div class="field-radiobutton">
-            <p-radioButton name="menuMode" value="sepia(100%)" [(ngModel)]="app.modeStyle"></p-radioButton>
+            <p-radioButton name="menuMode" value="sepia(100%)" [(ngModel)]="app.modeStyle" ></p-radioButton>
             <label for="@prevent">Sepia</label>
           </div>
           <div class="field-radiobutton">
-            <p-radioButton name="menuMode" value="brightness(50%)" [(ngModel)]="app.modeStyle"></p-radioButton>
+            <p-radioButton name="menuMode" value="brightness(50%)" [(ngModel)]="app.modeStyle" ></p-radioButton>
             <label for="@prevent">Brillo Bajo</label>
           </div>
           <div class="field-radiobutton">
-            <p-radioButton name="menuMode" value="contrast(200%)" [(ngModel)]="app.modeStyle"></p-radioButton>
+            <p-radioButton name="menuMode" value="contrast(200%)" [(ngModel)]="app.modeStyle" ></p-radioButton>
             <label for="@prevent">Contraste Alto</label>
           </div>
           <div class="field-radiobutton">
-            <p-radioButton name="menuMode" value="saturate(250%)" [(ngModel)]="app.modeStyle"></p-radioButton>
+            <p-radioButton name="menuMode" value="saturate(250%)" [(ngModel)]="app.modeStyle" ></p-radioButton>
             <label for="@prevent">Saturación Alta</label>
           </div>
         </p-accordionTab>
@@ -213,6 +221,11 @@ import {AppMainComponent} from './app.main.component';
           </div>
         </p-accordionTab>
       </p-accordion>
+      <div class="p-fieldset col-12 text-center" >
+        <button id="reproducir_video_rec" pButton pRipple icon="pi pi-save"
+                class="p-button p-button-secundary" label="Guardar Preferencias"
+                (click)="app.guardarConfiguracion()"></button>
+      </div>
     </div>
   `
 })
@@ -223,6 +236,8 @@ export class AppConfigComponent implements OnInit {
   imageThemes: any[];
 
   gradientThemes: any[];
+
+  fontStyle: any[];
 
   constructor(public appMain: AppMainComponent, public app: AppComponent) {
   }
@@ -268,40 +283,40 @@ export class AppConfigComponent implements OnInit {
       {name: 'elegance', image: 'elegance.jpg'},
       {name: 'tranquil', image: 'tranquil.jpg'}
     ];
+
+    this.fontStyle = [
+      {"label":"Default", "value":"'Exo 2', sans-serif"},
+      {"label":"Times New Roman", "value":"'Times New Roman', Georgia, Serif"},
+      {"label":"Arial (sans-serif)", "value":"'Arial', sans-serif"},
+      {"label":"Arial Black (sans-serif)", "value":"'Arial Black', sans-serif"},
+      {"label":"Verdana (sans-serif)", "value":"'Verdana', sans-serif"},
+      {"label":"Tahoma (sans-serif)", "value":"'Tahoma', sans-serif"},
+      {"label":"Impact (sans-serif)", "value":"'Impact', sans-serif"},
+      {"label":"Times New Roman (serif)", "value":"'Times New Roman', serif"},
+      {"label":"Didot (serif)", "value":"'Didot', serif"},
+      {"label":"Georgia (serif)", "value":"'Georgia', serif"},
+      {"label":"American Typewriter (serif)", "value":"'American Typewriter', serif"},
+      {"label":"Andale Mono (monospace)", "value":"'Andale Mono', monospace"},
+      {"label":"Courier (monospace)", "value":"'Courier', monospace"},
+      {"label":"Lucida Console (monospace)", "value":"'Lucida', monospace"},
+      {"label":"Monaco (monospace)", "value":"'Monaco', monospace"},
+      {"label":"Bradley Hand (cursiva)", "value":"'Bradley Hand', cursiva"},
+      {"label":"Brush Script MT (cursiva)", "value":"'Brush Script MT', cursiva"},
+      {"label":"Luminari (fantasy)", "value":"'Luminari', fantasy"},
+      {"label":"Comic Sans MS (cursiva)", "value":"'Comic Sans MS', cursiva"},
+      // {"label":"Helvetica", "value":""},
+      // {"label":"Cambria", "value":""}
+
+    ];
   }
+
 
   changeTheme(theme: any) {
-    this.app.theme = theme;
-
-    const layoutLink: HTMLLinkElement = document.getElementById('layout-css') as HTMLLinkElement;
-    const layoutHref = 'assets/layout/css/layout-' + theme + '.css';
-
-    this.replaceLink(layoutLink, layoutHref);
-
-    const themeLink: HTMLLinkElement = document.getElementById('theme-css') as HTMLLinkElement;
-    const themeHref = 'assets/theme/theme-' + theme + '.css';
-
-    this.replaceLink(themeLink, themeHref);
+    this.app.changeTheme(theme);
   }
 
-  isIE() {
-    return /(MSIE|Trident\/|Edge\/)/i.test(window.navigator.userAgent);
-  }
-
-  replaceLink(linkElement: any, href: any) {
-    if (this.isIE()) {
-      linkElement.setAttribute('href', href);
-    } else {
-      const id = linkElement.getAttribute('id');
-      const cloneLinkElement = linkElement.cloneNode(true);
-      cloneLinkElement.setAttribute('href', href);
-      cloneLinkElement.setAttribute('id', id + '-clone');
-      linkElement.parentNode.insertBefore(cloneLinkElement, linkElement.nextSibling);
-      cloneLinkElement.addEventListener('load', () => {
-        linkElement.remove();
-        cloneLinkElement.setAttribute('id', id);
-      });
-    }
+  listenConfigChange():void{
+    console.log("text estilo:", this.app.testFontFamily);
   }
 
   onConfigButtonClick(event: any) {
@@ -309,4 +324,5 @@ export class AppConfigComponent implements OnInit {
     this.appMain.configClick = true;
     event.preventDefault();
   }
+
 }
