@@ -8,19 +8,22 @@
       <span class="login-panel-header">Iniciar sesión en Virtus</span>
       <span class="login-panel-subheader">Bienvenido, por favor utilice el formulario para ingresar a Virtus. <a
         routerLink="/" class="text-blue-500"> Inicio </a> </span>
-      <div class="mt-3">
-        <div class="field">
-          <label>Correo electrónico:</label>
-          <input type="text" autocomplete="off" pInputText [(ngModel)]="user.email" class="w-full"/>
+      <form [formGroup]="frmLogin">
+        <div class="mt-3">
+          <div class="field">
+            <label>Correo electrónico:</label>
+            <input pInputText type="email" autocomplete="off" class="w-full" formControlName="email"/>
+          </div>
+          <div class="field">
+            <label>Ingrese Contraseña:</label>
+            <input type="password" autocomplete="new-password" pInputText feedback="false" class="w-full"
+                   formControlName="password"/>
+          </div>
         </div>
-        <div class="field">
-          <label>Ingrese Contraseña:</label>
-          <input type="password" autocomplete="new-password" pInputText feedback="false" class="w-full"
-                 [(ngModel)]="user.password"/>
-        </div>
-      </div>
+      </form>
       <div class="col-12 text-center">
-        <button type="button" pButton label="Acceder" class="p-button-raised w-full " (click)="login()"></button>
+        <button type="button" pButton label="Acceder" class="p-button-raised w-full " (click)="login()"
+                [disabled]="frmLogin.invalid"></button>
         <div class="text-center mb-2">
 <!--          <button pButton class="mt-3 border-0" icon="pi pi-facebook" label="Facebook"-->
 <!--                  style="background: #1771E6" (click)="loginWithFacebook()" ></button>-->

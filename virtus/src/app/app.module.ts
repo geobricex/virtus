@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { AppRoutingModule } from './app-routing.module';
+import { CookieService } from 'ngx-cookie-service';
 
 import { AppLoginComponent } from './pages/app.login.component';
 import { AppMainpageComponent } from './pages/app.mainpage.component';
@@ -243,7 +244,7 @@ const firebaseConfig = {
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     MenuService, BreadcrumbService, CargarScriptsService, StorageService, MessageService,
-    Utils, ConfirmationService
+    Utils, ConfirmationService, CookieService
   ],
 
   bootstrap: [AppComponent]

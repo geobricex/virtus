@@ -56,13 +56,13 @@
         <i class="pi pi-ellipsis-v"></i>
     </a>-->
     <a id="topbar-profile-menu-button" href="#" (click)="app.onTopbarMenuButtonClick($event)">
-      <img [src]="user.pathimg_person" alt="harmony-layout" class="topbar-profile"
+      <img [src]="person.pathimgPerson" alt="harmony-layout" class="topbar-profile"
            style="border-radius: 50%"/>
       <span
-      >{{user.name_person !== undefined ? user.name_person : ''}} {{user.last_name !== undefined ? user.last_name : ''}}</span>
+      >{{person.namePerson !== undefined ? person.namePerson : ''}} {{person.lastnamePerson !== undefined ? person.lastnamePerson : ''}}</span>
 
       <span
-        class="p-badge p-badge-success ml-1">{{user.type_person === 'U' ? 'Aprendiz' : user.type_person === 'I' ? 'Instructor' : user.type_person === 'A' ? 'Administrador' : 'Root'}}</span>
+        class="p-badge p-badge-success ml-1">{{person.typePerson === 'U' ? 'Aprendiz' : person.typePerson === 'I' ? 'Instructor' : person.typePerson === 'A' ? 'Administrador' : 'Root'}}</span>
     </a>
     <ul id="topbar-profile-menu" class="animated fadeInDown"
         [ngClass]="{'topbar-profile-menu-active': app.topbarMenuActive}">
