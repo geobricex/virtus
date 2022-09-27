@@ -69,6 +69,7 @@ select * from evaluations;
 select * from settings;
 select * from persons;
 select * from questions;
+select * from answers;
 select * from resources order by id_resource desc;
 
 select infor from evaluations_review_select(5,1, 2)

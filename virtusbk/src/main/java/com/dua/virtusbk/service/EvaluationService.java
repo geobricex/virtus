@@ -100,7 +100,7 @@ public class EvaluationService {
         String evaluations  = evaluationDAO.findIdTopicEvaluationList(Integer.parseInt(id_topic), Integer.parseInt(id_person));
         JsonArray jso = Methods.stringToJsonArray(evaluations);
         if (!jso.toString().equals("[]")) {
-            Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();
+//            Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();
             data = jso.toString();
             status = "2";
             message = "Información obetnida con éxito.";
