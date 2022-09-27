@@ -53,6 +53,7 @@ public class PersonsEvaluationsService {
 
 //        List<Map<String, Object>> personsEvaluations = personsEvaluationsDAO.findByEvaluationsIdEvaluationAndPersonsIdPerson(
 //                new Evaluation(id_evaluation), new Person(id_person));
+//        System.out.println("select infor from evaluations_review_select("+type+","+id_evaluation+", "+id_person+")");
         String personsEvaluations = personsEvaluationsDAO.findByEvaluationsIdEvaluationAndPersonsIdPerson(
                 type, (id_evaluation), (id_person));
 

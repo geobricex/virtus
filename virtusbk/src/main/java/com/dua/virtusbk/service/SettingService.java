@@ -16,6 +16,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -31,13 +32,15 @@ public class SettingService {
     @Autowired
     private SettingRepository settingDAO;
 
-    public String[] saveSetting(Setting setting) {
+    public String[] saveSetting(String setting_configuration, String idPerson) {
         System.out.println("saveEvaluation");
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
+        Setting setting = new Setting();
 
         setting.setDateregSetting(Methods.nowLocalDateTime());
         setting.setDateupdateSetting(Methods.nowLocalDateTime());
-
+        setting.setPersonsIdPerson(new Person(Long.parseLong(idPerson)));
+        setting.setSettingConfiguration(setting_configuration);
         System.out.println(setting);
         setting = settingDAO.save(setting);
 

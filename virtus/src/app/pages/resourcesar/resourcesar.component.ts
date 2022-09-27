@@ -472,7 +472,11 @@ export class ResourcesarComponent implements OnInit {
 
   apiLoadEvaluations(): Observable<any> {
     this.globalUri = this.utils.globalUrl + "evaluation/getevaluations";
-    return this._http.post<any>(this.globalUri, {topic_id_evaluation: this.idTopic});
+    let headers = new HttpHeaders()
+      .set('Access-Control-Allow-Origin', '*')
+      .set('provider', 'native')
+      .set('token', this.utils.token);
+    return this._http.post<any>(this.globalUri, {topic_id_evaluation: this.idTopic}, {headers: headers});
   }
 
 }
