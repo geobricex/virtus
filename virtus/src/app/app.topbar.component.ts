@@ -15,7 +15,10 @@ export class AppTopBarComponent implements OnInit {
 
   public person: PersonInterface;
 
-  constructor(public app: AppMainComponent, private storageService: StorageService, public router: Router, private utils: Utils,
+  constructor(public app: AppMainComponent,
+              private storageService: StorageService,
+              public router: Router,
+              public utils: Utils,
               private loginservicie: LoginServicie) {
   }
 
@@ -24,10 +27,14 @@ export class AppTopBarComponent implements OnInit {
       next: response => {
         //console.log(response);
         this.person = response;
+        console.log(" this.person")
+        console.log(this.person)
         if (this.person === null) {
           this.router.navigateByUrl('/login');
           return;
         }
+      }, error: err => {
+        this.router.navigateByUrl('/login');
       }
     });
   }
@@ -39,7 +46,10 @@ export class AppTopBarComponent implements OnInit {
   }
 
   display: boolean = false;
-
+//   onImgError(event: any) {
+//     event.target.src = './assets/imgs/altImg.png'
+// //Do other stuff with the event.target
+//   }
   showDialog() {
     this.display = true;
   }

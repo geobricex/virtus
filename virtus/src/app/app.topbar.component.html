@@ -1,7 +1,8 @@
 <div class="layout-topbar">
 
   <a href="/" class="logo-container">
-    <img class="logo" alt="harmony-layout" src="assets/layout/images/imagesVirtus/logoSolo.svg"/>
+    <img class="logo" alt="VIRTUS" src="assets/layout/images/imagesVirtus/logoSolo.svg"
+         (error)="utils.onImgError($event)"/>
     <span class="app-name">VIRTUS</span>
   </a>
 
@@ -56,7 +57,7 @@
         <i class="pi pi-ellipsis-v"></i>
     </a>-->
     <a id="topbar-profile-menu-button" href="#" (click)="app.onTopbarMenuButtonClick($event)">
-      <img [src]="person.pathimgPerson" alt="harmony-layout" class="topbar-profile"
+      <img [src]="person.pathimgPerson" alt="VIRTUS" class="topbar-profile" (error)="utils.onImgError($event)"
            style="border-radius: 50%"/>
       <span
       >{{person.namePerson !== undefined ? person.namePerson : ''}} {{person.lastnamePerson !== undefined ? person.lastnamePerson : ''}}</span>
@@ -71,10 +72,10 @@
           <i class="pi pi-user topbar-icon-calendar"></i>
           <span class="topbar-item-name">Perfil</span>
         </a>
-<!--        <a routerLink="/login" (click)="app.onTopbarItemClick($event, theme)">-->
-<!--          <i class="pi pi-cog topbar-icon-settings"></i>-->
-<!--          <span class="topbar-item-name">Configuración</span>-->
-<!--        </a>-->
+        <!--        <a routerLink="/login" (click)="app.onTopbarItemClick($event, theme)">-->
+        <!--          <i class="pi pi-cog topbar-icon-settings"></i>-->
+        <!--          <span class="topbar-item-name">Configuración</span>-->
+        <!--        </a>-->
         <!--        <a (click)="showDialog()">-->
         <!--          <i class="pi pi-cog topbar-icon-settings"></i>-->
         <!--          <span class="topbar-item-name">Accesibilidad</span>-->

@@ -44,10 +44,10 @@
           <th pSortableColumn="Tema">Tema
             <p-sortIcon field="Tema"></p-sortIcon>
           </th>
-          <th pSortableColumn="Tipodeprueba">Tipo de prueba
+          <th pSortableColumn="Tipodeprueba">Tipo de evaluación
             <p-sortIcon field="Tipodeprueba"></p-sortIcon>
           </th>
-          <th pSortableColumn="Nombredelaprueba">Nombre de la prueba
+          <th pSortableColumn="Nombredelaprueba">Nombre de la evaluación
             <p-sortIcon field="Nombredelaprueba"></p-sortIcon>
           </th>
           <th pSortableColumn="Tiempoempleado">Tiempo empleado
@@ -82,11 +82,11 @@
             {{review.name_topic}}
           </td>
           <td style="width:14%; min-width:10rem;">
-            <span class="p-column-title">Tipo de prueba</span>
-            {{review.type_evaluation == 1 ? 'Evaluación' : 'Autoevaluación'}}
+            <span class="p-column-title">Tipo de evaluación</span>
+            {{review.type_evaluation == 1 ? 'Evaluación Sumativa' : 'Autoevaluación'}}
           </td>
           <td style="width:14%; min-width:10rem;">
-            <span class="p-column-title">Nombre de la prueba</span>
+            <span class="p-column-title">Nombre de la evaluación</span>
             {{review.name_evaluation}}
           </td>
           <td style="width:14%; min-width:10rem;">

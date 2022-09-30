@@ -4,7 +4,7 @@ import {Observable} from "rxjs";
 import PocketBase from "pocketbase";
 import {StorageService} from "../authentication/StorageService";
 import Swal from 'sweetalert2'
-import { LoginServicie } from "../pages/loginServicie";
+import {LoginServicie} from "../pages/loginServicie";
 
 @Injectable()
 export class Utils {
@@ -34,6 +34,11 @@ export class Utils {
 
   get closeLoading() {
     return Swal.close();
+  }
+
+  onImgError(event: any) {
+    event.target.src = 'assets/layout/images/imagesVirtus/logoSolo.svg'
+//Do other stuff with the event.target
   }
 
   getUserSession() {

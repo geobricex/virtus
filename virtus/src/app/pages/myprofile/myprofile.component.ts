@@ -65,6 +65,11 @@ export class MyprofileComponent implements OnInit {
     });
   }
 
+//   onImgError(event: any) {
+//     event.target.src = './assets/imgs/altImg.png'
+// //Do other stuff with the event.target
+//   }
+
   showUpdatePhoto() {
     this.formUpdatePhto = true;
     this.urlimageupload = this.person._pathimgPerson;
@@ -75,9 +80,10 @@ export class MyprofileComponent implements OnInit {
   }
 
   apiGetPerson(): Observable<any> {
-    this.globalUri = "virtusbk/persons/getperson";
+    this.globalUri = this.utils.globalUrl + "persons/getperson";
+
     return this._http.post(this.globalUri, {
-      "sessionToken": this.session.token,
+      "sessionToken": this.utils.token,
     },);
   }
 
