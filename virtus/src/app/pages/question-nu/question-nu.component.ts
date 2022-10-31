@@ -65,6 +65,11 @@ export class QuestionNuComponent implements OnInit {
   viewFile: boolean = false;
   urlImg: string = "";
 
+  format_text: any []; // variable para armar el texto para completar la palabra
+  types_text: any [];
+  text_entered: string = "";
+  type_selected: string = "";
+
   constructor(
     private _route: ActivatedRoute,
     private breadcrumbService: BreadcrumbService,
@@ -118,6 +123,8 @@ export class QuestionNuComponent implements OnInit {
             for (let i = 0; i < this.structure.length; i++) {
               this.tmpfiles.push({tmp: {}});
             }
+          } else if (this.typeQuestion === 4) {
+
           } else if (this.typeQuestion === 5) {
             for (let i = 0; i < this.structure.length; i++) {
               this.tmpfiles.push({tmpright: {}}, {tmpleft: {}});
@@ -186,7 +193,100 @@ export class QuestionNuComponent implements OnInit {
       {label: "49", value: 49},
       {label: "64", value: 64}
     ];
+    this.types_text = [
+      {label: "Texto natural", value: "TN"},
+      {label: "Opcion correcta", value: "OC"},
+      {label: "Distractor", value: "D"},
+    ];
+    this.format_text = [];
     this.validateAnswer(this.typeQuestion);
+  }
+
+  addText() {
+
+    if(this.text_entered === "") {
+      this.utils.showMessages(3, "Por favor ingrese al menos una palabra.", "tst");
+      return;
+    }
+
+    if(this.type_selected !== 'D') {
+      this.format_text.push(
+        {
+          text: this.text_entered,
+          type: this.type_selected,
+          style: this.type_selected === 'OC' ? 'color: white; background: green; padding: 3px; border-radius: 5px; font-weight: bold;' : 'black'
+        }
+      );
+      console.log(this.format_text);
+    } else {
+      this.utils.showMessages(3, "Seleccione el tipo de texto diferente a distractor para agregar.", "tst");
+    }
+    this.text_entered = "";
+    this.validarEstructura();
+  }
+
+  addDistractor() {
+
+    if(this.format_text.length <= 0) {
+      this.utils.showMessages(3, "Por favor agrege al menos un texto natural u opcion correcta.", "tst");
+      return;
+    }
+
+    if(this.text_entered === "") {
+      this.utils.showMessages(3, "Por favor ingrese al menos una palabra.", "tst");
+      return;
+    }
+
+    if(this.type_selected === 'D') {
+      this.format_text.push(
+        {text: this.text_entered, type: this.type_selected, style: 'black'}
+      );
+    } else {
+      this.utils.showMessages(3, "Seleccione el tipo distractor para agregarlo.", "tst");
+    }
+
+    this.text_entered = "";
+    this.validarEstructura();
+  }
+
+  eliminarItem(index: number) {
+    this.format_text.splice(index, 1);
+    this.validarEstructura();
+  }
+
+  validarEstructura () {
+    let description: string = "";
+    let description_R: string = "";
+    let optionsx = [];
+    this.structure.length = 0;
+    for(let i = 0; i < this.format_text.length; i++) {
+
+      if(i > 0 && i < this.format_text.length) {
+        description += " ";
+        description_R += " ";
+      }
+
+      if(this.format_text[i].type !== 'D'){
+        description += this.format_text[i].type === 'OC' ? '{$option$}' : this.format_text[i].text;
+        description_R += this.format_text[i].text;
+      }
+
+      if (this.format_text[i].type !== 'TN'){
+        optionsx.push({
+          "option": this.format_text[i].text,
+          "resource":""
+        })
+      }
+    }
+    console.log(description);
+    console.log(description_R);
+    console.log(optionsx);
+    this.structure.push({
+      description_question: description,
+      description_question_R: description_R,
+      options: optionsx
+    });
+    console.log(this.structure);
   }
 
   openViewFile(url: string) {
@@ -509,13 +609,6 @@ export class QuestionNuComponent implements OnInit {
     let text_description = document.getElementsByName("descriptionText");
     console.log(this.structure[0].description_question);
     this.insertAtCursor(text_description[0], "[ingresa aqui la palabra correcta]");
-  }
-
-  addDistractor() {
-    this.structure[0].options.push({
-      "option": "",
-      "resource": ""
-    });
   }
 
   insertAtCursor(myField: any, myValue: string) {

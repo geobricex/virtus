@@ -275,16 +275,41 @@
         <label for="">Ingrese el texto a completar (click
           <strong class="text-blue-500 cursor-pointer" (click)="addOption()"> aqui </strong>
           para agregar una opcion): </label>
-        <textarea pInputTextarea id="" cols="30" rows="10" name="descriptionText"
-                  [(ngModel)]="structure[0].description_question"></textarea>
+
+        <div class="grid">
+          <div class="col">
+            <input pInputText [(ngModel)]="text_entered" type="text">
+          </div>
+          <div class="col-2">
+            <p-dropdown [options]="types_text" optionLabel="label" optionValue="value" styleClass=""
+                        [(ngModel)]="type_selected"></p-dropdown>
+          </div>
+        </div>
+
       </div>
-      <button pButton pRipple label="Nuevo distractor" icon="pi pi-plus" class="p-button-success mr-2 mb-4"
-              (click)="addDistractor()"></button>
-      <div class="field" *ngFor="let option of structure[0].options; let i = index">
-        <label for=""> Distractor {{i + 1}} </label>
-        <input pInputText type="text" value="{{option.option}}"
-               placeholder="Ingrese la palabra correcta o un distractor">
+
+      <button pButton pRipple label="Agregar texto" icon="pi pi-plus" class="p-button-success mr-2 mb-4"
+              (click)="addText()" *ngIf="format_text.length <= 0"></button>
+
+      <div class="line-height-4">
+        <span *ngFor="let option of format_text; let i = index" [style]="option.style">
+          {{ option.type != 'D' ? option.text : ''}}
+          <span (click)="eliminarItem(i)" *ngIf=" option.type !== 'D'" class="pi pi-trash text-pink-500 cursor-pointer" style="background: white;padding: 2px;border-radius: 3px;"></span>
+        </span>
+        <span *ngIf="format_text.length > 0" class="pi pi-plus p-button-success cursor-pointer" (click)="addText()" style="background: lightblue;padding: 5px;border-radius: 5px; margin-left: 1rem"> </span>
       </div>
+
+      <div  class="line-height-4">
+        <span> Distractores: </span> <br>
+        <span class="cursor-pointer bg-pink-500 text-white p-2 border-round" (click)="addDistractor()"> <span class="pi pi-plus"></span> Agregar distractor </span>
+        <br>
+        <span *ngFor="let option of format_text; let j = index"  [style]="option.type === 'D' ? 'background: var(--pink-50);padding: 3px;border-radius: 3px;color: var(--pink-500);margin-right: 1rem;margin-top: .5rem' : ''" >
+          <span *ngIf=" option.type === 'D'" class="pi pi-times-circle"></span>
+          {{ option.type === 'D' ? option.text : ''}}
+          <span (click)="eliminarItem(j)" *ngIf=" option.type === 'D'" class="pi pi-trash text-pink-500 cursor-pointer" style="background: white;padding: 2px;border-radius: 3px;"></span>
+        </span>
+      </div>
+
     </div>
   </div>
 
