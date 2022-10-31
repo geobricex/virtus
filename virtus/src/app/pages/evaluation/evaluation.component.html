@@ -525,7 +525,7 @@
             icon="pi pi-window-maximize" [style]="{'background-color':'#2196F3', 'color': '#ffffff'}" size="large"
             shape="circle"></p-avatar>
   <div *ngIf="vistaVideoSenias" class="col-12 text-center">
-    <p class="text-white"><strong>Lenguaje de Señas</strong></p>
+    <p class="text-white"><strong>Recurso extra</strong></p>
     <video id="pathurlsign_question" height="150" controls [src]="questionObject.pathurlsign_question"
            [autoplay]="true" [muted]="true">
     </video>
@@ -537,8 +537,11 @@
               (click)="playSignVideo()"></button>
       <button id="pausar_gestos" pButton pRipple icon="pi pi-pause" class="p-button-rounded p-button-info mr-2 mb-2"
               (click)="pauseSignVideo()"></button>
-      <button id="silenciar_gestos" pButton pRipple icon="pi pi-window-minimize"
+      <button id="silenciar_video_sing_rec" pButton pRipple icon="pi pi-volume-up"
               class="p-button-rounded p-button-success mr-2 mb-2"
+              (click)="mutedSingVideo()"></button>
+      <button id="silenciar_gestos" pButton pRipple icon="pi pi-window-minimize"
+              class="p-button-rounded p-button-danger mr-2 mb-2"
               (click)="vistaVideoSenias = false"></button>
     </div>
   </div>

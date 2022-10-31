@@ -713,6 +713,14 @@ export class QuestionnaireComponent implements OnInit {
     if (this.btnVideoSignControl) (this.btnVideoSignControl as HTMLFormElement)['pause']();
   }
 
+  mutedSingVideo() {
+    this.initVideoSignControls();
+    if (this.btnVideoSignControl) {
+      let actual: boolean = (this.btnVideoSignControl as HTMLFormElement)['muted'];
+      (this.btnVideoSignControl as HTMLFormElement)['muted'] = !actual;
+    }
+  }
+
   playVideo() {
     this.initVideoControls();
     //console.log("play video",this.btnVideoControl,  (this.btnVideoControl != undefined));

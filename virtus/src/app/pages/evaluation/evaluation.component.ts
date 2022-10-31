@@ -303,6 +303,7 @@ export class EvaluationComponent implements OnInit {
               if (this.tiempoEvaluacion <= 0) {
                 this.tiempoEvaluacion$.unsubscribe();
                 /*Código para indicar que se terminó el tiempo*/
+                this.router.navigate(['/..']);
               }
               this.tiempoEvaluacion--;
             });
@@ -706,6 +707,14 @@ export class EvaluationComponent implements OnInit {
   pauseSignVideo() {
     this.initVideoSignControls();
     if (this.btnVideoSignControl) (this.btnVideoSignControl as HTMLFormElement)['pause']();
+  }
+
+  mutedSingVideo() {
+    this.initVideoSignControls();
+    if (this.btnVideoSignControl) {
+      let actual: boolean = (this.btnVideoSignControl as HTMLFormElement)['muted'];
+      (this.btnVideoSignControl as HTMLFormElement)['muted'] = !actual;
+    }
   }
 
   playVideo() {

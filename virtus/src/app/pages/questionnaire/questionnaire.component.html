@@ -402,7 +402,7 @@
           <div *ngFor="let rowImgPz of tmpPuzzle.arrayImagePuzzle; let y = index">
             <button pButton pRipple *ngFor="let elem of rowImgPz; let x = index"
                     class="p-button-info" [ngClass]="!tmpPuzzle.isActive(x, y) ? 'p-button-outlined': ''"
-                    style="padding: 1px!important;" (click)="tmpPuzzle.mover(x, y)" >
+                    style="padding: 1px!important;" (click)="tmpPuzzle.mover(x, y)">
               <img [src]="elem"/>
             </button>
           </div>
@@ -412,7 +412,7 @@
         <div class="col-12">
           <p-messages severity="warn" [enableService]="true" [closable]="true">
             <ng-template pTemplate>
-              <img src="assets/imgresource/empty/notification.png" width="25" />
+              <img src="assets/imgresource/empty/notification.png" width="25"/>
               <div class="ml-2">Actualmente este tipo de preguntas <strong>no soporta</strong> caracteristicas de
                 accesibilidad como comandos de voz, acceso por teclado u otros.
               </div>
@@ -523,7 +523,7 @@
             icon="pi pi-window-maximize" [style]="{'background-color':'#2196F3', 'color': '#ffffff'}" size="large"
             shape="circle"></p-avatar>
   <div *ngIf="vistaVideoSenias" class="col-12 text-center">
-    <p class="text-white"><strong>Lenguaje de Señas</strong></p>
+    <p class="text-white"><strong>Recurso extra</strong></p>
     <video id="pathurlsign_question" height="150" controls [src]="questionObject.pathurlsign_question"
            [autoplay]="true" [muted]="true">
     </video>
@@ -535,16 +535,20 @@
               (click)="playSignVideo()"></button>
       <button id="pausar_gestos" pButton pRipple icon="pi pi-pause" class="p-button-rounded p-button-info mr-2 mb-2"
               (click)="pauseSignVideo()"></button>
-      <button id="silenciar_gestos" pButton pRipple icon="pi pi-window-minimize"
+      <button id="silenciar_video_sing_rec" pButton pRipple icon="pi pi-volume-up"
               class="p-button-rounded p-button-success mr-2 mb-2"
+              (click)="mutedSingVideo()"></button>
+      <button id="silenciar_gestos" pButton pRipple icon="pi pi-window-minimize"
+              class="p-button-rounded p-button-danger mr-2 mb-2"
               (click)="vistaVideoSenias = false"></button>
+
     </div>
   </div>
 </div>
 <p-dialog header="{{sweetFakeAlert[1]?'¡Genial!':'¡Oh no...!'}}"
           [(visible)]="sweetFakeAlert[0]" [modal]="true"
           [draggable]="false" [resizable]="false" [style]="{width: '30vw'}"
-          [closable]="false">
+          [closable]="true">
 
   <div class="col-12 text-center">
     <img alt="Card"
