@@ -113,6 +113,7 @@ export class AppComponent {
         this.textColor = configSaved.textColor;
         this.documentZoom = configSaved.documentZoom;
         this.valorDocumentZoom = configSaved.valorDocumentZoom;
+        this.testFontFamily = configSaved.testFontFamily.replaceAll("''", "'");
         this.changeTheme(configSaved.theme);
         //AppConfigComponent.changeTheme(configSaved.theme);
       }
@@ -122,7 +123,7 @@ export class AppComponent {
 
 
   guardarConfiguracion(): void {
-    console.log(JSON.stringify(
+    let actualPreferences = JSON.stringify(
       {
         "theme":this.theme,
         "modeStyle": this.modeStyle,
@@ -132,7 +133,8 @@ export class AppComponent {
         "documentZoom": this.documentZoom,
         "valorDocumentZoom": this.valorDocumentZoom
       }
-    ));
+    );
+    console.log(actualPreferences);
 
     // "datereg_setting ": "",
     // "id_setting ": "",
@@ -145,15 +147,7 @@ export class AppComponent {
       .set('provider', 'native')
       .set('token', this.utils.token);
     this._http.post<any>(urlServicio, {
-      "setting_configuration": JSON.stringify(
-        {
-          "modeStyle": this.modeStyle,
-          "textColorChecked": this.textColorChecked,
-          "textColor": this.textColor,
-          "documentZoom": this.documentZoom,
-          "valorDocumentZoom": this.valorDocumentZoom
-        }
-      )
+      "setting_configuration": actualPreferences
     }, {headers: headers}).subscribe(response => {
       console.log("guardarConfiguracion: ", response);
     });
