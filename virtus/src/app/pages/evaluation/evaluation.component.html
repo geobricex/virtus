@@ -182,7 +182,7 @@
       <div *ngIf="validarPreguntaRecurso(questionObject.pathurlfile_question)" class="col-12">
         <div class="col-12 text-center">
           <object type="application/pdf" *ngIf="isPdf(questionObject.pathurlfile_question)"
-                  data="{{questionObject.pathurlfile_question}}"
+                  data="{{questionObject.pathurlfile_question || '../../assets/layout/images/imagesVirtus/logoBVirtus.svg'}}"
                   height="200">
           </object>
           <img [src]="questionObject.pathurlfile_question" height="200"
@@ -463,7 +463,7 @@
             </p-messages>
           </div>
         </div>
-        <div *ngIf="questionObject.name_questioncategory == tipoPregunta(5)">
+        <div *ngIf="questionObject.name_questioncategory == tipoPregunta(51)">
           <div class="col-12">
             <p-messages severity="info" [enableService]="false">
               <ng-template pTemplate>
@@ -494,18 +494,22 @@
             </p-messages>
           </div>
         </div>
-        <div class="col-12" style="display: flex;align-items: center;justify-content: center;">
-          <canvas #canvasEl id="canvasEl"
+        <div class="col-12" style="display: flex;align-items: center;justify-content: center;" >
+          <canvas #canvasEl id="canvasEl" [hidden]="questionObject.name_questioncategory == tipoPregunta(5)"
                   width="450" height="85"></canvas>
+          <canvas #canvasLineas id="canvasLineas" [hidden]="questionObject.name_questioncategory != tipoPregunta(5)"
+                  width="700" height="400"></canvas>
         </div>
         <div class="col-12" style="display: flex;align-items: center;justify-content: center;">
           <div id="div_puzzle"></div>
         </div>
       </p-fieldset>
       <hr>
+      <div class="text-left">
             <button pButton pRipple icon="pi pi-step-backward-alt" label="Anterior"
                     *ngIf="indexQuestionObject > 0"
                     class="p-button-info mr-2 mb-2" (click)="anteriorPregunta()"></button>
+      </div>
       <div class="text-right">
         <button pButton pRipple icon="pi pi-step-forward" id="evt_control_siguiente" label="Siguiente"
                 class="p-button-info mr-2 mb-2"
