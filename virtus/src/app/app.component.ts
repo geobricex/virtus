@@ -130,7 +130,7 @@ export class AppComponent {
 
   guardarConfiguracion(): void {
     this.confirmationService.confirm({
-      message: '¿Seguro que desea deshabilitar el recuerso?',
+      message: '¿Seguro que desea guardar esta configuración?',
       header: 'Mensaje de confirmación',
       icon: 'pi pi-info-circle',
       acceptLabel: "Si",
