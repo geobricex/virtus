@@ -27,3 +27,7 @@ Base de Datos/.idea/workspace.xml
 *.xml
 virtus/package-lock.json
 virtus/proxy.conf.json
+virtus_server/nginx/html/virtus/*
+virtus_server/nginx/ssl/*
+virtus_server/tomcat/webapps/virtusbk
+virtus_server/tomcat/webapps/virtusbk.war
