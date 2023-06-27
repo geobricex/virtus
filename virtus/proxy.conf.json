@@ -1,6 +1,6 @@
 {
   "/virtusbk/*": {
-    "target": "https://bioforest.uteq.edu.ec/",
+    "target": "https://aplicaciones.uteq.edu.ec/",
     "secure": false,
     "logLevel": "debug"
   },

@@ -94,10 +94,32 @@ public class EvaluationService {
 
     }
 
+    public String[] deleteEvaluation(Evaluation evaluation) {
+        String status = "4", message = "Error en los parámetros introducidos", data = "[]";
+        if (Methods.verifyMaxLength(evaluation.getNameEvaluation(), 500)
+                && Methods.verifyMaxLength(evaluation.getDescriptionEvaluation(), 500)) {
+            evaluation.setDateupdateEvaluation(Methods.nowLocalDateTime());
+            evaluation.setState_evaluation("I");
+
+            evaluation = evaluationDAO.save(evaluation);
+
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("id_evaluation", evaluation.getId());
+            status = "2";
+            message = "Evaluación desactivada con éxito.";
+            data = jsonObject.toString();
+        } else {
+            status = "3";
+            message = "Longitud excedida en uno de los campos ingresados.";
+        }
+        return new String[]{status, message, data};
+
+    }
+
     public String[] getEvaluations(String id_topic, String id_person) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
 
-        String evaluations  = evaluationDAO.findIdTopicEvaluationList(Integer.parseInt(id_topic), Integer.parseInt(id_person));
+        String evaluations = evaluationDAO.findIdTopicEvaluationList(Integer.parseInt(id_topic), Integer.parseInt(id_person));
         JsonArray jso = Methods.stringToJsonArray(evaluations);
         if (!jso.toString().equals("[]")) {
 //            Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();

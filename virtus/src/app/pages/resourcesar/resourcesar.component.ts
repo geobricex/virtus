@@ -9,7 +9,12 @@ import {Evaluation} from "../../models/Evaluation";
 import {Topic} from "../../models/Topic";
 import {Resources} from "../../models/Resources";
 import {DomSanitizer} from "@angular/platform-browser";
-import {Message} from "primeng/api";
+import {ConfirmationService, Message} from "primeng/api";
+import {Modules} from "../../models/Modules";
+import {Course} from "../../models/Course";
+import {posix} from "path";
+import {format} from 'date-fns';
+
 
 @Component({
   selector: 'app-resourcesar',
@@ -72,7 +77,8 @@ export class ResourcesarComponent implements OnInit {
     private utils: Utils,
     private _http: HttpClient,
     private formBuilder: FormBuilder,
-    public sanitizer: DomSanitizer
+    public sanitizer: DomSanitizer,
+    public confirmationService: ConfirmationService,
   ) {
     this.idCourse = this._route.snapshot.paramMap.get("idcourse");
     this.idModule = this._route.snapshot.paramMap.get("idmodule");
@@ -141,6 +147,132 @@ export class ResourcesarComponent implements OnInit {
   viewVideo(url: string) {
     this.videoUrl = url;
     this.viewVideoDialog = true;
+  }
+
+  deleteEvaluation(evaluationforDelete: any) {
+
+    this.confirmationService.confirm({
+      message: '¿Seguro que desea deshabilitar la evaluación?',
+      header: 'Mensaje de confirmación',
+      icon: 'pi pi-info-circle',
+      acceptLabel: "Si",
+      rejectLabel: "No",
+      accept: () => {
+        this.utils.loading;
+        console.log(evaluationforDelete);
+
+        const datereg_eva = new Date(evaluationforDelete.datereg_evaluation).toISOString().replace('Z', '');
+        const dateupdate_eva = new Date(evaluationforDelete.dateupdate_evaluation).toISOString().replace('Z', '');
+        //id: number, nameEvaluation: string, descriptionEvaluation: string, dateregEvaluation: string,
+        //dateupdateEvaluation: string, timeEvaluation: string, timeminutesEvaluation: number,
+        //numberquestionEvaluation: number, state_evaluation: string, typeEvaluation: string,
+        //opportunityEvaluation: boolean, opportunitiesEvaluation: number, orderCategory: boolean, allowsReview: boolean
+        console.log(datereg_eva + " " + dateupdate_eva);
+
+        this.evaluation = new Evaluation(
+          evaluationforDelete.id_evaluation,
+          evaluationforDelete.name_evaluation,
+          evaluationforDelete.description_evaluation,
+          evaluationforDelete.datereg_evaluation,
+          evaluationforDelete.dateupdate_evaluation,
+          evaluationforDelete.time_evaluation,
+          evaluationforDelete.timeminutes_evaluation,
+          evaluationforDelete.numberquestion_evaluation,
+          evaluationforDelete.state_evaluation,
+          evaluationforDelete.type_evaluation,
+          evaluationforDelete.opportunity_evaluation,
+          evaluationforDelete.opportunities_evaluation,
+          evaluationforDelete.order_category,
+          evaluationforDelete.allows_review
+        );
+
+        let topicAux: Topic;
+        topicAux = new Topic(
+          parseInt(this.idTopic === null ? "0" : this.idTopic),
+          "", "", "", "",
+          "", "", "")
+        this.evaluation._topicsIdTopic = topicAux;
+
+        console.log(this.evaluation);
+        this.apiDeleteEvaluation(this.evaluation).subscribe(response => {
+          this.utils.showMessages(response.status, response.information, "tst");
+          this.loadEvaluations();
+          this.utils.closeLoading;
+        });
+      },
+      reject: () => {
+
+      },
+      key: "positionDialog"
+    });
+
+  }
+
+  deleteResource(resourceforDelete: any) {
+
+    this.confirmationService.confirm({
+      message: '¿Seguro que desea deshabilitar el recuerso?',
+      header: 'Mensaje de confirmación',
+      icon: 'pi pi-info-circle',
+      acceptLabel: "Si",
+      rejectLabel: "No",
+      accept: () => {
+        this.utils.loading;
+        console.log(resourceforDelete)
+
+        const datereg_resource = new Date(resourceforDelete.datereg_resource).toISOString().replace('Z', '');
+        const dateupdate_resource = new Date(resourceforDelete.dateupdate_resource).toISOString().replace('Z', '');
+
+        this.resource = new Resources(
+          resourceforDelete.id_resource,
+          resourceforDelete.name_resource,
+          resourceforDelete.description_resource,
+          resourceforDelete.pathfile_resource,
+          resourceforDelete.pathfile_resource,
+          resourceforDelete.pathurlsign_resource,
+          resourceforDelete.pathurlremote_resource,
+          datereg_resource,
+          dateupdate_resource,
+          resourceforDelete.state_resource,
+        );
+
+        let topicAux: Topic;
+        topicAux = new Topic(
+          parseInt(this.idTopic === null ? "0" : this.idTopic),
+          "", "", "", "",
+          "", "", "")
+        this.resource._topicsIdTopic = topicAux;
+
+        console.log(this.resource);
+        this.apiDeleteResources(this.resource).subscribe(response => {
+          this.utils.showMessages(response.status, response.information, "tst");
+          this.loadResources();
+          this.utils.closeLoading;
+        });
+      },
+      reject: () => {
+
+      },
+      key: "positionDialog"
+    });
+  }
+
+  apiDeleteEvaluation(evaluationforDelete: Evaluation): Observable<any> {
+    this.globalUri = this.utils.globalUrl + "evaluation/deleteevaluation";
+    var headers = new HttpHeaders()
+      .set('Access-Control-Allow-Origin', '*')
+      .set('provider', 'native')
+      .set('token', this.utils.token);
+    return this._http.post(this.globalUri, evaluationforDelete, {headers: headers});
+  }
+
+  apiDeleteResources(resourceforDelete: Resources): Observable<any> {
+    this.globalUri = this.utils.globalUrl + "resource/delateresource";
+    var headers = new HttpHeaders()
+      .set('Access-Control-Allow-Origin', '*')
+      .set('provider', 'native')
+      .set('token', this.utils.token);
+    return this._http.post(this.globalUri, resourceforDelete, {headers: headers});
   }
 
   saveResources() {
@@ -389,12 +521,12 @@ export class ResourcesarComponent implements OnInit {
     if (!this.form['timeEvaluation'].value) {
       this.form['timeminutesEvaluation'].setValue(0);
     }
-
-    console.log(this.form['name'].value);
-    console.log(this.form['description'].value);
-    console.log(this.form['timeEvaluation'].value);
-    console.log(this.form['timeminutesEvaluation'].value);
-    console.log(this.form['orderByCategory'].value);
+    //
+    // console.log(this.form['name'].value);
+    // console.log(this.form['description'].value);
+    // console.log(this.form['timeEvaluation'].value);
+    // console.log(this.form['timeminutesEvaluation'].value);
+    // console.log(this.form['orderByCategory'].value);
 
     this.evaluation = new Evaluation(
       0,
@@ -417,7 +549,7 @@ export class ResourcesarComponent implements OnInit {
       "", "", "")
     this.evaluation._topicsIdTopic = topicAux;
     console.log(this.evaluation)
-    console.log(this.evaluation._topicsIdTopic)
+    // console.log(this.evaluation._topicsIdTopic)
     this.apiSaveEvaluation().subscribe(response => {
       console.log(response);
       this.utils.showMessages(response.status, response.information, "tst");

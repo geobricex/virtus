@@ -7,6 +7,8 @@ import {Utils} from "./util/Utils";
 @Component({
   selector: 'app-config',
   template: `
+    <p-confirmDialog [style]="{width: '50vw'}" key="positionDialog" position="bottom" [baseZIndex]="10000"
+                     rejectButtonStyleClass="p-button-outlined"></p-confirmDialog>
     <a style="cursor: pointer" id="layout-config-button" class="layout-config-button"
        (click)="onConfigButtonClick($event)">
       <i class="pi pi-cog"></i>

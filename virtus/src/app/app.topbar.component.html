@@ -57,7 +57,8 @@
         <i class="pi pi-ellipsis-v"></i>
     </a>-->
     <a id="topbar-profile-menu-button" href="#" (click)="app.onTopbarMenuButtonClick($event)">
-      <img [src]="person.pathimgPerson" alt="VIRTUS" class="topbar-profile" (error)="utils.onImgError($event)"
+      <img *ngIf="person.pathimgPerson!== undefined" [src]="person.pathimgPerson" alt="VIRTUS" class="topbar-profile"
+           (error)="utils.onImgError($event)"
            style="border-radius: 50%"/>
       <span
       >{{person.namePerson !== undefined ? person.namePerson : ''}} {{person.lastnamePerson !== undefined ? person.lastnamePerson : ''}}</span>

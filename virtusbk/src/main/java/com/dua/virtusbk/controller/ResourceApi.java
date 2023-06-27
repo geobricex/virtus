@@ -77,6 +77,27 @@ public class ResourceApi {
         }
     }
 
+    @PostMapping("/delateresource")
+    public ResponseEntity<String> delateResource(@RequestBody Resource resource, @RequestHeader("token") String sessionToken) {
+        System.out.println(resource);
+        String message;
+        String[] clains = Methods.getDataToJwt(sessionToken);
+        String[] res = Methods.validatePermit(clains[0], clains[1], 1);
+        if (res[0].equals("2")) {
+            res = resourceService.delateResource(resource);
+            message = Methods.getJsonMessage(res[0], res[1], res[2]);
+            if (res[0].equals("2") || res[0].equals("3")) {
+                return new ResponseEntity<>(message, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
+            }
+        } else {
+            message = Methods.getJsonMessage("4", "Credenciales de sesión inválidas, vuelve a iniciar sesión "
+                    + "e intentalo de nuevo.", "[]");
+            return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
+        }
+    }
+
     @PostMapping("/getresources")
     public ResponseEntity<String> getResources(@RequestBody @Validated String id_topic) {//, @RequestHeader("token") String sessionToken) {
         System.out.println("getResources...");

@@ -2,22 +2,32 @@
 <div class="card">
   <!--  <p-scrollPanel [style]="{width: '500px', height: '500px'}">-->
   <div *ngIf="loading">
-  <p-skeleton height="5rem" styleClass="mb-2"></p-skeleton>
-  <div class="grid">
-    <div class="col">
-      <p-skeleton height="25rem" styleClass="mb-2"></p-skeleton>
+    <p-skeleton height="5rem" styleClass="mb-2"></p-skeleton>
+    <div class="grid">
+      <div class="col">
+        <p-skeleton height="25rem" styleClass="mb-2"></p-skeleton>
+      </div>
+      <div class="col">
+        <p-skeleton height="25rem" styleClass="mb-2"></p-skeleton>
+      </div>
+      <div class="col">
+        <p-skeleton height="25rem" styleClass="mb-2"></p-skeleton>
+      </div>
     </div>
-    <div class="col">
-      <p-skeleton height="25rem" styleClass="mb-2"></p-skeleton>
-    </div>
-    <div class="col">
-      <p-skeleton height="25rem" styleClass="mb-2"></p-skeleton>
-    </div>
-  </div>
   </div>
 
-  <p-dataView #dv [value]="courses" [paginator]="true" [rows]="6" filterBy="name_course,keywords_course,description_course"
-              layout="grid" [sortField]="sortField" [sortOrder]="sortOrder" *ngIf="!loading">
+  <div class="text-center" *ngIf="statusApi === 3 && !loading">
+    <h3>
+      <span> Actualmente no se encuentra ningún curso nuevo para mostrar. </span>
+    </h3>
+    <img src="assets/layout/images/imagesVirtus/sinDatos.svg" alt="" width="300" class="mb-2"> <br>
+    <button pButton class="p-button p-button-success" label="Ir a mis cursos" routerLink="/app/mycourse"></button>
+  </div>
+
+  <p-dataView #dv [value]="courses" [paginator]="true" [rows]="6"
+              filterBy="name_course,keywords_course,description_course"
+              layout="grid" [sortField]="sortField" [sortOrder]="sortOrder"
+              *ngIf="statusApi === 2 && !loading">
     <ng-template pTemplate="header">
       <div class="grid grid-nogutter flex-column md:flex-row justify-content-between">
         <p-dropdown [options]="sortOptions" placeholder="Ordenar por" (onChange)="onSortChange($event)"
@@ -74,7 +84,8 @@
             <div class="w-full  my-3 mx-0 imgcard-virtus">
               <img *ngIf="course.cant_syllabu > 0" [src]="course.pathimg_course" [alt]="course.name_course" width="200"
                    (click)="joinCourse(course.id_course)" pTooltip="Click para unirme" tooltipPosition="right"/>
-              <img *ngIf="course.cant_syllabu === 0" [src]="course.pathimg_course" [alt]="course.name_course" width="200"
+              <img *ngIf="course.cant_syllabu === 0" [src]="course.pathimg_course" [alt]="course.name_course"
+                   width="200"
                    (click)="getUtils.showMessages(4, 'Curso no disponible', 'tst')"/>
               <button pButton icon="pi pi-info-circle"
                       class="mb-2 p-button p-button-info p-button-rounded cursor-pointer masinfo"
@@ -93,7 +104,7 @@
   <p-scrollTop target="window" styleClass="custom-scrolltop" [threshold]="100" icon="pi pi-arrow-up"></p-scrollTop>
   <!--  </p-scrollPanel>-->
 </div>
-El software debe
+
 <p-confirmDialog header="Confirmar la unión al curso" key="confirmJoin" icon="pi pi-exclamation-triangle"
                  message="¿Está seguro de ingresar a este curso?"
                  [style]="{width: '350px'}" acceptButtonStyleClass="p-button-text"

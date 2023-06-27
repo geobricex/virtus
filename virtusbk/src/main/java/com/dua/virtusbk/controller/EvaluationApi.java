@@ -77,6 +77,26 @@ public class EvaluationApi {
         }
     }
 
+    @PostMapping("/deleteevaluation")
+    public ResponseEntity<String> deleteEvaluation(@RequestBody @Validated Evaluation evaluation, @RequestHeader("token") String sessionToken) {
+        String message;
+        String[] clains = Methods.getDataToJwt(sessionToken);
+        String[] res = Methods.validatePermit(clains[0], clains[1], 1);
+        if (res[0].equals("2")) {
+            res = evaluationService.deleteEvaluation(evaluation);
+            message = Methods.getJsonMessage(res[0], res[1], res[2]);
+            if (res[0].equals("2") || res[0].equals("3")) {
+                return new ResponseEntity<>(message, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
+            }
+        } else {
+            message = Methods.getJsonMessage("4", "Credenciales de sesión inválidas, vuelve a iniciar sesión "
+                    + "e intentalo de nuevo.", "[]");
+            return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
+        }
+    }
+
     @PostMapping("/getevaluations")
     public ResponseEntity<String> getEvaluations(@RequestBody @Validated String id_topic, @RequestHeader("token") String sessionToken) {
         System.out.println("getevaluations...");
@@ -84,7 +104,7 @@ public class EvaluationApi {
         String[] clains = Methods.getDataToJwt(sessionToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);
         if (res[0].equals("2")) {
-            JsonObject  jso = Methods.stringToJSON(id_topic);
+            JsonObject jso = Methods.stringToJSON(id_topic);
             String topic_id_evaluation = Methods.JsonToString(jso, "topic_id_evaluation", "");
             if (!topic_id_evaluation.equals("")) {
                 res = evaluationService.getEvaluations(topic_id_evaluation, clains[0]);

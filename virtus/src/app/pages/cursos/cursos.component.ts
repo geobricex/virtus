@@ -1,12 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-
 import {BreadcrumbService} from '../../app.breadcrumb.service';
 import {Course} from "../../models/Course";
-
 import {Observable} from "rxjs";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Utils} from "../../util/Utils";
-import {Person} from "../../models/Person";
 import {ConfirmationService} from "primeng/api";
 import {Router} from "@angular/router";
 
@@ -28,6 +25,7 @@ export class CursosComponent implements OnInit {
 
   expandedRows: any = {};
   isExpanded: boolean = false;
+  statusApi: number = 0;
 
   constructor(
     private breadcrumbService: BreadcrumbService,
@@ -89,8 +87,13 @@ export class CursosComponent implements OnInit {
       if (response.status === 2) {
         this.courses = response.data;
         this.loading = false;
+      } else if (response.status === 3) {
+        console.log(response.status + " No hay cursos para mostrar")
+
+        this.loading = false;
+        this.statusApi = response.status;
       }
-      console.log(this.courses);
+
     });
   }
 

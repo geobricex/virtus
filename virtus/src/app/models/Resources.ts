@@ -14,7 +14,9 @@ export class Resources {
   private topicsIdTopic: Topic;
 
 
-  constructor(id: number, nameResource: string, descriptionResource: string, epathfileResource: string, pathvideoResource: string, pathurlsignResource: string, pathurlremoteResource: string, dateregResource: string, dateupdateResource: string, stateResource: string) {
+  constructor(id: number, nameResource: string, descriptionResource: string, epathfileResource: string,
+              pathvideoResource: string, pathurlsignResource: string, pathurlremoteResource: string,
+              dateregResource: string, dateupdateResource: string, stateResource: string) {
     this.id = id;
     this.nameResource = nameResource;
     this.descriptionResource = descriptionResource;

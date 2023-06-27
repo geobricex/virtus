@@ -10,6 +10,7 @@ import com.dua.virtusbk.entity.Person;
 import com.dua.virtusbk.entity.PersonsCours;
 import com.dua.virtusbk.repository.CourseRepository;
 import com.dua.virtusbk.repository.PersonsCourseRepository;
+import com.dua.virtusbk.util.LocalDateTimeAdapter;
 import com.dua.virtusbk.util.Methods;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -24,6 +25,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.Map;
 import javax.sql.DataSource;
 
@@ -38,8 +40,7 @@ public class CourseService implements ReportCertificateCours {
 
     public String[] saveCourse(Course course, String id_person) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
-        if (Methods.verifyMaxLength(course.getDescriptionCourse(), 250)
-                && Methods.verifyMaxLength(course.getNameCourse(), 75)) {
+        if (Methods.verifyMaxLength(course.getDescriptionCourse(), 250) && Methods.verifyMaxLength(course.getNameCourse(), 75)) {
             if (Methods.verifyMaxLength(course.getPathimgCourse(), 400)) {
                 course.setPersonsIdPerson(new Person(Long.parseLong(id_person)));
                 course.setDateregCourse(Methods.nowLocalDateTime());
@@ -66,8 +67,7 @@ public class CourseService implements ReportCertificateCours {
     public String[] updateCourse(Course course, String id_person) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
         System.out.println("updateCourse");
-        if (Methods.verifyMaxLength(course.getDescriptionCourse(), 250)
-                && Methods.verifyMaxLength(course.getNameCourse(), 75)) {
+        if (Methods.verifyMaxLength(course.getDescriptionCourse(), 250) && Methods.verifyMaxLength(course.getNameCourse(), 75)) {
             if (Methods.verifyMaxLength(course.getPathimgCourse(), 400)) {
                 course.setDateupdateCourse(Methods.nowLocalDateTime());
                 course = courseDAO.save(course);
@@ -102,12 +102,17 @@ public class CourseService implements ReportCertificateCours {
 
         personsCours.setStatePersonCourse("A");
         personsCours.setDateregPersonCourse(Methods.nowLocalDateTime());
-
+        System.out.println();
         personsCours = personcourseDAO.save(personsCours);
+//        Gson gson_ = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();
+//        data = gson_.toJson(personsCours);
+//        System.out.println("###1###");
+//        System.out.println(data);
 
-        Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();
-
+        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter()).create();
+        System.out.println("###2###");
         data = gson.toJson(personsCours);
+        System.out.println(data);
         status = "2";
         message = "Se ha unido al curso correctamente.";
 
@@ -177,16 +182,13 @@ public class CourseService implements ReportCertificateCours {
     private DataSource dataSource;
 
     @Override
-    public reportCertDto getReport(Map<String, Object> params)
-            throws JRException, IOException, SQLException {
+    public reportCertDto getReport(Map<String, Object> params) throws JRException, IOException, SQLException {
         String fileName = "virtus_cert";
         reportCertDto dto = new reportCertDto();
-        String extension = params.get("type").toString().equalsIgnoreCase(TypeReport.EXCEL.name()) ? ".xlsx"
-                : ".pdf";
+        String extension = params.get("type").toString().equalsIgnoreCase(TypeReport.EXCEL.name()) ? ".xlsx" : ".pdf";
         dto.setFileName(fileName + extension);
 
-        ByteArrayOutputStream stream = reportManager.exportReport(fileName, params.get("type").toString(), params,
-                dataSource.getConnection());
+        ByteArrayOutputStream stream = reportManager.exportReport(fileName, params.get("type").toString(), params, dataSource.getConnection());
 
         byte[] bs = stream.toByteArray();
         dto.setStream(new ByteArrayInputStream(bs));

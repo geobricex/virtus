@@ -360,6 +360,7 @@ public final class Methods {
             return new JsonObject();
         }
     }
+
     /**
      * from json to Integer.
      *

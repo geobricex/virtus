@@ -134,9 +134,10 @@ export class ResourcesComponent implements OnInit {
   }
 
   loadResources() {
-    console.log(this.idTopic);
+    console.log("this.idTopic = " + this.idTopic);
     this.apiLoadResources().subscribe({
       next: response => {
+        console.log("DATA");
         console.log(response);
         this.statusResources = response.status;
         if (response.status === 2)

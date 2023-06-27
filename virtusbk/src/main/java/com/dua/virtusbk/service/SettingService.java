@@ -74,8 +74,9 @@ public class SettingService {
     public String[] getSettingForPerson(String id_person) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
 
-        List<Setting> settings =
-                settingDAO.findByPersonsIdPersonOrderByDateregSettingDesc(new Person(Long.parseLong(id_person)));
+        List<Map<String, Object>> settings = settingDAO.findByPersonsIdPersonOrderByDateregSettingDesc(Long.parseLong(id_person));
+//        List<Map<String, Object>> settings = settingDAO.findCostmeticSettingByPersonId(Long.parseLong(id_person));
+
         if (settings.size() > 0) {
             Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();
             data = gson.toJson(settings);
@@ -87,7 +88,6 @@ public class SettingService {
             status = "3";
             message = "No se ha encontrado información.";
         }
-
         return new String[]{status, message, data};
     }
 
