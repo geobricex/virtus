@@ -24,7 +24,7 @@ virtus/package-lock.json
 Base de Datos/.idea/workspace.xml
 Base de Datos/.idea/dataSources/df8c8b86-2dab-4442-98ba-1fa49a5319ba.xml
 Base de Datos/.idea/workspace.xml
-*.xml
+
 virtus/package-lock.json
 virtus/proxy.conf.json
 virtus_server/nginx/html/virtus/*
