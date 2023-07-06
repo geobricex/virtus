@@ -8,6 +8,9 @@ import {Person} from "../../../models/Person";
 import {User} from "../../../models/user";
 import {StorageService} from "../../../authentication/StorageService";
 import {Session} from "../../../models/session";
+import {LoginServicie} from "../../loginServicie";
+import {Router} from "@angular/router";
+import {PersonInterface} from "../../../models/PersonInterface";
 
 @Component({
   selector: 'app-useradministration',
@@ -19,28 +22,29 @@ export class UseradministrationComponent implements OnInit {
   globalUri: string | null = "";
   person: Person;
   persons: Person[];
+  public personUser: PersonInterface;
   cols: any[];
   msgs: Message[] = [];
   public user: User;
-  public session: Session;
 
   constructor(
     private breadcrumbService: BreadcrumbService,
     private _http: HttpClient,
     private utils: Utils,
     private storageService: StorageService,
+    private loginservicie: LoginServicie,
+    public router: Router,
   ) {
-    this.session = this.storageService.getCurrentSession();
+
     this.breadcrumbService.setItems([
       {label: 'Gestión de Usuario', routerLink: ['/app/useradministration']},
     ]);
   }
 
   ngOnInit(): void {
-    console.log(this.utils.token);
+    // console.log(this.utils.token);
     this.loadgetPersons();
-    this.user = this.storageService.getCurrentUser();
-
+    this.getDataUser()
     this.cols = [
       {field: 'Nombre', header: 'Nombre'},
       {field: 'Apellido', header: 'Apellido'},
@@ -50,10 +54,28 @@ export class UseradministrationComponent implements OnInit {
     ];
   }
 
+  getDataUser() {
+    this.loginservicie.getDataPerson(this.loginservicie.getToken()).subscribe({
+      next: response => {
+        //console.log(response);
+        this.personUser = response;
+        console.log(" this.person")
+        console.log(this.personUser)
+        if (this.personUser === null) {
+          this.router.navigateByUrl('/login');
+          return;
+        }
+      }, error: err => {
+        this.router.navigateByUrl('/login');
+      }
+    });
+  }
+
   loadgetPersons() {
+    // console.log(this.user)
     this.apiLoadGetPersons().subscribe(response => {
       this.persons = response.data;
-      console.log(response);
+      // console.log(response);
     });
   }
 
@@ -67,7 +89,7 @@ export class UseradministrationComponent implements OnInit {
   }
 
   changeRolPersons(personUpdate: Person, type: string | null) {
-    console.log("type " + type);
+    // console.log("type " + type);
     switch (type) {
       case "UtoA":
         type = "A"
@@ -115,7 +137,7 @@ export class UseradministrationComponent implements OnInit {
     // @ts-ignore
     // let personFinal =  new Person(personUpdate.id, personUpdate.namePerson, personUpdate.lastnamePerson, personUpdate.emailPerson, personUpdate.typePerson, personUpdate.pathimgPerson, personUpdate.codeverificationPerson, personUpdate.dateregPerson, personUpdate.dateupdatePerson, personUpdate.providerPerson, personUpdate.idLocation);
 
-    console.log(personUpdate);
+    // console.log(personUpdate);
     // @ts-ignore
     personUpdate.dateregPerson = (personUpdate.dateregPerson).replace("T", " ");
     // @ts-ignore
@@ -135,10 +157,11 @@ export class UseradministrationComponent implements OnInit {
 
   apiChangeRolPersons(person: Person): Observable<any> {
     console.log(person);
+    console.log(this.utils.token)
     this.globalUri = this.utils.globalUrl + "persons";
     var headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
-      .set('token', this.session.token);
+      .set('token', this.utils.token);
     return this._http.put<Person>(this.globalUri, person, {headers: headers});
   }
 

@@ -274,6 +274,7 @@ public class PersonApi {//implements UserDetailsService {
     @PutMapping
     public ResponseEntity<String> updatePerson(@RequestBody Person person, @RequestHeader("token") String sessionToken) {
         System.out.println("updatePerson");
+        System.out.println(sessionToken);
         String message = "[]";
         String[] clains = Methods.getDataToJwt(sessionToken);
         String[] res = Methods.validatePermit(clains[0], clains[1], 1);

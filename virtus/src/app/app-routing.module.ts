@@ -35,15 +35,16 @@ import {UpdateevacuestComponent} from "./pages/updateevacuest/updateevacuest.com
 import {QuestionNuComponent} from "./pages/question-nu/question-nu.component";
 import {AcercadeComponent} from "./pages/acercade/acercade.component";
 import {ComandosComponent} from "./pages/comandos/comandos.component";
+import {GuarTokenGuard} from "./guards/guar-token.guard";
 import {C} from "@angular/cdk/keycodes";
 
 @NgModule({
   imports: [
     RouterModule.forRoot([
-      {path: '', component: AppMainpageComponent},
-      {path: 'home', component: AppMainpageComponent},
       {path: 'login', component: AppLoginComponent},
       {path: 'singup', component: SingupComponent},
+      {path: '', component: AppMainpageComponent, canActivate: [GuarTokenGuard]},
+      {path: 'home', component: AppMainpageComponent, canActivate: [GuarTokenGuard]},
       {path: 'about', component: AcercadeComponent},
       {path: 'information', component: ComandosComponent},
       {path: 'verify/:email/:code', component: VerifyAccountComponent},
@@ -51,7 +52,7 @@ import {C} from "@angular/cdk/keycodes";
         path: 'app', component: AppMainComponent,
         children: [
           {path: '', component: DashboardDemoComponent},
-          {path: 'games', component: GamesComponent},
+          // {path: 'games', component: GamesComponent},
           {path: 'about', component: AcercadeComponent},
           {path: 'information', component: ComandosComponent},
           {path: 'myprofile', component: MyprofileComponent},
@@ -90,9 +91,8 @@ import {C} from "@angular/cdk/keycodes";
           }
         ]
       },
-      {path: 'login', component: AppLoginComponent},
-      {path: 'testvoice', component: TestvoiceComponent},
-      {path: 'testpocket', component: TestpocketbaseComponent},
+      // {path: 'testvoice', component: TestvoiceComponent},
+      // {path: 'testpocket', component: TestpocketbaseComponent},
       {path: '**', component: AppNotfoundComponent},
     ], {scrollPositionRestoration: 'enabled'})
   ],
