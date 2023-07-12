@@ -86,14 +86,12 @@ export class CursosComponent implements OnInit {
     this.apiLoadCourses().subscribe(response => {
       if (response.status === 2) {
         this.courses = response.data;
-        this.loading = false;
+        console.log(this.courses)
       } else if (response.status === 3) {
         console.log(response.status + " No hay cursos para mostrar")
-
-        this.loading = false;
-        this.statusApi = response.status;
       }
-
+      this.loading = false;
+      this.statusApi = response.status;
     });
   }
 
