@@ -17,6 +17,8 @@ import {
 import {FormBuilder} from '@angular/forms';
 import {StorageService} from "../../authentication/StorageService";
 import {ExtendedKeyboardEvent, Hotkey, HotkeysService} from "angular2-hotkeys";
+import {AppMainComponent} from "../../app.main.component";
+import {AppComponent} from "../../app.component";
 
 
 declare var Artyom: any;
@@ -85,7 +87,8 @@ export class QuestionnaireComponent implements OnInit {
               private utils: Utils,
               private activatedRoute: ActivatedRoute,
               private storageService: StorageService,
-              private _hotkeysService: HotkeysService) {
+              private _hotkeysService: HotkeysService,
+              public app: AppComponent) {
 
     this.idCourse = this._route.snapshot.paramMap.get("idcourse");
     this.idModule = this._route.snapshot.paramMap.get("idmodule");
@@ -156,11 +159,11 @@ export class QuestionnaireComponent implements OnInit {
     if (this.tiempoEvaluacion$ !== undefined) {
       this.tiempoEvaluacion$.unsubscribe();
     }
-    if (this.text2SpeakSupport() && this.artyom.isSpeaking()) {
+    if (this.text2SpeakSupport(true) && this.artyom.isSpeaking()) {
       this.artyom.shutUp();
     }
     //Quitar el reconocimiento de voz
-    if (this.voiceComandsSupport()) {
+    if (this.voiceComandsSupport(true)) {
       this.artyom.fatality().then(() => {
         this.artyom.clearGarbageCollection();
       });
@@ -469,7 +472,7 @@ export class QuestionnaireComponent implements OnInit {
 
   validarPreguntaRecurso(elemt: string): boolean {
     if (elemt != undefined && elemt != null)
-      return (elemt.length > 0);
+      return (elemt.length > 0)  && this.app.visualResource;
     return false;
   }
 
@@ -808,15 +811,21 @@ export class QuestionnaireComponent implements OnInit {
 
   /*Comandos de voz*/
 
-  voiceComandsSupport(): boolean {
+  voiceComandsSupport(isDestroy: boolean = false): boolean {
     //let microphoneApi: boolean = window.hasOwnProperty('webkitSpeechRecognition') && window.hasOwnProperty('speechSynthesis');
     let microphoneApi: boolean = this.artyom.recognizingSupported();
-    return microphoneApi;
+    if (isDestroy) {
+      return microphoneApi;
+    }
+    return microphoneApi && this.app.voiceCommand;
   }
 
-  text2SpeakSupport(): boolean {
+  text2SpeakSupport(isDestroy: boolean = false): boolean {
     let microphoneApi: boolean = this.artyom.speechSupported();
-    return microphoneApi;
+    if (isDestroy) {
+      return microphoneApi;
+    }
+    return microphoneApi && this.app.auditoryResource;
   }
 
   isDesktopDevice(): boolean {
@@ -994,6 +1003,8 @@ export class QuestionnaireComponent implements OnInit {
   }
 
   leerPregunta(): void {
+
+
     let reader: string = "";
     reader += this.questionObject.title_question + " \n";
     reader += this.questionObject.description_question + " \n";

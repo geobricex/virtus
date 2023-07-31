@@ -271,7 +271,7 @@
           <div class="field-radiobutton">
             <p-checkbox [inputId]="'option_ck_' + alphabet[i]" name="multiple_Option" [value]="option"
                         [(ngModel)]="questionObject.answers_[0].responses"
-                        (onClick)="changeRadio(i)"></p-checkbox>
+                        (click)="changeRadio(i)"></p-checkbox>
             <label [for]="'option_ck_' + alphabet[i]">{{alphabet[i].toUpperCase() + ")\t" + option.opcion}}</label>
           </div>
         </div>
@@ -290,7 +290,7 @@
             <div class="field-radiobutton">
               <p-checkbox [inputId]="'option_ck_2_' + alphabet[i]" name="multiple_Option_img" [value]="option"
                           [(ngModel)]="questionObject.answers_[0].responses"
-                          (onClick)="changeRadio(i)"></p-checkbox>
+                          (click)="changeRadio(i)"></p-checkbox>
               <label
                 [for]="'option_ck_2_' + alphabet[i]"><strong>{{'Literal ' + alphabet[i].toUpperCase()}}</strong></label>
             </div>

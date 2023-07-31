@@ -5,7 +5,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, Subscription, timer} from 'rxjs';
 import {Utils} from "../../util/Utils";
 import {ActivatedRoute, Router} from '@angular/router';
-import { fabric } from "fabric";
+import {fabric} from "fabric";
 
 import {
   Correct,
@@ -18,6 +18,7 @@ import {
 import {FormBuilder} from '@angular/forms';
 import {StorageService} from "../../authentication/StorageService";
 import {ExtendedKeyboardEvent, Hotkey, HotkeysService} from "angular2-hotkeys";
+import {AppComponent} from "../../app.component";
 
 
 declare var Artyom: any;
@@ -75,7 +76,6 @@ export class EvaluationComponent implements OnInit {
   public tmpPuzzle: Puzzle;
 
 
-
   @ViewChild('canvasEl', {static: true}) CanvasEl: ElementRef<HTMLCanvasElement>;
   private contex: CanvasRenderingContext2D | null;
 
@@ -87,7 +87,8 @@ export class EvaluationComponent implements OnInit {
               private utils: Utils,
               private activatedRoute: ActivatedRoute,
               private storageService: StorageService,
-              private _hotkeysService: HotkeysService) {
+              private _hotkeysService: HotkeysService,
+              public app: AppComponent) {
 
     this.idCourse = this._route.snapshot.paramMap.get("idcourse");
     this.idModule = this._route.snapshot.paramMap.get("idmodule");
@@ -160,11 +161,11 @@ export class EvaluationComponent implements OnInit {
     if (this.tiempoEvaluacion$ !== undefined) {
       this.tiempoEvaluacion$.unsubscribe();
     }
-    if (this.text2SpeakSupport() && this.artyom.isSpeaking()) {
+    if (this.text2SpeakSupport(true) && this.artyom.isSpeaking()) {
       this.artyom.shutUp();
     }
     //Quitar el reconocimiento de voz
-    if (this.voiceComandsSupport()) {
+    if (this.voiceComandsSupport(true)) {
       this.artyom.fatality().then(() => {
         this.artyom.clearGarbageCollection();
       });
@@ -315,12 +316,12 @@ export class EvaluationComponent implements OnInit {
             });
           //}
           if (this.voiceComandsSupport()) {
-             if (this.storageService.getCurrentUser().email != "anthony.pachay2017@uteq.edu.ec") {
+            if (this.storageService.getCurrentUser().email != "anthony.pachay2017@uteq.edu.ec") {
               this.startContinuousArtyom();
-             }
+            }
           }
           // if (this.storageService.getCurrentUser().email == "anthony.pachay2017@uteq.edu.ec") {
-            this.cambiarPregunta(0, true);
+          this.cambiarPregunta(0, true);
           // } else {
           //   this.cambiarPregunta(0, true);
           // }
@@ -474,7 +475,7 @@ export class EvaluationComponent implements OnInit {
 
   validarPreguntaRecurso(elemt: string): boolean {
     if (elemt != undefined && elemt != null)
-      return (elemt.length > 0);
+      return (elemt.length > 0) && this.app.visualResource;
     return false;
   }
 
@@ -812,15 +813,21 @@ export class EvaluationComponent implements OnInit {
 
   /*Comandos de voz*/
 
-  voiceComandsSupport(): boolean {
+  voiceComandsSupport(isDestroy: boolean = false): boolean {
     //let microphoneApi: boolean = window.hasOwnProperty('webkitSpeechRecognition') && window.hasOwnProperty('speechSynthesis');
     let microphoneApi: boolean = this.artyom.recognizingSupported();
-    return microphoneApi;
+    if (isDestroy) {
+      return microphoneApi;
+    }
+    return microphoneApi && this.app.voiceCommand;
   }
 
-  text2SpeakSupport(): boolean {
+  text2SpeakSupport(isDestroy: boolean = false): boolean {
     let microphoneApi: boolean = this.artyom.speechSupported();
-    return microphoneApi;
+    if (isDestroy) {
+      return microphoneApi;
+    }
+    return microphoneApi && this.app.auditoryResource;
   }
 
   isDesktopDevice(): boolean {
@@ -1411,7 +1418,7 @@ export class EvaluationComponent implements OnInit {
   public globalUniLineaIndex = -1;
   public canvasLineas: fabric.Canvas;
 
-  preguntaUnirConLinea(pregunta: any){
+  preguntaUnirConLinea(pregunta: any) {
     let canvasLineas = this.canvasLineas;
     console.log("Pregunta de Unir Con Línea: ", pregunta);
 
@@ -1424,24 +1431,24 @@ export class EvaluationComponent implements OnInit {
     this.joinLineIzquierda = [];
     console.log("ok", canvasLineas);
 
-    for (let ind = 0; ind < pregunta.options_answer.length; ind++){
+    for (let ind = 0; ind < pregunta.options_answer.length; ind++) {
       let labelL: string = pregunta.options_answer[ind].leftSide.length > 0 ?
-          this.alphabet[ind] + ". " + pregunta.options_answer[ind].leftSide:
-          "Literal " + this.alphabet[ind] + ".";
+        this.alphabet[ind] + ". " + pregunta.options_answer[ind].leftSide :
+        "Literal " + this.alphabet[ind] + ".";
       this.makeElement(canvasLineas,
         labelL,
         pregunta.options_answer[ind].resourse_leftSide, 0, ind,
         pregunta.options_answer[ind].resourse_leftSide.length > 0);
 
       let labelR: string = pregunta.right_parts[ind].rightSide.length > 0 ?
-        this.alphabet[ind] + ". " + pregunta.right_parts[ind].rightSide:
+        this.alphabet[ind] + ". " + pregunta.right_parts[ind].rightSide :
         "Opción " + this.alphabet[ind] + ".";
       this.makeElement(canvasLineas,
         labelR,
         pregunta.right_parts[ind].resourse_rightSide, 1, ind,
         pregunta.right_parts[ind].resourse_rightSide.length > 0);
     }
-    for (let ind = 0; ind < this.joinLineIzquierda.length; ind++){
+    for (let ind = 0; ind < this.joinLineIzquierda.length; ind++) {
       canvasLineas.bringToFront(this.joinLineIzquierda[ind]);
     }
     let joinLineElements = this.joinLineDerecha;
@@ -1449,21 +1456,20 @@ export class EvaluationComponent implements OnInit {
     let globalUniLineaIndex = this.globalUniLineaIndex;
     let questionObject = this.questionObject;
 
-    canvasLineas.on('object:moving', function(e) {
+    canvasLineas.on('object:moving', function (e) {
       let p = e.target;
       //console.log(p);
       // @ts-ignore
-      p['line1'] && p['line1'].set({ 'x2': p.left + 6, 'y2': p.top + 6});
+      p['line1'] && p['line1'].set({'x2': p.left + 6, 'y2': p.top + 6});
       canvasLineas.renderAll();
     });
 
-    canvasLineas.on('mouse:down', function(e){
+    canvasLineas.on('mouse:down', function (e) {
       let p = e.target;
       console.log("me has clickeado tio", p);
-      if(p != null)
-      {
-        for (let ind = 0; ind < joinLineElementsIz.length; ind++){
-          if(p!.intersectsWithObject(joinLineElementsIz[ind])){
+      if (p != null) {
+        for (let ind = 0; ind < joinLineElementsIz.length; ind++) {
+          if (p!.intersectsWithObject(joinLineElementsIz[ind])) {
             console.log("Clic elemento: " + ind);
             globalUniLineaIndex = ind;
           }
@@ -1471,27 +1477,27 @@ export class EvaluationComponent implements OnInit {
       }
     });
 
-    canvasLineas.on('mouse:up', function(e){
+    canvasLineas.on('mouse:up', function (e) {
       let p = e.target;
       console.log("me has soltado tio", p);
       let inserTecta = false;
-      if(p != null) {
+      if (p != null) {
         for (let ind = 0; ind < joinLineElements.length; ind++) {
           if (p!.intersectsWithObject(joinLineElements[ind])) {
             console.log("coindice con la posición: " + ind);
             inserTecta = true;
-            if(globalUniLineaIndex != -1){
-              console.log("TOMAL: " ,globalUniLineaIndex, ind, questionObject);
+            if (globalUniLineaIndex != -1) {
+              console.log("TOMAL: ", globalUniLineaIndex, ind, questionObject);
               questionObject.answers_[0].responses[globalUniLineaIndex] = questionObject.answers_[0].right_parts![ind];
               globalUniLineaIndex = -1;
             }
           }
         }
-        if(inserTecta){
-          p!.set({'fill':'blue'});
+        if (inserTecta) {
+          p!.set({'fill': 'blue'});
           canvasLineas.renderAll();
-        }else{
-          p!.set({'fill':'white'});
+        } else {
+          p!.set({'fill': 'white'});
           canvasLineas.renderAll();
         }
       }
@@ -1499,15 +1505,15 @@ export class EvaluationComponent implements OnInit {
   }
 
 
-  makeCircle(left:any, top:any, line1:any, line2:any, line3:any, line4:any) {
+  makeCircle(left: any, top: any, line1: any, line2: any, line3: any, line4: any) {
     let c = new fabric.Circle({
       left: left - 6,
       top: top - 6,
       strokeWidth: 2,
       radius: 8,
-      fill: line1 == undefined?'#fff':'gray',
+      fill: line1 == undefined ? '#fff' : 'gray',
       stroke: '#666',
-      selectable: line1 == undefined? false: true,
+      selectable: line1 == undefined ? false : true,
     });
     c.hasControls = c.hasBorders = false;
     // @ts-ignore
@@ -1522,7 +1528,7 @@ export class EvaluationComponent implements OnInit {
     return c;
   }
 
-  makeLine(coords:number[]) {
+  makeLine(coords: number[]) {
     return new fabric.Line(coords, {
       fill: 'black',
       stroke: 'black',
@@ -1532,12 +1538,12 @@ export class EvaluationComponent implements OnInit {
     });
   }
 
-  makeElement(canvasLineas: fabric.Canvas, text: any, image:any, numX:number, numY:number, recurso: boolean){
+  makeElement(canvasLineas: fabric.Canvas, text: any, image: any, numX: number, numY: number, recurso: boolean) {
     var rect = new fabric.Rect({
       left: numX * 450,
       top: numY * 105,
       fill: '#ffeaa7',
-      width: (recurso? 250:160),
+      width: (recurso ? 250 : 160),
       height: 100,
       evented: false,
       selectable: false
@@ -1545,17 +1551,17 @@ export class EvaluationComponent implements OnInit {
 
 
     var txt = new fabric.Textbox(text, {
-      left: (recurso? 95: 5) + (numX * 450),
+      left: (recurso ? 95 : 5) + (numX * 450),
       top: 5 + (numY * 105),
       fill: 'black',
       width: 150,
-      fontSize:14,
+      fontSize: 14,
       evented: false,
       selectable: false
     });
     canvasLineas.add(rect);
     canvasLineas.add(txt);
-    if(recurso) {
+    if (recurso) {
       fabric.Image.fromURL(image, function (img) {
 
         function determineNewHeight(originalHeight: number, originalWidth: number, newWidth: number) {
@@ -1581,10 +1587,10 @@ export class EvaluationComponent implements OnInit {
         selectable: false
       });
     }
-    if(numX != 1) {
+    if (numX != 1) {
       let line = this.makeLine([
         //150 + 5 + 5 + 6
-        (numX == 0 ? (recurso ? 250 - 3: 160 - 3) : 450), (numY * 100) + 50 + (5 * numY) / 2,
+        (numX == 0 ? (recurso ? 250 - 3 : 160 - 3) : 450), (numY * 100) + 50 + (5 * numY) / 2,
         (numX == 0 ? (recurso ? 300 : 210) : 400), (numY * 100) + 50 + (5 * numY) / 2
       ]);
       canvasLineas.add(line);
@@ -1596,7 +1602,7 @@ export class EvaluationComponent implements OnInit {
       //circleFin.set({zIndex: (50 + numY)});
       canvasLineas.add(circleFin);
       this.joinLineIzquierda.push(circleFin);
-    } else{
+    } else {
       // @ts-ignore
       let circle = this.makeCircle(450 - 10, (numY * 100) + 50 + (5 * numY) / 2, null);
       canvasLineas.add(circle);
