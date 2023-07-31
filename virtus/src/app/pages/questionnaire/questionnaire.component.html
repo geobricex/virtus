@@ -493,8 +493,10 @@
           </div>
         </div>
         <div class="col-12" style="display: flex;align-items: center;justify-content: center;">
-          <canvas #canvasEl id="canvasEl"
+          <canvas #canvasEl id="canvasEl" [hidden]="questionObject.name_questioncategory == tipoPregunta(5)"
                   width="450" height="85"></canvas>
+          <canvas #canvasLineas id="canvasLineas" [hidden]="questionObject.name_questioncategory != tipoPregunta(5)"
+                  width="700" height="400"></canvas>
         </div>
         <div class="col-12" style="display: flex;align-items: center;justify-content: center;">
           <div id="div_puzzle"></div>

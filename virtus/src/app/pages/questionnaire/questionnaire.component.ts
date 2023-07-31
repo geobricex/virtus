@@ -19,6 +19,8 @@ import {StorageService} from "../../authentication/StorageService";
 import {ExtendedKeyboardEvent, Hotkey, HotkeysService} from "angular2-hotkeys";
 import {AppMainComponent} from "../../app.main.component";
 import {AppComponent} from "../../app.component";
+import {Puzzle} from "../../util/Puzzle";
+import {fabric} from "fabric";
 
 
 declare var Artyom: any;
@@ -128,6 +130,9 @@ export class QuestionnaireComponent implements OnInit {
       if (questionnaire['ideva'] != undefined) {
         this.obtenerPreguntas(questionnaire['ideva']);
       }
+    });
+    this.canvasLineas = new fabric.Canvas('canvasLineas', {
+      backgroundColor: "white"
     });
     console.log("canvas, ", this.CanvasEl);
     this.startHotKeysCommands();
@@ -472,7 +477,7 @@ export class QuestionnaireComponent implements OnInit {
 
   validarPreguntaRecurso(elemt: string): boolean {
     if (elemt != undefined && elemt != null)
-      return (elemt.length > 0)  && this.app.visualResource;
+      return (elemt.length > 0) && this.app.visualResource;
     return false;
   }
 
@@ -573,6 +578,8 @@ export class QuestionnaireComponent implements OnInit {
         }
         console.log("tipo pregujnta 5", this.questionObject.answers_[0].right_parts);
         this.questionObject.answers_[0].responses = Array<OptionsAnswer>(this.questionObject.answers_[0].options_answer.length - 1);
+
+        this.preguntaUnirConLinea(this.questionObject.answers_[0]);
       }
       if (this.questionObject.name_questioncategory == this.tipoPregunta(6)) {
         let imgPath: string = this.questionObject.answers_[0].options_answer[0].resource!;
@@ -1066,6 +1073,10 @@ export class QuestionnaireComponent implements OnInit {
   }
 
   decirAlgo(cadena: string): void {
+    // prevenir habla
+    if (this.text2SpeakSupport()) {
+      return;
+    }
     //si están hablando, callarlos
     if (this.artyom.isSpeaking()) {
       this.artyom.shutUp();
@@ -1409,196 +1420,209 @@ export class QuestionnaireComponent implements OnInit {
       }
     }
   }
-}
 
-function desordenarRow(unArray: any[]): any[] {
-  let t = unArray.sort(function (a, b) {
-    return (Math.random() - 0.5)
-  });
-  return [...t];
-}
+/////////////////////////////////////////
+// PREGUNTA DE UNIR CON LÍNEAS MEJORADA
+/////////////////////////////////////////
 
+// PREGUNTA DE UNIR CON LÍNEAS MEJORADA
+  public joinLineDerecha: fabric.Circle[] = []
+  public joinLineIzquierda: fabric.Circle[] = [];
 
-class Puzzle {
+  public globalUniLineaIndex = -1;
+  public canvasLineas: fabric.Canvas;
 
-  private maxSizeImg: number = 75;
-  private dimens: number = 3;
+  preguntaUnirConLinea(pregunta: any) {
+    let canvasLineas = this.canvasLineas;
+    console.log("Pregunta de Unir Con Línea: ", pregunta);
 
-  public arrayImagePuzzle: string[][];
-  public arrayPositionPuzzle: number[][];
+    canvasLineas.selection = false;
+    /*canvasLineas.forEachObject(function(o:any){
+      o.remove();
+    })*/
+    canvasLineas.clear();
+    this.joinLineDerecha = [];
+    this.joinLineIzquierda = [];
+    console.log("ok", canvasLineas);
 
-  public primerMovimiento: number = 0;
+    for (let ind = 0; ind < pregunta.options_answer.length; ind++) {
+      let labelL: string = pregunta.options_answer[ind].leftSide.length > 0 ?
+        this.alphabet[ind] + ". " + pregunta.options_answer[ind].leftSide :
+        "Literal " + this.alphabet[ind] + ".";
+      this.makeElement(canvasLineas,
+        labelL,
+        pregunta.options_answer[ind].resourse_leftSide, 0, ind,
+        pregunta.options_answer[ind].resourse_leftSide.length > 0);
 
-  public puzzleControls: any = {
-    complete: false,
-    pressed: {x: -1, y: -1},
-    release: {x: -1, y: -1}
-  };
-
-  crearPuzzle(cantidad: number, url: string): void {
-    this.dimens = Math.sqrt(cantidad);
-
-    let maxSizeImg = this.maxSizeImg * this.dimens;
-    this.arrayImagePuzzle = new Array<string[]>(cantidad);
-    this.arrayPositionPuzzle = new Array<number[]>(cantidad);
-    let mecanvas = document.createElement("canvas") as HTMLCanvasElement;
-    //let mecanvas = document.getElementById("tmpImagenCanvas") as HTMLCanvasElement;
-    console.log(mecanvas);
-    mecanvas.width = maxSizeImg;
-    mecanvas.height = maxSizeImg;
-    let ctx = mecanvas.getContext('2d')!;
-    let local_this = this;
-    let img = new Image();
-    img.onload = function () {
-      img.width = maxSizeImg;
-      img.height = maxSizeImg;
-
-      ctx.drawImage(img, 0, 0, maxSizeImg, maxSizeImg);
-      let ind = 0;
-      for (let y = 0; y < local_this.dimens; y++) {
-        local_this.arrayImagePuzzle[y] = new Array<string>(local_this.dimens);
-        local_this.arrayPositionPuzzle[y] = new Array<number>(local_this.dimens);
-        for (let x = 0; x < local_this.dimens; x++) {
-          let imgData = ctx.getImageData(x * local_this.maxSizeImg, y * local_this.maxSizeImg,
-            (x * local_this.maxSizeImg) + local_this.maxSizeImg,
-            (y * local_this.maxSizeImg) + local_this.maxSizeImg);
-          let mincanvas = document.createElement("canvas") as HTMLCanvasElement;
-          mincanvas.width = local_this.maxSizeImg;
-          mincanvas.height = local_this.maxSizeImg;
-          let minctx = mincanvas.getContext('2d')!;
-          minctx.putImageData(imgData, 0, 0);
-
-          // console.log("base64: ", mincanvas.toDataURL());
-          local_this.arrayImagePuzzle[y][x] = mincanvas.toDataURL();
-          local_this.arrayPositionPuzzle[y][x] = ind++;
-        }
-      }
-      /*let imgData = ctx.getImageData(0, 0, local_this.maxSizeImg, local_this.maxSizeImg);
-      let mincanvas = document.createElement("canvas") as HTMLCanvasElement;
-      mincanvas.width = local_this.maxSizeImg;
-      mincanvas.height = local_this.maxSizeImg;
-      let minctx = mincanvas.getContext('2d')!;
-      minctx.putImageData(imgData, 0, 0);
-
-      console.log("base64: ", mincanvas.toDataURL());
-      local_this.objImagePuzzle = mincanvas.toDataURL();*/
-      let arrayDesorden: number[] = new Array<number>(local_this.dimens);
-      for (let x = 0; x < local_this.dimens; x++) {
-        arrayDesorden[x] = x;
-      }
-      //desordenar las filas
-      for (let y = 0; y < local_this.dimens; y++) {
-        arrayDesorden = desordenarRow(arrayDesorden);
-        for (let x = 0; x < local_this.dimens; x++) {
-          let changeimg: string, changeInd: number;
-          changeimg = local_this.arrayImagePuzzle[y][arrayDesorden[x]];
-          local_this.arrayImagePuzzle[y][arrayDesorden[x]] = local_this.arrayImagePuzzle[y][x];
-          local_this.arrayImagePuzzle[y][x] = changeimg;
-
-          changeInd = local_this.arrayPositionPuzzle[y][arrayDesorden[x]];
-          local_this.arrayPositionPuzzle[y][arrayDesorden[x]] = local_this.arrayPositionPuzzle[y][x];
-          local_this.arrayPositionPuzzle[y][x] = changeInd;
-        }
-      }
-      //console.log("filas ", local_this.arrayPositionPuzzle);
-      //desordenar las columnas
-      for (let y = 0; y < local_this.dimens; y++) {
-        arrayDesorden = desordenarRow(arrayDesorden);
-        for (let x = 0; x < local_this.dimens; x++) {
-          let changeimg: string, changeInd: number;
-          changeimg = local_this.arrayImagePuzzle[arrayDesorden[x]][y];
-          local_this.arrayImagePuzzle[arrayDesorden[x]][y] = local_this.arrayImagePuzzle[x][y];
-          local_this.arrayImagePuzzle[x][y] = changeimg;
-
-          changeInd = local_this.arrayPositionPuzzle[arrayDesorden[x]][y];
-          local_this.arrayPositionPuzzle[arrayDesorden[x]][y] = local_this.arrayPositionPuzzle[x][y];
-          local_this.arrayPositionPuzzle[x][y] = changeInd;
-        }
-      }
-      //desordenar las filas
-      for (let y = 0; y < local_this.dimens; y++) {
-        arrayDesorden = desordenarRow(arrayDesorden);
-        for (let x = 0; x < local_this.dimens; x++) {
-          let changeimg: string, changeInd: number;
-          changeimg = local_this.arrayImagePuzzle[y][arrayDesorden[x]];
-          local_this.arrayImagePuzzle[y][arrayDesorden[x]] = local_this.arrayImagePuzzle[y][x];
-          local_this.arrayImagePuzzle[y][x] = changeimg;
-
-          changeInd = local_this.arrayPositionPuzzle[y][arrayDesorden[x]];
-          local_this.arrayPositionPuzzle[y][arrayDesorden[x]] = local_this.arrayPositionPuzzle[y][x];
-          local_this.arrayPositionPuzzle[y][x] = changeInd;
-        }
-      }
-      //console.log("filas ", local_this.arrayPositionPuzzle);
-      //desordenar las columnas
-      for (let y = 0; y < local_this.dimens; y++) {
-        arrayDesorden = desordenarRow(arrayDesorden);
-        for (let x = 0; x < local_this.dimens; x++) {
-          let changeimg: string, changeInd: number;
-          changeimg = local_this.arrayImagePuzzle[arrayDesorden[x]][y];
-          local_this.arrayImagePuzzle[arrayDesorden[x]][y] = local_this.arrayImagePuzzle[x][y];
-          local_this.arrayImagePuzzle[x][y] = changeimg;
-
-          changeInd = local_this.arrayPositionPuzzle[arrayDesorden[x]][y];
-          local_this.arrayPositionPuzzle[arrayDesorden[x]][y] = local_this.arrayPositionPuzzle[x][y];
-          local_this.arrayPositionPuzzle[x][y] = changeInd;
-        }
-      }
-
-    };
-    img.crossOrigin = "Anonymous";
-    img.src = url;
-  }
-
-  mover(x: number, y: number) {
-    if (!this.puzzleControls.complete) {
-      this.puzzleControls.pressed = {x: x, y: y};
-      this.puzzleControls.complete = true;
-    } else {
-      this.puzzleControls.released = {x: x, y: y};
-
-      let auxInd = this.arrayPositionPuzzle[this.puzzleControls.released.y][this.puzzleControls.released.x];
-      this.arrayPositionPuzzle[this.puzzleControls.released.y][this.puzzleControls.released.x] =
-        this.arrayPositionPuzzle[this.puzzleControls.pressed.y][this.puzzleControls.pressed.x];
-      this.arrayPositionPuzzle[this.puzzleControls.pressed.y][this.puzzleControls.pressed.x] = auxInd;
-
-      let auxbase64 = this.arrayImagePuzzle[this.puzzleControls.released.y][this.puzzleControls.released.x];
-      this.arrayImagePuzzle[this.puzzleControls.released.y][this.puzzleControls.released.x] =
-        this.arrayImagePuzzle[this.puzzleControls.pressed.y][this.puzzleControls.pressed.x];
-      this.arrayImagePuzzle[this.puzzleControls.pressed.y][this.puzzleControls.pressed.x] = auxbase64;
-
-      //hacer truco de cambio
-      this.puzzleControls.pressed = {x: -1, y: -1};
-      this.puzzleControls.released = {x: -1, y: -1};
-      this.puzzleControls.complete = false;
-
-      /*if (!this.primerMovimiento) {
-        this.primerMovimiento = true;
-      }*/
-      this.primerMovimiento++;
+      let labelR: string = pregunta.right_parts[ind].rightSide.length > 0 ?
+        this.alphabet[ind] + ". " + pregunta.right_parts[ind].rightSide :
+        "Opción " + this.alphabet[ind] + ".";
+      this.makeElement(canvasLineas,
+        labelR,
+        pregunta.right_parts[ind].resourse_rightSide, 1, ind,
+        pregunta.right_parts[ind].resourse_rightSide.length > 0);
     }
-  }
+    for (let ind = 0; ind < this.joinLineIzquierda.length; ind++) {
+      canvasLineas.bringToFront(this.joinLineIzquierda[ind]);
+    }
+    let joinLineElements = this.joinLineDerecha;
+    let joinLineElementsIz = this.joinLineIzquierda;
+    let globalUniLineaIndex = this.globalUniLineaIndex;
+    let questionObject = this.questionObject;
 
-  isActive(x: number, y: number) {
-    //if(!this.puzzleControls.complete){
-    return (this.puzzleControls.pressed.x === x && this.puzzleControls.pressed.y === y);
-    //(this.puzzleControls.rel.x === x && this.puzzleControls.pressed.y === y)
-    /*}
-    return false;*/
-  }
+    canvasLineas.on('object:moving', function (e) {
+      let p = e.target;
+      //console.log(p);
+      // @ts-ignore
+      p['line1'] && p['line1'].set({'x2': p.left + 6, 'y2': p.top + 6});
+      canvasLineas.renderAll();
+    });
 
-  comprobarResultado(): number[] {
-    let ind = 0, success = 0;
-    for (let y = 0; y < this.dimens; y++) {
-      if (this.arrayPositionPuzzle[y] !== undefined) {
-        for (let x = 0; x < this.dimens; x++) {
-          if (this.arrayPositionPuzzle[y][x] == ind) {
-            success++; //fichas en el lugar correcto
+    canvasLineas.on('mouse:down', function (e) {
+      let p = e.target;
+      console.log("me has clickeado tio", p);
+      if (p != null) {
+        for (let ind = 0; ind < joinLineElementsIz.length; ind++) {
+          if (p!.intersectsWithObject(joinLineElementsIz[ind])) {
+            console.log("Clic elemento: " + ind);
+            globalUniLineaIndex = ind;
           }
-          ind++;
         }
       }
-    }
-    return [success, this.dimens * this.dimens];
+    });
+
+    canvasLineas.on('mouse:up', function (e) {
+      let p = e.target;
+      console.log("me has soltado tio", p);
+      let inserTecta = false;
+      if (p != null) {
+        for (let ind = 0; ind < joinLineElements.length; ind++) {
+          if (p!.intersectsWithObject(joinLineElements[ind])) {
+            console.log("coindice con la posición: " + ind);
+            inserTecta = true;
+            if (globalUniLineaIndex != -1) {
+              console.log("TOMAL: ", globalUniLineaIndex, ind, questionObject);
+              questionObject.answers_[0].responses[globalUniLineaIndex] = questionObject.answers_[0].right_parts![ind];
+              globalUniLineaIndex = -1;
+            }
+          }
+        }
+        if (inserTecta) {
+          p!.set({'fill': 'blue'});
+          canvasLineas.renderAll();
+        } else {
+          p!.set({'fill': 'white'});
+          canvasLineas.renderAll();
+        }
+      }
+    });
   }
+
+
+  makeCircle(left: any, top: any, line1: any, line2: any, line3: any, line4: any) {
+    let c = new fabric.Circle({
+      left: left - 6,
+      top: top - 6,
+      strokeWidth: 2,
+      radius: 8,
+      fill: line1 == undefined ? '#fff' : 'gray',
+      stroke: '#666',
+      selectable: line1 == undefined ? false : true,
+    });
+    c.hasControls = c.hasBorders = false;
+    // @ts-ignore
+    c.line1 = line1;
+    // @ts-ignore
+    c.line2 = line2;
+    // @ts-ignore
+    c.line3 = line3;
+    // @ts-ignore
+    c.line4 = line4;
+
+    return c;
+  }
+
+  makeLine(coords: number[]) {
+    return new fabric.Line(coords, {
+      fill: 'black',
+      stroke: 'black',
+      strokeWidth: 6,
+      selectable: false,
+      evented: false,
+    });
+  }
+
+  makeElement(canvasLineas: fabric.Canvas, text: any, image: any, numX: number, numY: number, recurso: boolean) {
+    var rect = new fabric.Rect({
+      left: numX * 450,
+      top: numY * 105,
+      fill: '#ffeaa7',
+      width: (recurso ? 250 : 160),
+      height: 100,
+      evented: false,
+      selectable: false
+    });
+
+
+    var txt = new fabric.Textbox(text, {
+      left: (recurso ? 95 : 5) + (numX * 450),
+      top: 5 + (numY * 105),
+      fill: 'black',
+      width: 150,
+      fontSize: 14,
+      evented: false,
+      selectable: false
+    });
+    canvasLineas.add(rect);
+    canvasLineas.add(txt);
+    if (recurso) {
+      fabric.Image.fromURL(image, function (img) {
+
+        function determineNewHeight(originalHeight: number, originalWidth: number, newWidth: number) {
+          return (originalHeight / originalWidth) * newWidth;
+        }
+
+        let local_width = 85, local_height = 85;
+        if (img.width! > img.height!) {
+          local_height = determineNewHeight(img.width!, img.height!, local_width);
+        } else {
+          local_width = determineNewHeight(img.height!, img.width!, local_width);
+        }
+        img.set({
+          scaleX: local_width / img.width!,
+          scaleY: local_height / img.height!,
+          originX: 'left', originY: 'top'
+        });
+        canvasLineas.add(img);
+      }, {
+        left: 5 + (numX * 450),
+        top: 5 + (numY * 105),
+        evented: false,
+        selectable: false
+      });
+    }
+    if (numX != 1) {
+      let line = this.makeLine([
+        //150 + 5 + 5 + 6
+        (numX == 0 ? (recurso ? 250 - 3 : 160 - 3) : 450), (numY * 100) + 50 + (5 * numY) / 2,
+        (numX == 0 ? (recurso ? 300 : 210) : 400), (numY * 100) + 50 + (5 * numY) / 2
+      ]);
+      canvasLineas.add(line);
+      // @ts-ignore
+      let circleInicio = this.makeCircle(line.get('x1'), line.get('y1'), null);
+      canvasLineas.add(circleInicio);
+      // @ts-ignore
+      let circleFin = this.makeCircle(line.get('x2'), line.get('y2'), line);
+      //circleFin.set({zIndex: (50 + numY)});
+      canvasLineas.add(circleFin);
+      this.joinLineIzquierda.push(circleFin);
+    } else {
+      // @ts-ignore
+      let circle = this.makeCircle(450 - 10, (numY * 100) + 50 + (5 * numY) / 2, null);
+      canvasLineas.add(circle);
+      this.joinLineDerecha.push(circle);
+    }
+  }
+
 }
+

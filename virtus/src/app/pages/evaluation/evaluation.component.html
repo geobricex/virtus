@@ -252,7 +252,7 @@
         <p-card *ngFor="let option of questionObject.answers_[0].options_answer; let i = index"
                 [attr.data-index]="i" [style]="{width: '120px'}" styleClass="p-card-shadow">
           <ng-template pTemplate="header">
-            <img class="img-color" alt="Card" [src]="option.resource" width="100">
+            <img class="img-color img-size" alt="Card" [src]="option.resource" >
           </ng-template>
           <p>{{option.opcion}}</p>
           <ng-template pTemplate="footer">
@@ -348,8 +348,8 @@
              [attr.data-index]="i">
           <div class="col-12 md:col-8 justify-content-end grid">
             <div class="col-12 md:col-{{option.resourse_leftSide.length > 0?'4':'0'}} justify-content-center">
-              <img class="img-color" alt="Card" *ngIf="option.resourse_leftSide.length > 0"
-                   [src]="option.resourse_leftSide" height="100">
+              <img class="img-color img-size" alt="Card" *ngIf="option.resourse_leftSide.length > 0"
+                   [src]="option.resourse_leftSide" >
             </div>
             <div class="col-12 md:col-{{option.resourse_leftSide.length > 0?'8':'12'}} justify-content-start">
               <p>{{alphabet[i].toUpperCase() + ")\t" + (option.leftSide.length > 0 ? option.leftSide : '')}}</p>

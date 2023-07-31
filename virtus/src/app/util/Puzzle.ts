@@ -1,3 +1,5 @@
+import {QuestionUtils} from "./QuestionUtils";
+
 export class Puzzle {
 
   private maxSizeImg: number = 75;
@@ -13,13 +15,6 @@ export class Puzzle {
     pressed: {x: -1, y: -1},
     release: {x: -1, y: -1}
   };
-
-  desordenarRow(unArray: any[]): any[] {
-    let t = unArray.sort(function (a, b) {
-      return (Math.random() - 0.5)
-    });
-    return [...t];
-  }
 
   crearPuzzle(cantidad: number, url: string): void {
     this.dimens = Math.sqrt(cantidad);
@@ -74,7 +69,7 @@ export class Puzzle {
       }
       //desordenar las filas
       for (let y = 0; y < local_this.dimens; y++) {
-        arrayDesorden = local_this.desordenarRow(arrayDesorden);
+        arrayDesorden = QuestionUtils.desordenarRow(arrayDesorden);
         for (let x = 0; x < local_this.dimens; x++) {
           let changeimg: string, changeInd: number;
           changeimg = local_this.arrayImagePuzzle[y][arrayDesorden[x]];
@@ -89,7 +84,7 @@ export class Puzzle {
       //console.log("filas ", local_this.arrayPositionPuzzle);
       //desordenar las columnas
       for (let y = 0; y < local_this.dimens; y++) {
-        arrayDesorden = local_this.desordenarRow(arrayDesorden);
+        arrayDesorden = QuestionUtils.desordenarRow(arrayDesorden);
         for (let x = 0; x < local_this.dimens; x++) {
           let changeimg: string, changeInd: number;
           changeimg = local_this.arrayImagePuzzle[arrayDesorden[x]][y];
@@ -103,7 +98,7 @@ export class Puzzle {
       }
       //desordenar las filas
       for (let y = 0; y < local_this.dimens; y++) {
-        arrayDesorden = local_this.desordenarRow(arrayDesorden);
+        arrayDesorden = QuestionUtils.desordenarRow(arrayDesorden);
         for (let x = 0; x < local_this.dimens; x++) {
           let changeimg: string, changeInd: number;
           changeimg = local_this.arrayImagePuzzle[y][arrayDesorden[x]];
@@ -118,7 +113,7 @@ export class Puzzle {
       //console.log("filas ", local_this.arrayPositionPuzzle);
       //desordenar las columnas
       for (let y = 0; y < local_this.dimens; y++) {
-        arrayDesorden = local_this.desordenarRow(arrayDesorden);
+        arrayDesorden = QuestionUtils.desordenarRow(arrayDesorden);
         for (let x = 0; x < local_this.dimens; x++) {
           let changeimg: string, changeInd: number;
           changeimg = local_this.arrayImagePuzzle[arrayDesorden[x]][y];

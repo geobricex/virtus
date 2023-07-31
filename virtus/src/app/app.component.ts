@@ -132,7 +132,7 @@ export class AppComponent {
           this.valorDocumentZoom = configSaved.valorDocumentZoom;
         }
         if (configSaved.testFontFamily !== undefined) {
-          this.testFontFamily = configSaved.testFontFamily.replace("''", "'");
+          this.testFontFamily = configSaved.testFontFamily.replace(/''/g, "'");
         }
 
         if (configSaved.voiceCommand !== undefined) {
