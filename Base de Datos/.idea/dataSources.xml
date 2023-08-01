@@ -31,5 +31,12 @@
       <jdbc-url>jdbc:sqlserver://localhost:1433;database=colegio</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="CrazyGroup@10.1.1.41" uuid="1c192be0-d0ef-4a3b-90d2-9eca4ab51fcf">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://10.1.1.41:5432/CrazyGroup</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

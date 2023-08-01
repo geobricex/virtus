@@ -32,7 +32,7 @@
       </div>
     </div>
   </div>
-  <div class="col-12">
+  <div class="col-12" *ngIf="this.app.voiceCommand">
     <p-messages severity="warn" [enableService]="true" *ngIf="!voiceComandsSupport()">
       <ng-template pTemplate>
         <img src="assets/imgresource/empty/notification.png" width="75"
