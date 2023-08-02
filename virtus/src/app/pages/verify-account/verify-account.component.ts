@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {Utils} from "../../util/Utils";
 
@@ -11,7 +11,7 @@ import {Person} from "../../models/Person";
   templateUrl: './verify-account.component.html',
   styleUrls: ['./verify-account.component.scss']
 })
-export class VerifyAccountComponent implements OnInit {
+export class VerifyAccountComponent implements OnInit, AfterViewInit {
 
   email: string | null = "";
   code: string | null = "";
@@ -24,6 +24,10 @@ export class VerifyAccountComponent implements OnInit {
     private _http: HttpClient
   ) {
 
+  }
+
+  ngAfterViewInit() {
+    console.clear();
   }
 
   ngOnInit(): void {

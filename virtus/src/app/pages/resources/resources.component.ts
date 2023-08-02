@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {BreadcrumbService} from "../../app.breadcrumb.service";
 import {ActivatedRoute} from "@angular/router";
 import {Utils} from "../../util/Utils";
@@ -15,7 +15,7 @@ import {Topic} from "../../models/Topic";
   templateUrl: './resources.component.html',
   styleUrls: ['./resources.component.css']
 })
-export class ResourcesComponent implements OnInit {
+export class ResourcesComponent implements OnInit, AfterViewInit {
 
   resource: Resources;
   evaluation: Evaluation;
@@ -83,6 +83,10 @@ export class ResourcesComponent implements OnInit {
         routerLink: ['/app/mycourse/modules/' + this.idCourse + '/themes/' + this.idModule + '/resources/' + this.idTopic]
       }
     ]);
+  }
+
+  ngAfterViewInit() {
+    console.clear();
   }
 
   ngOnInit(): void {

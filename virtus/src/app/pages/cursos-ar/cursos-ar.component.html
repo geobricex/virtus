@@ -1,6 +1,6 @@
 <p-toast key="tst" [baseZIndex]="99999"></p-toast>
-<p-confirmDialog [style]="{width: '50vw'}" key="positionDialog" position="bottom" [baseZIndex]="10000"
-                 rejectButtonStyleClass="p-button-outlined"></p-confirmDialog>
+<!--<p-confirmDialog [style]="{width: '50vw'}" key="positionDialog" position="bottom" [baseZIndex]="10000"-->
+<!--                 rejectButtonStyleClass="p-button-outlined"></p-confirmDialog>-->
 
 <div class="grid">
   <div class="col-12">
@@ -61,6 +61,8 @@
               </div>
               <div
                 class="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0">
+                <button pButton icon="pi pi-folder-open" label="Eliminar"
+                        class="mb-2 p-button p-button-danger" (click)="disabledCourses(course)"></button>
                 <button pButton icon="pi pi-folder-open" label="Ingresar"
                         class="mb-2 p-button p-button-info" routerLink="modulear/{{course.id}}"></button>
                 <button pButton icon="pi pi-info-circle" label="Saber más"
@@ -86,6 +88,7 @@
                 <div class="w-full  my-3 mx-0 imgcard-virtus">
                   <img [src]="course.pathimgCourse" [alt]="course.nameCourse" width="200"
                        routerLink="modulear/{{course.id}}" pTooltip="Click para ingresar" tooltipPosition="right"/>
+                  <br/>
                   <button pButton icon="pi pi-info-circle"
                           class="mb-2 p-button p-button-info p-button-rounded cursor-pointer masinfo"
                           pTooltip="Saber más" tooltipPosition="bottom" (click)="saberMas(course.id)"></button>
@@ -94,7 +97,7 @@
                           pTooltip="Editar" tooltipPosition="bottom" (click)="selectedCourse(course)"></button>
                   <button pButton icon="pi pi-trash"
                           class="mb-2 p-button p-button-danger p-button-rounded cursor-pointer eliminar"
-                          pTooltip="Eliminar" tooltipPosition="bottom" (click)="disabledCourse(course)"></button>
+                          pTooltip="Eliminar" tooltipPosition="bottom" (click)="disabledCourses(course)"></button>
                 </div>
                 <div class="text-2xl font-bold">{{course.nameCourse}}</div>
                 <div class="mb-3">{{course.descriptionCourse}}</div>

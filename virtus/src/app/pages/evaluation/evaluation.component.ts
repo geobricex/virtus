@@ -1,11 +1,11 @@
-import {ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {BreadcrumbService} from "../../app.breadcrumb.service";
 
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, Subscription, timer} from 'rxjs';
 import {Utils} from "../../util/Utils";
 import {ActivatedRoute, Router} from '@angular/router';
-import { fabric } from "fabric";
+import {fabric} from "fabric";
 
 import {
   Correct,
@@ -18,6 +18,8 @@ import {
 import {FormBuilder} from '@angular/forms';
 import {StorageService} from "../../authentication/StorageService";
 import {ExtendedKeyboardEvent, Hotkey, HotkeysService} from "angular2-hotkeys";
+import {AppComponent} from "../../app.component";
+import {Puzzle} from "../../util/Puzzle";
 
 
 declare var Artyom: any;
@@ -27,7 +29,7 @@ declare var Artyom: any;
   templateUrl: './evaluation.component.html',
   styleUrls: ['./evaluation.component.scss']
 })
-export class EvaluationComponent implements OnInit {
+export class EvaluationComponent implements OnInit, AfterViewInit {
   idCourse: string | null = "";
   idModule: string | null = "";
   idTopic: string | null = "";
@@ -75,7 +77,6 @@ export class EvaluationComponent implements OnInit {
   public tmpPuzzle: Puzzle;
 
 
-
   @ViewChild('canvasEl', {static: true}) CanvasEl: ElementRef<HTMLCanvasElement>;
   private contex: CanvasRenderingContext2D | null;
 
@@ -87,7 +88,8 @@ export class EvaluationComponent implements OnInit {
               private utils: Utils,
               private activatedRoute: ActivatedRoute,
               private storageService: StorageService,
-              private _hotkeysService: HotkeysService) {
+              private _hotkeysService: HotkeysService,
+              public app: AppComponent) {
 
     this.idCourse = this._route.snapshot.paramMap.get("idcourse");
     this.idModule = this._route.snapshot.paramMap.get("idmodule");
@@ -128,15 +130,14 @@ export class EvaluationComponent implements OnInit {
         this.obtenerPreguntas(questionnaire['ideva']);
       }
     });
-    this.canvasLineas = new fabric.Canvas('canvasLineas', {
-      backgroundColor: "white"
-    });
+    // this.canvasLineas = new fabric.Canvas('canvasLineas', {
+    //   backgroundColor: "white"
+    // });
     console.log("canvas, ", this.CanvasEl);
     this.startHotKeysCommands();
     //Rompecabezas
 
   }
-
 
   repetirPregunta() {
     if (this.text2SpeakSupport()) {
@@ -154,17 +155,18 @@ export class EvaluationComponent implements OnInit {
   ngAfterViewInit(): void {
     //this.showSwal(true);
     //this.changeDetector.detectChanges();
+    console.clear();
   }
 
   ngOnDestroy() {
     if (this.tiempoEvaluacion$ !== undefined) {
       this.tiempoEvaluacion$.unsubscribe();
     }
-    if (this.text2SpeakSupport() && this.artyom.isSpeaking()) {
+    if (this.text2SpeakSupport(true) && this.artyom.isSpeaking()) {
       this.artyom.shutUp();
     }
     //Quitar el reconocimiento de voz
-    if (this.voiceComandsSupport()) {
+    if (this.voiceComandsSupport(true)) {
       this.artyom.fatality().then(() => {
         this.artyom.clearGarbageCollection();
       });
@@ -315,12 +317,12 @@ export class EvaluationComponent implements OnInit {
             });
           //}
           if (this.voiceComandsSupport()) {
-             if (this.storageService.getCurrentUser().email != "anthony.pachay2017@uteq.edu.ec") {
+            if (this.storageService.getCurrentUser().email != "anthony.pachay2017@uteq.edu.ec") {
               this.startContinuousArtyom();
-             }
+            }
           }
           // if (this.storageService.getCurrentUser().email == "anthony.pachay2017@uteq.edu.ec") {
-            this.cambiarPregunta(0, true);
+          this.cambiarPregunta(0, true);
           // } else {
           //   this.cambiarPregunta(0, true);
           // }
@@ -474,7 +476,7 @@ export class EvaluationComponent implements OnInit {
 
   validarPreguntaRecurso(elemt: string): boolean {
     if (elemt != undefined && elemt != null)
-      return (elemt.length > 0);
+      return (elemt.length > 0) && this.app.visualResource;
     return false;
   }
 
@@ -812,15 +814,21 @@ export class EvaluationComponent implements OnInit {
 
   /*Comandos de voz*/
 
-  voiceComandsSupport(): boolean {
+  voiceComandsSupport(isDestroy: boolean = false): boolean {
     //let microphoneApi: boolean = window.hasOwnProperty('webkitSpeechRecognition') && window.hasOwnProperty('speechSynthesis');
     let microphoneApi: boolean = this.artyom.recognizingSupported();
-    return microphoneApi;
+    if (isDestroy) {
+      return microphoneApi;
+    }
+    return microphoneApi && this.app.voiceCommand;
   }
 
-  text2SpeakSupport(): boolean {
+  text2SpeakSupport(isDestroy: boolean = false): boolean {
     let microphoneApi: boolean = this.artyom.speechSupported();
-    return microphoneApi;
+    if (isDestroy) {
+      return microphoneApi;
+    }
+    return microphoneApi && this.app.auditoryResource;
   }
 
   isDesktopDevice(): boolean {
@@ -1059,6 +1067,10 @@ export class EvaluationComponent implements OnInit {
   }
 
   decirAlgo(cadena: string): void {
+    // prevenir habla
+    if (this.text2SpeakSupport()) {
+      return;
+    }
     //si están hablando, callarlos
     if (this.artyom.isSpeaking()) {
       this.artyom.shutUp();
@@ -1411,10 +1423,24 @@ export class EvaluationComponent implements OnInit {
   public globalUniLineaIndex = -1;
   public canvasLineas: fabric.Canvas;
 
-  preguntaUnirConLinea(pregunta: any){
-    let canvasLineas = this.canvasLineas;
-    console.log("Pregunta de Unir Con Línea: ", pregunta);
+  @ViewChild('canvasLineas', {static: true}) canvasElLineas: ElementRef<HTMLCanvasElement>;
 
+  preguntaUnirConLinea(pregunta: any) {
+
+    let c_tamanio = 100, c_margen = 5;
+    let parts_o: OptionsAnswer[] = this.questionObject.answers_[0].options_answer;
+    let cantidad: number = parts_o.length;
+    let mecanvas = this.canvasElLineas.nativeElement;
+    mecanvas.height = (c_tamanio * cantidad) + (c_margen * (cantidad - 1));
+    // mecanvas.width = (c_tamanio * 2) + 150;
+    mecanvas.getContext('2d')!.clearRect(0, 0, mecanvas.width, mecanvas.height);
+    let ctx = mecanvas.getContext('2d')!;
+
+    console.log("Pregunta de Unir Con Línea: ", pregunta);
+    this.canvasLineas = new fabric.Canvas('canvasLineas', {
+      backgroundColor: "white"
+    });
+    let canvasLineas = this.canvasLineas;
     canvasLineas.selection = false;
     /*canvasLineas.forEachObject(function(o:any){
       o.remove();
@@ -1424,24 +1450,24 @@ export class EvaluationComponent implements OnInit {
     this.joinLineIzquierda = [];
     console.log("ok", canvasLineas);
 
-    for (let ind = 0; ind < pregunta.options_answer.length; ind++){
+    for (let ind = 0; ind < pregunta.options_answer.length; ind++) {
       let labelL: string = pregunta.options_answer[ind].leftSide.length > 0 ?
-          this.alphabet[ind] + ". " + pregunta.options_answer[ind].leftSide:
-          "Literal " + this.alphabet[ind] + ".";
+        this.alphabet[ind] + ". " + pregunta.options_answer[ind].leftSide :
+        "Literal " + this.alphabet[ind] + ".";
       this.makeElement(canvasLineas,
         labelL,
         pregunta.options_answer[ind].resourse_leftSide, 0, ind,
         pregunta.options_answer[ind].resourse_leftSide.length > 0);
 
       let labelR: string = pregunta.right_parts[ind].rightSide.length > 0 ?
-        this.alphabet[ind] + ". " + pregunta.right_parts[ind].rightSide:
+        this.alphabet[ind] + ". " + pregunta.right_parts[ind].rightSide :
         "Opción " + this.alphabet[ind] + ".";
       this.makeElement(canvasLineas,
         labelR,
         pregunta.right_parts[ind].resourse_rightSide, 1, ind,
         pregunta.right_parts[ind].resourse_rightSide.length > 0);
     }
-    for (let ind = 0; ind < this.joinLineIzquierda.length; ind++){
+    for (let ind = 0; ind < this.joinLineIzquierda.length; ind++) {
       canvasLineas.bringToFront(this.joinLineIzquierda[ind]);
     }
     let joinLineElements = this.joinLineDerecha;
@@ -1449,21 +1475,20 @@ export class EvaluationComponent implements OnInit {
     let globalUniLineaIndex = this.globalUniLineaIndex;
     let questionObject = this.questionObject;
 
-    canvasLineas.on('object:moving', function(e: any) {
+    canvasLineas.on('object:moving', function (e) {
       let p = e.target;
       //console.log(p);
       // @ts-ignore
-      p['line1'] && p['line1'].set({ 'x2': p.left + 6, 'y2': p.top + 6});
+      p['line1'] && p['line1'].set({'x2': p.left + 6, 'y2': p.top + 6});
       canvasLineas.renderAll();
     });
 
-    canvasLineas.on('mouse:down', function(e : any){
+    canvasLineas.on('mouse:down', function (e) {
       let p = e.target;
       console.log("me has clickeado tio", p);
-      if(p != null)
-      {
-        for (let ind = 0; ind < joinLineElementsIz.length; ind++){
-          if(p!.intersectsWithObject(joinLineElementsIz[ind])){
+      if (p != null) {
+        for (let ind = 0; ind < joinLineElementsIz.length; ind++) {
+          if (p!.intersectsWithObject(joinLineElementsIz[ind])) {
             console.log("Clic elemento: " + ind);
             globalUniLineaIndex = ind;
           }
@@ -1471,27 +1496,27 @@ export class EvaluationComponent implements OnInit {
       }
     });
 
-    canvasLineas.on('mouse:up', function(e : any){
+    canvasLineas.on('mouse:up', function (e) {
       let p = e.target;
       console.log("me has soltado tio", p);
       let inserTecta = false;
-      if(p != null) {
+      if (p != null) {
         for (let ind = 0; ind < joinLineElements.length; ind++) {
           if (p!.intersectsWithObject(joinLineElements[ind])) {
             console.log("coindice con la posición: " + ind);
             inserTecta = true;
-            if(globalUniLineaIndex != -1){
-              console.log("TOMAL: " ,globalUniLineaIndex, ind, questionObject);
+            if (globalUniLineaIndex != -1) {
+              console.log("TOMAL: ", globalUniLineaIndex, ind, questionObject);
               questionObject.answers_[0].responses[globalUniLineaIndex] = questionObject.answers_[0].right_parts![ind];
               globalUniLineaIndex = -1;
             }
           }
         }
-        if(inserTecta){
-          p!.set({'fill':'blue'});
+        if (inserTecta) {
+          p!.set({'fill': 'blue'});
           canvasLineas.renderAll();
-        }else{
-          p!.set({'fill':'white'});
+        } else {
+          p!.set({'fill': 'white'});
           canvasLineas.renderAll();
         }
       }
@@ -1499,15 +1524,15 @@ export class EvaluationComponent implements OnInit {
   }
 
 
-  makeCircle(left:any, top:any, line1:any, line2:any, line3:any, line4:any) {
+  makeCircle(left: any, top: any, line1: any, line2: any, line3: any, line4: any) {
     let c = new fabric.Circle({
       left: left - 6,
       top: top - 6,
       strokeWidth: 2,
       radius: 8,
-      fill: line1 == undefined?'#fff':'gray',
+      fill: line1 == undefined ? '#fff' : 'gray',
       stroke: '#666',
-      selectable: line1 == undefined? false: true,
+      selectable: line1 == undefined ? false : true,
     });
     c.hasControls = c.hasBorders = false;
     // @ts-ignore
@@ -1522,7 +1547,7 @@ export class EvaluationComponent implements OnInit {
     return c;
   }
 
-  makeLine(coords:number[]) {
+  makeLine(coords: number[]) {
     return new fabric.Line(coords, {
       fill: 'black',
       stroke: 'black',
@@ -1532,12 +1557,12 @@ export class EvaluationComponent implements OnInit {
     });
   }
 
-  makeElement(canvasLineas: fabric.Canvas, text: any, image:any, numX:number, numY:number, recurso: boolean){
+  makeElement(canvasLineas: fabric.Canvas, text: any, image: any, numX: number, numY: number, recurso: boolean) {
     var rect = new fabric.Rect({
       left: numX * 450,
       top: numY * 105,
       fill: '#ffeaa7',
-      width: (recurso? 250:160),
+      width: (recurso ? 250 : 160),
       height: 100,
       evented: false,
       selectable: false
@@ -1545,32 +1570,46 @@ export class EvaluationComponent implements OnInit {
 
 
     var txt = new fabric.Textbox(text, {
-      left: (recurso? 95: 5) + (numX * 450),
+      left: (recurso ? 95 : 5) + (numX * 450),
       top: 5 + (numY * 105),
       fill: 'black',
       width: 150,
-      fontSize:14,
+      fontSize: 14,
       evented: false,
       selectable: false
     });
     canvasLineas.add(rect);
     canvasLineas.add(txt);
-    if(recurso) {
-      fabric.Image.fromURL(image, function (img : any) {
+    if (recurso) {
+      fabric.Image.fromURL(image, function (img) {
 
         function determineNewHeight(originalHeight: number, originalWidth: number, newWidth: number) {
           return (originalHeight / originalWidth) * newWidth;
         }
 
         let local_width = 85, local_height = 85;
+        // img['class'] = " img-size";
         if (img.width! > img.height!) {
-          local_height = determineNewHeight(img.width!, img.height!, local_width);
+          local_height = determineNewHeight(img.width!, img.height!, local_height);
         } else {
           local_width = determineNewHeight(img.height!, img.width!, local_width);
         }
+        // img.set({
+        //   scaleX: local_width / img.width!,
+        //   scaleY: local_height / img.height!,
+        //   originX: 'left', originY: 'top'
+        // });
+        const maxWidth = 85;
+        const aspectRatio = img.width! / img.height!;
+        const newWidth = Math.min(img.width!, maxWidth);
+        const newHeight = newWidth / aspectRatio;
+
+        // Establecer las nuevas dimensiones de la imagen
         img.set({
-          scaleX: local_width / img.width!,
-          scaleY: local_height / img.height!,
+          // width: newWidth,
+          // height: newHeight,
+          scaleX: newWidth / img.width!,
+          scaleY: newHeight / img.height!,
           originX: 'left', originY: 'top'
         });
         canvasLineas.add(img);
@@ -1581,10 +1620,10 @@ export class EvaluationComponent implements OnInit {
         selectable: false
       });
     }
-    if(numX != 1) {
+    if (numX != 1) {
       let line = this.makeLine([
         //150 + 5 + 5 + 6
-        (numX == 0 ? (recurso ? 250 - 3: 160 - 3) : 450), (numY * 100) + 50 + (5 * numY) / 2,
+        (numX == 0 ? (recurso ? 250 - 3 : 160 - 3) : 450), (numY * 100) + 50 + (5 * numY) / 2,
         (numX == 0 ? (recurso ? 300 : 210) : 400), (numY * 100) + 50 + (5 * numY) / 2
       ]);
       canvasLineas.add(line);
@@ -1596,7 +1635,7 @@ export class EvaluationComponent implements OnInit {
       //circleFin.set({zIndex: (50 + numY)});
       canvasLineas.add(circleFin);
       this.joinLineIzquierda.push(circleFin);
-    } else{
+    } else {
       // @ts-ignore
       let circle = this.makeCircle(450 - 10, (numY * 100) + 50 + (5 * numY) / 2, null);
       canvasLineas.add(circle);
@@ -1606,194 +1645,3 @@ export class EvaluationComponent implements OnInit {
 
 }
 
-function desordenarRow(unArray: any[]): any[] {
-  let t = unArray.sort(function (a, b) {
-    return (Math.random() - 0.5)
-  });
-  return [...t];
-}
-
-
-class Puzzle {
-
-  private maxSizeImg: number = 75;
-  private dimens: number = 3;
-
-  public arrayImagePuzzle: string[][];
-  public arrayPositionPuzzle: number[][];
-
-  public primerMovimiento: number = 0;
-
-  public puzzleControls: any = {
-    complete: false,
-    pressed: {x: -1, y: -1},
-    release: {x: -1, y: -1}
-  };
-
-  crearPuzzle(cantidad: number, url: string): void {
-    this.dimens = Math.sqrt(cantidad);
-
-    let maxSizeImg = this.maxSizeImg * this.dimens;
-    this.arrayImagePuzzle = new Array<string[]>(cantidad);
-    this.arrayPositionPuzzle = new Array<number[]>(cantidad);
-    let mecanvas = document.createElement("canvas") as HTMLCanvasElement;
-    //let mecanvas = document.getElementById("tmpImagenCanvas") as HTMLCanvasElement;
-    console.log(mecanvas);
-    mecanvas.width = maxSizeImg;
-    mecanvas.height = maxSizeImg;
-    let ctx = mecanvas.getContext('2d')!;
-    let local_this = this;
-    let img = new Image();
-    img.onload = function () {
-      img.width = maxSizeImg;
-      img.height = maxSizeImg;
-
-      ctx.drawImage(img, 0, 0, maxSizeImg, maxSizeImg);
-      let ind = 0;
-      for (let y = 0; y < local_this.dimens; y++) {
-        local_this.arrayImagePuzzle[y] = new Array<string>(local_this.dimens);
-        local_this.arrayPositionPuzzle[y] = new Array<number>(local_this.dimens);
-        for (let x = 0; x < local_this.dimens; x++) {
-          let imgData = ctx.getImageData(x * local_this.maxSizeImg, y * local_this.maxSizeImg,
-            (x * local_this.maxSizeImg) + local_this.maxSizeImg,
-            (y * local_this.maxSizeImg) + local_this.maxSizeImg);
-          let mincanvas = document.createElement("canvas") as HTMLCanvasElement;
-          mincanvas.width = local_this.maxSizeImg;
-          mincanvas.height = local_this.maxSizeImg;
-          let minctx = mincanvas.getContext('2d')!;
-          minctx.putImageData(imgData, 0, 0);
-
-          // console.log("base64: ", mincanvas.toDataURL());
-          local_this.arrayImagePuzzle[y][x] = mincanvas.toDataURL();
-          local_this.arrayPositionPuzzle[y][x] = ind++;
-        }
-      }
-      /*let imgData = ctx.getImageData(0, 0, local_this.maxSizeImg, local_this.maxSizeImg);
-      let mincanvas = document.createElement("canvas") as HTMLCanvasElement;
-      mincanvas.width = local_this.maxSizeImg;
-      mincanvas.height = local_this.maxSizeImg;
-      let minctx = mincanvas.getContext('2d')!;
-      minctx.putImageData(imgData, 0, 0);
-
-      console.log("base64: ", mincanvas.toDataURL());
-      local_this.objImagePuzzle = mincanvas.toDataURL();*/
-      let arrayDesorden: number[] = new Array<number>(local_this.dimens);
-      for (let x = 0; x < local_this.dimens; x++) {
-        arrayDesorden[x] = x;
-      }
-      //desordenar las filas
-      for (let y = 0; y < local_this.dimens; y++) {
-        arrayDesorden = desordenarRow(arrayDesorden);
-        for (let x = 0; x < local_this.dimens; x++) {
-          let changeimg: string, changeInd: number;
-          changeimg = local_this.arrayImagePuzzle[y][arrayDesorden[x]];
-          local_this.arrayImagePuzzle[y][arrayDesorden[x]] = local_this.arrayImagePuzzle[y][x];
-          local_this.arrayImagePuzzle[y][x] = changeimg;
-
-          changeInd = local_this.arrayPositionPuzzle[y][arrayDesorden[x]];
-          local_this.arrayPositionPuzzle[y][arrayDesorden[x]] = local_this.arrayPositionPuzzle[y][x];
-          local_this.arrayPositionPuzzle[y][x] = changeInd;
-        }
-      }
-      //console.log("filas ", local_this.arrayPositionPuzzle);
-      //desordenar las columnas
-      for (let y = 0; y < local_this.dimens; y++) {
-        arrayDesorden = desordenarRow(arrayDesorden);
-        for (let x = 0; x < local_this.dimens; x++) {
-          let changeimg: string, changeInd: number;
-          changeimg = local_this.arrayImagePuzzle[arrayDesorden[x]][y];
-          local_this.arrayImagePuzzle[arrayDesorden[x]][y] = local_this.arrayImagePuzzle[x][y];
-          local_this.arrayImagePuzzle[x][y] = changeimg;
-
-          changeInd = local_this.arrayPositionPuzzle[arrayDesorden[x]][y];
-          local_this.arrayPositionPuzzle[arrayDesorden[x]][y] = local_this.arrayPositionPuzzle[x][y];
-          local_this.arrayPositionPuzzle[x][y] = changeInd;
-        }
-      }
-      //desordenar las filas
-      for (let y = 0; y < local_this.dimens; y++) {
-        arrayDesorden = desordenarRow(arrayDesorden);
-        for (let x = 0; x < local_this.dimens; x++) {
-          let changeimg: string, changeInd: number;
-          changeimg = local_this.arrayImagePuzzle[y][arrayDesorden[x]];
-          local_this.arrayImagePuzzle[y][arrayDesorden[x]] = local_this.arrayImagePuzzle[y][x];
-          local_this.arrayImagePuzzle[y][x] = changeimg;
-
-          changeInd = local_this.arrayPositionPuzzle[y][arrayDesorden[x]];
-          local_this.arrayPositionPuzzle[y][arrayDesorden[x]] = local_this.arrayPositionPuzzle[y][x];
-          local_this.arrayPositionPuzzle[y][x] = changeInd;
-        }
-      }
-      //console.log("filas ", local_this.arrayPositionPuzzle);
-      //desordenar las columnas
-      for (let y = 0; y < local_this.dimens; y++) {
-        arrayDesorden = desordenarRow(arrayDesorden);
-        for (let x = 0; x < local_this.dimens; x++) {
-          let changeimg: string, changeInd: number;
-          changeimg = local_this.arrayImagePuzzle[arrayDesorden[x]][y];
-          local_this.arrayImagePuzzle[arrayDesorden[x]][y] = local_this.arrayImagePuzzle[x][y];
-          local_this.arrayImagePuzzle[x][y] = changeimg;
-
-          changeInd = local_this.arrayPositionPuzzle[arrayDesorden[x]][y];
-          local_this.arrayPositionPuzzle[arrayDesorden[x]][y] = local_this.arrayPositionPuzzle[x][y];
-          local_this.arrayPositionPuzzle[x][y] = changeInd;
-        }
-      }
-
-    };
-    img.crossOrigin = "Anonymous";
-    img.src = url;
-  }
-
-  mover(x: number, y: number) {
-    if (!this.puzzleControls.complete) {
-      this.puzzleControls.pressed = {x: x, y: y};
-      this.puzzleControls.complete = true;
-    } else {
-      this.puzzleControls.released = {x: x, y: y};
-
-      let auxInd = this.arrayPositionPuzzle[this.puzzleControls.released.y][this.puzzleControls.released.x];
-      this.arrayPositionPuzzle[this.puzzleControls.released.y][this.puzzleControls.released.x] =
-        this.arrayPositionPuzzle[this.puzzleControls.pressed.y][this.puzzleControls.pressed.x];
-      this.arrayPositionPuzzle[this.puzzleControls.pressed.y][this.puzzleControls.pressed.x] = auxInd;
-
-      let auxbase64 = this.arrayImagePuzzle[this.puzzleControls.released.y][this.puzzleControls.released.x];
-      this.arrayImagePuzzle[this.puzzleControls.released.y][this.puzzleControls.released.x] =
-        this.arrayImagePuzzle[this.puzzleControls.pressed.y][this.puzzleControls.pressed.x];
-      this.arrayImagePuzzle[this.puzzleControls.pressed.y][this.puzzleControls.pressed.x] = auxbase64;
-
-      //hacer truco de cambio
-      this.puzzleControls.pressed = {x: -1, y: -1};
-      this.puzzleControls.released = {x: -1, y: -1};
-      this.puzzleControls.complete = false;
-
-      /*if (!this.primerMovimiento) {
-        this.primerMovimiento = true;
-      }*/
-      this.primerMovimiento++;
-    }
-  }
-
-  isActive(x: number, y: number) {
-    //if(!this.puzzleControls.complete){
-    return (this.puzzleControls.pressed.x === x && this.puzzleControls.pressed.y === y);
-    //(this.puzzleControls.rel.x === x && this.puzzleControls.pressed.y === y)
-    /*}
-    return false;*/
-  }
-
-  comprobarResultado(): number[] {
-    let ind = 0, success = 0;
-    for (let y = 0; y < this.dimens; y++) {
-      if (this.arrayPositionPuzzle[y] !== undefined) {
-        for (let x = 0; x < this.dimens; x++) {
-          if (this.arrayPositionPuzzle[y][x] == ind) {
-            success++; //fichas en el lugar correcto
-          }
-          ind++;
-        }
-      }
-    }
-    return [success, this.dimens * this.dimens];
-  }
-}

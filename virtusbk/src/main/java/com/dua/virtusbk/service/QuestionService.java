@@ -31,7 +31,7 @@ public class QuestionService {
                 && Methods.verifyMaxLength(question.getTitleQuestion(), 200)
                 && Methods.verifyMaxLength(question.getTitleQuestion(), 200)) {
             if (Methods.verifyMaxLength(question.getPathurlfileQuestion(), 200)
-                    && Methods.verifyMaxLength(question.getPathurlsignQuestion(), 200)
+//                    && Methods.verifyMaxLength(question.getPathurlsignQuestion(), 200)
                     && Methods.verifyMaxLength(question.getPathurlvideoQuestion(), 200)) {
                 question.setStateQuestion("A");
                 question = questionDAO.save(question);

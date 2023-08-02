@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {BreadcrumbService} from '../../app.breadcrumb.service';
 import {Course} from "../../models/Course";
 import {Observable} from "rxjs";
@@ -12,7 +12,7 @@ import {Router} from "@angular/router";
   templateUrl: './cursos.component.html',
   styleUrls: ['../../../assets/demo/badges.scss']
 })
-export class CursosComponent implements OnInit {
+export class CursosComponent implements OnInit, AfterViewInit {
 
   courses: Course[];
   sortOptions: any[];
@@ -38,6 +38,10 @@ export class CursosComponent implements OnInit {
       {label: 'Cursos', routerLink: ['/app/course']},
       {label: 'Todos los cursos', routerLink: ['/app/course']}
     ]);
+  }
+
+  ngAfterViewInit() {
+    console.clear();
   }
 
   ngOnInit(): void {

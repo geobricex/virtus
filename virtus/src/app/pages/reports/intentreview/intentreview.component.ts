@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {BreadcrumbService} from "../../../app.breadcrumb.service";
 import {Person} from "../../../models/Person";
 import {Observable} from "rxjs";
@@ -10,7 +10,7 @@ import {Utils} from "../../../util/Utils";
   templateUrl: './intentreview.component.html',
   styleUrls: ['./intentreview.component.scss']
 })
-export class IntentreviewComponent implements OnInit {
+export class IntentreviewComponent implements OnInit, AfterViewInit {
   globalUri: string | null = "";
   person: Person;
   persons: Person[];
@@ -25,6 +25,10 @@ export class IntentreviewComponent implements OnInit {
       {label: '', routerLink: ['/app/']},
       {label: 'Revisión de intento', routerLink: ['/app/reports/intentreview']},
     ]);
+  }
+
+  ngAfterViewInit() {
+    console.clear();
   }
 
   ngOnInit(): void {

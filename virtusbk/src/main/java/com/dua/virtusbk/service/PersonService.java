@@ -1,14 +1,10 @@
 package com.dua.virtusbk.service;
 
-import com.dua.virtusbk.ExcludeProxiedFields;
-import com.dua.virtusbk.PersonDto;
 import com.dua.virtusbk.entity.Person;
 import com.dua.virtusbk.repository.PersonRepository;
 import com.dua.virtusbk.util.DataStatic;
 import com.dua.virtusbk.util.Methods;
 import com.dua.virtusbk.util.WeEncoder;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -20,7 +16,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;

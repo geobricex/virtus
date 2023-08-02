@@ -5,6 +5,7 @@ import {Utils} from "./util/Utils";
 import {AppConfigComponent} from "./app.config.component";
 import {Resources} from "./models/Resources";
 import {Topic} from "./models/Topic";
+import {InterfaceSettings} from "./models/globalInterfaces";
 
 @Component({
   selector: 'app-root',
@@ -40,6 +41,10 @@ export class AppComponent {
   public documentZoom: string = '100%';
   //auxiliar
   public valorDocumentZoom: number = 100;
+
+  public voiceCommand: boolean = true;
+  public auditoryResource: boolean = true;
+  public visualResource: boolean = true;
 
 
   constructor(private primengConfig: PrimeNGConfig,
@@ -112,14 +117,33 @@ export class AppComponent {
         console.log("2", (response.data[0]));
         console.log("3", response.data[0].settingConfiguration);
 
-        let configSaved = JSON.parse(response.data[0].settingConfiguration);
+        let configSaved: InterfaceSettings = JSON.parse(response.data[0].settingConfiguration);
         console.log("response cargarConfiguración: ", configSaved);
-        this.modeStyle = configSaved.modeStyle;
-        this.textColorChecked = configSaved.textColorChecked;
-        this.textColor = configSaved.textColor;
-        this.documentZoom = configSaved.documentZoom;
-        this.valorDocumentZoom = configSaved.valorDocumentZoom;
-        this.testFontFamily = configSaved.testFontFamily.replaceAll("''", "'");
+        if (configSaved.modeStyle !== undefined) {
+          this.modeStyle = configSaved.modeStyle;
+        }
+        if (configSaved.textColorChecked !== undefined) {
+          this.textColorChecked = configSaved.textColorChecked;
+        }
+        if (configSaved.textColor !== undefined) {
+          this.textColor = configSaved.textColor;
+        }
+        if (configSaved.valorDocumentZoom !== undefined) {
+          this.valorDocumentZoom = configSaved.valorDocumentZoom;
+        }
+        if (configSaved.testFontFamily !== undefined) {
+          this.testFontFamily = configSaved.testFontFamily.replace(/''/g, "'");
+        }
+
+        if (configSaved.voiceCommand !== undefined) {
+          this.voiceCommand = configSaved.voiceCommand;
+        }
+        if (configSaved.auditoryResource !== undefined) {
+          this.auditoryResource = configSaved.auditoryResource;
+        }
+        if (configSaved.visualResource !== undefined) {
+          this.visualResource = configSaved.visualResource;
+        }
         this.changeTheme(configSaved.theme);
         //AppConfigComponent.changeTheme(configSaved.theme);
       }
@@ -144,10 +168,13 @@ export class AppComponent {
             "testFontFamily": this.testFontFamily,
             "textColor": this.textColor,
             "documentZoom": this.documentZoom,
-            "valorDocumentZoom": this.valorDocumentZoom
+            "valorDocumentZoom": this.valorDocumentZoom,
+            "voiceCommand": this.voiceCommand,
+            "auditoryResource": this.auditoryResource,
+            "visualResource": this.visualResource
           }
         );
-        console.log(actualPreferences);
+        console.log('guardarConfiguracion', actualPreferences);
 
         // "datereg_setting ": "",
         // "id_setting ": "",

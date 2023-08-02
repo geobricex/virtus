@@ -111,15 +111,15 @@ import {Utils} from "./util/Utils";
         <p-accordionTab header="Recursos en evaluaciones">
           <div class="col-12 ">
               <div class="field-checkbox">
-                <p-inputSwitch class="p-inputswitch" [ngModel]="true"></p-inputSwitch>
+                <p-inputSwitch class="p-inputswitch" [(ngModel)]="app.voiceCommand" ></p-inputSwitch>
                 <label for="@prevent">Comandos de voz</label>
               </div>
               <div class="field-checkbox">
-                <p-inputSwitch class="p-inputswitch" [ngModel]="true"></p-inputSwitch>
+                <p-inputSwitch class="p-inputswitch" [(ngModel)]="app.auditoryResource" ></p-inputSwitch>
                 <label for="@prevent">Recurso auditivo</label>
               </div>
               <div class="field-checkbox">
-                <p-inputSwitch class="p-inputswitch" [ngModel]="true"></p-inputSwitch>
+                <p-inputSwitch class="p-inputswitch" [(ngModel)]="app.visualResource" ></p-inputSwitch>
                 <label for="@prevent">Recurso visual</label>
             </div>
           </div>

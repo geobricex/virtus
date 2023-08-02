@@ -11,15 +11,15 @@ import PocketBase from 'pocketbase';
 import {Person} from "../models/Person";
 import {MessageService} from "primeng/api";
 
-import { initializeApp } from "firebase/app";
+import {initializeApp} from "firebase/app";
 import * as auth from 'firebase/auth';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
+import {AngularFireAuth} from '@angular/fire/compat/auth';
 import {Parser} from "@angular/compiler";
 import firebase from "firebase/compat";
 import UserCredential = firebase.auth.UserCredential;
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import { CookieService } from "ngx-cookie-service";
-import { LoginServicie } from "./loginServicie";
+import {CookieService} from "ngx-cookie-service";
+import {LoginServicie} from "./loginServicie";
 
 @Component({
   selector: 'app-login',
@@ -47,6 +47,10 @@ export class AppLoginComponent {
   ) {
     this.forgotPassword_dialog = false;
     this.alreadyHasCode = false;
+  }
+
+  ngAfterViewInit() {
+    console.clear();
   }
 
   /**
@@ -91,26 +95,26 @@ export class AppLoginComponent {
         }
       }
     })
-   /* this.sessionLog = new Session("", new User("", "", "", "", "", ""));
-    this.storageService.setCurrentSession(this.sessionLog);
+    /* this.sessionLog = new Session("", new User("", "", "", "", "", ""));
+     this.storageService.setCurrentSession(this.sessionLog);
 
-    this.apiLogin().subscribe(response => {
-      console.log(response);
-      this.sessionLog = new Session("", new User("", "", "", "", "", ""));
-      console.log("ANTES DE INGRESAR: ", this.sessionLog);
-      this.storageService.setCurrentSession(this.sessionLog);
-      this.showMessages(response.status, response.information, "tst");
-      if (response.status === 2) {
-        let dataLogin = response.data[0];
-        this.user = new User(dataLogin.email_person, dataLogin.type_person, dataLogin.name_person,
-          dataLogin.lastname_person, dataLogin.pathimg_person, dataLogin.provider_person);
-        this.sessionLog = new Session(dataLogin.user_token, this.user);
-        this.storageService.setCurrentSession(this.sessionLog);
-        console.log(this.sessionLog);
-        this.router.navigateByUrl('/app');
-        //location.reload();
-      }
-    });*/
+     this.apiLogin().subscribe(response => {
+       console.log(response);
+       this.sessionLog = new Session("", new User("", "", "", "", "", ""));
+       console.log("ANTES DE INGRESAR: ", this.sessionLog);
+       this.storageService.setCurrentSession(this.sessionLog);
+       this.showMessages(response.status, response.information, "tst");
+       if (response.status === 2) {
+         let dataLogin = response.data[0];
+         this.user = new User(dataLogin.email_person, dataLogin.type_person, dataLogin.name_person,
+           dataLogin.lastname_person, dataLogin.pathimg_person, dataLogin.provider_person);
+         this.sessionLog = new Session(dataLogin.user_token, this.user);
+         this.storageService.setCurrentSession(this.sessionLog);
+         console.log(this.sessionLog);
+         this.router.navigateByUrl('/app');
+         //location.reload();
+       }
+     });*/
   }
 
   recoverAccount() {
@@ -142,17 +146,17 @@ export class AppLoginComponent {
     });
   }
 
-  loginWithFacebook():void{
+  loginWithFacebook(): void {
     console.log("iniciame con facebook");
     this.iniciarSesion(new auth.FacebookAuthProvider());
   }
 
-  loginWithGoogle():void{
+  loginWithGoogle(): void {
     console.log("iniciame con google");
     this.iniciarSesion(new auth.GoogleAuthProvider());
   }
 
-  iniciarSesion(provider: any): void{
+  iniciarSesion(provider: any): void {
     this.fAuth.signInWithPopup(provider).then((result: UserCredential) => {
       let userinfo = result.additionalUserInfo;
       let userprofile = userinfo!.profile;
@@ -169,8 +173,7 @@ export class AppLoginComponent {
       };
       console.log(userinfo);
       switch (userinfo!.providerId) {
-        case "google.com":
-        {
+        case "google.com": {
           // @ts-ignore
           datosUser['userimage'] = userprofile!.picture;
           // @ts-ignore
@@ -181,8 +184,7 @@ export class AppLoginComponent {
           datosUser['userlastname'] = userprofile!.family_name;
         }
           break;
-        case "facebook.com":
-        {
+        case "facebook.com": {
           // @ts-ignore
           datosUser['userimage'] = ("https://graph.facebook.com/" + userprofile.id + "/picture?type=large&amp;width=1080");
           // @ts-ignore
@@ -196,8 +198,7 @@ export class AppLoginComponent {
         default:
           break;
       }
-      if (datosUser['userlastname'] === undefined)
-      {
+      if (datosUser['userlastname'] === undefined) {
         // @ts-ignore
         let {username, ...datos} = datosUser;
         // @ts-ignore
@@ -218,7 +219,8 @@ export class AppLoginComponent {
         },
         error: (error: any) => {
 
-        }})
+        }
+      })
     }).catch(function (error) {
       console.log("error", error)
       /*swalDelay({
@@ -263,8 +265,7 @@ export class AppLoginComponent {
     let limit: number = parseInt((partes.length / 2).toFixed(0), 10);
     for (let ind = 0; ind < partes.length; ind++) {
       let minpart = partes[ind];
-      if (minpart.length > 0)
-      {
+      if (minpart.length > 0) {
         if (ind < limit) {
           obj['username'] = obj['username'].length > 0 ? " " : "" + minpart;
         } else {

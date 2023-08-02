@@ -1,17 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {Course} from "../../models/Course";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {BreadcrumbService} from "../../app.breadcrumb.service";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Utils} from "../../util/Utils";
 import {Observable} from "rxjs";
+import {Person} from "../../models/Person";
+import {ConfirmationService} from "primeng/api";
 
 @Component({
   selector: 'app-cursos-ar-inactive',
   templateUrl: './cursos-ar-inactive.component.html',
   styleUrls: ['./cursos-ar-inactive.component.scss']
 })
-export class CursosArInactiveComponent implements OnInit {
+export class CursosArInactiveComponent implements OnInit, AfterViewInit {
 
   newcourse_dialog: boolean;
   globalUri: string = "";
@@ -22,6 +24,7 @@ export class CursosArInactiveComponent implements OnInit {
   tmpFile: any;
   urlimageupload: any;
   idiomas: any [];
+  person: Person;
 
   infoCourseSelected: any = {};
   informationCourse: boolean;
@@ -40,11 +43,16 @@ export class CursosArInactiveComponent implements OnInit {
     private breadcrumbService: BreadcrumbService,
     private _http: HttpClient,
     private formBuilder: FormBuilder,
-    private utils: Utils) {
+    private utils: Utils,
+    private confirmationService: ConfirmationService) {
     this.breadcrumbService.setItems([
       {label: '', routerLink: ['/app']},
       {label: 'Cursos Inactivos', routerLink: ['/app/courseinactivear']}
     ]);
+  }
+
+  ngAfterViewInit() {
+    console.clear();
   }
 
   ngOnInit(): void {
@@ -84,6 +92,58 @@ export class CursosArInactiveComponent implements OnInit {
       console.log(this.infoCourseSelected);
       this.informationCourse = true;
     });
+  }
+
+  enableCourse(course: any) {
+    this.confirmationService.confirm({
+      message: '¿Seguro que desea habilitar el curso?',
+      header: 'Mensaje de confirmación',
+      icon: 'pi pi-info-circle',
+      acceptLabel: "Si",
+      rejectLabel: "No",
+      accept: () => {
+        this.utils.loading;
+        this.person = new Person(course.personsIdPerson.id, "", "", "", "", "",
+          "", "", "", "", "");
+        this.course = new Course(
+          course.id,
+          course.nameCourse,
+          course.descriptionCourse,
+          course.keywordsCourse,
+          course.pathimgCourse, course.dateregCourse, course.dateupdateCourse,
+          "A", course.languageCourse, "0.0"
+        );
+        this.course._personsIdPerson = this.person;
+        this.apiUpdateCoruse(this.course).subscribe({
+          next: response => {
+            console.log(response);
+            this.utils.showMessages(response.status, response.information, "tst");
+            this.resetCourse();
+            this.loadCourse();
+            this.utils.closeLoading;
+          }
+        })
+      },
+      reject: () => {
+      },
+      key: "positionDialog"
+    });
+  }
+
+  apiUpdateCoruse(course: Course): Observable<any> {
+    this.globalUri = this.utils.globalUrl + "course/updatecourse";
+    var headers = new HttpHeaders()
+      .set('Access-Control-Allow-Origin', '*')
+      .set('provider', 'native')
+      .set('token', this.utils.token);
+    return this._http.post(this.globalUri, course, {headers: headers});
+  }
+
+  resetCourse() {
+    this.courseSuccessful = false;
+    this.urlimageupload = "";
+    this.reegisterFormCourse.reset();
+    this.newcourse_dialog = false;
   }
 
   apiSaberMas(idCourse: any): Observable<any> {

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {BreadcrumbService} from "../../app.breadcrumb.service";
 import {Topic} from "../../models/Topic";
 import {ActivatedRoute} from "@angular/router";
@@ -11,7 +11,7 @@ import {Observable} from "rxjs";
   templateUrl: './temas.component.html',
   styleUrls: ['../../../assets/demo/badges.scss']
 })
-export class TemasComponent implements OnInit {
+export class TemasComponent implements OnInit, AfterViewInit {
 
   temas: Topic[];
   sortOrder: number;
@@ -40,6 +40,10 @@ export class TemasComponent implements OnInit {
       {label: 'Módulos', routerLink: ['/app/mycourse/modules/' + this.idCourse]},
       {label: 'Temas', routerLink: ['/app/mycourse/modules/' + this.idCourse + '/themes/' + this.idModule]}
     ]);
+  }
+
+  ngAfterViewInit() {
+    console.clear();
   }
 
   ngOnInit(): void {

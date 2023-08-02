@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {BreadcrumbService} from "../../../app.breadcrumb.service";
 import {ConfirmationService, Message, MessageService} from "primeng/api";
 import {Observable} from "rxjs";
@@ -17,7 +17,7 @@ import {PersonInterface} from "../../../models/PersonInterface";
   templateUrl: './useradministration.component.html',
   styleUrls: ['./useradministration.component.scss']
 })
-export class UseradministrationComponent implements OnInit {
+export class UseradministrationComponent implements OnInit, AfterViewInit {
 
   globalUri: string | null = "";
   person: Person;
@@ -40,7 +40,9 @@ export class UseradministrationComponent implements OnInit {
       {label: 'Gestión de Usuario', routerLink: ['/app/useradministration']},
     ]);
   }
-
+  ngAfterViewInit() {
+    console.clear();
+  }
   ngOnInit(): void {
     // console.log(this.utils.token);
     this.loadgetPersons();

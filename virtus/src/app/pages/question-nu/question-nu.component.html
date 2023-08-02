@@ -22,7 +22,7 @@
         <input type="text" autocomplete="off" pInputText class="w-full" formControlName="pathurlsign_question"
                readonly
                placeholder="Seleccionar video con lenguaje de señas"/>
-        <small class="text-blue-500">Se permiten videos con formato .mp3 o .mp4.</small>
+        <small class="text-blue-500">Se permiten videos con formato .mp4.</small>
       </div>
       <div class="col-1">
         <label for="uploadVideoSenia" class="p-button p-button-success"> <i
@@ -36,7 +36,7 @@
         <input type="text" autocomplete="off" pInputText class="w-full" formControlName="pathurlvideo_question"
                readonly
                placeholder="Seleccionar video"/>
-        <small class="text-blue-500">Se permiten videos con formato .mp3 o .mp4.</small>
+        <small class="text-blue-500">Se permiten videos con formato .mp4.</small>
       </div>
       <div class="col-1">
         <label for="uploadVideo" class="p-button p-button-info"> <i class="pi pi-folder m-auto"></i>
@@ -272,9 +272,10 @@
   <div class="" *ngIf="typeQuestion === 4">
     <div class="p-fluid">
       <div class="field">
-        <label for="">Ingrese el texto a completar (click
-          <strong class="text-blue-500 cursor-pointer" (click)="addOption()"> aqui </strong>
-          para agregar una opcion): </label>
+        <label for="">Ingrese el texto a completar
+<!--          (click <strong class="text-blue-500 cursor-pointer" (click)="addOption()"> aqui </strong>-->
+<!--          para agregar una opcion):-->
+        </label>
 
         <div class="grid">
           <div class="col">
@@ -294,19 +295,24 @@
       <div class="line-height-4">
         <span *ngFor="let option of format_text; let i = index" [style]="option.style">
           {{ option.type != 'D' ? option.text : ''}}
-          <span (click)="eliminarItem(i)" *ngIf=" option.type !== 'D'" class="pi pi-trash text-pink-500 cursor-pointer" style="background: white;padding: 2px;border-radius: 3px;"></span>
+          <span (click)="eliminarItem(i)" *ngIf=" option.type !== 'D'" class="pi pi-trash text-pink-500 cursor-pointer"
+                style="background: white;padding: 2px;border-radius: 3px;"></span>
         </span>
-        <span *ngIf="format_text.length > 0" class="pi pi-plus p-button-success cursor-pointer" (click)="addText()" style="background: lightblue;padding: 5px;border-radius: 5px; margin-left: 1rem"> </span>
+        <span *ngIf="format_text.length > 0" class="pi pi-plus p-button-success cursor-pointer" (click)="addText()"
+              style="background: lightblue;padding: 5px;border-radius: 5px; margin-left: 1rem"> </span>
       </div>
 
-      <div  class="line-height-4">
+      <div class="line-height-4">
         <span> Distractores: </span> <br>
-        <span class="cursor-pointer bg-pink-500 text-white p-2 border-round" (click)="addDistractor()"> <span class="pi pi-plus"></span> Agregar distractor </span>
+        <span class="cursor-pointer bg-pink-500 text-white p-2 border-round" (click)="addDistractor()"> <span
+          class="pi pi-plus"></span> Agregar distractor </span>
         <br>
-        <span *ngFor="let option of format_text; let j = index"  [style]="option.type === 'D' ? 'background: var(--pink-50);padding: 3px;border-radius: 3px;color: var(--pink-500);margin-right: 1rem;margin-top: .5rem' : ''" >
+        <span *ngFor="let option of format_text; let j = index"
+              [style]="option.type === 'D' ? 'background: var(--pink-50);padding: 3px;border-radius: 3px;color: var(--pink-500);margin-right: 1rem;margin-top: .5rem' : ''">
           <span *ngIf=" option.type === 'D'" class="pi pi-times-circle"></span>
           {{ option.type === 'D' ? option.text : ''}}
-          <span (click)="eliminarItem(j)" *ngIf=" option.type === 'D'" class="pi pi-trash text-pink-500 cursor-pointer" style="background: white;padding: 2px;border-radius: 3px;"></span>
+          <span (click)="eliminarItem(j)" *ngIf=" option.type === 'D'" class="pi pi-trash text-pink-500 cursor-pointer"
+                style="background: white;padding: 2px;border-radius: 3px;"></span>
         </span>
       </div>
 

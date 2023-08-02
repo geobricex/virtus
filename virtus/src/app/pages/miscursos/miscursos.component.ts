@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {BreadcrumbService} from '../../app.breadcrumb.service';
 import {Course} from "../../models/Course";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
@@ -12,7 +12,7 @@ import {error} from "protractor";
   templateUrl: './miscursos.component.html',
   styleUrls: ['./miscursos.component.scss']
 })
-export class MiscursosComponent implements OnInit {
+export class MiscursosComponent implements OnInit, AfterViewInit {
 
   courses: Course[];
 
@@ -35,6 +35,10 @@ export class MiscursosComponent implements OnInit {
       {label: 'Cursos', routerLink: ['/app/course']},
       {label: 'Mis cursos', routerLink: ['/app/mycourse']}
     ]);
+  }
+
+  ngAfterViewInit() {
+    console.clear();
   }
 
   ngOnInit(): void {

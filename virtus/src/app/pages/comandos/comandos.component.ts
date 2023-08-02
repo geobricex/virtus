@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {BreadcrumbService} from "../../app.breadcrumb.service";
 
 @Component({
@@ -6,7 +6,7 @@ import {BreadcrumbService} from "../../app.breadcrumb.service";
   templateUrl: './comandos.component.html',
   styleUrls: ['./comandos.component.css']
 })
-export class ComandosComponent implements OnInit {
+export class ComandosComponent implements OnInit, AfterViewInit {
 
   comandosTeclado: any [];
   comandosVoz: any [];
@@ -18,6 +18,10 @@ export class ComandosComponent implements OnInit {
       {label: '', routerLink: ['/app']},
       {label: 'Mas información', routerLink: ['/app/information']}
     ]);
+  }
+
+  ngAfterViewInit() {
+    console.clear();
   }
 
   ngOnInit(): void {

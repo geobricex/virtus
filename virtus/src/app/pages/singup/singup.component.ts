@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {Person} from "../../models/Person";
 
 import {Observable} from "rxjs";
@@ -13,7 +13,7 @@ import {error} from "protractor";
   templateUrl: './singup.component.html',
   styleUrls: ['./singup.component.css']
 })
-export class SingupComponent implements OnInit {
+export class SingupComponent implements OnInit, AfterViewInit {
 
   person: Person;
   newpassword: string;
@@ -28,6 +28,10 @@ export class SingupComponent implements OnInit {
     private _http: HttpClient,
     private formBuilder: FormBuilder,
   ) {
+  }
+
+  ngAfterViewInit() {
+    console.clear();
   }
 
   ngOnInit(): void {

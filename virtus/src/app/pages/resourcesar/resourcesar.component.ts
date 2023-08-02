@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {BreadcrumbService} from "../../app.breadcrumb.service";
 import {ActivatedRoute} from "@angular/router";
 import {Utils} from "../../util/Utils";
@@ -20,7 +20,7 @@ import {posix} from "path";
   templateUrl: './resourcesar.component.html',
   styleUrls: ['./resourcesar.component.css']
 })
-export class ResourcesarComponent implements OnInit {
+export class ResourcesarComponent implements OnInit, AfterViewInit {
   checked: boolean = true;
   resource: Resources;
   evaluation: Evaluation;
@@ -116,6 +116,10 @@ export class ResourcesarComponent implements OnInit {
       }
     );
 
+  }
+
+  ngAfterViewInit() {
+    console.clear();
   }
 
   ngOnInit(): void {

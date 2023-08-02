@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 
 import {BreadcrumbService} from '../../../app.breadcrumb.service';
 import {Course} from "../../../models/Course";
@@ -15,7 +15,7 @@ import {Router} from "@angular/router";
   templateUrl: './favorites.component.html',
   styleUrls: ['./favorites.component.scss']
 })
-export class FavoritesComponent implements OnInit {
+export class FavoritesComponent implements OnInit, AfterViewInit {
 
   courses: Course[];
   sortOrder: number;
@@ -37,6 +37,10 @@ export class FavoritesComponent implements OnInit {
       {label: 'Cursos', routerLink: ['app/course']},
       {label: 'Favoritos', routerLink: ['/app/course/favorites']}
     ]);
+  }
+
+  ngAfterViewInit() {
+    console.clear();
   }
 
   ngOnInit(): void {
