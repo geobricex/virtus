@@ -145,7 +145,7 @@
             </div>
           </p-accordionTab>
           <p-accordionTab header="Puzzle" [selected]="true" class="line-height-3 m-0"
-                          *ngIf="contarTipoPregunta(5) > 0">
+                          *ngIf="contarTipoPregunta(6) > 0">
             <div *ngFor="let question of evaluationObject.questions_; let i2 = index">
               <div *ngIf="question.name_questioncategory == tipoPregunta(6)"
                    class="bg-gray-100 p-2 hover:bg-blue-100 cursor-pointer mb-2"
