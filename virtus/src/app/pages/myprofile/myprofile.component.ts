@@ -65,10 +65,9 @@ export class MyprofileComponent implements OnInit {
     });
   }
 
-//   onImgError(event: any) {
-//     event.target.src = './assets/imgs/altImg.png'
-// //Do other stuff with the event.target
-//   }
+  loadAvatarsProfile() {
+
+  }
 
   showUpdatePhoto() {
     this.formUpdatePhto = true;

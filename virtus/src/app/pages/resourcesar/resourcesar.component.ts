@@ -13,7 +13,6 @@ import {ConfirmationService, Message} from "primeng/api";
 import {Modules} from "../../models/Modules";
 import {Course} from "../../models/Course";
 import {posix} from "path";
-import {format} from 'date-fns';
 
 
 @Component({

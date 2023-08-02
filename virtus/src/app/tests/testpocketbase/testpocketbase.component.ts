@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 
 import PocketBase from 'pocketbase';
 import {FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule} from '@angular/forms';
+// @ts-ignore
 import { fabric } from "fabric";
 
 //require('cross-fetch/polyfill');
@@ -123,7 +124,7 @@ export class TestpocketbaseComponent implements OnInit {
     canvasLineas.add(rect);
     canvasLineas.add(txt);
     if(recurso) {
-      fabric.Image.fromURL(image, function (img) {
+      fabric.Image.fromURL(image, function (img: any) {
 
         function determineNewHeight(originalHeight: number, originalWidth: number, newWidth: number) {
           return (originalHeight / originalWidth) * newWidth;
@@ -197,7 +198,7 @@ export class TestpocketbaseComponent implements OnInit {
     let joinLineElements = this.joinLineDerecha;
     let joinLineElementsIz = this.joinLineIzquierda;
 
-    canvasLineas.on('object:moving', function(e) {
+    canvasLineas.on('object:moving', function(e: any) {
       let p = e.target;
       //console.log(p);
       // @ts-ignore
@@ -205,7 +206,7 @@ export class TestpocketbaseComponent implements OnInit {
       canvasLineas.renderAll();
     });
 
-    canvasLineas.on('mouse:down', function(e){
+    canvasLineas.on('mouse:down', function(e: any){
       let p = e.target;
       console.log("me has clickeado tio", p);
       for (let ind = 0; ind < joinLineElementsIz.length; ind++){
@@ -215,7 +216,7 @@ export class TestpocketbaseComponent implements OnInit {
       }
     });
 
-    canvasLineas.on('mouse:up', function(e){
+    canvasLineas.on('mouse:up', function(e: any){
       let p = e.target;
       console.log("me has soltado tio", p);
       let inserTecta = false;

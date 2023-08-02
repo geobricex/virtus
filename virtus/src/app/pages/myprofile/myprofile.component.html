@@ -13,30 +13,15 @@
              (change)="onFileChange($event)">
       <div>
         <h4>Seleccionar avatar</h4>
-        <p-avatarGroup styleClass="mb-1">
-          <p-avatar image="{{avatar[0].image}}" size="xlarge" shape="circle"></p-avatar>
-          <p-avatar image="{{avatar[1].image}}" size="xlarge" shape="circle"></p-avatar>
-          <p-avatar image="{{avatar[2].image}}" size="xlarge" shape="circle"></p-avatar>
-          <p-avatar image="{{avatar[3].image}}" size="xlarge" shape="circle"></p-avatar>
-          <p-avatar image="{{avatar[4].image}}" size="xlarge" shape="circle"></p-avatar>
-          <p-avatar image="{{avatar[5].image}}" size="xlarge" shape="circle"></p-avatar>
-        </p-avatarGroup>
-        <p-avatarGroup styleClass="mb-1">
-          <p-avatar image="{{avatar[6].image}}" size="xlarge" shape="circle"></p-avatar>
-          <p-avatar image="{{avatar[7].image}}" size="xlarge" shape="circle"></p-avatar>
-          <p-avatar image="{{avatar[8].image}}" size="xlarge" shape="circle"></p-avatar>
-          <p-avatar image="{{avatar[9].image}}" size="xlarge" shape="circle"></p-avatar>
-          <p-avatar image="{{avatar[10].image}}" size="xlarge" shape="circle"></p-avatar>
-          <p-avatar image="{{avatar[11].image}}" size="xlarge" shape="circle"></p-avatar>
-        </p-avatarGroup>
-        <p-avatarGroup styleClass="mb-1">
-          <p-avatar image="{{avatar[12].image}}" size="xlarge" shape="circle"></p-avatar>
-          <p-avatar image="{{avatar[13].image}}" size="xlarge" shape="circle"></p-avatar>
-          <p-avatar image="{{avatar[14].image}}" size="xlarge" shape="circle"></p-avatar>
-          <p-avatar image="{{avatar[15].image}}" size="xlarge" shape="circle"></p-avatar>
-          <p-avatar image="{{avatar[16].image}}" size="xlarge" shape="circle"></p-avatar>
-          <p-avatar image="{{avatar[17].image}}" size="xlarge" shape="circle"></p-avatar>
-        </p-avatarGroup>
+        <div ng-repeat="avatarGroup in avatar | chunk: 6" class="mb-1">
+          <p-avatarGroup styleClass="mb-1">
+            <p-avatar ng-repeat="avatarObj in avatarGroup"
+                      image="{{avatarObj.image}}"
+                      size="xlarge"
+                      shape="circle">
+            </p-avatar>
+          </p-avatarGroup>
+        </div>
       </div>
     </div>
   </ng-template>

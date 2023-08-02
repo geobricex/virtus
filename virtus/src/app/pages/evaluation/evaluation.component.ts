@@ -1449,7 +1449,7 @@ export class EvaluationComponent implements OnInit {
     let globalUniLineaIndex = this.globalUniLineaIndex;
     let questionObject = this.questionObject;
 
-    canvasLineas.on('object:moving', function(e) {
+    canvasLineas.on('object:moving', function(e: any) {
       let p = e.target;
       //console.log(p);
       // @ts-ignore
@@ -1457,7 +1457,7 @@ export class EvaluationComponent implements OnInit {
       canvasLineas.renderAll();
     });
 
-    canvasLineas.on('mouse:down', function(e){
+    canvasLineas.on('mouse:down', function(e : any){
       let p = e.target;
       console.log("me has clickeado tio", p);
       if(p != null)
@@ -1471,7 +1471,7 @@ export class EvaluationComponent implements OnInit {
       }
     });
 
-    canvasLineas.on('mouse:up', function(e){
+    canvasLineas.on('mouse:up', function(e : any){
       let p = e.target;
       console.log("me has soltado tio", p);
       let inserTecta = false;
@@ -1556,7 +1556,7 @@ export class EvaluationComponent implements OnInit {
     canvasLineas.add(rect);
     canvasLineas.add(txt);
     if(recurso) {
-      fabric.Image.fromURL(image, function (img) {
+      fabric.Image.fromURL(image, function (img : any) {
 
         function determineNewHeight(originalHeight: number, originalWidth: number, newWidth: number) {
           return (originalHeight / originalWidth) * newWidth;
