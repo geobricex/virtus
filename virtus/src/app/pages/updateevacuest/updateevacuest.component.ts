@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {BreadcrumbService} from "../../app.breadcrumb.service";
 import {Utils} from "../../util/Utils";
@@ -21,7 +21,7 @@ import {ConfirmationService} from "primeng/api";
   templateUrl: './updateevacuest.component.html',
   styleUrls: ['./updateevacuest.component.scss']
 })
-export class UpdateevacuestComponent implements OnInit {
+export class UpdateevacuestComponent implements OnInit, AfterViewInit {
 
   idCourse: string | null = "";
   idModule: string | null = "";
@@ -91,6 +91,10 @@ export class UpdateevacuestComponent implements OnInit {
         opportunitiesEvaluation: [""]
       }
     );
+  }
+
+  ngAfterViewInit() {
+    console.clear();
   }
 
   ngOnInit(): void {

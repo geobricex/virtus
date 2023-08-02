@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {BreadcrumbService} from "../../app.breadcrumb.service";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Utils} from "../../util/Utils";
@@ -16,7 +16,7 @@ import {ConfirmationService} from "primeng/api";
   templateUrl: './moduloar.component.html',
   styleUrls: ['../../../assets/demo/badges.scss']
 })
-export class ModuloarComponent implements OnInit {
+export class ModuloarComponent implements OnInit, AfterViewInit {
 
   module: Modules;
   modules: Modules[];
@@ -52,6 +52,10 @@ export class ModuloarComponent implements OnInit {
       {label: 'Cursos', routerLink: ['/app/coursear']},
       {label: 'Módulos', routerLink: ['/app/coursear/modulear/' + this.idCourse]}
     ]);
+  }
+
+  ngAfterViewInit() {
+    console.clear();
   }
 
   ngOnInit(): void {

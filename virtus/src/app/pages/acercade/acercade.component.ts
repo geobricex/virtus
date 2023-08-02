@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {Development} from "../../models/acercaDe";
 import {BreadcrumbService} from "../../app.breadcrumb.service";
 
@@ -7,7 +7,7 @@ import {BreadcrumbService} from "../../app.breadcrumb.service";
   templateUrl: './acercade.component.html',
   styleUrls: ['./acercade.component.scss']
 })
-export class AcercadeComponent implements OnInit {
+export class AcercadeComponent implements OnInit, AfterViewInit {
 
   developments = [] as Development[];
 
@@ -19,7 +19,9 @@ export class AcercadeComponent implements OnInit {
       {label: 'Acerca de', routerLink: ['/app/about']}
     ]);
   }
-
+  ngAfterViewInit() {
+    console.clear();
+  }
   ngOnInit(): void {
     this.developments = [
       {name: "Geovanny José", lastname: "Brito Casanova", cargo: "Backend", facebook: "", github: "",image: "brito.png", email: "", instagram: "", linkedin: ""},

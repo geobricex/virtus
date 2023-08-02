@@ -65,7 +65,7 @@ select * from question_category;
 select * from persons;
 select * from persons_courses;
 select * from persons_evaluations;
-select * from evaluations;
+select * from evaluations order by  id_evaluation desc;
 select * from settings;
 select * from persons;
 select * from questions;

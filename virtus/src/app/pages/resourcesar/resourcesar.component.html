@@ -1,6 +1,6 @@
 <p-toast key="tst" [baseZIndex]="99999"></p-toast>
-<p-confirmDialog [style]="{width: '50vw'}" key="positionDialog" position="bottom" [baseZIndex]="10000"
-                 rejectButtonStyleClass="p-button-outlined"></p-confirmDialog>
+<!--<p-confirmDialog [style]="{width: '50vw'}" key="positionDialog" position="bottom" [baseZIndex]="10000"-->
+<!--                 rejectButtonStyleClass="p-button-outlined"></p-confirmDialog>-->
 <div class="grid p-fluid">
   <div class="col-12">
     <h3> {{tituloTopic}} </h3>
@@ -114,7 +114,8 @@
                         pTooltip="Editar evaluacion" tooltipPosition="bottom"
                         routerLink="update_evaluation/{{evaluation.id_evaluation}}"></button>
                 <button pButton pRipple icon="pi pi-trash" label="Eliminar" class="mr-2 p-button-danger w-8rem"
-                        pTooltip="Eliminar evaluación" tooltipPosition="bottom" (click)="deleteEvaluation(evaluation)"></button>
+                        pTooltip="Eliminar evaluación" tooltipPosition="bottom"
+                        (click)="deleteEvaluation(evaluation)"></button>
               </div>
             </div>
           </div>
@@ -149,7 +150,7 @@
               <input type="text" autocomplete="off" pInputText class="w-full" formControlName="pathurlsignResource"
                      readonly
                      placeholder="Seleccionar video con lenguaje de señas"/>
-              <small class="text-blue-500">Se permiten videos con formato .mp3 o .mp4.</small>
+              <small class="text-blue-500">Se permiten videos con formato .mp4.</small>
             </div>
             <div class="col-2">
               <label for="uploadVideoSenia" class="p-button p-button-success" (click)="typeFileGlobal='s'"> <i
@@ -163,7 +164,7 @@
               <input type="text" autocomplete="off" pInputText class="w-full" formControlName="pathvideoResource"
                      readonly
                      placeholder="Seleccionar video"/>
-              <small class="text-blue-500">Se permiten videos con formato .mp3 o .mp4.</small>
+              <small class="text-blue-500">Se permiten videos con formato .mp4.</small>
             </div>
             <div class="col-2">
               <label for="uploadVideo" class="p-button p-button-info" (click)="typeFileGlobal='v'"> <i
@@ -280,17 +281,18 @@
         </div>
 
         <div class="field" style="display: grid">
-          <label> Ordenar por categoría: </label>
-          <p-inputSwitch [(ngModel)]="checked"
+          <label for="orderCategory"> Ordenar por categoría: </label>
+          <p-inputSwitch id="orderCategory" [(ngModel)]="checked"
                          formControlName="orderByCategory"></p-inputSwitch>
         </div>
 
         <div class="field" style="display: grid">
-          <label> Revision de intento: </label>
-          <p-inputSwitch [(ngModel)]="checked"
+          <label for="reviwIntent"> Revision de intento: </label>
+          <p-inputSwitch id="reviwIntent" [(ngModel)]="checked"
                          formControlName="allowsReview"></p-inputSwitch>
         </div>
-
+        <br/>
+        <label><span>Nota:</span> En evaluación es obligatorio tener tiempo</label>
       </form>
     </ng-template>
     <ng-template pTemplate="footer">

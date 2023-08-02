@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {BreadcrumbService} from "../../app.breadcrumb.service";
 import {Observable} from "rxjs";
 import {Course} from "../../models/Course";
@@ -15,7 +15,7 @@ import {ConfirmationService} from "primeng/api";
   templateUrl: './cursos-ar.component.html',
   styleUrls: ['./cursos-ar.component.css']
 })
-export class CursosArComponent implements OnInit {
+export class CursosArComponent implements OnInit, AfterViewInit {
 
   newcourse_dialog: boolean;
   globalUri: string = "";
@@ -54,6 +54,10 @@ export class CursosArComponent implements OnInit {
       {label: '', routerLink: ['/app']},
       {label: 'Cursos Activos', routerLink: ['/app/coursear']}
     ]);
+  }
+
+  ngAfterViewInit() {
+    console.clear();
   }
 
   ngOnInit(): void {
@@ -95,7 +99,7 @@ export class CursosArComponent implements OnInit {
     this.course._personsIdPerson = this.person;
   }
 
-  disabledCourse(course: any) {
+  disabledCourses(course: any) {
     this.confirmationService.confirm({
       message: '¿Seguro que desea deshabilitar el curso?',
       header: 'Mensaje de confirmación',
@@ -115,7 +119,6 @@ export class CursosArComponent implements OnInit {
           "I", course.languageCourse, "0.0"
         );
         this.course._personsIdPerson = this.person;
-        console.log(this.course);
         this.apiUpdateCoruse(this.course).subscribe({
           next: response => {
             console.log(response);

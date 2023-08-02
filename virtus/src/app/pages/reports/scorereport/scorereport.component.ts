@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {BreadcrumbService} from "../../../app.breadcrumb.service";
 import {Observable} from "rxjs";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
@@ -9,7 +9,7 @@ import {Utils} from "../../../util/Utils";
   templateUrl: './scorereport.component.html',
   styleUrls: ['./scorereport.component.scss']
 })
-export class ScorereportComponent implements OnInit {
+export class ScorereportComponent implements OnInit, AfterViewInit {
   dataReviews: any;
   globalUri: string | null = "";
 
@@ -35,6 +35,9 @@ export class ScorereportComponent implements OnInit {
     ]);
   }
 
+  ngAfterViewInit() {
+    console.clear();
+  }
 
   ngOnInit() {
     this.lineData = {

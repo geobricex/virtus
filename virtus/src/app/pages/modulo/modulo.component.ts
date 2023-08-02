@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {BreadcrumbService} from "../../app.breadcrumb.service";
 import {Modulo} from "../../models/modulo";
 import {Observable} from "rxjs";
@@ -12,7 +12,7 @@ import {Course} from "../../models/Course";
   templateUrl: './modulo.component.html',
   styleUrls: ['../../../assets/demo/badges.scss']
 })
-export class ModuloComponent implements OnInit {
+export class ModuloComponent implements OnInit, AfterViewInit {
 
   modules: Modulo[];
   sortOrder: number;
@@ -37,6 +37,10 @@ export class ModuloComponent implements OnInit {
       {label: 'Mis cursos', routerLink: ['/app/mycourse']},
       {label: 'Módulos', routerLink: ['/app/mycourse/modules']}
     ]);
+  }
+
+  ngAfterViewInit() {
+    console.clear();
   }
 
   ngOnInit(): void {

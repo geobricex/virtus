@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {BreadcrumbService} from '../app.breadcrumb.service';
 import {Person} from "../models/Person";
 import {Observable} from "rxjs";
@@ -12,7 +12,7 @@ import {any} from "codelyzer/util/function";
 @Component({
   templateUrl: './dashboard.component.html'
 })
-export class DashboardDemoComponent implements OnInit {
+export class DashboardDemoComponent implements OnInit, AfterViewInit {
 
   globalUri: string = "";
   homedata: any = [];
@@ -72,6 +72,11 @@ export class DashboardDemoComponent implements OnInit {
     //     }
     //   }
     // );
+
+  }
+
+  ngAfterViewInit() {
+    console.clear();
   }
 
   apiInformationHome(typePerson: string): Observable<any> {

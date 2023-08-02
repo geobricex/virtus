@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {BreadcrumbService} from "../../app.breadcrumb.service";
 import {ActivatedRoute} from "@angular/router";
 import {Observable} from "rxjs";
@@ -16,7 +16,7 @@ import {ConfirmationService} from "primeng/api";
   templateUrl: './topicar.component.html',
   styleUrls: ['../../../assets/demo/badges.scss']
 })
-export class TopicarComponent implements OnInit {
+export class TopicarComponent implements OnInit, AfterViewInit {
 
   newTopicDialog: boolean;
   sortOrder: number;
@@ -55,6 +55,10 @@ export class TopicarComponent implements OnInit {
       {label: 'Módulos', routerLink: ['/app/coursear/modulear/' + this.idCourse]},
       {label: 'Temas', routerLink: ['/app/coursear/modulear/' + this.idCourse + '/topicar/' + this.idModule]}
     ]);
+  }
+
+  ngAfterViewInit() {
+    console.clear();
   }
 
   ngOnInit(): void {

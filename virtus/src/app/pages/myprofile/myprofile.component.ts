@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {Person} from "../../models/Person";
 import {Observable} from "rxjs";
 import {Utils} from "../../util/Utils";
@@ -17,7 +17,7 @@ import {BreadcrumbService} from "../../app.breadcrumb.service";
   templateUrl: './myprofile.component.html',
   styleUrls: ['./myprofile.component.scss']
 })
-export class MyprofileComponent implements OnInit {
+export class MyprofileComponent implements OnInit, AfterViewInit {
 
   person: Person;
   public session: Session;
@@ -45,6 +45,10 @@ export class MyprofileComponent implements OnInit {
       {label: 'Perfil', routerLink: ['/app/myprofile']},
     ]);
 
+  }
+
+  ngAfterViewInit() {
+    console.clear();
   }
 
   ngOnInit(): void {

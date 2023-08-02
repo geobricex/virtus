@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {BreadcrumbService} from "../../../app.breadcrumb.service";
 import {Observable} from "rxjs";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
@@ -10,7 +10,7 @@ import {Course} from "../../../models/Course";
   templateUrl: './timereport.component.html',
   styleUrls: ['./timereport.component.scss']
 })
-export class TimereportComponent implements OnInit {
+export class TimereportComponent implements OnInit, AfterViewInit {
   dataReviews: any;
   globalUri: string | null = "";
 
@@ -42,6 +42,10 @@ export class TimereportComponent implements OnInit {
       {label: 'Revisión de Reportes', routerLink: ['/app/reports/timereport']},
     ]);
 
+  }
+
+  ngAfterViewInit() {
+    console.clear();
   }
 
   ngOnInit() {
@@ -84,11 +88,11 @@ export class TimereportComponent implements OnInit {
     for (let i = 0; i < this.dataReviews.length; i++) {
       if (this.dataReviews[i].type_evaluation == 1) {
         console.log(this.dataReviews[i].timespent_person_evaluation)
-        console.log((this.dataReviews[i].timeminutes_evaluation) + "-" + (this.dataReviews[i].timespent_person_evaluation/60))
-        this.timespent_person_evaluation[i] = (this.dataReviews[i].timeminutes_evaluation ) - (this.dataReviews[i].timespent_person_evaluation/60);
+        console.log((this.dataReviews[i].timeminutes_evaluation) + "-" + (this.dataReviews[i].timespent_person_evaluation / 60))
+        this.timespent_person_evaluation[i] = (this.dataReviews[i].timeminutes_evaluation) - (this.dataReviews[i].timespent_person_evaluation / 60);
 
-      } else if  (this.dataReviews[i].type_evaluation == 2)  {
-        this.timespent_person_evaluation[i] = this.dataReviews[i].timespent_person_evaluation ;
+      } else if (this.dataReviews[i].type_evaluation == 2) {
+        this.timespent_person_evaluation[i] = this.dataReviews[i].timespent_person_evaluation;
       }
       this.qualification_person_evaluation[i] = this.dataReviews[i].qualification_person_evaluation;
       this.name_evaluation[i] = (this.dataReviews[i].name_evaluation + "-" + this.dataReviews[i].name_course);
@@ -145,11 +149,11 @@ export class TimereportComponent implements OnInit {
     for (let i = 0; i < this.dataReviews.length; i++) {
       if (this.dataReviews[i].type_evaluation == 1) {
         console.log(this.dataReviews[i].timespent_person_evaluation)
-        console.log((this.dataReviews[i].timeminutes_evaluation) + "-" + (this.dataReviews[i].timespent_person_evaluation/60))
-        this.timespent_person_evaluation[i] = (this.dataReviews[i].timeminutes_evaluation ) - (this.dataReviews[i].timespent_person_evaluation/60);
+        console.log((this.dataReviews[i].timeminutes_evaluation) + "-" + (this.dataReviews[i].timespent_person_evaluation / 60))
+        this.timespent_person_evaluation[i] = (this.dataReviews[i].timeminutes_evaluation) - (this.dataReviews[i].timespent_person_evaluation / 60);
 
-      } else if  (this.dataReviews[i].type_evaluation == 2)  {
-        this.timespent_person_evaluation[i] = this.dataReviews[i].timespent_person_evaluation ;
+      } else if (this.dataReviews[i].type_evaluation == 2) {
+        this.timespent_person_evaluation[i] = this.dataReviews[i].timespent_person_evaluation;
       }
       this.qualification_person_evaluation[i] = this.dataReviews[i].qualification_person_evaluation;
       this.name_evaluation[i] = (this.dataReviews[i].name_evaluation + "-" + this.dataReviews[i].name_course);

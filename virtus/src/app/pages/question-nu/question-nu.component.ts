@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {BreadcrumbService} from "../../app.breadcrumb.service";
 import {
@@ -14,13 +14,14 @@ import {Utils} from "../../util/Utils";
 import {Observable} from "rxjs";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Message} from "primeng/api";
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-question-nu',
   templateUrl: './question-nu.component.html',
   styleUrls: ['./question-nu.component.scss']
 })
-export class QuestionNuComponent implements OnInit {
+export class QuestionNuComponent implements OnInit, AfterViewInit {
 
   idCourse: string | null = "";
   idModule: string | null = "";
@@ -75,7 +76,8 @@ export class QuestionNuComponent implements OnInit {
     private breadcrumbService: BreadcrumbService,
     private formBuilder: FormBuilder,
     private utils: Utils,
-    private _http: HttpClient
+    private _http: HttpClient,
+    private location: Location
   ) {
     this.idCourse = this._route.snapshot.paramMap.get("idcourse");
     this.idModule = this._route.snapshot.paramMap.get("idmodule");
@@ -161,6 +163,10 @@ export class QuestionNuComponent implements OnInit {
     ]);
   }
 
+  ngAfterViewInit() {
+    console.clear();
+  }
+
   ngOnInit(): void {
     this.utils.initPocket();
     this.registerFormQuestion = this.formBuilder.group(
@@ -169,8 +175,8 @@ export class QuestionNuComponent implements OnInit {
         description_question: ["", Validators.required],
         feedback_question: [""],
         hint_question: [""],
-        level_question: [1, Validators.required],
-        points_question: [false, Validators.required],
+        level_question: [1],
+        points_question: [false],
         maximumpoints_question: [0],
         pathurlfile_question: [""],
         pathurlsign_question: [""],
@@ -204,12 +210,12 @@ export class QuestionNuComponent implements OnInit {
 
   addText() {
 
-    if(this.text_entered === "") {
+    if (this.text_entered === "") {
       this.utils.showMessages(3, "Por favor ingrese al menos una palabra.", "tst");
       return;
     }
 
-    if(this.type_selected !== 'D') {
+    if (this.type_selected !== 'D') {
       this.format_text.push(
         {
           text: this.text_entered,
@@ -227,17 +233,17 @@ export class QuestionNuComponent implements OnInit {
 
   addDistractor() {
 
-    if(this.format_text.length <= 0) {
+    if (this.format_text.length <= 0) {
       this.utils.showMessages(3, "Por favor agrege al menos un texto natural u opcion correcta.", "tst");
       return;
     }
 
-    if(this.text_entered === "") {
+    if (this.text_entered === "") {
       this.utils.showMessages(3, "Por favor ingrese al menos una palabra.", "tst");
       return;
     }
 
-    if(this.type_selected === 'D') {
+    if (this.type_selected === 'D') {
       this.format_text.push(
         {text: this.text_entered, type: this.type_selected, style: 'black'}
       );
@@ -254,27 +260,27 @@ export class QuestionNuComponent implements OnInit {
     this.validarEstructura();
   }
 
-  validarEstructura () {
+  validarEstructura() {
     let description: string = "";
     let description_R: string = "";
     let optionsx = [];
     this.structure.length = 0;
-    for(let i = 0; i < this.format_text.length; i++) {
+    for (let i = 0; i < this.format_text.length; i++) {
 
-      if(i > 0 && i < this.format_text.length) {
+      if (i > 0 && i < this.format_text.length) {
         description += " ";
         description_R += " ";
       }
 
-      if(this.format_text[i].type !== 'D'){
+      if (this.format_text[i].type !== 'D') {
         description += this.format_text[i].type === 'OC' ? '{$option$}' : this.format_text[i].text;
         description_R += this.format_text[i].text;
       }
 
-      if (this.format_text[i].type !== 'TN'){
+      if (this.format_text[i].type !== 'TN') {
         optionsx.push({
           "option": this.format_text[i].text,
-          "resource":""
+          "resource": ""
         })
       }
     }
@@ -385,6 +391,7 @@ export class QuestionNuComponent implements OnInit {
         }
       });
     }
+    this.location.back();
   }
 
   apiSaveQuestion(): Observable<any> {

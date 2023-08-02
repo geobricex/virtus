@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {BreadcrumbService} from "../../app.breadcrumb.service";
 
 import {HttpClient, HttpHeaders} from '@angular/common/http';
@@ -30,7 +30,7 @@ declare var Artyom: any;
   templateUrl: './questionnaire.component.html',
   styleUrls: ['./questionnaire.component.css']
 })
-export class QuestionnaireComponent implements OnInit {
+export class QuestionnaireComponent implements OnInit, AfterViewInit {
   idCourse: string | null = "";
   idModule: string | null = "";
   idTopic: string | null = "";
@@ -122,6 +122,7 @@ export class QuestionnaireComponent implements OnInit {
     // ]);
   }
 
+
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe((params) => {
       let questionnaire = this.activatedRoute.snapshot.params;
@@ -158,6 +159,7 @@ export class QuestionnaireComponent implements OnInit {
   ngAfterViewInit(): void {
     //this.showSwal(true);
     //this.changeDetector.detectChanges();
+    console.clear();
   }
 
   ngOnDestroy() {

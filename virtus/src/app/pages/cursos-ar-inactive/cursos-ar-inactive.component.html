@@ -31,7 +31,7 @@
               <div
                 class="flex flex-row md:flex-column justify-content-between w-full md:w-auto align-items-center md:align-items-end mt-5 md:mt-0">
                 <button pButton icon="pi pi-check" label="Activar"
-                        class="mb-2 p-button p-button-info"></button>
+                        class="mb-2 p-button p-button-info" (click)="enableCourse(course)"></button>
                 <button pButton icon="pi pi-info-circle" label="Saber más"
                         class="mb-2 p-button p-button-success cursor-pointer"
                         (click)="saberMas(course.id)"></button>
@@ -59,7 +59,7 @@
               </div>
               <div class="flex align-items-center justify-content-between">
                 <button pButton icon="pi pi-check" label="Activar"
-                        class="mb-2 p-button p-button-info"></button>
+                        class="mb-2 p-button p-button-info" (click)="enableCourse(course)"></button>
                 <button pButton icon="pi pi-info-circle" label="Saber más"
                         class="mb-2 p-button p-button-success cursor-pointer"
                         (click)="saberMas(course.id)"></button>

@@ -1,4 +1,4 @@
-package com.dua.virtusbk;
+package com.dua.virtusbk.dto;
 
 import lombok.Data;
 

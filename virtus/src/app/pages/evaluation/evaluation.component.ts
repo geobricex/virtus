@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {BreadcrumbService} from "../../app.breadcrumb.service";
 
 import {HttpClient, HttpHeaders} from '@angular/common/http';
@@ -29,7 +29,7 @@ declare var Artyom: any;
   templateUrl: './evaluation.component.html',
   styleUrls: ['./evaluation.component.scss']
 })
-export class EvaluationComponent implements OnInit {
+export class EvaluationComponent implements OnInit, AfterViewInit {
   idCourse: string | null = "";
   idModule: string | null = "";
   idTopic: string | null = "";
@@ -139,7 +139,6 @@ export class EvaluationComponent implements OnInit {
 
   }
 
-
   repetirPregunta() {
     if (this.text2SpeakSupport()) {
       if (this.artyom.isSpeaking()) {
@@ -156,6 +155,7 @@ export class EvaluationComponent implements OnInit {
   ngAfterViewInit(): void {
     //this.showSwal(true);
     //this.changeDetector.detectChanges();
+    console.clear();
   }
 
   ngOnDestroy() {
