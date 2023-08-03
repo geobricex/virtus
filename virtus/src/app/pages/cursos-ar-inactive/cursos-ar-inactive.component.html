@@ -3,15 +3,16 @@
   <div class="col-12">
     <div class="card">
       <p-toast></p-toast>
-      <p-dataView #dv [value]="courses" [paginator]="true" [rows]="9" filterBy="name"
+      <p-dataView #dv [value]="courses" [paginator]="true" [rows]="9" filterBy="nameCourse,keywordsCourse,descriptionCourse"
                   layout="grid">
         <ng-template pTemplate="header">
           <div class="grid grid-nogutter flex-column md:flex-row justify-content-between">
-            <p-dropdown placeholder="Ordenar por:" (onChange)="onSortChange($event)"
+            <p-dropdown [options]="sortOptions" placeholder="Ordenar por" (onChange)="onSortChange($event)"
                         styleClass="mb-2 md:mb-0"></p-dropdown>
             <span class="p-input-icon-left mb-2 md:mb-0">
                     <i class="pi pi-search"></i>
-                    <input type="search" pInputText placeholder="Buscador...">
+                    <input type="search" pInputText placeholder="Buscador..."
+                           (input)="dv.filter($any($event.target).value, 'contains')">
                 </span>
             <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
           </div>

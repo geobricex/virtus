@@ -25,6 +25,7 @@ export class CursosArInactiveComponent implements OnInit, AfterViewInit {
   urlimageupload: any;
   idiomas: any [];
   person: Person;
+  sortOptions: any[];
 
   infoCourseSelected: any = {};
   informationCourse: boolean;
@@ -60,7 +61,13 @@ export class CursosArInactiveComponent implements OnInit, AfterViewInit {
       {label: "---:---", value: null},
       {label: "Español", value: "es"},
       {label: "English", value: "en"}
-    ]
+    ];
+    this.sortOptions = [
+      {label: 'Nombre curso A-Z', value: 'name_course'},
+      {label: 'Nombre curso Z-A', value: '!name_course'},
+      {label: 'Mas antiguos', value: 'datereg_course'},
+      {label: 'Ultimos agregados', value: '!datereg_course'}
+    ];
     this.utils.initPocket();
     this.loadCourse();
     this.reegisterFormCourse = this.formBuilder.group(
@@ -72,6 +79,7 @@ export class CursosArInactiveComponent implements OnInit, AfterViewInit {
       }
     );
   }
+
 
   expandAll() {
     if (!this.isExpanded) {

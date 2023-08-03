@@ -1,27 +1,31 @@
 <p-toast key="tst" [baseZIndex]="99999"></p-toast>
 <p-messages [value]="msgs"></p-messages>
 
-<p-dialog [(visible)]="formUpdatePhto" [style]="{width: '450px'}" header="Editar foto de perfil" [modal]="true"
-          class="p-fluid">
+<p-dialog [(visible)]="formUpdatePhto" [style]="{width: '480px'}" header="Editar foto de perfil" [modal]="true"
+          class="p-fluid" [style.z-index]="1000" [style.position]="'absolute'">
 
   <ng-template pTemplate="content">
     <div [formGroup]="frmPhoto" class="text-center">
-      <img [src]="urlimageupload" alt="" width="150" height="150"
+      <img [src]="urlimageupload" alt="" width="100" height="100"
            style="border-radius: 50%; border: 5px solid #2D3F47"> <br>
       <label for="uploadPhotoNew" class="p-button p-button-success w-4"> Seleccionar imagen propia</label>
       <input style="display: none" id="uploadPhotoNew" formControlName="firstName" type="file"
              (change)="onFileChange($event)">
       <div>
-        <h4>Seleccionar avatar</h4>
-        <div ng-repeat="avatarGroup in avatar | chunk: 6" class="mb-1">
-          <p-avatarGroup styleClass="mb-1">
-            <p-avatar ng-repeat="avatarObj in avatarGroup"
-                      image="{{avatarObj.image}}"
-                      size="xlarge"
-                      shape="circle">
-            </p-avatar>
-          </p-avatarGroup>
-        </div>
+        <h4 style="margin-top: 2rem">Seleccionar avatar</h4>
+        <p-dataView #dv [value]="avatar" [rows]="9" filterBy="nameCourse,keywordsCourse,descriptionCourse" layout="grid" >
+          <ng-template let-avatar_front pTemplate="gridItem">
+            <div class="col-12 md:col-2 cursor-pointer">
+            <div class="col-12  cursor-pointer">
+              <div class="flex flex-column md:flex-row align-items-center p-3 w-full">
+                <div class="my-4 md:my-0 w-9 md:w-10rem hover:bg-black-alpha-10 " (click)="seleccionarAvatar(avatar_front)">
+                  <img [src]="avatar_front.image" [alt]="avatar_front.image" width="40" height="40" />
+                </div>
+              </div>
+            </div>
+            </div>
+          </ng-template>
+        </p-dataView>
       </div>
     </div>
   </ng-template>

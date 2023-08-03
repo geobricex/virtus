@@ -16,75 +16,60 @@
     <!--                (click)="dt.exportCSV()"></button>-->
     <!--      </ng-template>-->
     <!--    </p-toolbar>-->
-    <p-table #dt [value]="persons" responsiveLayout="scroll" [rows]="5" [columns]="cols"
-             [globalFilterFields]="['Nombre','Apellido']"
+    <p-table #dta [value]="persons" responsiveLayout="scroll" [rows]="5" [columns]="cols"
              [paginator]="true" [rowsPerPageOptions]="[5,10,20,30]" [showCurrentPageReport]="true"
              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-             selectionMode="multiple" [rowHover]="true" dataKey="id">
+             selectionMode="multiple" [rowHover]="true" dataKey="id"
+             [globalFilterFields]="['namePerson','lastnamePerson','emailPerson','providerPerson','dateregPerson','dateupdatePerson']">
       <ng-template pTemplate="caption">
         <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
           <h5 class="m-0">Usuarios de la aplicación</h5>
           <span class="block mt-2 md:mt-0 p-input-icon-left">
                             <i class="pi pi-search"></i>
-                            <input pInputText type="text" placeholder="Buscar..."/>
-            <!--                                   (input)="dt.filterGlobal($event.target.value, 'contains')"-->
-
+                            <input pInputText type="text" placeholder="Buscar..."
+                                   (input)="dta.filterGlobal($any($event.target).value, 'contains')"/>
           </span>
         </div>
       </ng-template>
       <ng-template pTemplate="header">
         <tr>
-          <!--          <th style="width: 3rem">-->
-          <!--            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>-->
-          <!--          </th>-->
           <th>Imagen</th>
 
-          <th pSortableColumn="Nombre">Nombre
+          <th pSortableColumn="namePerson">Nombre
             <p-sortIcon field="Nombre"></p-sortIcon>
           </th>
-          <th pSortableColumn="Apellido">Apellido
+          <th pSortableColumn="lastnamePerson">Apellido
             <p-sortIcon field="Apellido"></p-sortIcon>
           </th>
-          <th pSortableColumn="Email">Email
+          <th pSortableColumn="emailPerson">Email
             <p-sortIcon field="Email"></p-sortIcon>
           </th>
-          <th pSortableColumn="Tipodeusuario">Tipo de usuario
-            <p-sortIcon field="Tipodeusuario"></p-sortIcon>
-          </th>
-          <th pSortableColumn="Tipoderegistro">Tipo de registro
+          <th pSortableColumn="providerPerson">Registro
             <p-sortIcon field="Tipoderegistro"></p-sortIcon>
           </th>
-          <th pSortableColumn="Fecharegistro">Fecha registro
+          <th pSortableColumn="dateregPerson">Fechas
             <p-sortIcon field="Fecharegistro"></p-sortIcon>
-          </th>
-          <th pSortableColumn="Fechaactualización">Fecha actualización
-            <p-sortIcon field="inventoryStatus"></p-sortIcon>
           </th>
           <th></th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-person>
         <tr>
-          <!--          <td>-->
-          <!--            <p-tableCheckbox [value]="product"></p-tableCheckbox>-->
-          <!--          </td>-->
-          <td style="width:14%; min-width:10rem;"><span class="p-column-title">Imagen</span>
-            <img [src]="person.pathimgPerson" [alt]="person.namePerson" width="100"
-                 class="shadow-4"/>
+          <td class="col-1"><span class="p-column-title">Imagen</span>
+            <img [src]="person.pathimgPerson" [alt]="person.namePerson" width="70"
+                 class="border-circle border-2 border-black-alpha-40"/>
           </td>
-          <td style="width:14%; min-width:10rem;"><span class="p-column-title">Nombre</span>
+          <td class="col-1"><span class="p-column-title">Nombre</span>
             {{person.namePerson}}
           </td>
-          <td style="width:14%; min-width:10rem;">
+          <td class="col-1">
             <span class="p-column-title">Apellido</span>
             {{person.lastnamePerson}}
           </td>
 
-          <td style="width:14%; min-width:8rem;">
+          <td class="col-2">
             <span class="p-column-title">Email</span>
-            {{person.emailPerson}}
-          </td>
-          <td style="width:14%; min-width:10rem;">
+            {{person.emailPerson}} <br>
             <span class="p-column-title">Tipo de usuario</span>
             <span *ngIf="person.typePerson=='A'"
                   class="p-badge p-badge-primary mt-3"> Administrador </span>
@@ -99,19 +84,16 @@
             <span *ngIf="person.typePerson=='D'"
                   class="p-badge p-badge-danger mt-3"> Deshabilitada </span>
           </td>
-          <td style="width:14%; min-width:10rem;">
-            <span class="p-column-title">Tipo de registro</span>
+          <td class="col-1">
+            <span class="p-column-title">Registro</span>
             {{person.providerPerson}}
           </td>
-          <td style="width:14%; min-width:10rem;">
-            <span class="p-column-title">Fecha registro</span>
-            {{person.dateregPerson}}
+          <td class="col-3">
+            <span class="p-column-title">Fechas</span>
+            <span class="text-blue-500" >Registro:</span> {{person.dateregPerson}} <br>
+            <span class="text-blue-500"> Actalización: </span> {{person.dateupdatePerson}}
           </td>
-          <td style="width:14%; min-width:10rem;">
-            <span class="p-column-title">Fecha actualización</span>
-            {{person.dateupdatePerson}}
-          </td>
-          <td style="width:14%; min-width:10rem;">
+          <td class="col-1">
             <div class="flex" *ngIf="personUser.typePerson == 'R'">
               <button *ngIf="person.typePerson == 'U'" pButton pRipple icon="pi pi-angle-double-up"
                       class="p-button-rounded p-button-success mr-2" pTooltip="Promover a administrador"

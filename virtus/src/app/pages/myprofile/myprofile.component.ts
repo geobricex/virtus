@@ -27,6 +27,7 @@ export class MyprofileComponent implements OnInit, AfterViewInit {
   tmpFile: any;
   client: any;
   urlimageupload: any;
+  insertarPocket = false;
 
   msgs: Message[] = [];
 
@@ -102,11 +103,11 @@ export class MyprofileComponent implements OnInit, AfterViewInit {
   }
 
   apiupdateDataPerson(person: Person): Observable<any> {
-    this.globalUri = "virtusbk/persons";
+    this.globalUri = this.utils.globalUrl + "persons";
     var headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
-      .set('token', this.session.token);
+      .set('token', this.utils.token);
     return this._http.put<Person>(this.globalUri, person, {headers: headers});
   }
 
@@ -129,20 +130,32 @@ export class MyprofileComponent implements OnInit, AfterViewInit {
       this.frmPhoto.patchValue({
         field: file
       });
+      this.insertarPocket = true;
     }
   }
 
   updatePhtoProfile() {
-    this.changeImage().then(response => {
-      console.log(response);
-      console.log(this.makePathRecurso(response))
-      this.person._pathimgPerson = this.makePathRecurso(response);
+    this.utils.loading;
+    if(this.insertarPocket) {
+      this.changeImage().then(response => {
+        this.person._pathimgPerson = this.makePathRecurso(response);
+        this.apiupdateDataPerson(this.person).subscribe(response => {
+          this.utils.showMessages(2, "Foto de perfil actualizada exitosamente.", "tst");
+          this.editar_datos = false;
+          this.formUpdatePhto = false;
+          this.utils.closeLoading;
+        });
+      });
+    } else {
+      console.log("sin pocket !");
+      this.person._pathimgPerson = this.urlimageupload;
       this.apiupdateDataPerson(this.person).subscribe(response => {
-        this.utils.showMessages(2, "Foto de perfil actualizada exitosamente.", "tst");
+        this.utils.showMessages(2, "Foto de perfil actualizada exitosamente. Los cambios se visualizaran despues de volver a iniciar sesión.", "tst");
         this.editar_datos = false;
         this.formUpdatePhto = false;
+        this.utils.closeLoading;
       });
-    });
+    }
   }
 
   async changeImage(): Promise<any> {
@@ -155,6 +168,11 @@ export class MyprofileComponent implements OnInit, AfterViewInit {
   makePathRecurso(element: any): string {
     var urlRecurso: string = "https://fyc.uteq.edu.ec:9549" + "/api/files/" + element["@collectionName"] + "/" + element.id + "/" + element.field;// +"/" ;
     return urlRecurso;
+  }
+
+  seleccionarAvatar (avatar: any) : any {
+    this.insertarPocket = false;
+    this.urlimageupload = avatar.image;
   }
 
   //ANEXO
