@@ -1,3 +1,4 @@
+import {parse} from 'date-fns';
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {BreadcrumbService} from "../../app.breadcrumb.service";
@@ -6,7 +7,8 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Observable} from "rxjs";
 import {
-  Evaluation, EvaluationModel,
+  _Evaluation,
+  EvaluationModel,
   EvaluationQuestionsResponse,
   Options,
   OptionsAnswer, QuestionCategory,
@@ -15,6 +17,8 @@ import {
 import {Modules} from "../../models/Modules";
 import {Course} from "../../models/Course";
 import {ConfirmationService} from "primeng/api";
+import {Evaluation} from "../../models/Evaluation"
+import {Topic} from "../../models/Topic";
 
 @Component({
   selector: 'app-updateevacuest',
@@ -34,7 +38,9 @@ export class UpdateevacuestComponent implements OnInit, AfterViewInit {
   quantity_true: number;
   quantityQuestions: any[];
   public tmpPuzzle: Puzzle;
-  public evaluationObject: Evaluation;
+  public evaluationObject: _Evaluation;
+  evaluation: Evaluation;
+  auxEvaluation: any;
   public questionObject: Questions;
   public objectQuestionModule = {} as QuestionsModel;
   public objetctEvaluation = {} as EvaluationModel;
@@ -88,7 +94,9 @@ export class UpdateevacuestComponent implements OnInit, AfterViewInit {
         timeminutesEvaluation: ["",],
         typeEvaluation: ["", Validators.required],
         opportunityEvaluation: ["", Validators.required],
-        opportunitiesEvaluation: [""]
+        opportunitiesEvaluation: [""],
+        orderCategory: [""],
+        allowsReview: [""],
       }
     );
   }
@@ -233,16 +241,100 @@ export class UpdateevacuestComponent implements OnInit, AfterViewInit {
   loadEvaluations() {
     this.apiLoadDataEvaluation().subscribe({
       next: response => {
-        console.log(response);
-        this.form["name"].setValue(response.data[0].name_evaluation);
-        this.form["description"].setValue(response.data[0].description_evaluation);
-        this.form["typeEvaluation"].setValue(response.data[0].type_evaluation);
-        this.form["timeEvaluation"].setValue(response.data[0].time_evaluation);
-        this.form["timeminutesEvaluation"].setValue(response.data[0].timeminutes_evaluation);
-        this.form["opportunityEvaluation"].setValue(response.data[0].opportunity_evaluation);
-        this.form["opportunitiesEvaluation"].setValue(response.data[0].opportunities_evaluation);
+        this.auxEvaluation = response.data[0];
+        console.log(this.auxEvaluation);
+        this.form["name"].setValue(this.auxEvaluation.name_evaluation);
+        this.form["description"].setValue(this.auxEvaluation.description_evaluation);
+        this.form["typeEvaluation"].setValue(this.auxEvaluation.type_evaluation);
+        this.form["timeEvaluation"].setValue(this.auxEvaluation.time_evaluation);
+        this.form["timeminutesEvaluation"].setValue(this.auxEvaluation.timeminutes_evaluation);
+        this.form["opportunityEvaluation"].setValue(this.auxEvaluation.opportunity_evaluation);
+        this.form["opportunitiesEvaluation"].setValue(this.auxEvaluation.opportunities_evaluation);
+        this.form["orderCategory"].setValue(this.auxEvaluation.order_category);
+        this.form["allowsReview"].setValue(this.auxEvaluation.allows_review);
       }
+
     })
+  }
+
+  updateParameterQuestion() {
+    this.confirmationService.confirm({
+      message: '¿Seguro que desea realizar los cambios?',
+      header: 'Mensaje de confirmación',
+      icon: 'pi pi-info-circle',
+      acceptLabel: "Si",
+      rejectLabel: "No",
+      accept: () => {
+        this.utils.loading;
+
+        if (!this.form['timeEvaluation'].value) {
+          this.form['timeminutesEvaluation'].setValue(1);
+        }
+
+        // this.evaluation._nameEvaluation =  this.form["name"].value;
+        // this.evaluation._descriptionEvaluation =  this.form["description"].value;
+        // this.evaluation._typeEvaluation =  this.form["typeEvaluation"].value;
+        // this.evaluation._timeEvaluation =  this.form["timeEvaluation"].value;
+        // this.evaluation._timeminutesEvaluation =  this.form["timeminutesEvaluation"].value;
+        // this.evaluation._opportunityEvaluation =  this.form["opportunityEvaluation"].value;
+        // this.evaluation._opportunitiesEvaluation =  this.form["opportunitiesEvaluation"].value;
+        // this.evaluation._orderCategory =  this.form["orderByCategory"].value;
+        // this.evaluation._allows_review =  this.form["reviewIntent"].value;
+        const formatString = 'MMM d, yyyy, h:mm:ss a'; // Formato de la fecha de entrada
+
+        if (typeof this.auxEvaluation.datereg_evaluation === 'string') {
+          try {
+            this.auxEvaluation.datereg_evaluation = parse(this.auxEvaluation.datereg_evaluation, formatString, new Date());
+            this.auxEvaluation.dateupdate_evaluation = parse(this.auxEvaluation.dateupdate_evaluation, formatString, new Date());
+          } catch (error) {
+            console.error('Error al analizar la fecha');
+          }
+        }
+        let topicAux: Topic;
+        topicAux = new Topic(
+          parseInt(this.idTopic === null ? "0" : this.idTopic),
+          "", "", "", "",
+          "", "", "")
+
+        this.evaluation = new Evaluation(
+          this.auxEvaluation.id_evaluation,
+          this.form['name'].value,
+          this.form['description'].value,
+          this.auxEvaluation.datereg_evaluation, this.auxEvaluation.dateupdate_evaluation,
+          this.form['timeEvaluation'].value,
+          this.form['timeEvaluation'].value ? this.form['timeminutesEvaluation'].value : 0,
+          this.auxEvaluation.numberquestion_evaluation,
+          this.auxEvaluation.state_evaluation,
+          this.form['typeEvaluation'].value,
+          this.form['opportunityEvaluation'].value,
+          this.form['opportunityEvaluation'].value ? this.form['opportunitiesEvaluation'].value : 1,
+          this.form['orderCategory'].value,
+          this.form['allowsReview'].value
+        )
+        this.evaluation._topicsIdTopic = topicAux;
+        console.log("EDIT EVALUATION");
+        console.log(this.evaluation);
+
+        this.apiUpdateEvaluation().subscribe(response => {
+          console.log(response);
+          this.utils.showMessages(response.status, response.information, "tst");
+          this.utils.closeLoading;
+        });
+      },
+      reject: () => {
+        this.utils.closeLoading;
+      },
+      key: "positionDialog"
+    });
+  }
+
+  apiUpdateEvaluation(): Observable<any> {
+    this.globalUri = this.utils.globalUrl + "evaluation/updateevaluation";
+    var headers = new HttpHeaders()
+      .set('Access-Control-Allow-Origin', '*')
+      .set('provider', 'native')
+      .set('token', this.utils.token);
+    return this._http.post(this.globalUri, this.evaluation, {headers: headers});
   }
 
   loadQuestions() {
@@ -414,6 +506,7 @@ export class UpdateevacuestComponent implements OnInit, AfterViewInit {
 
 
   }
+
 }
 
 function desordenarRow(unArray: any[]): any[] {

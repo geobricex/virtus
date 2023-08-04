@@ -1,12 +1,12 @@
 import {Person} from "./Person";
 
 export interface EvaluationQuestionsResponse {
-  data: Evaluation[];
+  data: _Evaluation[];
   information: string;
   status: number;
 }
 
-export interface Evaluation {
+export interface _Evaluation {
   description_evaluation: string;
   name_evaluation: string;
   numberquestion_evaluation: number;
@@ -18,15 +18,16 @@ export interface Evaluation {
   id: number;
 }
 
+
 export interface PersonsEvaluations {
   id: number;
-  resultEvaluation: Evaluation;
+  resultEvaluation: _Evaluation;
   dateregPersonEvaluation: string;
   qualificationPersonEvaluation: any;
   trynumberPersonEvaluation: number;
   timespentPersonEvaluation: any;
   personsIdPerson: Person;
-  evaluationsIdEvaluation: Evaluation;
+  evaluationsIdEvaluation: _Evaluation;
 }
 
 export interface Questions {

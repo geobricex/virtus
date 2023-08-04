@@ -9,7 +9,7 @@ import {fabric} from "fabric";
 
 import {
   Correct,
-  Evaluation,
+  _Evaluation,
   EvaluationQuestionsResponse,
   Options,
   OptionsAnswer, PersonsEvaluations,
@@ -44,7 +44,7 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
   private globalUri: string;
 
   //objeto de la evaluación
-  public evaluationObject: Evaluation;
+  public evaluationObject: _Evaluation;
   public questionObject: Questions;
 
   public indexQuestionObject: number;

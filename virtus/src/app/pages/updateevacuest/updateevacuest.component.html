@@ -45,6 +45,7 @@
             <div class="col" *ngIf="form['timeEvaluation'].value">
               <div class="field">
                 <label for="tiempomin"> Tiempo (minmutos): </label>
+                <br/><label><span>Nota:</span> En evaluación es obligatorio tener tiempo</label>
                 <p-inputNumber id="tiempomin" formControlName="timeminutesEvaluation"
                                [ngClass]="
                  (form['timeminutesEvaluation'].invalid && (form['timeminutesEvaluation'].dirty && form['timeminutesEvaluation'].touched)) ?
@@ -70,16 +71,24 @@
               </div>
             </div>
           </div>
-
           <div class="grid">
             <div class="col-4">
               <div class="field" style="display: grid">
                 <label> Ordenar por categoría: </label>
-                <p-inputSwitch id="orderByCategory"
-                               formControlName="orderByCategory"></p-inputSwitch>
+                <p-inputSwitch formControlName="orderCategory"></p-inputSwitch>
               </div>
             </div>
           </div>
+          <div class="grid">
+            <div class="col-4">
+              <div class="field" style="display: grid">
+                <label> Revisión de intento: </label>
+                <p-inputSwitch formControlName="allowsReview"></p-inputSwitch>
+              </div>
+            </div>
+          </div>
+          <button pButton pRipple label="Guardar Cambios" icon="pi pi-pencil" class="p-button-success mr-2 mb-4"
+                  (click)="updateParameterQuestion()"></button>
         </div>
       </form>
     </p-tabPanel>
@@ -490,7 +499,7 @@
         <div *ngFor="let rowImgPz of tmpPuzzle.arrayImagePuzzle; let y = index">
           <button pButton pRipple *ngFor="let elem of rowImgPz; let x = index"
                   class="p-button-info" [ngClass]="!tmpPuzzle.isActive(x, y) ? 'p-button-outlined': ''"
-                  style="padding: 1px!important;" (click)="tmpPuzzle.mover(x, y)" >
+                  style="padding: 1px!important;" (click)="tmpPuzzle.mover(x, y)">
             <img [src]="elem"/>
           </button>
         </div>

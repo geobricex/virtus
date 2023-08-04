@@ -17,6 +17,7 @@ export class Evaluation {
   private orderCategory: boolean;
   private allowsReview: boolean;
 
+
   constructor(id: number, nameEvaluation: string, descriptionEvaluation: string, dateregEvaluation: string,
               dateupdateEvaluation: string, timeEvaluation: string, timeminutesEvaluation: number,
               numberquestionEvaluation: number, state_evaluation: string, typeEvaluation: string,
