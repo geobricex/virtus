@@ -410,14 +410,12 @@
       </div>
       <h5>Palabra:</h5>
       <div class="centar-botones">
-        <div>
-          <button pButton pRipple
-                  *ngFor="let option of questionObject.answers_[0].options_answer[0].opcion.toString().split(''); let i = index"
-                  class="p-button-info" [ngClass]="i != palabra.release ? 'p-button-outlined': ''"
-                  [disabled]="showLetra(option, i) == 'space'" (click)="clickUp(i)">
-            <img height="35" [src]="'assets/imgresource/alfabeto/' + showLetra(option, i) + '.png'"/>
-          </button>
-        </div>
+        <button pButton pRipple
+                *ngFor="let option of questionObject.answers_[0].options_answer[0].opcion.toString().split(''); let i = index"
+                class="p-button-info" [ngClass]="i != palabra.release ? 'p-button-outlined': ''"
+                [disabled]="showLetra(option, i) == 'space'" (click)="clickUp(i)">
+          <img height="35" [src]="'assets/imgresource/alfabeto/' + showLetra(option, i) + '.png'"/>
+        </button>
       </div>
 
       <div class="col-12 justify-content-center align-content-center" style="margin-bottom: 50px!important;">

@@ -1,6 +1,7 @@
 import {parse} from 'date-fns';
-import {AfterViewInit, Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
+import {AfterViewInit, Component, OnInit, OnDestroy} from '@angular/core';
+import {ActivatedRoute, Router, RouterStateSnapshot} from "@angular/router";
+import { Location } from '@angular/common';
 import {BreadcrumbService} from "../../app.breadcrumb.service";
 import {Utils} from "../../util/Utils";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
@@ -25,7 +26,7 @@ import {Topic} from "../../models/Topic";
   templateUrl: './updateevacuest.component.html',
   styleUrls: ['./updateevacuest.component.scss']
 })
-export class UpdateevacuestComponent implements OnInit, AfterViewInit {
+export class UpdateevacuestComponent implements OnInit, AfterViewInit, OnDestroy {
 
   idCourse: string | null = "";
   idModule: string | null = "";
@@ -61,7 +62,9 @@ export class UpdateevacuestComponent implements OnInit, AfterViewInit {
     private _http: HttpClient,
     private formBuilder: FormBuilder,
     private confirmationService: ConfirmationService,
-    public router: Router
+    public router: Router,
+    private location: Location,
+    private route: ActivatedRoute
   ) {
     this.idCourse = this._route.snapshot.paramMap.get("idcourse");
     this.idModule = this._route.snapshot.paramMap.get("idmodule");
@@ -114,6 +117,17 @@ export class UpdateevacuestComponent implements OnInit, AfterViewInit {
       {label: "Cuestionario", value: 2},
     ]
     this.selectQuantityQuestions();
+  }
+
+  routerOnActivate(snapshot: RouterStateSnapshot): void {
+    this.loadEvaluations();
+    this.loadQuestions();
+    console.log('routerOnActivate');
+  }
+
+  ngOnDestroy(): void {
+    // Se ejecuta cuando el componente es destruido.
+    console.log('ngOnDestroy');
   }
 
   deleteQuestion(question: Questions, idcategory: number) {
