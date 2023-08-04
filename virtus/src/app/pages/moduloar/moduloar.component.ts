@@ -31,6 +31,7 @@ export class ModuloarComponent implements OnInit, AfterViewInit {
   loadingDataCourse: boolean = true;
   dataCourse: any;
   updateModule: boolean = false;
+  sortOptions: any[];
 
   registerFormModule: FormGroup;
   moduleSuccessful = false;
@@ -68,6 +69,12 @@ export class ModuloarComponent implements OnInit, AfterViewInit {
         keywords: ["", Validators.required]
       }
     );
+    this.sortOptions = [
+      {label: 'Nombre módulo A-Z', value: 'name_syllabu'},
+      {label: 'Nombre módulo Z-A', value: '!name_syllabu'},
+      {label: 'Mas antiguos', value: 'datereg_syllabu'},
+      {label: 'Ultimos agregados', value: '!datereg_syllabu'}
+    ];
     this.loadDataCourse();
   }
 

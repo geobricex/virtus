@@ -4,7 +4,7 @@
     <div class="card">
       <p-toast></p-toast>
       <p-dataView #dv [value]="courses" [paginator]="true" [rows]="9" filterBy="nameCourse,keywordsCourse,descriptionCourse"
-                  layout="grid">
+                  layout="grid" [sortField]="sortField" [sortOrder]="sortOrder">
         <ng-template pTemplate="header">
           <div class="grid grid-nogutter flex-column md:flex-row justify-content-between">
             <p-dropdown [options]="sortOptions" placeholder="Ordenar por" (onChange)="onSortChange($event)"

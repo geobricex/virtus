@@ -32,10 +32,10 @@
       </p-toolbar>
 
       <p-dataView #dv [value]="courses" [paginator]="true" [rows]="9" filterBy="nameCourse,keywordsCourse,descriptionCourse"
-                  layout="grid" *ngIf="!loading">
+                  layout="grid" *ngIf="!loading" [sortField]="sortField" [sortOrder]="sortOrder">
         <ng-template pTemplate="header">
           <div class="grid grid-nogutter flex-column md:flex-row justify-content-between">
-            <p-dropdown placeholder="Ordenar por:" (onChange)="onSortChange($event)"
+            <p-dropdown [options]="sortOptions" placeholder="Ordenar por" (onChange)="onSortChange($event)"
                         styleClass="mb-2 md:mb-0"></p-dropdown>
             <span class="p-input-icon-left mb-2 md:mb-0">
                     <i class="pi pi-search"></i>

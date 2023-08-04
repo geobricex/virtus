@@ -63,10 +63,10 @@ export class CursosArInactiveComponent implements OnInit, AfterViewInit {
       {label: "English", value: "en"}
     ];
     this.sortOptions = [
-      {label: 'Nombre curso A-Z', value: 'name_course'},
-      {label: 'Nombre curso Z-A', value: '!name_course'},
-      {label: 'Mas antiguos', value: 'datereg_course'},
-      {label: 'Ultimos agregados', value: '!datereg_course'}
+      {label: 'Nombre curso A-Z', value: 'nameCourse'},
+      {label: 'Nombre curso Z-A', value: '!nameCourse'},
+      {label: 'Mas antiguos', value: 'dateregCourse'},
+      {label: 'Ultimos agregados', value: '!dateregCourse'}
     ];
     this.utils.initPocket();
     this.loadCourse();
@@ -78,6 +78,19 @@ export class CursosArInactiveComponent implements OnInit, AfterViewInit {
         language: ["", Validators.required]
       }
     );
+  }
+
+
+  onSortChange(event: any) {
+    let value = event.value;
+    console.log(value);
+    if (value.indexOf('!') === 0) {
+      this.sortOrder = -1;
+      this.sortField = value.substring(1, value.length);
+    } else {
+      this.sortOrder = 1;
+      this.sortField = value;
+    }
   }
 
 
@@ -200,19 +213,6 @@ export class CursosArInactiveComponent implements OnInit, AfterViewInit {
 
   openNew() {
     this.newcourse_dialog = true;
-  }
-
-
-  onSortChange(event: any) {
-    let value = event.value;
-
-    if (value.indexOf('!') === 0) {
-      this.sortOrder = -1;
-      this.sortField = value.substring(1, value.length);
-    } else {
-      this.sortOrder = 1;
-      this.sortField = value;
-    }
   }
 
 }

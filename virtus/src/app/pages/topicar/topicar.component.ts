@@ -32,6 +32,7 @@ export class TopicarComponent implements OnInit, AfterViewInit {
   dataCourse: any;
   dataModule: any;
   updateTopic: boolean = false;
+  sortOptions: any[];
 
   registerFormTopic: FormGroup;
   topicSuccessful = false;
@@ -65,6 +66,12 @@ export class TopicarComponent implements OnInit, AfterViewInit {
     this.loadTopics();
     this.loadDataCourse();
     this.loadDataModule();
+    this.sortOptions = [
+      {label: 'Nombre módulo A-Z', value: 'name_topic'},
+      {label: 'Nombre módulo Z-A', value: '!name_topic'},
+      {label: 'Mas antiguos', value: 'datereg_topic'},
+      {label: 'Ultimos agregados', value: '!datereg_topic'}
+    ];
     this.registerFormTopic = this.formBuilder.group(
       {
         name: ["", Validators.required],
@@ -312,5 +319,7 @@ export class TopicarComponent implements OnInit, AfterViewInit {
       });
     }
   }
+
+
 
 }
