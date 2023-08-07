@@ -121,6 +121,7 @@ import { ComandosComponent } from './pages/comandos/comandos.component';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import {AvatarGroupModule} from "primeng/avatargroup";
+import { InformationArComponent } from './pages/information-ar/information-ar.component';
 
 
 FullCalendarModule.registerPlugins([
@@ -181,7 +182,8 @@ const firebaseConfig = {
     UpdateevacuestComponent,
     QuestionNuComponent,
     AcercadeComponent,
-    ComandosComponent
+    ComandosComponent,
+    InformationArComponent
   ],
   imports: [
     HttpClientModule,

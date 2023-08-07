@@ -35,6 +35,8 @@ import {UpdateevacuestComponent} from "./pages/updateevacuest/updateevacuest.com
 import {QuestionNuComponent} from "./pages/question-nu/question-nu.component";
 import {AcercadeComponent} from "./pages/acercade/acercade.component";
 import {ComandosComponent} from "./pages/comandos/comandos.component";
+import {InformationArComponent} from "./pages/information-ar/information-ar.component";
+
 import {GuarTokenGuard} from "./guards/guar-token.guard";
 import {C} from "@angular/cdk/keycodes";
 
@@ -55,6 +57,7 @@ import {C} from "@angular/cdk/keycodes";
           // {path: 'games', component: GamesComponent},
           {path: 'about', component: AcercadeComponent},
           {path: 'information', component: ComandosComponent},
+          {path: 'admins/informationar', component: InformationArComponent},
           {path: 'myprofile', component: MyprofileComponent},
           {path: 'course', component: CursosComponent},
           {path: 'general/favorites', component: FavoritesComponent},

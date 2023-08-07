@@ -8,6 +8,30 @@
         </pdf-viewer>
       </div>
     </p-tabPanel>
+    <p-tabPanel header="Videos" class="line-height-3 m-0">
+      <span>Video Tutorial</span>
+      <div class="video-container-info">
+        <div class="video-wrapper">
+          <video id='video1' width="600" controls preload='none' draggable="true"
+                 poster="../../assets/layout/images/imagesVirtus/logoWVirtus.svg">
+            <source id='mp4_1'
+                    src="https://fyc.uteq.edu.ec:9549/api/files/archivos/8nkMAH62Id77Ulx/GbIVundG28hRqyBEuvwXEfu1gInHDVDT.mp4"
+                    type='video/mp4'/>
+          </video>
+        </div>
+        <hr>
+        <span>Video Promocional</span>
+        <div class="video-wrapper">
+          <video id='video2' width="600" controls preload='none' draggable="true"
+                 poster="../../assets/layout/images/imagesVirtus/logoWVirtus.svg">
+            <source id='mp4_2'
+                    src="https://fyc.uteq.edu.ec:9549/api/files/R0BDS4ixyAqvSUv/UwTqFtOfqYN9OvD/4MwMTzgbuzRdN1y2o1nCEOa78t3tvL6L.mp4"
+                    type='video/mp4'/>
+          </video>
+        </div>
+      </div>
+
+    </p-tabPanel>
 
     <p-tabPanel header="Comandos" class="line-height-3 m-0">
 
@@ -32,9 +56,12 @@
             <td style="min-width: 12rem;">
               <img [src]="'assets/layout/images/teclas/' + comando_teclado.comando_base" alt="" width="70">
               <span style="margin: 10px;position: relative;top: -10px;font-size: 30px;font-weight: bold;">+</span>
-              <img *ngIf="comando_teclado.comando_sec !== 'tab.png' && comando_teclado.comando_sec !== 'backspace.png'" [src]="'assets/layout/images/teclas/' + comando_teclado.comando_sec" alt="" width="39">
-              <img *ngIf="comando_teclado.comando_sec === 'tab.png'" [src]="'assets/layout/images/teclas/' + comando_teclado.comando_sec" alt="" width="60">
-              <img *ngIf="comando_teclado.comando_sec === 'backspace.png'" [src]="'assets/layout/images/teclas/' + comando_teclado.comando_sec" alt="" width="100">
+              <img *ngIf="comando_teclado.comando_sec !== 'tab.png' && comando_teclado.comando_sec !== 'backspace.png'"
+                   [src]="'assets/layout/images/teclas/' + comando_teclado.comando_sec" alt="" width="39">
+              <img *ngIf="comando_teclado.comando_sec === 'tab.png'"
+                   [src]="'assets/layout/images/teclas/' + comando_teclado.comando_sec" alt="" width="60">
+              <img *ngIf="comando_teclado.comando_sec === 'backspace.png'"
+                   [src]="'assets/layout/images/teclas/' + comando_teclado.comando_sec" alt="" width="100">
             </td>
             <td style="min-width: 12rem;">
               {{comando_teclado.descripcion}}
@@ -75,15 +102,22 @@
 
     <p-tabPanel header="Agradecimientos" class="line-height-3 m-0">
       <p style="text-align: justify">
-        Para el proyecto de VIRTUS de la <b> Universidad Técnica Estatal de Quevedo </b>, primero agradecemos a <b>Dios</b> por guiarnos a lo
-        largo de ésta experiencia, ser el apoyo y fortaleza en los momentos de dificultad. Gracias a nuestros padres, por ser los pilares
-        fundamentales para cumplir nuestros sueños, por confiar y creer en nuestras expectativas al iniciar con este gran proyecto.
-        También agradecermos a la UTEQ, que nos brindó el espacio y el apoyo para poder iniciar y culminar con este proyecto.
+        Para el proyecto de VIRTUS de la <b> Universidad Técnica Estatal de Quevedo </b>, primero agradecemos a
+        <b>Dios</b> por guiarnos a lo
+        largo de ésta experiencia, ser el apoyo y fortaleza en los momentos de dificultad. Gracias a nuestros padres,
+        por ser los pilares
+        fundamentales para cumplir nuestros sueños, por confiar y creer en nuestras expectativas al iniciar con este
+        gran proyecto.
+        También agradecermos a la UTEQ, que nos brindó el espacio y el apoyo para poder iniciar y culminar con este
+        proyecto.
       </p>
       <p style="text-align: justify">
-        Agradecemos a cada uno de los docentes que formaron parte de este proyecto compartiendo sus conocimientos y apoyándonos en
-        cada situación que se presentaba, entre ellos mencionar al <b>Ing. Orlando Erazo </b> que nos incentivó con la idea del proyecto.
-        Además, agradecemos también a nuestros compañeros de curso de la carrera<b> Ingeniería en Sistemas </b> por apoyarnos con ideas
+        Agradecemos a cada uno de los docentes que formaron parte de este proyecto compartiendo sus conocimientos y
+        apoyándonos en
+        cada situación que se presentaba, entre ellos mencionar al <b>Ing. Orlando Erazo </b> que nos incentivó con la
+        idea del proyecto.
+        Además, agradecemos también a nuestros compañeros de curso de la carrera<b> Ingeniería en Sistemas </b> por
+        apoyarnos con ideas
         que sin duda beneficiaron para culminar con éxito todos los objetivos planteados.
       </p>
     </p-tabPanel>

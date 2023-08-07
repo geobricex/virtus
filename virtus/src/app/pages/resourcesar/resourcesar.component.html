@@ -318,7 +318,7 @@
   <p-dialog [(visible)]="viewVideoDialog" header="Visualizar video" [modal]="true"
             class="p-fluid">
     <ng-template pTemplate="content">
-      <video src="{{videoUrl}}" controls width="800" height="500"></video>
+      <video src="{{videoUrl}}" controls draggable="true" width="800" height="500"></video>
     </ng-template>
   </p-dialog>
 

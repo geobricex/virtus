@@ -64,7 +64,7 @@ export class AppMenuComponent implements OnInit {
               label: 'Más', icon: 'pi pi-fw pi-plus-circle', routerLink: ['/javascript;'],
               items: [
                 {label: 'Acerca de', icon: 'pi pi-fw pi-globe', routerLink: ['/app/about']},
-                {label: 'Información', icon: 'pi pi-fw pi-info-circle', routerLink: ['/app/information']},
+                {label: 'Información', icon: 'pi pi-fw pi-info-circle', routerLink: ['/app/admins/informationar']},
                 // {label: 'Juegos', icon: 'pi pi-fw pi-slack', routerLink: ['/app/games']},
               ]
             },
@@ -98,7 +98,7 @@ export class AppMenuComponent implements OnInit {
               label: 'Más', icon: 'pi pi-fw pi-plus-circle', routerLink: ['/javascript;'],
               items: [
                 {label: 'Acerca de', icon: 'pi pi-fw pi-globe', routerLink: ['/app/about']},
-                {label: 'Información', icon: 'pi pi-fw pi-info-circle', routerLink: ['/app/information']},
+                {label: 'Información', icon: 'pi pi-fw pi-info-circle', routerLink: ['/app/admins/informationar']},
                 // {label: 'Juegos', icon: 'pi pi-fw pi-slack', routerLink: ['/app/games']},
               ]
             },

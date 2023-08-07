@@ -31,7 +31,7 @@
             <div>
               <h5 class="mb-1">{{resource.name_resource}}</h5>
               <span> {{resource.description_resource}} </span> <br>
-              <div class="my-3" >
+              <div class="my-3">
                 <a [href]="resource.pathfile_resource"
                    target="_blank" pButton pRipple icon="xxx"
                    class="mr-2 p-button-rounded p-button"
@@ -167,7 +167,7 @@
   <p-dialog [(visible)]="viewVideoDialog" header="Visualizar video" [modal]="true"
             class="p-fluid">
     <ng-template pTemplate="content">
-      <video src="{{videoUrl}}" controls width="800" height="500"></video>
+      <video src="{{videoUrl}}" controls draggable="true" width="800" height="500"></video>
     </ng-template>
   </p-dialog>
 

@@ -428,8 +428,27 @@
     padding: 36px 14px;
   }
 
-  #multimedia .video-container {
-    width: 75%;
+  /*Página principal*/
+  .video-container {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    max-width: 600px; /* Establece un ancho máximo para evitar que el video sea demasiado grande */
+    max-height: 100vh; /* Establece una altura máxima para evitar que el video sea demasiado alto */
+  }
+
+  .video-tuto {
+    width: 100%; /* Hace que el video llene el contenedor */
+    height: auto; /* Mantiene la relación de aspecto del video */
+    max-width: 600px; /* Establece un ancho máximo para evitar que el video sea demasiado grande */
+    max-height: 100vh; /* Establece una altura máxima para evitar que el video sea demasiado alto */
+  }
+
+  #video {
+    width: 100%; /* Hace que el video llene el contenedor */
+    height: auto; /* Mantiene la relación de aspecto del video */
+    max-width: 600px; /* Establece un ancho máximo para evitar que el video sea demasiado grande */
+    max-height: 100vh; /* Establece una altura máxima para evitar que el video sea demasiado alto */
   }
 
   #multimedia .video-container iframe {
