@@ -1076,7 +1076,7 @@ export class QuestionnaireComponent implements OnInit, AfterViewInit {
 
   decirAlgo(cadena: string): void {
     // prevenir habla
-    if (this.text2SpeakSupport()) {
+    if (!this.text2SpeakSupport()) {
       return;
     }
     //si están hablando, callarlos
