@@ -1434,10 +1434,24 @@ export class QuestionnaireComponent implements OnInit, AfterViewInit {
   public globalUniLineaIndex = -1;
   public canvasLineas: fabric.Canvas;
 
-  preguntaUnirConLinea(pregunta: any) {
-    let canvasLineas = this.canvasLineas;
-    console.log("Pregunta de Unir Con Línea: ", pregunta);
+  @ViewChild('canvasLineas', {static: true}) canvasElLineas: ElementRef<HTMLCanvasElement>;
 
+  preguntaUnirConLinea(pregunta: any) {
+
+    let c_tamanio = 100, c_margen = 5;
+    let parts_o: OptionsAnswer[] = this.questionObject.answers_[0].options_answer;
+    let cantidad: number = parts_o.length;
+    let mecanvas = this.canvasElLineas.nativeElement;
+    mecanvas.height = (c_tamanio * cantidad) + (c_margen * (cantidad - 1));
+    // mecanvas.width = (c_tamanio * 2) + 150;
+    mecanvas.getContext('2d')!.clearRect(0, 0, mecanvas.width, mecanvas.height);
+    let ctx = mecanvas.getContext('2d')!;
+
+    console.log("Pregunta de Unir Con Línea: ", pregunta);
+    this.canvasLineas = new fabric.Canvas('canvasLineas', {
+      backgroundColor: "white"
+    });
+    let canvasLineas = this.canvasLineas;
     canvasLineas.selection = false;
     /*canvasLineas.forEachObject(function(o:any){
       o.remove();
@@ -1585,19 +1599,28 @@ export class QuestionnaireComponent implements OnInit, AfterViewInit {
         }
 
         let local_width = 85, local_height = 85;
-        // if (img.width! > img.height!) {
-        //   local_width = determineNewHeight(img.width!, img.height!, local_width);
-        // } else {
-        //   local_height = determineNewHeight(img.height!, img.width!, local_width);
-        // }
+        // img['class'] = " img-size";
         if (img.width! > img.height!) {
-          local_height = (img.height! / img.width!) * local_width;
+          local_height = determineNewHeight(img.width!, img.height!, local_height);
         } else {
-          local_width = (img.width! / img.height!) * local_height;
+          local_width = determineNewHeight(img.height!, img.width!, local_width);
         }
+        // img.set({
+        //   scaleX: local_width / img.width!,
+        //   scaleY: local_height / img.height!,
+        //   originX: 'left', originY: 'top'
+        // });
+        const maxWidth = 85;
+        const aspectRatio = img.width! / img.height!;
+        const newWidth = Math.min(img.width!, maxWidth);
+        const newHeight = newWidth / aspectRatio;
+
+        // Establecer las nuevas dimensiones de la imagen
         img.set({
-          scaleX: local_width / img.width!,
-          scaleY: local_height / img.height!,
+          // width: newWidth,
+          // height: newHeight,
+          scaleX: newWidth / img.width!,
+          scaleY: newHeight / img.height!,
           originX: 'left', originY: 'top'
         });
         canvasLineas.add(img);
