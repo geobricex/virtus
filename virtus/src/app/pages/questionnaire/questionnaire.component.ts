@@ -1585,10 +1585,15 @@ export class QuestionnaireComponent implements OnInit, AfterViewInit {
         }
 
         let local_width = 85, local_height = 85;
+        // if (img.width! > img.height!) {
+        //   local_width = determineNewHeight(img.width!, img.height!, local_width);
+        // } else {
+        //   local_height = determineNewHeight(img.height!, img.width!, local_width);
+        // }
         if (img.width! > img.height!) {
-          local_height = determineNewHeight(img.width!, img.height!, local_width);
+          local_height = (img.height! / img.width!) * local_width;
         } else {
-          local_width = determineNewHeight(img.height!, img.width!, local_width);
+          local_width = (img.width! / img.height!) * local_height;
         }
         img.set({
           scaleX: local_width / img.width!,
