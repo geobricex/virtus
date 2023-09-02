@@ -266,7 +266,7 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
       /*if (this.evaluationObject.questions_[ind].canResource != undefined) {
         respondidas++;
       }*/
-      let resueltoStado = this.validarPreguntaResuelta(this.evaluationObject.questions_[ind]);
+      let [resueltoStado, _] = this.verificarRespuestasCorrectas(this.evaluationObject.questions_[ind]);
       if (resueltoStado) {
         respondidas++;
       }
@@ -1185,7 +1185,7 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
         preventDefault: () => void; pageX: any; pageY: any;
       }) => {
         this.onoff = false;
-        let indice = Math.trunc((this.lastLoc.x) / c_tamanio);
+        let indice = Math.trunc((this.lastLoc.y) / c_tamanio);
         console.log(this.lastLoc.x, indice);
         let wildcard: string = this.alphabet[indice];
 
@@ -1214,13 +1214,13 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
             mayor = 0;
           }
 
-          let saltosBaseOp = (((mayor / cOp)));
+          let saltosBaseOp = (((mayor / cOp)) / 2);
           saltosBaseOp = (mayor == cOp) ? 0 : saltosBaseOp;
-          let saltosBasePr = (((mayor / cPr)));
+          let saltosBasePr = (((mayor / cPr)) / 2);
           saltosBasePr = (mayor == cPr) ? 0 : saltosBasePr;
 
-          saltosBaseOp = mayor - cOp;
-          saltosBasePr = mayor - cPr;
+          //saltosBaseOp = mayor - cOp;
+          //saltosBasePr = mayor - cPr;
           console.log("paneles de mas: ", saltosBaseOp, saltosBasePr);
 
 
@@ -1231,15 +1231,15 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
           if (this.firstLoc.x < c_alto && this.lastLoc.x > c_alto + 150) {
             console.log("izquierda a derecha ");
             literal = Math.trunc((this.firstLoc.y) / (c_alto + c_margen));
-            opcion = Math.trunc((this.lastLoc.y) / (c_alto + c_margen));
-            literal = literal - saltosBaseOp;
-            opcion = opcion - (saltosBasePr > 1 ? saltosBasePr : 0);
+            opcion = Math.trunc((this.lastLoc.y) / (c_alto + c_margen)); 
+            literal = literal - 0;// (saltosBaseOp > 1 ? saltosBaseOp : 0);
+            opcion = opcion - 0;//(saltosBasePr > 1 ? saltosBasePr : 0);
           } else if (this.lastLoc.x < c_alto && this.firstLoc.x > c_alto + 150) {
             console.log("derecha a izquierda ");
             literal = Math.trunc((this.lastLoc.y) / (c_alto + c_margen));
             opcion = Math.trunc((this.firstLoc.y) / (c_alto + c_margen));
-            literal = literal - saltosBaseOp;
-            opcion = opcion - (saltosBasePr > 1 ? saltosBasePr : 0);
+            literal = literal - 0;// - (saltosBaseOp > 1 ? saltosBaseOp : 0);
+            opcion = opcion - 0;// - (saltosBasePr > 1 ? saltosBasePr : 0);
           }
           console.log("Indices seleccionados 2: ", literal, opcion);
           if (literal != -1 && opcion != -1) {
@@ -1280,7 +1280,7 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
     let colorPan = ["#E3FFFF", "#BFFFC4", "#F6FFA1", "#C5AEFE", "#FDBDB1", "#BEACFF", "#E9CEBB", "#EFA0E7"];
     //console.log("cantidades", maxElements, parts.length, (maxElements / parts.length));
     let saltosBase = (((maxElements / parts.length)) / 2);
-    saltosBase = (maxElements == parts.length) ? 0 : saltosBase;
+    saltosBase = 0;//(maxElements == parts.length) ? 0 : saltosBase;
     //console.log("salto base:" + saltosBase);
     for (let ind = 0; ind < parts.length; ind++) {
       if (isleft) {

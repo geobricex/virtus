@@ -339,49 +339,58 @@
           </div>
         </div>
       </div>
-      <div *ngIf="questionObject.name_questioncategory == tipoPregunta(5)">
+      <div class="col-12" style="display: flex;align-items: center;justify-content: center;"
+           [hidden]="questionObject.name_questioncategory != tipoPregunta(5)" [style.display]="questionObject.name_questioncategory == tipoPregunta(5) ? 'flex': 'none'" >
+        <!--        <canvas #canvasEl id="canvasEl" [hidden]="questionObject.name_questioncategory == tipoPregunta(5)"-->
+        <!--                width="450" height="85"></canvas>-->
+        <canvas #canvasLineas id="canvasLineas" [hidden]="questionObject.name_questioncategory != tipoPregunta(5)"
+                width="700" height="400"></canvas>
+      </div>
 
-        <!--        <div class="flex align-items-center justify-content-between">-->
-        <div class="grid justify-content-between"
-             *ngFor="let option of questionObject.answers_[0].options_answer; let i = index"
-             [attr.data-index]="i">
-          <div class="col-12 md:col-8 justify-content-end grid">
-            <div class="col-12 md:col-{{option.resourse_leftSide.length > 0?'4':'0'}} justify-content-center">
-              <img class="img-color img-size" alt="Card" *ngIf="option.resourse_leftSide.length > 0"
-                   [src]="option.resourse_leftSide">
+      <div *ngIf="questionObject.name_questioncategory == tipoPregunta(5)">
+        <p-fieldset legend="Selecciona las opciones" [toggleable]="true">
+          <!--        <div class="flex align-items-center justify-content-between">-->
+          <div class="grid justify-content-between"
+               *ngFor="let option of questionObject.answers_[0].options_answer; let i = index"
+               [attr.data-index]="i">
+            <div class="col-12 md:col-8 justify-content-end grid">
+              <div class="col-12 md:col-{{option.resourse_leftSide.length > 0?'4':'0'}} justify-content-center">
+                <img class="img-color img-size" alt="Card" *ngIf="option.resourse_leftSide.length > 0"
+                     [src]="option.resourse_leftSide" height="100">
+              </div>
+              <div class="col-12 md:col-{{option.resourse_leftSide.length > 0?'8':'12'}} justify-content-start">
+                <p>{{alphabet[i].toUpperCase() + ")\t" + (option.leftSide.length > 0 ? option.leftSide : '')}}</p>
+              </div>
             </div>
-            <div class="col-12 md:col-{{option.resourse_leftSide.length > 0?'8':'12'}} justify-content-start">
-              <p>{{alphabet[i].toUpperCase() + ")\t" + (option.leftSide.length > 0 ? option.leftSide : '')}}</p>
+            <div class="col-12 md:col-4">
+              <p-dropdown [inputId]="'relation_input_' + i"
+                          [options]="questionObject.answers_[0].right_parts!"
+                          [(ngModel)]="questionObject.answers_[0].responses[i]"
+                          optionLabel="rightSide" [filter]="true" filterBy="rightSide"
+                          [showClear]="true" placeholder=" -- - --" [style]="{'minWidth':'20vw', 'width': '20vw'}"
+              >
+                <ng-template pTemplate="selectedItem">
+                  <div class="country-item country-item-value" *ngIf="questionObject.answers_[0].responses[i]">
+                    <img [src]="questionObject.answers_[0].responses[i].resourse_rightSide" height="25"
+                         [class]="'flag flag-FR'" *ngIf="questionObject.answers_[0].responses[i].resourse_rightSide"
+                    />
+                    <div>{{questionObject.answers_[0].responses[i].rightSide}}</div>
+                  </div>
+                </ng-template>
+                <ng-template let-item pTemplate="item">
+                  <div class="ui-helper-clearfix template-border">
+                    <img [src]="item.resourse_rightSide" [class]="'flag flag-FR'" alt=""/>
+                    <div>{{alphabet[item.ind].toUpperCase() + ".\t" + (item.rightSide.length > 0 ? item.rightSide : 'Opción')}}</div>
+                  </div>
+                </ng-template>
+              </p-dropdown>
+            </div>
+            <div class="col-12 justify-content-center align-content-center" style="padding-top: 0px;"
+                 *ngIf="i < questionObject.answers_[0].options_answer.length - 1">
+              <p-divider></p-divider>
             </div>
           </div>
-          <div class="col-12 md:col-4">
-            <p-dropdown [inputId]="'relation_input_' + i"
-                        [options]="questionObject.answers_[0].right_parts!"
-                        [(ngModel)]="questionObject.answers_[0].responses[i]"
-                        optionLabel="rightSide" [filter]="true" filterBy="rightSide"
-                        [showClear]="true" placeholder=" -- - --" [style]="{'minWidth':'20vw', 'width': '20vw'}"
-            >
-              <ng-template pTemplate="selectedItem">
-                <div class="country-item country-item-value" *ngIf="questionObject.answers_[0].responses[i]">
-                  <img [src]="questionObject.answers_[0].responses[i].resourse_rightSide" height="25"
-                       [class]="'flag flag-FR'" *ngIf="questionObject.answers_[0].responses[i].resourse_rightSide"
-                  />
-                  <div>{{questionObject.answers_[0].responses[i].rightSide}}</div>
-                </div>
-              </ng-template>
-              <ng-template let-item pTemplate="item">
-                <div class="ui-helper-clearfix template-border">
-                  <img [src]="item.resourse_rightSide" [class]="'flag flag-FR'" alt=""/>
-                  <div>{{alphabet[item.ind].toUpperCase() + ".\t" + (item.rightSide.length > 0 ? item.rightSide : 'Opción')}}</div>
-                </div>
-              </ng-template>
-            </p-dropdown>
-          </div>
-          <div class="col-12 justify-content-center align-content-center" style="padding-top: 0px;"
-               *ngIf="i < questionObject.answers_[0].options_answer.length - 1">
-            <p-divider></p-divider>
-          </div>
-        </div>
+        </p-fieldset>
       </div>
       <div *ngIf="questionObject.name_questioncategory == tipoPregunta(6)">
         <div class="col-12" *ngIf="this.app.voiceCommand">
@@ -410,7 +419,7 @@
         </div>
       </div>
       <div *ngIf="questionObject.name_questioncategory == tipoPregunta(7)">
-        <div class="col-12"  *ngIf="this.app.voiceCommand">
+        <div class="col-12" *ngIf="this.app.voiceCommand">
           <p-messages severity="warn" [enableService]="true" [closable]="true">
             <ng-template pTemplate>
               <img src="assets/imgresource/empty/notification.png" width="25"/>
@@ -445,7 +454,8 @@
       <!--Recursos para dibujar-->
       <p-fieldset legend="Raya el correcto" [toggleable]="true"
                   [hidden]="questionObject.name_questioncategory == tipoPregunta(7) ||
-          questionObject.name_questioncategory == tipoPregunta(6) ">
+          questionObject.name_questioncategory == tipoPregunta(6) ||
+           questionObject.name_questioncategory == tipoPregunta(5)">
         <div *ngIf="questionObject.name_questioncategory == tipoPregunta(4)">
           <div class="col-12">
             <p-messages severity="info" [enableService]="true">
@@ -462,7 +472,7 @@
             </p-messages>
           </div>
         </div>
-        <div *ngIf="questionObject.name_questioncategory == tipoPregunta(51)">
+        <div *ngIf="questionObject.name_questioncategory == tipoPregunta(5)">
           <div class="col-12">
             <p-messages severity="info" [enableService]="false">
               <ng-template pTemplate>
@@ -496,8 +506,8 @@
         <div class="col-12" style="display: flex;align-items: center;justify-content: center;">
           <canvas #canvasEl id="canvasEl" [hidden]="questionObject.name_questioncategory == tipoPregunta(5)"
                   width="450" height="85"></canvas>
-          <canvas #canvasLineas id="canvasLineas" [hidden]="questionObject.name_questioncategory != tipoPregunta(5)"
-                  width="700" height="400"></canvas>
+          <!--          <canvas #canvasLineas id="canvasLineas" [hidden]="questionObject.name_questioncategory != tipoPregunta(5)"-->
+          <!--                  width="700" height="400"></canvas>-->
         </div>
         <div class="col-12" style="display: flex;align-items: center;justify-content: center;">
           <div id="div_puzzle"></div>
