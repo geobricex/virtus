@@ -7,7 +7,7 @@ import {User} from "../../models/user";
 import {StorageService} from "../../authentication/StorageService";
 import {Session} from "../../models/session";
 
-import {FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule} from '@angular/forms';
+import {FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule, FormBuilder} from '@angular/forms';
 import PocketBase from "pocketbase";
 import {Message} from "primeng/api";
 import {BreadcrumbService} from "../../app.breadcrumb.service";
@@ -17,6 +17,7 @@ import {BreadcrumbService} from "../../app.breadcrumb.service";
   templateUrl: './myprofile.component.html',
   styleUrls: ['./myprofile.component.scss']
 })
+
 export class MyprofileComponent implements OnInit, AfterViewInit {
 
   person: Person;
@@ -24,12 +25,15 @@ export class MyprofileComponent implements OnInit, AfterViewInit {
   globalUri: string = "";
   editar_datos: boolean;
   formUpdatePhto: boolean;
+  formUpdatePass: boolean;
+
   tmpFile: any;
   client: any;
   urlimageupload: any;
   insertarPocket = false;
 
   msgs: Message[] = [];
+  frmCambioContrasena: FormGroup; // Define el FormGroup para el formulario
 
   frmPhoto = new FormGroup({
     firstName: new FormControl()
@@ -39,7 +43,8 @@ export class MyprofileComponent implements OnInit, AfterViewInit {
     private breadcrumbService: BreadcrumbService,
     private utils: Utils,
     private _http: HttpClient,
-    private storageService: StorageService
+    private storageService: StorageService,
+    private fb: FormBuilder
   ) {
     this.breadcrumbService.setItems([
       {label: '', routerLink: ['/app/']},
@@ -67,6 +72,12 @@ export class MyprofileComponent implements OnInit, AfterViewInit {
         response.emailPerson, response.typePerson, response.pathimgPerson, response.codeverificationPerson, response.dateregPerson,
         response.dateupdatePerson, response.providerPerson, response.idLocation);
       this.person._passwordPerson = response.passwordPerson;
+    });
+
+    this.frmCambioContrasena = this.fb.group({
+      contrasenaAnterior: ['', Validators.required],
+      nuevaContrasena: ['', Validators.required],
+      confirmarNuevaContrasena: ['', Validators.required],
     });
   }
 
@@ -136,7 +147,7 @@ export class MyprofileComponent implements OnInit, AfterViewInit {
 
   updatePhtoProfile() {
     this.utils.loading;
-    if(this.insertarPocket) {
+    if (this.insertarPocket) {
       this.changeImage().then(response => {
         this.person._pathimgPerson = this.makePathRecurso(response);
         this.apiupdateDataPerson(this.person).subscribe(response => {
@@ -170,9 +181,65 @@ export class MyprofileComponent implements OnInit, AfterViewInit {
     return urlRecurso;
   }
 
-  seleccionarAvatar (avatar: any) : any {
+  seleccionarAvatar(avatar: any): any {
     this.insertarPocket = false;
     this.urlimageupload = avatar.image;
+  }
+
+  modalformUpdatePass() {
+    this.formUpdatePhto = false; // Oculta cualquier otro formulario que esté abierto
+    this.formUpdatePass = true;
+  }
+
+  cambiarContrasena(): void {
+
+    const confirmarNuevaContrasenaControl = this.frmCambioContrasena.get('confirmarNuevaContrasena');
+    const contrasenaAnteriorControl = this.frmCambioContrasena.get('contrasenaAnterior');
+    const nuevaContrasenaControl = this.frmCambioContrasena.get('nuevaContrasena');
+
+    if (confirmarNuevaContrasenaControl && contrasenaAnteriorControl && nuevaContrasenaControl) {
+      const contrasenaAnterior = contrasenaAnteriorControl.value;
+      const confirmarNuevaContrasena = confirmarNuevaContrasenaControl.value;
+      const nuevaContrasena = nuevaContrasenaControl.value;
+      if (nuevaContrasena === confirmarNuevaContrasena) {
+
+        const requestData = {
+          password: contrasenaAnterior,
+          newpassword: nuevaContrasena
+        };
+
+        const jsonRequestData = JSON.stringify(requestData);
+
+        this.apiupdatePassPerson(jsonRequestData).subscribe(response => {
+          console.log(response)
+          if (response.status === 2) {
+            this.utils.showMessages(2, "La contraseña ha sido actualizada.", "tst");
+            this.frmCambioContrasena.reset();
+            this.formUpdatePass = false;
+            this.utils.closeLoading;
+          } else if (response.status === 5) {
+            this.utils.showMessages(3, "Contraseña incorrecta", "tst");
+          } else {
+            this.utils.showMessages(4, response.information, "tst");
+          }
+
+        });
+
+
+      } else {
+        this.utils.showMessages(3, "La nueva contraseña y la confirmación no coinciden. No se pudo cambiar la contraseña.", "tst");
+
+      }
+    }
+  }
+
+  apiupdatePassPerson(jsonData: String): Observable<any> {
+    this.globalUri = this.utils.globalUrl + "persons/changepassword";
+    var headers = new HttpHeaders()
+      .set('Access-Control-Allow-Origin', '*')
+      .set('provider', 'native')
+      .set('token', this.utils.token);
+    return this._http.post<Person>(this.globalUri, jsonData, {headers: headers});
   }
 
   //ANEXO

@@ -154,7 +154,7 @@ public class PersonService {
 
                 person = personDAO.save(person);
                 String textMessage = "Sus datos se han actualizado de forma exitosa.";
-                utilService.eMessageUser(person.getEmailPerson(), person.getNamePerson(), person.getLastnamePerson(), textMessage);
+//                utilService.eMessageUser(person.getEmailPerson(), person.getNamePerson(), person.getLastnamePerson(), textMessage);
                 status = "2";
                 message = "Datos del usuario actualizados.";
             } else {
@@ -172,15 +172,19 @@ public class PersonService {
     public String[] changePassword(String password, String newPassword, String id_person) {
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
         Optional<Person> Persons = personDAO.findById(Long.parseLong(id_person));
-        password = bCryptPasswordEncoder.encode(password.trim());
-        newPassword = bCryptPasswordEncoder.encode(newPassword.trim());
+
         if (Persons.isPresent()) {
-            if (password.equals(Persons.get().getPasswordPerson()) && !password.equals(newPassword)) {
+
+            if (bCryptPasswordEncoder.matches(password, Persons.get().getPasswordPerson())
+                    && !bCryptPasswordEncoder.matches(newPassword, Persons.get().getPasswordPerson())) {
+
+                newPassword = bCryptPasswordEncoder.encode(newPassword.trim());
+
                 Persons.get().setPasswordPerson(newPassword);
                 Persons.get().setDateupdatePerson(Methods.nowLocalDateTime());
                 personDAO.save(Persons.get());
                 String textMessage = "Su contraseña ha sido actualizada con éxito.";
-                utilService.eMessageUser(Persons.get().getEmailPerson(), Persons.get().getNamePerson(), Persons.get().getLastnamePerson(), textMessage);
+//                utilService.eMessageUser(Persons.get().getEmailPerson(), Persons.get().getNamePerson(), Persons.get().getLastnamePerson(), textMessage);
                 status = "2";
                 message = "Contraseña actualizada.";
             } else {
@@ -389,7 +393,7 @@ public class PersonService {
                             return new String[]{status, message, data};
                     }
                     data = "[" + personToJson(Persons.get(0)).toString() + "]";
-                }else{
+                } else {
                     status = "3";
                     message = "Los parámetros de acceso no son válidos, verifique que está accediendo con el proveedor correcto.";
                 }
