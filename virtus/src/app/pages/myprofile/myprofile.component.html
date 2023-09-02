@@ -13,16 +13,18 @@
              (change)="onFileChange($event)">
       <div>
         <h4 style="margin-top: 2rem">Seleccionar avatar</h4>
-        <p-dataView #dv [value]="avatar" [rows]="9" filterBy="nameCourse,keywordsCourse,descriptionCourse" layout="grid" >
+        <p-dataView #dv [value]="avatar" [rows]="9" filterBy="nameCourse,keywordsCourse,descriptionCourse"
+                    layout="grid">
           <ng-template let-avatar_front pTemplate="gridItem">
             <div class="col-12 md:col-2 cursor-pointer">
-            <div class="col-12  cursor-pointer">
-              <div class="flex flex-column md:flex-row align-items-center p-3 w-full">
-                <div class="my-4 md:my-0 w-9 md:w-10rem hover:bg-black-alpha-10 " (click)="seleccionarAvatar(avatar_front)">
-                  <img [src]="avatar_front.image" [alt]="avatar_front.image" width="40" height="40" />
+              <div class="col-12  cursor-pointer">
+                <div class="flex flex-column md:flex-row align-items-center p-3 w-full">
+                  <div class="my-4 md:my-0 w-9 md:w-10rem hover:bg-black-alpha-10 "
+                       (click)="seleccionarAvatar(avatar_front)">
+                    <img [src]="avatar_front.image" [alt]="avatar_front.image" width="40" height="40"/>
+                  </div>
                 </div>
               </div>
-            </div>
             </div>
           </ng-template>
         </p-dataView>
@@ -35,6 +37,64 @@
             (click)="updatePhtoProfile()"></button>
   </ng-template>
 
+</p-dialog>
+
+<p-dialog [(visible)]="formUpdatePass" [style]="{ width: '480px' }" header="Cambiar contraseña"
+          [modal]="true"
+          class="p-fluid" [style.z-index]="1000" [style.position]="'absolute'">
+  <ng-template pTemplate="content">
+    <div [formGroup]="frmCambioContrasena" class="text-center">
+      <div class="field">
+        <label for="contrasenaAnterior">Contraseña anterior</label>
+        <input
+          type="password"
+          id="contrasenaAnterior"
+          formControlName="contrasenaAnterior"
+          pInputText
+          required
+          pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{6,}"
+          pTooltip="La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una
+                   minúscula, al menos una mayúscula y al menos un caracter no alfanumérico." tooltipPosition="right"
+        />
+      </div>
+
+      <div class="field">
+        <label for="nuevaContrasena">Nueva Contraseña</label>
+        <input
+          type="password"
+          id="nuevaContrasena"
+          formControlName="nuevaContrasena"
+          pInputText
+          required
+          pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{6,}"
+          pTooltip="La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una
+                   minúscula, al menos una mayúscula y al menos un caracter no alfanumérico." tooltipPosition="right"
+        />
+      </div>
+
+      <div class="field">
+        <label for="confirmarNuevaContrasena">Confirmar Nueva Contraseña</label>
+        <input
+          type="password"
+          id="confirmarNuevaContrasena"
+          formControlName="confirmarNuevaContrasena"
+          pInputText
+          required
+          pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{6,}"
+          pTooltip="La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una
+                   minúscula, al menos una mayúscula y al menos un caracter no alfanumérico." tooltipPosition="right"
+        />
+      </div>
+
+      <button
+        pButton
+        label="Guardar cambios"
+        class="p-button-success"
+        [disabled]="!frmCambioContrasena.valid"
+        (click)="cambiarContrasena()"
+      ></button>
+    </div>
+  </ng-template>
 </p-dialog>
 
 <div style="width: 50%; margin: auto;">
@@ -69,12 +129,14 @@
       <button pButton label="Cancelar" class="p-button-warning mt-2" (click)="editar_datos = false"></button>
       <button pButton label="Guardar cambios" class="p-button-success mt-2 ml-2" (click)="updateDataPerson()"></button>
     </div>
+
     <hr>
     <h5>Contraseña</h5>
-    <button pButton label="Cambiar contraseña" class="p-button-warning mt-2"></button>
+    <button pButton label="Cambiar contraseña" class="p-button-warning mt-2"
+            (click)="modalformUpdatePass()"></button>
     <hr>
-    <h6>SUSPENSIÓN DE CUENTA</h6>
-    <button pButton label="Deshabilitar cuenta" class="p-button-danger mt-2"></button>
+<!--    <h6>Suspensión de cuenta</h6>-->
+<!--    <button pButton label="Deshabilitar cuenta" class="p-button-danger mt-2"></button>-->
     <!--    <button pButton label="Eliminar cuenta" class="p-button-danger p-button-outlined mt-2 ml-2"></button>-->
   </p-panel>
 

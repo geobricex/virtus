@@ -70,6 +70,8 @@ export class QuestionNuComponent implements OnInit, AfterViewInit {
   types_text: any [];
   text_entered: string = "";
   type_selected: string = "";
+  file_completed: any[];
+  url_file_completed: string = "";
 
   constructor(
     private _route: ActivatedRoute,
@@ -215,11 +217,19 @@ export class QuestionNuComponent implements OnInit, AfterViewInit {
       return;
     }
 
+    if(this.type_selected !== 'TN') {
+      if(this.file_completed === undefined || this.file_completed.length === 0) {
+        this.utils.showMessages(3, "Por favor seleccione al menos una imagen para la opción correcta ingresado.", "tst");
+        return;
+      }
+    }
+
     if (this.type_selected !== 'D') {
       this.format_text.push(
         {
           text: this.text_entered,
           type: this.type_selected,
+          urlFileUpload: this.url_file_completed,
           style: this.type_selected === 'OC' ? 'color: white; background: green; padding: 3px; border-radius: 5px; font-weight: bold;' : 'black'
         }
       );
@@ -229,6 +239,8 @@ export class QuestionNuComponent implements OnInit, AfterViewInit {
     }
     this.text_entered = "";
     this.validarEstructura();
+    this.file_completed = [];
+    this.url_file_completed = "";
   }
 
   addDistractor() {
@@ -243,9 +255,16 @@ export class QuestionNuComponent implements OnInit, AfterViewInit {
       return;
     }
 
+    if(this.type_selected !== 'TN') {
+      if(this.file_completed === undefined || this.file_completed.length === 0) {
+        this.utils.showMessages(3, "Por favor seleccione al menos una imagen para el distractor ingresado.", "tst");
+        return;
+      }
+    }
+
     if (this.type_selected === 'D') {
       this.format_text.push(
-        {text: this.text_entered, type: this.type_selected, style: 'black'}
+        {text: this.text_entered, type: this.type_selected, style: 'black', urlFileUpload: this.url_file_completed,}
       );
     } else {
       this.utils.showMessages(3, "Seleccione el tipo distractor para agregarlo.", "tst");
@@ -253,6 +272,8 @@ export class QuestionNuComponent implements OnInit, AfterViewInit {
 
     this.text_entered = "";
     this.validarEstructura();
+    this.file_completed = [];
+    this.url_file_completed = "";
   }
 
   eliminarItem(index: number) {
@@ -280,7 +301,7 @@ export class QuestionNuComponent implements OnInit, AfterViewInit {
       if (this.format_text[i].type !== 'TN') {
         optionsx.push({
           "option": this.format_text[i].text,
-          "resource": ""
+          "resource": this.format_text[i].urlFileUpload
         })
       }
     }
@@ -681,6 +702,22 @@ export class QuestionNuComponent implements OnInit, AfterViewInit {
         "options": []
       });
     }
+  }
+
+  uploadFileCompPosibleResp(event: any) {
+    this.utils.loading;
+    event.target.files.length > 0;
+    const file = event.target.files[0];
+    console.log(file);
+    this.file_completed = file;
+    //this.tmpfiles[index].tmpleft = file
+    let urlPhoto: string = "";
+    this.utils.changeImage(this.file_completed).then(response => {
+      urlPhoto = this.utils.makePathRecurso(response);
+      this.url_file_completed = urlPhoto;
+      this.utils.showMessages(2, "Archivo subido extosamente.", "tst");
+      this.utils.closeLoading;
+    });
   }
 
   get form() {

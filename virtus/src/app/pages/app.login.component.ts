@@ -35,6 +35,11 @@ export class AppLoginComponent {
   globalUri: string = "";
   frmLogin: FormGroup;
 
+  user_rec: string = "";
+  code_rec: string = "";
+  password_rec: string = "";
+  password_conf_rec: string = "";
+
   constructor(
     public router: Router,
     private storageService: StorageService,
@@ -43,6 +48,7 @@ export class AppLoginComponent {
     public fAuth: AngularFireAuth,
     private formBuilder: FormBuilder,
     private cookies: CookieService,
+    private utils: Utils,
     private loginservicie: LoginServicie
   ) {
     this.forgotPassword_dialog = false;
@@ -117,19 +123,98 @@ export class AppLoginComponent {
      });*/
   }
 
-  recoverAccount() {
-    this.apiRecoverAccount().subscribe(response => {
+  cancelRequestCode () {
+    this.user.email = "";
+    this.forgotPassword_dialog = false;
+  }
+
+  requestCode() {
+
+    if(this.user.email === "") {
+      this.utils.showMessages(3, "Ingrese un correo electrónico por favor.", "tst");
+      return;
+    }
+
+    this.utils.loading;
+    this.apiRequestCode().subscribe(response => {
       console.log(response);
+      this.user.email = "";
+      this.utils.closeLoading;
+      this.forgotPassword_dialog = false;
       this.showMessages(response.status, response.information, "tst");
     });
   }
 
-  apiRecoverAccount(): Observable<any> {
-    if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
-      this.globalUri = "virtusbk/persons/requestcode";
-    } else {
-      this.globalUri = "virtus_bk/persons/requestcode";
+  cancelRecoverAccount () {
+    this.user_rec = "";
+    this.code_rec = "";
+    this.password_rec = "";
+    this.password_conf_rec = "";
+    this.alreadyHasCode = false;
+  }
+
+  esContraseniaValida(): boolean {
+    const pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{6,}$/;
+    return pattern.test(this.password_rec);
+  }
+
+  recoverAccount() {
+
+    if(this.user_rec === "") {
+      this.utils.showMessages(3, "Ingrese un correo electrónico por favor.", "tst");
+      return;
     }
+
+    if(this.code_rec === "") {
+      this.utils.showMessages(3, "Ingrese el código de verificación enviado al correo electrónico.", "tst");
+      return;
+    }
+
+    if(this.password_rec === "") {
+      this.utils.showMessages(3, "Ingrese una contraseña por favor.", "tst");
+      return;
+    }
+
+    if(!this.esContraseniaValida()) {
+      this.utils.showMessages(3, "La contraseña no cumple con los requisitos minimos requeridos.", "tst");
+      return;
+    }
+
+    if(this.password_conf_rec === "") {
+      this.utils.showMessages(3, "Debe volver a ingresar su nueva contraseña.", "tst");
+      return;
+    }
+
+    if(this.password_rec !== this.password_conf_rec) {
+      this.utils.showMessages(3, "Las contraseñas no son iguales.", "tst");
+      return;
+    }
+
+    this.utils.loading;
+    this.apiRecoverAccount().subscribe(response => {
+      console.log(response);
+      this.user_rec = "";
+      this.code_rec = "";
+      this.password_rec = "";
+      this.password_conf_rec = "";
+      this.utils.closeLoading;
+      this.alreadyHasCode = false;
+      this.showMessages(response.status, response.information, "tst");
+    });
+
+  }
+
+apiRecoverAccount(): Observable<any> {
+  this.globalUri = this.utils.globalUrl + "persons/recoverAccount";
+  return this._http.post<Person>(this.globalUri, {
+    "email": this.user_rec,
+    "password": this.password_conf_rec,
+    "code": this.code_rec
+  });
+}
+
+  apiRequestCode(): Observable<any> {
+    this.globalUri = this.utils.globalUrl + "persons/requestcode";
     return this._http.post<Person>(this.globalUri, {
       "flag": "2",
       "email": this.user.email,
