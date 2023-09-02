@@ -1527,10 +1527,10 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
 
   makeCircle(left: any, top: any, line1: any, line2: any, line3: any, line4: any) {
     let c = new fabric.Circle({
-      left: left - 6,
-      top: top - 6,
+      left: left - 8,
+      top: top - 8,
       strokeWidth: 2,
-      radius: 8,
+      radius: 12,
       fill: line1 == undefined ? '#fff' : 'gray',
       stroke: '#666',
       selectable: line1 == undefined ? false : true,
