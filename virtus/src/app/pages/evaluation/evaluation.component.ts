@@ -266,7 +266,7 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
       /*if (this.evaluationObject.questions_[ind].canResource != undefined) {
         respondidas++;
       }*/
-      let resueltoStado = this.validarPreguntaResuelta(this.evaluationObject.questions_[ind]);
+      let [resueltoStado, _] = this.verificarRespuestasCorrectas(this.evaluationObject.questions_[ind]);
       if (resueltoStado) {
         respondidas++;
       }

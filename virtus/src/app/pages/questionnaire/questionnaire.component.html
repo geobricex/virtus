@@ -338,15 +338,23 @@
           </div>
         </div>
       </div>
-      <div *ngIf="questionObject.name_questioncategory == tipoPregunta(5)">
+      <div class="col-12" style="display: flex;align-items: center;justify-content: center;"
+           [hidden]="questionObject.name_questioncategory != tipoPregunta(5)" [style.display]="questionObject.name_questioncategory == tipoPregunta(5) ? 'flex': 'none'" >
+        <!--        <canvas #canvasEl id="canvasEl" [hidden]="questionObject.name_questioncategory == tipoPregunta(5)"-->
+        <!--                width="450" height="85"></canvas>-->
+        <canvas #canvasLineas id="canvasLineas" [hidden]="questionObject.name_questioncategory != tipoPregunta(5)"
+                width="700" height="400"></canvas>
+      </div>
 
+      <div *ngIf="questionObject.name_questioncategory == tipoPregunta(5)">
+        <p-fieldset legend="Selecciona las opciones" [toggleable]="true">
         <!--        <div class="flex align-items-center justify-content-between">-->
         <div class="grid justify-content-between"
              *ngFor="let option of questionObject.answers_[0].options_answer; let i = index"
              [attr.data-index]="i">
           <div class="col-12 md:col-8 justify-content-end grid">
             <div class="col-12 md:col-{{option.resourse_leftSide.length > 0?'4':'0'}} justify-content-center">
-              <img class="img-color" alt="Card" *ngIf="option.resourse_leftSide.length > 0"
+              <img class="img-color img-size" alt="Card" *ngIf="option.resourse_leftSide.length > 0"
                    [src]="option.resourse_leftSide" height="100">
             </div>
             <div class="col-12 md:col-{{option.resourse_leftSide.length > 0?'8':'12'}} justify-content-start">
@@ -381,6 +389,7 @@
             <p-divider></p-divider>
           </div>
         </div>
+      </p-fieldset>
       </div>
       <div *ngIf="questionObject.name_questioncategory == tipoPregunta(6)">
         <div class="col-12" *ngIf="this.app.voiceCommand">
@@ -444,7 +453,8 @@
       <!--Recursos para dibujar-->
       <p-fieldset legend="Raya el correcto" [toggleable]="true"
                   [hidden]="questionObject.name_questioncategory == tipoPregunta(7) ||
-          questionObject.name_questioncategory == tipoPregunta(6) ">
+                  questionObject.name_questioncategory == tipoPregunta(6) ||
+                  questionObject.name_questioncategory == tipoPregunta(5)">
         <div *ngIf="questionObject.name_questioncategory == tipoPregunta(4)">
           <div class="col-12">
             <p-messages severity="info" [enableService]="true">
@@ -495,8 +505,8 @@
         <div class="col-12" style="display: flex;align-items: center;justify-content: center;">
           <canvas #canvasEl id="canvasEl" [hidden]="questionObject.name_questioncategory == tipoPregunta(5)"
                   width="450" height="85"></canvas>
-          <canvas #canvasLineas id="canvasLineas" [hidden]="questionObject.name_questioncategory != tipoPregunta(5)"
-                  width="700" height="400"></canvas>
+          <!--          <canvas #canvasLineas id="canvasLineas" [hidden]="questionObject.name_questioncategory != tipoPregunta(5)"-->
+          <!--                  width="700" height="400"></canvas>-->
         </div>
         <div class="col-12" style="display: flex;align-items: center;justify-content: center;">
           <div id="div_puzzle"></div>
