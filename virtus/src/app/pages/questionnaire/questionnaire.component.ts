@@ -132,9 +132,9 @@ export class QuestionnaireComponent implements OnInit, AfterViewInit {
         this.obtenerPreguntas(questionnaire['ideva']);
       }
     });
-    this.canvasLineas = new fabric.Canvas('canvasLineas', {
-      backgroundColor: "white"
-    });
+    // this.canvasLineas = new fabric.Canvas('canvasLineas', {
+    //   backgroundColor: "white"
+    // });
     console.log("canvas, ", this.CanvasEl);
     this.startHotKeysCommands();
     //Rompecabezas

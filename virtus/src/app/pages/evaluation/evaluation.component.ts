@@ -144,7 +144,8 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
       if (this.artyom.isSpeaking()) {
         this.artyom.shutUp();
       }
-      this.artyom.repeatLastSay();
+      // this.artyom.repeatLastSay();
+      this.leerPregunta();
     }
   }
 
@@ -1068,7 +1069,7 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
 
   decirAlgo(cadena: string): void {
     // prevenir habla
-    if (this.text2SpeakSupport()) {
+    if (!this.text2SpeakSupport()) {
       return;
     }
     //si están hablando, callarlos
