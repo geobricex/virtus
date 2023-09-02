@@ -117,6 +117,7 @@ import { SliderModule } from "primeng/slider";
 import { HotkeyModule } from 'angular2-hotkeys';
 import { AcercadeComponent } from './pages/acercade/acercade.component';
 import { ComandosComponent } from './pages/comandos/comandos.component';
+import { InformationArComponent } from './pages/information-ar/information-ar.component';
 // firebase
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
@@ -182,7 +183,8 @@ const firebaseConfig = {
     UpdateevacuestComponent,
     QuestionNuComponent,
     AcercadeComponent,
-    ComandosComponent
+    ComandosComponent,
+    InformationArComponent
   ],
     imports: [
         HttpClientModule,

@@ -184,7 +184,7 @@ public class PersonService {
                 Persons.get().setDateupdatePerson(Methods.nowLocalDateTime());
                 personDAO.save(Persons.get());
                 String textMessage = "Su contraseña ha sido actualizada con éxito.";
-//                utilService.eMessageUser(Persons.get().getEmailPerson(), Persons.get().getNamePerson(), Persons.get().getLastnamePerson(), textMessage);
+                utilService.eMessageUser(Persons.get().getEmailPerson(), Persons.get().getNamePerson(), Persons.get().getLastnamePerson(), textMessage);
                 status = "2";
                 message = "Contraseña actualizada.";
             } else {
