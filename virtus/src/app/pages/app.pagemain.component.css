@@ -1,3 +1,7 @@
+h1 {
+  color: white; /* Color del texto (blanco) */
+  text-shadow: 3px 3px 0 black; /* Contorno negro */
+}
 /* dcarvajals */
 .login {
   background: darkmagenta;
