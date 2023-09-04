@@ -52,7 +52,7 @@ export class DashboardDemoComponent implements OnInit, AfterViewInit {
             }, error: err => {
               console.log(err);
               this.homedata = [];
-              location.reload();//No debería
+              // location.reload();//No debería
             }, complete: () => {
             }
           })
