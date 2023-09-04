@@ -1185,7 +1185,7 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
         preventDefault: () => void; pageX: any; pageY: any;
       }) => {
         this.onoff = false;
-        let indice = Math.trunc((this.lastLoc.y) / c_tamanio);
+        let indice = Math.trunc((this.lastLoc.x) / c_tamanio);
         console.log(this.lastLoc.x, indice);
         let wildcard: string = this.alphabet[indice];
 
@@ -1231,7 +1231,7 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
           if (this.firstLoc.x < c_alto && this.lastLoc.x > c_alto + 150) {
             console.log("izquierda a derecha ");
             literal = Math.trunc((this.firstLoc.y) / (c_alto + c_margen));
-            opcion = Math.trunc((this.lastLoc.y) / (c_alto + c_margen)); 
+            opcion = Math.trunc((this.lastLoc.y) / (c_alto + c_margen));
             literal = literal - 0;// (saltosBaseOp > 1 ? saltosBaseOp : 0);
             opcion = opcion - 0;//(saltosBasePr > 1 ? saltosBasePr : 0);
           } else if (this.lastLoc.x < c_alto && this.firstLoc.x > c_alto + 150) {
