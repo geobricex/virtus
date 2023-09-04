@@ -401,8 +401,9 @@ public class PersonService {
                 person = personDAO.save(person);
                 message = "Se ha registrado con éxito.";
                 if (utilService.eMessageUser(person.getEmailPerson(), person.getNamePerson(), person.getLastnamePerson(), message)) {
-                    status = "2";
+                    status = "2.2";
                     data = personToJson(person).toString();
+                    System.out.println(status);
                 }
             }
         } else {

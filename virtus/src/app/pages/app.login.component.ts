@@ -295,6 +295,7 @@ apiRecoverAccount(): Observable<any> {
         // @ts-ignore
         datosUser = {...datos, ...username};//juntar ambos json en uno solo :3
       }
+      this.utils.loading;
       console.log("usuario logeado [linea 204]:", datosUser);
       this.apiRegisterGoogle(datosUser).subscribe({
         next: (response: any) => {
@@ -303,7 +304,14 @@ apiRecoverAccount(): Observable<any> {
             let dataLogin = response.data[0];
             console.log(dataLogin.user_token);
             this.loginservicie.setToken(dataLogin.user_token);
+            this.showMessages(2, "Inicio con Google.", "");
+
             this.router.navigateByUrl('/app');
+          }else if (response.status === 2.2){
+            this.showMessages(2, "Registro con Google.", "");
+            this.utils.closeLoading;
+            location.reload();
+
           }
         },
         error: (error: any) => {
@@ -311,13 +319,11 @@ apiRecoverAccount(): Observable<any> {
         }
       })
     }).catch(function (error) {
-      console.log("error", error)
-      /*swalDelay({
-        status: 4,
-        tittle: "Service provider error!",
-        information: error.message
-      });*/
+      console.log("ERROR OAUTH", error)
+
+
     });
+    this.utils.closeLoading;
     this.showMessages(4, "Service provider error!", "");
   }
 

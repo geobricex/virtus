@@ -165,7 +165,7 @@
     </div>
   </div>
 
-  <div class="col-12 md:col-9" [ngClass]="!viewQuestionBank ? 'col-12 md:col-9' : 'col-12 md:col-11'">
+  <div class="col-12 md:col-9" [ngClass]="!viewQuestionBank ? 'col-12 md:col-9' : 'col-12 md:col-11'" >
     <div class="card">
       <!--      <div class="col">-->
       <!--        <p-progressBar [value]="valueProgress" [showValue]="false"></p-progressBar>-->
@@ -530,7 +530,7 @@
   <p-scrollTop target="window" styleClass="custom-scrolltop" [threshold]="100" icon="pi pi-arrow-up"></p-scrollTop>
 </div>
 <!--Componente de video para lenguaje de señas-->
-<div class="video_sign_float" *ngIf="validarPreguntaRecurso(questionObject.pathurlsign_question)"
+<div class="video_sign_float" *ngIf="!isNullOrUndefined(questionObject) && validarPreguntaRecurso(questionObject.pathurlsign_question)"
      [ngStyle]="{'background':vistaVideoSenias?'#2d3f47':'rgba(0,0,0,0)'}"
 >
 

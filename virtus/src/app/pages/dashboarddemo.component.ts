@@ -37,6 +37,7 @@ export class DashboardDemoComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     console.log("ngOnInit Home");
+    this.utils.closeLoading;
     this.homedata = [];
     this.statusApi = 0;
     this.responseData = null;
@@ -46,6 +47,8 @@ export class DashboardDemoComponent implements OnInit, AfterViewInit {
         }, error: err => {
           console.log(err)
           this.homedata = [];
+          location.reload();//No debería
+
         }, complete: () => {
           this.apiInformationHome(this.responseData.typePerson).subscribe({
             next: response => {
@@ -55,7 +58,7 @@ export class DashboardDemoComponent implements OnInit, AfterViewInit {
             }, error: err => {
               console.log(err);
               this.homedata = [];
-              // location.reload();//No debería
+              location.reload();//No debería
               // this.router.navigateByUrl('/login');
 
             }, complete: () => {

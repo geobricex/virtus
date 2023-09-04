@@ -158,7 +158,7 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     //this.showSwal(true);
     //this.changeDetector.detectChanges();
-    console.clear();
+    // console.clear();
   }
 
   ngOnDestroy() {
@@ -310,6 +310,13 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
           this.tiempoEvaluacion = this.evaluationObject.timeminutes_evaluation * 60;
           this.tiempoEvaluacion_lastQ = this.evaluationObject.timeminutes_evaluation * 60;
 
+          this.cambiarPregunta(0, true);
+
+          setTimeout(() => {
+            console.log("silenciar video")
+            this.autoClick("#silenciar_video");
+          }, 500);
+
           this.tiempoEvaluacion$ = timer(0, 1000)
             .subscribe((iter: any) => {
               if (this.tiempoEvaluacion <= 0) {
@@ -325,16 +332,14 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
               this.startContinuousArtyom();
             }
           }
+          console.log('vuelve...')
           // if (this.storageService.getCurrentUser().email == "anthony.pachay2017@uteq.edu.ec") {
-          this.cambiarPregunta(0, true);
+
           // } else {
           //   this.cambiarPregunta(0, true);
           // }
           //this.initCanvas(false);
-          setTimeout(() => {
-            console.log("silenciar video")
-            this.autoClick("#silenciar_video");
-          }, 500);
+
         }
       }
     });
@@ -1645,6 +1650,10 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
       canvasLineas.add(circle);
       this.joinLineDerecha.push(circle);
     }
+  }
+
+  isNullOrUndefined(obje: any){
+    return obje === null || obje === undefined;
   }
 
 }
