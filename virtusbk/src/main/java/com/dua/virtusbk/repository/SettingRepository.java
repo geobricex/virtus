@@ -17,7 +17,7 @@ public interface SettingRepository extends JpaRepository<Setting, Long> {
             "dateupdate_setting as \"dateupdateSetting\",\n" +
             "setting_configuration as \"settingConfiguration\",\n" +
             "persons_id_person as \"personsIdPerson\"" +
-            " FROM settings WHERE  persons_id_person = ?1 ORDER BY dateupdate_setting DESC LIMIT 1", nativeQuery = true)
+            " FROM settings WHERE  persons_id_person = ?1 ORDER BY id_setting DESC LIMIT 1", nativeQuery = true)
     List<Map<String, Object>>  findByPersonsIdPersonOrderByDateregSettingDesc(Long person_id);
 
     @Query(value = "SELECT st FROM Setting st WHERE st.personsIdPerson.id = ?1 ORDER BY st.dateregSetting DESC ")

@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 //import { DomSanitizer } from '@angular/platform-browser';
-import { CargarScriptsService } from "../services/cargar-scripts.service";
+import {CargarScriptsService} from "../services/cargar-scripts.service";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,11 @@ import { CargarScriptsService } from "../services/cargar-scripts.service";
 export class AppMainpageComponent {
   // title = 'dinamic-styles';
   // cssUrl: string;
-  constructor(private _CargarScriptsService: CargarScriptsService /*public sanitizer: DomSanitizer*/) {
+  totalVisits: number = 0;
+
+  constructor(private _CargarScriptsService: CargarScriptsService
+    , private http: HttpClient
+              /*public sanitizer: DomSanitizer*/) {
     // this.cssUrl = './app.pagemain.component.css';
     _CargarScriptsService.loadingService(["https://res.cloudinary.com/bricex/raw/upload/v1657340119/library/mainpage.js"]);
     //_CargarScriptsService.loadingService(["../assets/scripts/library/artyom.window.min.js"]);
@@ -20,5 +25,37 @@ export class AppMainpageComponent {
       "https://res.cloudinary.com/bricex/raw/upload/v1657504244/library/manager_voice.js"//"../assets/scripts/js/manager_voice.js"
     ]);*/
   }
+
+  // ngOnInit(): void {
+  //   // Configura la URL de la API de Reporting de Google Analytics
+  //   const apiUrl = 'https://analyticsreporting.googleapis.com/v4/reports:batchGet';
+  //
+  //   // Configura los parámetros de consulta
+  //   const requestBody = {
+  //     reportRequests: [
+  //       {
+  //         viewId: '6066095251', // Reemplaza con el ID de la vista de virtus
+  //         dateRanges: [{startDate: '2023-01-01', endDate: 'today'}], // Puedes ajustar el rango de fechas
+  //         metrics: [{expression: 'ga:sessions'}] // Métrica para el número total de sesiones (visitas)
+  //       }
+  //     ]
+  //   };
+  //
+  //   // Configura las cabeceras de autenticación
+  //   const headers = new HttpHeaders({
+  //     'Authorization': 'Bearer TU_TOKEN_DE_ACCESO' // Reemplaza con tu token de acceso
+  //   });
+  //
+  //   // Realiza la solicitud a la API de Reporting de Google Analytics
+  //   this.http.post(apiUrl, requestBody, {headers: headers})
+  //     .subscribe((data: any) => {
+  //       // Suponiendo que la respuesta contiene el número total de sesiones
+  //       if (data.reports && data.reports.length > 0) {
+  //         this.totalVisits = data.reports[0].data.totals[0].values[0];
+  //       }
+  //     });
+  //
+  //   console.log(this.totalVisits);
+  // }
 
 }
