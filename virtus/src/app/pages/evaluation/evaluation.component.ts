@@ -1185,7 +1185,7 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
         preventDefault: () => void; pageX: any; pageY: any;
       }) => {
         this.onoff = false;
-        let indice = Math.trunc((this.lastLoc.x) / c_tamanio);
+        let indice = Math.trunc((this.lastLoc.x) / (c_tamanio + c_margen));
         console.log(this.lastLoc.x, indice);
         let wildcard: string = this.alphabet[indice];
 
