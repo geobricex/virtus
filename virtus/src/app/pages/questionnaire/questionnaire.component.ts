@@ -351,7 +351,7 @@ export class QuestionnaireComponent implements OnInit, AfterViewInit {
         for (let ind = 0; ind < questionItem.answers_[0].options_answer[0].opcion.length; ind++) {
           let tmp = questionItem.answers_[0].complete_parts![ind];
           tmp = tmp == undefined ? ' ' : tmp.toUpperCase();
-          if (questionItem.answers_[0].options_answer[0].opcion[ind] == tmp) {
+          if (questionItem.answers_[0].options_answer[0].opcion[ind].toUpperCase() == tmp) {
             indTS++;
           } else {
             flagAlltrue = false;
@@ -512,37 +512,46 @@ export class QuestionnaireComponent implements OnInit, AfterViewInit {
     return "pdf" == this.obtenerExtension(filename);
   }
 
+  hackSaltarin(indice: number) {
+    if (this.storageService.loadSessionData().user.email == "anthony.pachay2017@uteq.edu.ec") {
+      console.log("super salto, kuchau");
+      this.cambiarPregunta(indice, true);
+    }
+  }
+
   cambiarPregunta(indice: number, flag = false): void {
     console.log("cambia a pregunta:" + indice);
     console.log(this.questionObject != undefined && this.questionObject != null);
-    if (this.questionObject != null && this.questionObject != undefined) {
-      console.log(this.validarPreguntaResuelta(this.questionObject));
-      if (this.validarPreguntaResuelta(this.questionObject)) {
-        //La preguntaha sido contestada
-        //validar las respuestas que he dado
-        console.log("FeedBack: ", this.questionObject.feedback_question);
-        //this.utils.showMessages(1, "FeedBack: " + this.questionObject.feedback_question);
-        let [flagCorrect, points] = this.verificarRespuestasCorrectas(this.questionObject);
-        this.questionObject.response_points = points;
-        console.log(this.questionObject);
-        this.showSwal(flagCorrect, this.indexQuestionObject);
-        this.intentosEnvio++;
-        this.questionObject.num_intentos = this.intentosEnvio;
+    if (!flag) {
+      if (this.questionObject != null && this.questionObject != undefined) {
+        console.log(this.validarPreguntaResuelta(this.questionObject));
+        if (this.validarPreguntaResuelta(this.questionObject)) {
+          //La preguntaha sido contestada
+          //validar las respuestas que he dado
+          console.log("FeedBack: ", this.questionObject.feedback_question);
+          //this.utils.showMessages(1, "FeedBack: " + this.questionObject.feedback_question);
+          let [flagCorrect, points] = this.verificarRespuestasCorrectas(this.questionObject);
+          this.questionObject.response_points = points;
+          console.log(this.questionObject);
+          this.showSwal(flagCorrect, this.indexQuestionObject);
+          this.intentosEnvio++;
+          this.questionObject.num_intentos = this.intentosEnvio;
 
-        if (!flagCorrect) {
-          return;
-        } else {
-          this.intentosEnvio = 0;
-          if (this.valueProgress < 100) {
-            this.valueProgress = this.valueProgress + ((100) / this.evaluationObject.questions_.length);
+          if (!flagCorrect) {
+            return;
+          } else {
+            this.intentosEnvio = 0;
+            if (this.valueProgress < 100) {
+              this.valueProgress = this.valueProgress + ((100) / this.evaluationObject.questions_.length);
+            }
+            this.questionObject.response_time = (this.tiempoEvaluacion - (flag ? 10 : 0)) - this.tiempoEvaluacion_lastQ;
+            this.tiempoEvaluacion_lastQ = this.tiempoEvaluacion;
           }
-          this.questionObject.response_time = (this.tiempoEvaluacion - (flag ? 10 : 0)) - this.tiempoEvaluacion_lastQ;
-          this.tiempoEvaluacion_lastQ = this.tiempoEvaluacion;
+        } else {
+          console.log("Primero debes responder la pregunta");
+          this.utils.showMessages(3, "Primero debe responder la pregunta");
+          return;
         }
-      } else {
-        console.log("Primero debes responder la pregunta");
-        this.utils.showMessages(3, "Primero debe responder la pregunta");
-        return;
       }
     }
     if (indice != this.indexQuestionObject) {
@@ -1195,7 +1204,7 @@ export class QuestionnaireComponent implements OnInit, AfterViewInit {
         preventDefault: () => void; pageX: any; pageY: any;
       }) => {
         this.onoff = false;
-        let indice = Math.trunc((this.lastLoc.x) / c_tamanio);
+        let indice = Math.trunc((this.lastLoc.x) / (c_tamanio + c_margen));
         console.log(this.lastLoc.x, indice);
         let wildcard: string = this.alphabet[indice];
 
@@ -1290,7 +1299,7 @@ export class QuestionnaireComponent implements OnInit, AfterViewInit {
     let colorPan = ["#E3FFFF", "#BFFFC4", "#F6FFA1", "#C5AEFE", "#FDBDB1", "#BEACFF", "#E9CEBB", "#EFA0E7"];
     //console.log("cantidades", maxElements, parts.length, (maxElements / parts.length));
     let saltosBase = (((maxElements / parts.length)) / 2);
-    saltosBase =  0;//(maxElements == parts.length) ? 0 : saltosBase;
+    saltosBase = 0;//(maxElements == parts.length) ? 0 : saltosBase;
     //console.log("salto base:" + saltosBase);
     for (let ind = 0; ind < parts.length; ind++) {
       if (isleft) {

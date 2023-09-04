@@ -266,7 +266,8 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
       /*if (this.evaluationObject.questions_[ind].canResource != undefined) {
         respondidas++;
       }*/
-      let [resueltoStado, _] = this.verificarRespuestasCorrectas(this.evaluationObject.questions_[ind]);
+      let resueltoStado = this.validarPreguntaResuelta(this.evaluationObject.questions_[ind]);
+      // let [resueltoStado, _] = this.verificarRespuestasCorrectas(this.evaluationObject.questions_[ind]);
       if (resueltoStado) {
         respondidas++;
       }
@@ -349,7 +350,7 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
         for (let ind = 0; ind < questionItem.answers_[0].options_answer[0].opcion.length; ind++) {
           let tmp = questionItem.answers_[0].complete_parts![ind];
           tmp = tmp == undefined ? ' ' : tmp.toUpperCase();
-          if (questionItem.answers_[0].options_answer[0].opcion[ind] == tmp) {
+          if (questionItem.answers_[0].options_answer[0].opcion[ind].toUpperCase() == tmp) {
             indTS++;
           } else {
             flagAlltrue = false;

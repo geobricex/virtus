@@ -28,9 +28,9 @@ export class StorageService {
       var jsonsession = JSON.parse(sessionStr);
       console.log(sessionStr)
       var currentUser: User;
-      currentUser = new User(jsonsession._user._email, jsonsession._user._type_person, jsonsession._user._name_person,
-        jsonsession._user._last_name, jsonsession._user._pathimg_person, jsonsession._user._provider_person);
-      sessionAux = new Session(jsonsession._token, currentUser);
+      currentUser = new User(jsonsession.emailPerson, jsonsession.typePerson, jsonsession.namePerson,
+        jsonsession.lastnamePerson, jsonsession.pathimgPerson, jsonsession.providerPerson);
+      sessionAux = new Session('', currentUser);
       return sessionAux;
     }
 
