@@ -29,6 +29,7 @@ export class AppTopBarComponent implements OnInit {
         this.person = response;
         console.log(" this.person")
         console.log(this.person)
+        this.storageService.setCurrentSession(this.person);
         if (this.person === null) {
           this.router.navigateByUrl('/login');
           return;
