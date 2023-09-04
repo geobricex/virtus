@@ -13,6 +13,7 @@ import {ConfirmationService, Message} from "primeng/api";
 import {Modules} from "../../models/Modules";
 import {Course} from "../../models/Course";
 import {posix} from "path";
+import {LoginServicie} from "../loginServicie";
 
 
 @Component({
@@ -78,6 +79,8 @@ export class ResourcesarComponent implements OnInit, AfterViewInit {
     private formBuilder: FormBuilder,
     public sanitizer: DomSanitizer,
     public confirmationService: ConfirmationService,
+    private loginservicie: LoginServicie
+
   ) {
     this.idCourse = this._route.snapshot.paramMap.get("idcourse");
     this.idModule = this._route.snapshot.paramMap.get("idmodule");
@@ -265,7 +268,7 @@ export class ResourcesarComponent implements OnInit, AfterViewInit {
     var headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
-      .set('token', this.utils.token);
+      .set('token', this.loginservicie.getToken());
     return this._http.post(this.globalUri, evaluationforDelete, {headers: headers});
   }
 
@@ -274,7 +277,7 @@ export class ResourcesarComponent implements OnInit, AfterViewInit {
     var headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
-      .set('token', this.utils.token);
+      .set('token', this.loginservicie.getToken());
     return this._http.post(this.globalUri, resourceforDelete, {headers: headers});
   }
 
@@ -443,7 +446,7 @@ export class ResourcesarComponent implements OnInit, AfterViewInit {
     var headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
-      .set('token', this.utils.token);
+      .set('token', this.loginservicie.getToken());
     return this._http.post(this.globalUri, this.resource, {headers: headers});
   }
 
@@ -568,7 +571,7 @@ export class ResourcesarComponent implements OnInit, AfterViewInit {
     var headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
-      .set('token', this.utils.token);
+      .set('token', this.loginservicie.getToken());
     return this._http.post(this.globalUri, this.evaluation, {headers: headers});
   }
 
@@ -610,7 +613,7 @@ export class ResourcesarComponent implements OnInit, AfterViewInit {
     let headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
-      .set('token', this.utils.token);
+      .set('token', this.loginservicie.getToken());
     return this._http.post<any>(this.globalUri, {topic_id_evaluation: this.idTopic}, {headers: headers});
   }
 

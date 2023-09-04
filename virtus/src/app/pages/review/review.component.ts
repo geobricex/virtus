@@ -5,6 +5,7 @@ import {BreadcrumbService} from "../../app.breadcrumb.service";
 import {Utils} from "../../util/Utils";
 import {Person} from "../../models/Person";
 import {ActivatedRoute} from "@angular/router";
+import {LoginServicie} from "../loginServicie";
 
 @Component({
   selector: 'app-review',
@@ -28,7 +29,8 @@ export class ReviewComponent implements OnInit, AfterViewInit {
   constructor(private breadcrumbService: BreadcrumbService,
               private _http: HttpClient,
               private utils: Utils,
-              private _route: ActivatedRoute,) {
+              private _route: ActivatedRoute,
+              private loginservicie: LoginServicie) {
     this.idEvaPers = this._route.snapshot.paramMap.get("idReview");
     this.breadcrumbService.setItems([
       {label: 'Revisión de intento', routerLink: ['/app/reports/intentreview']},
@@ -62,7 +64,7 @@ export class ReviewComponent implements OnInit, AfterViewInit {
     let headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
-      .set('token', this.utils.token);
+      .set('token', this.loginservicie.getToken());
     let queryParams = new HttpParams()
       .append("type", type)
       .append("id_evaluation", person_id_evaluation);

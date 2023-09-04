@@ -158,7 +158,7 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     //this.showSwal(true);
     //this.changeDetector.detectChanges();
-    // console.clear();
+    console.clear();
   }
 
   ngOnDestroy() {
