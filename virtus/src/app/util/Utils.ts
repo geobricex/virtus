@@ -74,13 +74,13 @@ export class Utils {
   }
 
   validateHost() {
-    if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
-      this._globalUrl = "virtus_bk/";
-    } else {
-      // this._globalUrl = "virtus_bk/";
-      this._globalUrl = "virtusbk/";
-
-    }
+    // if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+    //   this._globalUrl = "virtus_bk/";
+    // } else {
+    // this._globalUrl = "virtus_bk/";
+    this._globalUrl = "virtusbk/";
+    //
+    // }
   }
 
   get globalUrl(): string {

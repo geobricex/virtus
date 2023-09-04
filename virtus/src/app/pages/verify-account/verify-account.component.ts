@@ -44,12 +44,15 @@ export class VerifyAccountComponent implements OnInit, AfterViewInit {
   }
 
   apiRequestCode(): Observable<any> {
-    if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
-      this.globalUri = "virtus_bk/persons/requestcode";
-    } else {
-      // this.globalUri = "virtusbk/persons/signup";
-      this.globalUri = "virtusbk/persons/requestcode";
-    }
+    // if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+    //   this.globalUri = "virtus_bk/persons/requestcode";
+    // } else {
+    //   // this.globalUri = "virtusbk/persons/signup";
+    //   this.globalUri = "virtusbk/persons/requestcode";
+    // }
+
+    this.globalUri = this.utils.globalUrl + "persons/loginoauth";
+
     return this._http.post<Person>(this.globalUri, {
       "flag": "1",
       "email": this.email,
