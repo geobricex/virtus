@@ -43,7 +43,7 @@ export class AppMainpageComponent {
   //
   //   // Configura las cabeceras de autenticación
   //   const headers = new HttpHeaders({
-  //     'Authorization': 'Bearer TU_TOKEN_DE_ACCESO' // Reemplaza con tu token de acceso
+  //     'Authorization': 'Bearer http://1019537813978-u6s2ep8bnqlmeajmsgqv8aikb76hr0gv.apps.googleusercontent.com' // Reemplaza con tu token de acceso
   //   });
   //
   //   // Realiza la solicitud a la API de Reporting de Google Analytics

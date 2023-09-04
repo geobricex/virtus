@@ -252,7 +252,7 @@ const firebaseConfig = {
     Utils, ConfirmationService, CookieService
     ,{
       provide: GA_TOKEN,
-      useValue: 'G-LENK1MJDSX', // Reemplaza con tu código de seguimiento
+      useValue: 'G-LENK1MJDSX',
     },
   ],
 

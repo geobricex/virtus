@@ -55,7 +55,7 @@ export class DashboardDemoComponent implements OnInit, AfterViewInit {
               console.log(err);
               this.homedata = [];
               // location.reload();//No debería
-              this.router.navigateByUrl('/login');
+              // this.router.navigateByUrl('/login');
 
             }, complete: () => {
             }
