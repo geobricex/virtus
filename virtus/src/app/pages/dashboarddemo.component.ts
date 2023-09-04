@@ -8,6 +8,7 @@ import {StorageService} from "../authentication/StorageService";
 import {Utils} from "../util/Utils";
 import {LoginServicie} from "./loginServicie";
 import {any} from "codelyzer/util/function";
+import {Router} from "@angular/router";
 
 @Component({
   templateUrl: './dashboard.component.html'
@@ -20,6 +21,7 @@ export class DashboardDemoComponent implements OnInit, AfterViewInit {
   responseData: any;
 
   constructor(
+    public router: Router,
     private breadcrumbService: BreadcrumbService,
     private _http: HttpClient,
     private storageService: StorageService,
@@ -53,6 +55,8 @@ export class DashboardDemoComponent implements OnInit, AfterViewInit {
               console.log(err);
               this.homedata = [];
               // location.reload();//No debería
+              this.router.navigateByUrl('/login');
+
             }, complete: () => {
             }
           })
