@@ -9,6 +9,7 @@ import {ActivatedRoute} from "@angular/router";
 import {Modules} from "../../models/Modules";
 import {Person} from "../../models/Person";
 import {ConfirmationService} from "primeng/api";
+import {LoginServicie} from "../loginServicie";
 
 
 @Component({
@@ -46,7 +47,8 @@ export class ModuloarComponent implements OnInit, AfterViewInit {
     private _http: HttpClient,
     private _route: ActivatedRoute,
     private formBuilder: FormBuilder,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private loginservicie: LoginServicie
   ) {
     this.idCourse = this._route.snapshot.paramMap.get("idcourse");
     this.breadcrumbService.setItems([
@@ -259,7 +261,7 @@ export class ModuloarComponent implements OnInit, AfterViewInit {
     var headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
-      .set('token', this.utils.token);
+      .set('token', this.loginservicie.getToken());
     return this._http.post<any>(this.globalUri, module, {headers: headers});
   }
 
@@ -268,7 +270,7 @@ export class ModuloarComponent implements OnInit, AfterViewInit {
     var headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
-      .set('token', this.utils.token);
+      .set('token', this.loginservicie.getToken());
     return this._http.post<any>(this.globalUri, module, {headers: headers});
   }
 

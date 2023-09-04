@@ -20,6 +20,7 @@ import UserCredential = firebase.auth.UserCredential;
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {CookieService} from "ngx-cookie-service";
 import {LoginServicie} from "./loginServicie";
+import {AppComponent} from "../app.component";
 
 @Component({
   selector: 'app-login',
@@ -49,7 +50,8 @@ export class AppLoginComponent {
     private formBuilder: FormBuilder,
     private cookies: CookieService,
     private utils: Utils,
-    private loginservicie: LoginServicie
+    private loginservicie: LoginServicie,
+    private appComp : AppComponent
   ) {
     this.forgotPassword_dialog = false;
     this.alreadyHasCode = false;
@@ -57,6 +59,7 @@ export class AppLoginComponent {
 
   ngAfterViewInit() {
     console.clear();
+    this.appComp.reiniciarConfiguracion();
   }
 
   /**
@@ -73,6 +76,7 @@ export class AppLoginComponent {
       password: ["", Validators.required],
     });
   }
+
 
   get form() {
     return this.frmLogin.controls;

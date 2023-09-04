@@ -8,6 +8,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Utils} from "../../util/Utils";
 import {Person} from "../../models/Person";
 import {ConfirmationService} from "primeng/api";
+import {LoginServicie} from "../loginServicie";
 
 
 @Component({
@@ -50,7 +51,8 @@ export class CursosArComponent implements OnInit, AfterViewInit {
     private _http: HttpClient,
     private formBuilder: FormBuilder,
     private utils: Utils,
-    private confirmationService: ConfirmationService) {
+    private confirmationService: ConfirmationService,
+    private loginservicie: LoginServicie) {
     this.breadcrumbService.setItems([
       {label: '', routerLink: ['/app']},
       {label: 'Cursos Activos', routerLink: ['/app/coursear']}
@@ -263,7 +265,7 @@ export class CursosArComponent implements OnInit, AfterViewInit {
     var headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
-      .set('token', this.utils.token);
+      .set('token', this.loginservicie.getToken());
     return this._http.post(this.globalUri, course, {headers: headers});
   }
 
@@ -272,7 +274,7 @@ export class CursosArComponent implements OnInit, AfterViewInit {
     var headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
-      .set('token', this.utils.token);
+      .set('token', this.loginservicie.getToken());
     return this._http.post(this.globalUri, course, {headers: headers});
   }
 

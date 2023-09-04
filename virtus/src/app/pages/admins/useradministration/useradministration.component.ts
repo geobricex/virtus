@@ -44,7 +44,7 @@ export class UseradministrationComponent implements OnInit, AfterViewInit {
     console.clear();
   }
   ngOnInit(): void {
-    // console.log(this.utils.token);
+    // console.log(this.loginservicie.getToken());
     this.loadgetPersons();
     this.getDataUser()
     this.cols = [
@@ -86,7 +86,7 @@ export class UseradministrationComponent implements OnInit, AfterViewInit {
     var headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
-      .set('token', this.utils.token);
+      .set('token', this.loginservicie.getToken());
     return this._http.post(this.globalUri, {}, {headers: headers});
   }
 
@@ -159,11 +159,11 @@ export class UseradministrationComponent implements OnInit, AfterViewInit {
 
   apiChangeRolPersons(person: Person): Observable<any> {
     console.log(person);
-    console.log(this.utils.token)
+    console.log(this.loginservicie.getToken())
     this.globalUri = this.utils.globalUrl + "persons";
     var headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
-      .set('token', this.utils.token);
+      .set('token', this.loginservicie.getToken());
     return this._http.put<Person>(this.globalUri, person, {headers: headers});
   }
 

@@ -6,6 +6,7 @@ import {Utils} from "../../util/Utils";
 import {Observable} from "rxjs";
 import {Router} from "@angular/router";
 import {error} from "protractor";
+import {LoginServicie} from "../loginServicie";
 
 @Component({
   selector: 'app-miscursos',
@@ -29,7 +30,7 @@ export class MiscursosComponent implements OnInit, AfterViewInit {
   isExpanded: boolean = false;
 
   constructor(private breadcrumbService: BreadcrumbService, private utils: Utils, private _http: HttpClient,
-              public router: Router) {
+              public router: Router, private loginservicie: LoginServicie) {
     this.breadcrumbService.setItems([
       {label: '', routerLink: ['/app']},
       {label: 'Cursos', routerLink: ['/app/course']},
@@ -103,7 +104,7 @@ export class MiscursosComponent implements OnInit, AfterViewInit {
     var headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
-      .set('token', this.utils.token);
+      .set('token', this.loginservicie.getToken());
     return this._http.post(this.globalUri, {state_course_person: "A"}, {headers: headers});
   }
 

@@ -20,6 +20,7 @@ import {StorageService} from "../../authentication/StorageService";
 import {ExtendedKeyboardEvent, Hotkey, HotkeysService} from "angular2-hotkeys";
 import {AppComponent} from "../../app.component";
 import {Puzzle} from "../../util/Puzzle";
+import {LoginServicie} from "../loginServicie";
 
 
 declare var Artyom: any;
@@ -89,7 +90,8 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
               private activatedRoute: ActivatedRoute,
               private storageService: StorageService,
               private _hotkeysService: HotkeysService,
-              public app: AppComponent) {
+              public app: AppComponent,
+              private loginservicie: LoginServicie) {
 
     this.idCourse = this._route.snapshot.paramMap.get("idcourse");
     this.idModule = this._route.snapshot.paramMap.get("idmodule");
@@ -628,7 +630,7 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
       //.set('Content-Type', 'application/json')
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
-      .set('token', this.utils.token);
+      .set('token', this.loginservicie.getToken());
 
     return this._http.post<EvaluationQuestionsResponse>(urlServicio, {"id_evaluation": idEvaluacion}, {headers: headers});
   }
@@ -1354,7 +1356,7 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
       let headers = new HttpHeaders()
         .set('Access-Control-Allow-Origin', '*')
         .set('provider', 'native')
-        .set('token', this.utils.token);
+        .set('token', this.loginservicie.getToken());
       console.log(this.evaluationObject);
       this._http.post<any>(urlServicio, {
         "result_evaluation": JSON.stringify(this.evaluationObject),

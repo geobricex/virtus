@@ -12,11 +12,13 @@ export class Utils {
   client: any;
   private _token: string = "";
   private _globalUrl: string = "";
+  private loginServicie: LoginServicie;
 
 
-  constructor(private service: MessageService, private storageService: StorageService, private loginservicie: LoginServicie) {
+  constructor(private service: MessageService, private storageService: StorageService) {
     this.validateHost();
-    this._token = this.loginservicie.getToken();
+    //this._token = this.loginservicie.getToken();
+    console.log("login servicie: ", this._token);
   }
 
   get loading() {
@@ -92,6 +94,7 @@ export class Utils {
 
 
   get token(): string {
+    this._token = this.loginServicie.getToken();
     return this._token;
   }
 
