@@ -319,18 +319,18 @@ apiRecoverAccount(): Observable<any> {
 
   apiRegisterGoogle(data: any): Observable<any> {
 
-    if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
-      this.globalUri = "virtus_bk/";
-    } else {
-      this.globalUri = "virtus_bk/";
-    }
+    // if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+    //   this.globalUri = "virtus_bk/";
+    // } else {
+    //   this.globalUri = "virtus_bk/";
+    // }
 
     let headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
       .set('provider', data.provider);
+    this.globalUri = this.utils.globalUrl + "persons/loginoauth";
 
-    this.globalUri = this.globalUri + "persons/loginoauth";
     return this._http.post<any>(this.globalUri,
       {
         "useremail": data.useremail,

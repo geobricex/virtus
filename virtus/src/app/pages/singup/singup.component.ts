@@ -86,12 +86,14 @@ export class SingupComponent implements OnInit, AfterViewInit {
   }
 
   apirRegisterUser(person: Person): Observable<any> {
-    if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
-      this.globalUri = "virtus_bk/persons/signup";
-    } else {
-      // this.globalUri = "virtusbk/persons/signup";
-      this.globalUri = "virtusbk/persons/signup";
-    }
+    // if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+    //   this.globalUri = "virtus_bk/persons/signup";
+    // } else {
+    //   // this.globalUri = "virtusbk/persons/signup";
+    //   this.globalUri = "virtusbk/persons/signup";
+    // }
+    this.globalUri = this.utils.globalUrl + "persons/loginoauth";
+
     return this._http.post<Person>(this.globalUri, person);
   }
 
