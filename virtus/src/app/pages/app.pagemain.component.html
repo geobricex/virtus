@@ -142,13 +142,17 @@
           <span class="app-name">VIRTUS</span>
         </div>
         <span class="col-12">Aplicación educativa con enfoque universal</span>
+        <span class="col-12" *ngIf="cantVisitValue !== undefined">Contador de visitas:
+          <b>{{ cantVisitValue }}</b>
+        </span>
+
       </div>
       <div class="col-12 md:col-12 lg:col-8" style="text-align:center">
         <div id="landing-menu-footer" class="grid">
           <div class="col-12 md:col-6 lg:col-3 landing-box">
             <b><span>Información</span></b>
             <br/>
-            <a href="">Copyright © 2022 </a>
+            <a href="">Copyright © 2023 </a>
             <a href="">Universidad Técnica Estatal de Quevedo</a>
             <a href="">(+593) 5 3702-220 Ext. 8039</a>
             <a href="">info@uteq.edu.ec</a>

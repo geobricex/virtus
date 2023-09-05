@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface UtilRepository extends JpaRepository<Util, String> {
@@ -16,6 +17,9 @@ public interface UtilRepository extends JpaRepository<Util, String> {
     Optional<Util> findByValueUtil(String splantilla);
 
     Optional<Util> findById(String id);
+
+    @Query(value = "select * from count_visit()", nativeQuery = true)
+    List<Map<String, Object>>  returnCountVisit();
 
     @Query(value = "select infor from home_select(?1,?2)", nativeQuery = true)
     String returnInformationHome(int type, int param);

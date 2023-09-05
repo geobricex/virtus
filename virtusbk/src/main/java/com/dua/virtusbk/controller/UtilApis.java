@@ -1,10 +1,13 @@
 package com.dua.virtusbk.controller;
 
 
+import com.dua.virtusbk.ExcludeProxiedFields;
 import com.dua.virtusbk.service.UtilService;
 import com.dua.virtusbk.entity.Util;
 import com.dua.virtusbk.repository.UtilRepository;
 import com.dua.virtusbk.util.Methods;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -38,6 +42,24 @@ public class UtilApis {
             return ResponseEntity.ok(findUtil.get());
         } else {
             return ResponseEntity.noContent().build();
+        }
+    }
+
+    @GetMapping("/countvisit")
+    public ResponseEntity<String> getCountVisit() {
+        System.out.println("countvisit");
+        String status, message = "No se puedo obtener la información", data;
+        List<Map<String, Object>> findCount = utilDAO.returnCountVisit();
+        Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();
+
+        if (findCount.size() > 0) {
+            status = "2";
+            message = "Información obetnida con éxito.";
+            data = gson.toJson(findCount);
+            message = Methods.getJsonMessage(status, message, data);
+            return new ResponseEntity<>(message, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(message, HttpStatus.BAD_GATEWAY);
         }
     }
 
