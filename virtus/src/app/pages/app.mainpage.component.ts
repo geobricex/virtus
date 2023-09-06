@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 //import { DomSanitizer } from '@angular/platform-browser';
 import {CargarScriptsService} from "../services/cargar-scripts.service";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
@@ -29,6 +29,10 @@ export class AppMainpageComponent {
       "https://res.cloudinary.com/bricex/raw/upload/v1657504142/library/artyom.window.min.js",//"../assets/scripts/library/artyom.window.min.js",
       "https://res.cloudinary.com/bricex/raw/upload/v1657504244/library/manager_voice.js"//"../assets/scripts/js/manager_voice.js"
     ]);*/
+  }
+
+  ngAfterViewInit() {
+    console.clear();
   }
 
   ngOnInit(): void {

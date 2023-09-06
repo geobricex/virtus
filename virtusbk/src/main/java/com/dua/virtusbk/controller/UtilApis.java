@@ -47,7 +47,6 @@ public class UtilApis {
 
     @GetMapping("/countvisit")
     public ResponseEntity<String> getCountVisit() {
-        System.out.println("countvisit");
         String status, message = "No se puedo obtener la información", data;
         List<Map<String, Object>> findCount = utilDAO.returnCountVisit();
         Gson gson = new GsonBuilder().setExclusionStrategies(new ExcludeProxiedFields()).create();
