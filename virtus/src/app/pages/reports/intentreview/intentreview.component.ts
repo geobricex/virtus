@@ -37,8 +37,15 @@ export class IntentreviewComponent implements OnInit, AfterViewInit {
     this.loadgetReviews();
 
     this.cols = [
-      {field: 'Calificación', header: 'Calificación'},
-      {field: 'Calificación', header: 'Calificación'},
+      {field: 'datereg_person_evaluation', header: 'Fechadeevaluación'},
+      {field: 'name_course', header: 'Curso'},
+      {field: 'name_syllabu', header: 'Módulo'},
+      {field: 'name_topic', header: 'Tema'},
+      {field: 'type_evaluation', header: 'Tipodeprueba'},
+      {field: 'Nombredelaprueba', header: 'Nombredelaprueba'},
+      {field: 'timespent_person_evaluation', header: 'Tiempoempleado'},
+      {field: 'qualification_person_evaluation', header: 'Calificación'},
+
     ];
   }
 
