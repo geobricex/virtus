@@ -315,7 +315,7 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
               if (this.tiempoEvaluacion <= 0) {
                 this.tiempoEvaluacion$.unsubscribe();
                 /*Código para indicar que se terminó el tiempo*/
-                this.router.navigate(['/..']);
+                this.enviarEvaluacion();
               }
               this.tiempoEvaluacion--;
             });
