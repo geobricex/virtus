@@ -9,6 +9,7 @@ import {Utils} from "../../../util/Utils";
 import {Person} from "../../../models/Person";
 import {ConfirmationService} from "primeng/api";
 import {Router} from "@angular/router";
+import {LoginServicie} from "../../loginServicie";
 
 @Component({
   selector: 'app-favorites',
@@ -32,7 +33,8 @@ export class FavoritesComponent implements OnInit, AfterViewInit {
     private utils: Utils,
     private _http: HttpClient,
     private confirmationService: ConfirmationService,
-    public router: Router) {
+    public router: Router,
+    private loginservicie: LoginServicie) {
     this.breadcrumbService.setItems([
       {label: 'Cursos', routerLink: ['app/course']},
       {label: 'Favoritos', routerLink: ['/app/course/favorites']}
@@ -106,7 +108,7 @@ export class FavoritesComponent implements OnInit, AfterViewInit {
     var headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
-      .set('token', this.utils.token);
+      .set('token', this.loginservicie.getToken());
     return this._http.post(this.globalUri, {id_course: idCourse}, {headers: headers});
   }
 
@@ -115,7 +117,7 @@ export class FavoritesComponent implements OnInit, AfterViewInit {
     var headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
-      .set('token', this.utils.token);
+      .set('token', this.loginservicie.getToken());
     return this._http.post(this.globalUri, {state_course_person: "A"}, {headers: headers});
   }
 

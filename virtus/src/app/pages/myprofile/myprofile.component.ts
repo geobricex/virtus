@@ -11,6 +11,7 @@ import {FormGroup, FormControl, Validators, ReactiveFormsModule, FormsModule, Fo
 import PocketBase from "pocketbase";
 import {Message} from "primeng/api";
 import {BreadcrumbService} from "../../app.breadcrumb.service";
+import {LoginServicie} from "../loginServicie";
 
 @Component({
   selector: 'app-myprofile',
@@ -44,7 +45,8 @@ export class MyprofileComponent implements OnInit, AfterViewInit {
     private utils: Utils,
     private _http: HttpClient,
     private storageService: StorageService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private loginservicie: LoginServicie
   ) {
     this.breadcrumbService.setItems([
       {label: '', routerLink: ['/app/']},
@@ -98,7 +100,7 @@ export class MyprofileComponent implements OnInit, AfterViewInit {
     this.globalUri = this.utils.globalUrl + "persons/getperson";
 
     return this._http.post(this.globalUri, {
-      "sessionToken": this.utils.token,
+      "sessionToken": this.loginservicie.getToken(),
     },);
   }
 
@@ -118,7 +120,7 @@ export class MyprofileComponent implements OnInit, AfterViewInit {
     var headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
-      .set('token', this.utils.token);
+      .set('token', this.loginservicie.getToken());
     return this._http.put<Person>(this.globalUri, person, {headers: headers});
   }
 
@@ -238,7 +240,7 @@ export class MyprofileComponent implements OnInit, AfterViewInit {
     var headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
-      .set('token', this.utils.token);
+      .set('token', this.loginservicie.getToken());
     return this._http.post<Person>(this.globalUri, jsonData, {headers: headers});
   }
 

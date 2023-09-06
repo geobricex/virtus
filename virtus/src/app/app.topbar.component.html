@@ -57,7 +57,7 @@
         <i class="pi pi-ellipsis-v"></i>
     </a>-->
     <a id="topbar-profile-menu-button" href="#" (click)="app.onTopbarMenuButtonClick($event)">
-      <img *ngIf="person.pathimgPerson!== undefined" [src]="person.pathimgPerson" alt="VIRTUS" class="topbar-profile"
+      <img *ngIf="person.pathimgPerson" [src]="person.pathimgPerson" alt="VIRTUS" class="topbar-profile"
            (error)="utils.onImgError($event)"
            style="border-radius: 50%"/>
       <span

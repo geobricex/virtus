@@ -4,6 +4,7 @@ import {Person} from "../../../models/Person";
 import {Observable} from "rxjs";
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {Utils} from "../../../util/Utils";
+import {LoginServicie} from "../../loginServicie";
 
 @Component({
   selector: 'app-intentreview',
@@ -20,6 +21,7 @@ export class IntentreviewComponent implements OnInit, AfterViewInit {
   constructor(private breadcrumbService: BreadcrumbService,
               private _http: HttpClient,
               private utils: Utils,
+              private loginservicie: LoginServicie
   ) {
     this.breadcrumbService.setItems([
       {label: '', routerLink: ['/app/']},
@@ -54,7 +56,7 @@ export class IntentreviewComponent implements OnInit, AfterViewInit {
     let headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
-      .set('token', this.utils.token);
+      .set('token', this.loginservicie.getToken());
     let queryParams = new HttpParams()
       .append("type", type)
       .append("id_evaluation", 0);

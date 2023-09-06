@@ -6,6 +6,7 @@ import {AppConfigComponent} from "./app.config.component";
 import {Resources} from "./models/Resources";
 import {Topic} from "./models/Topic";
 import {InterfaceSettings} from "./models/globalInterfaces";
+import {LoginServicie} from "./pages/loginServicie";
 
 @Component({
   selector: 'app-root',
@@ -50,14 +51,14 @@ export class AppComponent {
   constructor(private primengConfig: PrimeNGConfig,
               private _http: HttpClient,
               private utils: Utils,
-              public confirmationService: ConfirmationService) {
+              public confirmationService: ConfirmationService,
+              private loginservicie: LoginServicie) {
 
   }
 
   ngOnInit() {
     this.primengConfig.ripple = true;
     this.ripple = true;
-
   }
 
 
@@ -105,12 +106,44 @@ export class AppComponent {
     console.log("Se ha modificado la configuracion de la app");
   }
 
+  reiniciarConfiguracion (): void {
+    let configSaved: InterfaceSettings  = {};
+    console.log("response cargarConfiguración: ", configSaved);
+    if (configSaved.modeStyle !== undefined) {
+      this.modeStyle = configSaved.modeStyle;
+    }
+    if (configSaved.textColorChecked !== undefined) {
+      this.textColorChecked = configSaved.textColorChecked;
+    }
+    if (configSaved.textColor !== undefined) {
+      this.textColor = configSaved.textColor;
+    }
+    if (configSaved.valorDocumentZoom !== undefined) {
+      this.valorDocumentZoom = configSaved.valorDocumentZoom;
+    }
+    if (configSaved.testFontFamily !== undefined) {
+      this.testFontFamily = configSaved.testFontFamily.replace(/''/g, "'");
+    }
+
+    if (configSaved.voiceCommand !== undefined) {
+      this.voiceCommand = configSaved.voiceCommand;
+    }
+    if (configSaved.auditoryResource !== undefined) {
+      this.auditoryResource = configSaved.auditoryResource;
+    }
+    if (configSaved.visualResource !== undefined) {
+      this.visualResource = configSaved.visualResource;
+    }
+    configSaved.theme = "absolution";
+    this.changeTheme(configSaved.theme);
+  }
+
   cargarConfiguracion(): void {
     let urlServicio = this.utils.globalUrl + "settings/getserviceforperson";
     let headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
-      .set('token', this.utils.token);
+      .set('token', this.loginservicie.getToken());
     this._http.post<any>(urlServicio, null, {headers: headers}).subscribe(response => {
       if (response.status == 2) {
         console.log("1", (response.data));
@@ -146,6 +179,8 @@ export class AppComponent {
         }
         this.changeTheme(configSaved.theme);
         //AppConfigComponent.changeTheme(configSaved.theme);
+      } else {
+        this.reiniciarConfiguracion();
       }
 
     })
@@ -185,7 +220,7 @@ export class AppComponent {
         let headers = new HttpHeaders()
           .set('Access-Control-Allow-Origin', '*')
           .set('provider', 'native')
-          .set('token', this.utils.token);
+          .set('token', this.loginservicie.getToken());
         this._http.post<any>(urlServicio, {
           "setting_configuration": actualPreferences
         }, {headers: headers}).subscribe(response => {

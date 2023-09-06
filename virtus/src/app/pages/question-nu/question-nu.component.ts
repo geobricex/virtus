@@ -15,6 +15,7 @@ import {Observable} from "rxjs";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Message} from "primeng/api";
 import { Location } from '@angular/common';
+import {LoginServicie} from "../loginServicie";
 
 @Component({
   selector: 'app-question-nu',
@@ -79,7 +80,8 @@ export class QuestionNuComponent implements OnInit, AfterViewInit {
     private formBuilder: FormBuilder,
     private utils: Utils,
     private _http: HttpClient,
-    private location: Location
+    private location: Location,
+    private loginservicie: LoginServicie
   ) {
     this.idCourse = this._route.snapshot.paramMap.get("idcourse");
     this.idModule = this._route.snapshot.paramMap.get("idmodule");
@@ -327,7 +329,7 @@ export class QuestionNuComponent implements OnInit, AfterViewInit {
     var headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
-      .set('token', this.utils.token);
+      .set('token', this.loginservicie.getToken());
     return this._http.post<any>(this.globalUri, {
       id_question: this.idQuestion
     }, {headers: headers});
@@ -420,7 +422,7 @@ export class QuestionNuComponent implements OnInit, AfterViewInit {
     var headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
-      .set('token', this.utils.token);
+      .set('token', this.loginservicie.getToken());
     return this._http.post<any>(this.globalUri, this.objectQuestion, {headers: headers});
   }
 
@@ -429,7 +431,7 @@ export class QuestionNuComponent implements OnInit, AfterViewInit {
     var headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
-      .set('token', this.utils.token);
+      .set('token', this.loginservicie.getToken());
     return this._http.post<any>(this.globalUri, this.objectQuestion, {headers: headers});
   }
 
@@ -438,7 +440,7 @@ export class QuestionNuComponent implements OnInit, AfterViewInit {
     var headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
-      .set('token', this.utils.token);
+      .set('token', this.loginservicie.getToken());
     return this._http.post<any>(this.globalUri, this.objectAnswer, {headers: headers});
   }
 
@@ -447,7 +449,7 @@ export class QuestionNuComponent implements OnInit, AfterViewInit {
     var headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
-      .set('token', this.utils.token);
+      .set('token', this.loginservicie.getToken());
     return this._http.post<any>(this.globalUri, this.objectAnswer, {headers: headers});
   }
 

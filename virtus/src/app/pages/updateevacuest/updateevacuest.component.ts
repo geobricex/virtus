@@ -20,6 +20,7 @@ import {Course} from "../../models/Course";
 import {ConfirmationService} from "primeng/api";
 import {Evaluation} from "../../models/Evaluation"
 import {Topic} from "../../models/Topic";
+import {LoginServicie} from "../loginServicie";
 
 @Component({
   selector: 'app-updateevacuest',
@@ -64,7 +65,9 @@ export class UpdateevacuestComponent implements OnInit, AfterViewInit, OnDestroy
     private confirmationService: ConfirmationService,
     public router: Router,
     private location: Location,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private loginservicie: LoginServicie
+
   ) {
     this.idCourse = this._route.snapshot.paramMap.get("idcourse");
     this.idModule = this._route.snapshot.paramMap.get("idmodule");
@@ -177,7 +180,7 @@ export class UpdateevacuestComponent implements OnInit, AfterViewInit, OnDestroy
     var headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
-      .set('token', this.utils.token);
+      .set('token', this.loginservicie.getToken());
     return this._http.post<any>(this.globalUri, question, {headers: headers});
   }
 
@@ -204,7 +207,7 @@ export class UpdateevacuestComponent implements OnInit, AfterViewInit, OnDestroy
     let headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
-      .set('token', this.utils.token);
+      .set('token', this.loginservicie.getToken());
 
     return this._http.post<any>(url_gq, {
       "id_evaluation": (String(this.idEvaluation))
@@ -233,7 +236,7 @@ export class UpdateevacuestComponent implements OnInit, AfterViewInit, OnDestroy
     let headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
-      .set('token', this.utils.token);
+      .set('token', this.loginservicie.getToken());
     if (this.quantity_true >= 0) {
 
     } else {
@@ -347,7 +350,7 @@ export class UpdateevacuestComponent implements OnInit, AfterViewInit, OnDestroy
     var headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
-      .set('token', this.utils.token);
+      .set('token', this.loginservicie.getToken());
     return this._http.post(this.globalUri, this.evaluation, {headers: headers});
   }
 
@@ -369,7 +372,7 @@ export class UpdateevacuestComponent implements OnInit, AfterViewInit, OnDestroy
     let headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
-      .set('token', this.utils.token);
+      .set('token', this.loginservicie.getToken());
     return this._http.post(this.globalUrl, {
       "id_evaluation": this.idEvaluation
     }, {headers: headers});
@@ -383,7 +386,7 @@ export class UpdateevacuestComponent implements OnInit, AfterViewInit, OnDestroy
     let headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
-      .set('token', this.utils.token);
+      .set('token', this.loginservicie.getToken());
 
     return this._http.post<EvaluationQuestionsResponse>(url_gq, {"id_evaluation": idEvaluation}, {headers: headers});
   }

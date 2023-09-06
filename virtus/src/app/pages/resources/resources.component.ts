@@ -9,6 +9,7 @@ import {Evaluation} from "../../models/Evaluation";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {DomSanitizer} from "@angular/platform-browser";
 import {Topic} from "../../models/Topic";
+import {LoginServicie} from "../loginServicie";
 
 @Component({
   selector: 'app-resources',
@@ -67,7 +68,8 @@ export class ResourcesComponent implements OnInit, AfterViewInit {
     private _route: ActivatedRoute,
     private utils: Utils,
     private _http: HttpClient,
-    public sanitizer: DomSanitizer
+    public sanitizer: DomSanitizer,
+    private loginservicie: LoginServicie
   ) {
     this.idCourse = this._route.snapshot.paramMap.get("idcourse");
     this.idModule = this._route.snapshot.paramMap.get("idmodule");
@@ -86,7 +88,7 @@ export class ResourcesComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    console.clear();
+    // console.clear();
   }
 
   ngOnInit(): void {
@@ -174,7 +176,7 @@ export class ResourcesComponent implements OnInit, AfterViewInit {
     let headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
-      .set('token', this.utils.token);
+      .set('token', this.loginservicie.getToken());
     return this._http.post<any>(this.globalUri, {topic_id_evaluation: this.idTopic}, {headers: headers});
 
   }

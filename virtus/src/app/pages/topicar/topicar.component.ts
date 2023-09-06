@@ -9,6 +9,7 @@ import {Modules} from "../../models/Modules";
 import {Topic} from "../../models/Topic";
 import {Course} from "../../models/Course";
 import {ConfirmationService} from "primeng/api";
+import {LoginServicie} from "../loginServicie";
 
 
 @Component({
@@ -47,7 +48,8 @@ export class TopicarComponent implements OnInit, AfterViewInit {
     private utils: Utils,
     private _http: HttpClient,
     private formBuilder: FormBuilder,
-    private confirmationService: ConfirmationService) {
+    private loginservicie: LoginServicie,
+  private confirmationService: ConfirmationService) {
     this.idCourse = this._route.snapshot.paramMap.get("idcourse");
     this.idModule = this._route.snapshot.paramMap.get("idmodule");
     this.breadcrumbService.setItems([
@@ -244,7 +246,7 @@ export class TopicarComponent implements OnInit, AfterViewInit {
     var headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
-      .set('token', this.utils.token);
+      .set('token', this.loginservicie.getToken());
     return this._http.post<any>(this.globalUri, topic, {headers: headers});
   }
 
@@ -253,7 +255,7 @@ export class TopicarComponent implements OnInit, AfterViewInit {
     var headers = new HttpHeaders()
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
-      .set('token', this.utils.token);
+      .set('token', this.loginservicie.getToken());
     return this._http.post<any>(this.globalUri, topic, {headers: headers});
   }
 
