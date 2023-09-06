@@ -169,7 +169,7 @@ public class PersonApi {//implements UserDetailsService {
     @PostMapping("/loginoauth")
     @ResponseBody
     public ResponseEntity<String> loginByOAuth(@RequestBody @Validated String data, @RequestHeader("provider") String provider) {
-        System.out.println("logIn...");
+        System.out.println("loginoauth...");
         String message;
         JsonObject jso = Methods.stringToJSON(data);
         if (jso.size() > 0) {

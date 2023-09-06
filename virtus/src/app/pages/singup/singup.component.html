@@ -37,8 +37,8 @@
           <div class="field">
             <label>Contraseña:</label>
             <input type="password" autocomplete="new-password" pInputText class="w-full" formControlName="password"
-                   pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{6,}"
-                   pTooltip="La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una
+                   pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[\w\W]{6,16}$"
+                   pTooltip="La contraseña debe tener al entre 6 y 16 caracteres, al menos un dígito, al menos una
                    minúscula, al menos una mayúscula y al menos un caracter no alfanumérico." tooltipPosition="right"
                    [ngClass]=" (form['password'].invalid && (form['password'].dirty && form['password'].touched)) ?
                    'ng-dirty ng-invalid' : ''"/>
@@ -51,6 +51,7 @@
           <div class="field">
             <label>Confirmar contraseña:</label>
             <input type="password" autocomplete="new-repeat_password" pInputText class="w-full"
+                   pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[\w\W]{6,16}$"
                    formControlName="repeat_password"/>
             <small
               *ngIf="form['repeat_password'].invalid && (form['repeat_password'].dirty && form['repeat_password'].touched)"

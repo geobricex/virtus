@@ -336,7 +336,7 @@ public class PersonService {
     }
 
     public String[] logInOAuth(String useremail, String username, String userlastname, String userid, String userimage, String provider) {
-        System.out.println("logIn Controller");
+        System.out.println("logInOAuth Controller");
         String status = "4", message = "Error en los parámetros introducidos", data = "[]";
         if (Methods.comprobeEmail(useremail)
                 && provider.equals("google.com")) {

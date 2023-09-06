@@ -51,7 +51,7 @@ export class VerifyAccountComponent implements OnInit, AfterViewInit {
     //   this.globalUri = "virtusbk/persons/requestcode";
     // }
 
-    this.globalUri = this.utils.globalUrl + "persons/loginoauth";
+    this.globalUri = this.utils.globalUrl + "persons/requestcode";
 
     return this._http.post<Person>(this.globalUri, {
       "flag": "1",

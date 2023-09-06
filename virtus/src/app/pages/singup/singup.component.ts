@@ -75,24 +75,34 @@ export class SingupComponent implements OnInit, AfterViewInit {
     this.person._providerPerson = "native";
     this.person._typePerson = "S";
     console.log(this.person);
+    this.msgs = [];
+    this.msgs.push({severity: 'info', summary: 'Espere...', detail: 'Enviando verificación al correo...'});
+
     this.apirRegisterUser(this.person).subscribe(response => {
-      this.msgs = [];
-      console.log(response);
-      this.utils.showMessages(response.status, response.information, "tst");
-      this.person = new Person(0, "", "", "", "", "", "", "", "", "", "");
-      this.newpassword = "";
-      this.frmSingUp.reset();
-    });
+        this.frmSingUp.reset();
+        console.log(response);
+        if (response.status === 2) {
+          this.msgs = [];
+          this.msgs.push({severity: 'info', summary: 'Correcto', detail: 'Revise el correo proporcionado...'});
+          this.utils.showMessages(response.status, response.information, "tst");
+          this.person = new Person(0, "", "", "", "", "", "", "", "", "", "");
+          this.newpassword = "";
+        } else {
+          this.utils.showMessages(response.status, response.information, "tst");
+        }
+      }
+    );
   }
 
-  apirRegisterUser(person: Person): Observable<any> {
+  apirRegisterUser(person: Person):
+    Observable<any> {
     // if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
     //   this.globalUri = "virtus_bk/persons/signup";
     // } else {
     //   // this.globalUri = "virtusbk/persons/signup";
     //   this.globalUri = "virtusbk/persons/signup";
     // }
-    this.globalUri = this.utils.globalUrl + "persons/loginoauth";
+    this.globalUri = this.utils.globalUrl + "persons/signup";
 
     return this._http.post<Person>(this.globalUri, person);
   }

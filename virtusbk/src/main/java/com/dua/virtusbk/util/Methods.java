@@ -111,7 +111,7 @@ public final class Methods {
     }
 
     public static Boolean comprobePassword(String pass) {
-        Pattern pat = Pattern.compile("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])\\w{6,}");///^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{6,}/
+        Pattern pat = Pattern.compile("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])[\\w\\W]{6,16}$");///^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])\w{6,}/
         Matcher mat = pat.matcher(pass);
         return mat.matches();// length in database
     }
