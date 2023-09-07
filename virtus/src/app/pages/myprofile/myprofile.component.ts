@@ -112,6 +112,7 @@ export class MyprofileComponent implements OnInit, AfterViewInit {
       this.msgs = [];
       this.utils.showMessages(2, "Datos actualizados exitosamente.", "tst");
       this.editar_datos = false;
+      this.utils.showMessages(3, "Para ver los cambios, recargue la página.", "tst");
     });
   }
 

@@ -5,7 +5,6 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, Subscription, timer} from 'rxjs';
 import {Utils} from "../../util/Utils";
 import {ActivatedRoute, Router} from '@angular/router';
-import {fabric} from "fabric";
 
 import {
   Correct,
@@ -18,8 +17,10 @@ import {
 import {FormBuilder} from '@angular/forms';
 import {StorageService} from "../../authentication/StorageService";
 import {ExtendedKeyboardEvent, Hotkey, HotkeysService} from "angular2-hotkeys";
+import {AppMainComponent} from "../../app.main.component";
 import {AppComponent} from "../../app.component";
 import {Puzzle} from "../../util/Puzzle";
+import {fabric} from "fabric";
 import {LoginServicie} from "../loginServicie";
 
 
@@ -38,7 +39,8 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
   idResource: string | null = "";
   //valRadio: string;
   public vistaVideoSenias: boolean = true;
-  viewQuestionBank: boolean = false;
+  viewQuestionBank: boolean = true;
+  personsEvaluations = {} as PersonsEvaluations
 
   private artyom: any = new Artyom();
 
@@ -76,7 +78,6 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
   public intentosEnvio: number = 0;
 
   public tmpPuzzle: Puzzle;
-
 
   @ViewChild('canvasEl', {static: true}) CanvasEl: ElementRef<HTMLCanvasElement>;
   private contex: CanvasRenderingContext2D | null;
@@ -138,7 +139,6 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
     console.log("canvas, ", this.CanvasEl);
     this.startHotKeysCommands();
     //Rompecabezas
-
   }
 
   repetirPregunta() {
@@ -253,6 +253,7 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
       /*if (this.evaluationObject.questions_[ind].canResource != undefined) {
         respondidas++;
       }*/
+      // let [resueltoStado, _] = this.verificarRespuestasCorrectas(this.evaluationObject.questions_[ind]);
       let resueltoStado = this.validarPreguntaResuelta(this.evaluationObject.questions_[ind]);
       if (resueltoStado) {
         respondidas++;
@@ -269,7 +270,6 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
         respondidas++;
       }*/
       let resueltoStado = this.validarPreguntaResuelta(this.evaluationObject.questions_[ind]);
-      // let [resueltoStado, _] = this.verificarRespuestasCorrectas(this.evaluationObject.questions_[ind]);
       if (resueltoStado) {
         respondidas++;
       }
@@ -315,33 +315,26 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
               if (this.tiempoEvaluacion <= 0) {
                 this.tiempoEvaluacion$.unsubscribe();
                 /*Código para indicar que se terminó el tiempo*/
-                this.enviarEvaluacion();
+                this.enviarEvaluacionSinValidar()
               }
               this.tiempoEvaluacion--;
             });
-
+          //}
+          if (this.voiceComandsSupport()) {
+            // if (this.storageService.getCurrentUser().email != "anthony.pachay2017@uteq.edu.ec") {
+            this.startContinuousArtyom();
+            // }
+          }
+          // if (this.storageService.getCurrentUser().email == "anthony.pachay2017@uteq.edu.ec") {
+          // this.cambiarPregunta(0, true);
+          // } else {
           this.cambiarPregunta(0, true);
-
+          // }
+          //this.initCanvas(false);
           setTimeout(() => {
             console.log("silenciar video")
             this.autoClick("#silenciar_video");
           }, 500);
-
-
-          //}
-          if (this.voiceComandsSupport()) {
-            if (this.storageService.getCurrentUser().email != "anthony.pachay2017@uteq.edu.ec") {
-              this.startContinuousArtyom();
-            }
-          }
-          console.log('vuelve...')
-          // if (this.storageService.getCurrentUser().email == "anthony.pachay2017@uteq.edu.ec") {
-
-          // } else {
-          //   this.cambiarPregunta(0, true);
-          // }
-          //this.initCanvas(false);
-
         }
       }
     });
@@ -615,9 +608,9 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
     this.palabra.totalIntentos = 0;
     // el browser es comantible con el speaker?
     if (this.text2SpeakSupport()) {
-      if (this.storageService.getCurrentUser().email != "anthony.pachay2017@uteq.edu.ec") {
-        this.leerPregunta();
-      }
+      // if (this.storageService.getCurrentUser().email != "anthony.pachay2017@uteq.edu.ec") {
+      this.leerPregunta();
+      // }
     }
   }
 
@@ -638,7 +631,6 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
       .set('Access-Control-Allow-Origin', '*')
       .set('provider', 'native')
       .set('token', this.loginservicie.getToken());
-
     return this._http.post<EvaluationQuestionsResponse>(urlServicio, {"id_evaluation": idEvaluacion}, {headers: headers});
   }
 
@@ -1090,13 +1082,16 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
     //Desactivar el reconocimiento de comandos cuando empiece la lectura
     this.artyom.dontObey();
     let local_artyom = this.artyom;
+    let loca_sweetFakeAlert = this.sweetFakeAlert;
     this.artyom.say(cadena, {
       onStart: function () {
       },
       onEnd: function () {
         //activar el reconocimiento de los comandos
         local_artyom.obey();
-        console.log("vuelve a hablar");
+        if (loca_sweetFakeAlert[0]) {
+          loca_sweetFakeAlert[0] = false;
+        }
       }
     });
   }
@@ -1380,6 +1375,38 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
     }
   }
 
+  enviarEvaluacionSinValidar(): void {
+    // ultima pregunta
+    let [flagCorrect, points] = this.verificarRespuestasCorrectas(this.questionObject);
+    this.questionObject.response_points = points;
+    console.log(this.questionObject);
+    // this.showSwal(flagCorrect, this.indexQuestionObject);
+    this.intentosEnvio++;
+    this.questionObject.num_intentos = this.intentosEnvio;
+    //valida ultima pregunta
+    console.log(this.getCountReplied()[0] + '/' + this.getCountReplied()[1])
+    // if (this.getCountReplied()[0] === this.getCountReplied()[1]) {
+      console.log("##########################################################################");
+      console.log(this.evaluationObject);
+      this.sweetFakeAlertFin = true;
+      let urlServicio = this.utils.globalUrl + "personsevaluations/insertpersonsevaluations";
+      let headers = new HttpHeaders()
+        .set('Access-Control-Allow-Origin', '*')
+        .set('provider', 'native')
+        .set('token', this.loginservicie.getToken());
+      console.log(this.evaluationObject);
+      this._http.post<any>(urlServicio, {
+        "result_evaluation": JSON.stringify(this.evaluationObject),
+        "qualification_person_evaluation": this.calcularTotales(),
+        "timespent_person_evaluation": this.calcularTiempos(),
+        "evaluations_id_evaluation": this.idEvaluation,
+      }, {headers: headers}).subscribe(response => {
+      })
+      this.sweetFakeAlertFin = false;
+      this.utils.showMessages(2, "Se ha registrado la evaluación");
+      this.router.navigateByUrl('/app/mycourse/modules/' + this.idCourse + '/themes/' + this.idModule + '/resources/' + this.idTopic);
+  }
+
   showLetra(letra: string, indice: number): string {
     if (letra === ' ')
       return 'space';
@@ -1652,10 +1679,6 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
       canvasLineas.add(circle);
       this.joinLineDerecha.push(circle);
     }
-  }
-
-  isNullOrUndefined(obje: any){
-    return obje === null || obje === undefined;
   }
 
 }
