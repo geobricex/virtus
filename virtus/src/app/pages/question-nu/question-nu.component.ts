@@ -219,12 +219,12 @@ export class QuestionNuComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    if(this.type_selected !== 'TN') {
-      if(this.file_completed === undefined || this.file_completed.length === 0) {
-        this.utils.showMessages(3, "Por favor seleccione al menos una imagen para la opción correcta ingresado.", "tst");
-        return;
-      }
-    }
+    // if(this.type_selected !== 'TN') {
+    //   if(this.file_completed === undefined || this.file_completed.length === 0) {
+    //     this.utils.showMessages(3, "Por favor seleccione al menos una imagen para la opción correcta ingresado.", "tst");
+    //     return;
+    //   }
+    // }
 
     if (this.type_selected !== 'D') {
       this.format_text.push(
@@ -257,12 +257,12 @@ export class QuestionNuComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    if(this.type_selected !== 'TN') {
-      if(this.file_completed === undefined || this.file_completed.length === 0) {
-        this.utils.showMessages(3, "Por favor seleccione al menos una imagen para el distractor ingresado.", "tst");
-        return;
-      }
-    }
+    // if(this.type_selected !== 'TN') {
+    //   if(this.file_completed === undefined || this.file_completed.length === 0) {
+    //     this.utils.showMessages(3, "Por favor seleccione al menos una imagen para el distractor ingresado.", "tst");
+    //     return;
+    //   }
+    // }
 
     if (this.type_selected === 'D') {
       this.format_text.push(
