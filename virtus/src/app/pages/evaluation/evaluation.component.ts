@@ -315,7 +315,7 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
               if (this.tiempoEvaluacion <= 0) {
                 this.tiempoEvaluacion$.unsubscribe();
                 /*Código para indicar que se terminó el tiempo*/
-                this.enviarEvaluacionSinValidar()
+                this.enviarEvaluacion()
               }
               this.tiempoEvaluacion--;
             });
@@ -1352,41 +1352,6 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
     this.questionObject.num_intentos = this.intentosEnvio;
     //valida ultima pregunta
     console.log(this.getCountReplied()[0] + '/' + this.getCountReplied()[1])
-    if (this.getCountReplied()[0] === this.getCountReplied()[1]) {
-      console.log("##########################################################################");
-      console.log(this.evaluationObject);
-      this.sweetFakeAlertFin = true;
-      let urlServicio = this.utils.globalUrl + "personsevaluations/insertpersonsevaluations";
-      let headers = new HttpHeaders()
-        .set('Access-Control-Allow-Origin', '*')
-        .set('provider', 'native')
-        .set('token', this.loginservicie.getToken());
-      console.log(this.evaluationObject);
-      this._http.post<any>(urlServicio, {
-        "result_evaluation": JSON.stringify(this.evaluationObject),
-        "qualification_person_evaluation": this.calcularTotales(),
-        "timespent_person_evaluation": this.calcularTiempos(),
-        "evaluations_id_evaluation": this.idEvaluation,
-      }, {headers: headers}).subscribe(response => {
-      })
-      this.sweetFakeAlertFin = false;
-      this.utils.showMessages(2, "Se ha registrado la evaluación");
-      this.router.navigateByUrl('/app/mycourse/modules/' + this.idCourse + '/themes/' + this.idModule + '/resources/' + this.idTopic);
-    } else {
-      this.utils.showMessages(3, "Faltan preguntas por resolver");
-    }
-  }
-
-  enviarEvaluacionSinValidar(): void {
-    // ultima pregunta
-    let [flagCorrect, points] = this.verificarRespuestasCorrectas(this.questionObject);
-    this.questionObject.response_points = points;
-    console.log(this.questionObject);
-    // this.showSwal(flagCorrect, this.indexQuestionObject);
-    this.intentosEnvio++;
-    this.questionObject.num_intentos = this.intentosEnvio;
-    //valida ultima pregunta
-    console.log(this.getCountReplied()[0] + '/' + this.getCountReplied()[1])
     // if (this.getCountReplied()[0] === this.getCountReplied()[1]) {
     console.log("##########################################################################");
     console.log(this.evaluationObject);
@@ -1407,6 +1372,9 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
     this.sweetFakeAlertFin = false;
     this.utils.showMessages(2, "Se ha registrado la evaluación");
     this.router.navigateByUrl('/app/mycourse/modules/' + this.idCourse + '/themes/' + this.idModule + '/resources/' + this.idTopic);
+    // }  else {
+    //   this.utils.showMessages(3, "Faltan preguntas por resolver");
+    // }
   }
 
   showLetra(letra: string, indice: number): string {
