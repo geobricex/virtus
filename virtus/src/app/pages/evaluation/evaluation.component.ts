@@ -104,7 +104,7 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
         label: '',
         routerLink: ['/app/mycourse/modules/' + this.idCourse + '/themes/' + this.idModule + '/resources/' + this.idTopic]
       },
-      {label: 'Cursos', routerLink: ['/app']},
+      {label: 'Cursos', routerLink: ['/app/course']},
       {label: 'Mis cursos', routerLink: ['/app/mycourse']},
       {label: 'Modulos', routerLink: ['/app/mycourse/modules/' + this.idCourse]},
       {label: 'Temas', routerLink: ['/app/mycourse/modules/' + this.idCourse + '/themes/' + this.idModule]},
@@ -806,6 +806,8 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
         this.vistaVideoSenias = !this.vistaVideoSenias;
       } else if (wildcard.trim() == "bancos") {
         this.viewQuestionBank = !this.viewQuestionBank;
+      } else if (wildcard.trim() == "anterior") {
+        this.anteriorPregunta();
       } else {
         this.autoClick("#evt_control_" + wildcard.trim());
         console.log("evaluar_control_evaluacion: " + "evt_control_" + wildcard);
@@ -1386,25 +1388,25 @@ export class EvaluationComponent implements OnInit, AfterViewInit {
     //valida ultima pregunta
     console.log(this.getCountReplied()[0] + '/' + this.getCountReplied()[1])
     // if (this.getCountReplied()[0] === this.getCountReplied()[1]) {
-      console.log("##########################################################################");
-      console.log(this.evaluationObject);
-      this.sweetFakeAlertFin = true;
-      let urlServicio = this.utils.globalUrl + "personsevaluations/insertpersonsevaluations";
-      let headers = new HttpHeaders()
-        .set('Access-Control-Allow-Origin', '*')
-        .set('provider', 'native')
-        .set('token', this.loginservicie.getToken());
-      console.log(this.evaluationObject);
-      this._http.post<any>(urlServicio, {
-        "result_evaluation": JSON.stringify(this.evaluationObject),
-        "qualification_person_evaluation": this.calcularTotales(),
-        "timespent_person_evaluation": this.calcularTiempos(),
-        "evaluations_id_evaluation": this.idEvaluation,
-      }, {headers: headers}).subscribe(response => {
-      })
-      this.sweetFakeAlertFin = false;
-      this.utils.showMessages(2, "Se ha registrado la evaluación");
-      this.router.navigateByUrl('/app/mycourse/modules/' + this.idCourse + '/themes/' + this.idModule + '/resources/' + this.idTopic);
+    console.log("##########################################################################");
+    console.log(this.evaluationObject);
+    this.sweetFakeAlertFin = true;
+    let urlServicio = this.utils.globalUrl + "personsevaluations/insertpersonsevaluations";
+    let headers = new HttpHeaders()
+      .set('Access-Control-Allow-Origin', '*')
+      .set('provider', 'native')
+      .set('token', this.loginservicie.getToken());
+    console.log(this.evaluationObject);
+    this._http.post<any>(urlServicio, {
+      "result_evaluation": JSON.stringify(this.evaluationObject),
+      "qualification_person_evaluation": this.calcularTotales(),
+      "timespent_person_evaluation": this.calcularTiempos(),
+      "evaluations_id_evaluation": this.idEvaluation,
+    }, {headers: headers}).subscribe(response => {
+    })
+    this.sweetFakeAlertFin = false;
+    this.utils.showMessages(2, "Se ha registrado la evaluación");
+    this.router.navigateByUrl('/app/mycourse/modules/' + this.idCourse + '/themes/' + this.idModule + '/resources/' + this.idTopic);
   }
 
   showLetra(letra: string, indice: number): string {

@@ -33,7 +33,7 @@ export class ModuloComponent implements OnInit, AfterViewInit {
     this.idCourse = this._route.snapshot.paramMap.get("idcourse");
     this.breadcrumbService.setItems([
       {label: '', routerLink: ['/app/mycourse']},
-      {label: 'Cursos', routerLink: ['/']},
+      {label: 'Cursos', routerLink: ['/app/course']},
       {label: 'Mis cursos', routerLink: ['/app/mycourse']},
       {label: 'Módulos', routerLink: ['/app/mycourse/modules']}
     ]);

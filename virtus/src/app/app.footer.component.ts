@@ -4,9 +4,9 @@ import {Component} from '@angular/core';
   selector: 'app-footer',
   template: `
     <div class="layout-footer">
-      <a href="/dashboard" class="logo-container">
+      <a href="#/app" class="logo-container">
         <span class="app-name">VIRTUS</span> <br>
-        <span class="text-pink-100" style="margin-left: 14px"> Aplicación educativa con enfoque universal. </span>
+        <span  style="margin-left: 14px; color: white"> Aplicación educativa con enfoque universal. </span>
       </a>
 
       <div class="footer-icons">

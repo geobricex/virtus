@@ -104,7 +104,7 @@ export class QuestionnaireComponent implements OnInit, AfterViewInit {
         label: '',
         routerLink: ['/app/mycourse/modules/' + this.idCourse + '/themes/' + this.idModule + '/resources/' + this.idTopic]
       },
-      {label: 'Cursos', routerLink: ['/app']},
+      {label: 'Cursos', routerLink: ['/app/course']},
       {label: 'Mis cursos', routerLink: ['/app/mycourse']},
       {label: 'Modulos', routerLink: ['/app/mycourse/modules/' + this.idCourse]},
       {label: 'Temas', routerLink: ['/app/mycourse/modules/' + this.idCourse + '/themes/' + this.idModule]},

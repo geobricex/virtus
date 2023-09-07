@@ -23,8 +23,9 @@
         </div>
         <div class="xl:col-1 md:col-2 sm:col-2 text-center">
           <button id="evt_control_enviar" pButton pRipple label="Enviar"
-                  [disabled]="indexQuestionObject < evaluationObject.questions_.length - 1"
-                  (click)="enviarEvaluacion()" class="p-button-success mt-2"></button>
+                  (click)="enviarEvaluacion()" class="p-button-success mt-2">
+<!--                  [disabled]="indexQuestionObject < evaluationObject.questions_.length - 1"-->
+          </button>
         </div>
         <div class="col-12 p-fieldset-content">
           <p>{{evaluationObject.description_evaluation}}</p>
