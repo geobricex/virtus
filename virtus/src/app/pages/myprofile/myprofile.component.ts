@@ -63,8 +63,8 @@ export class MyprofileComponent implements OnInit, AfterViewInit {
     this.session = this.storageService.getCurrentSession();
     this.editar_datos = false;
     this.formUpdatePhto = false;
-    // https://aplicaciones.uteq.edu.ec:9549
-    this.client = new PocketBase("https://fyc.uteq.edu.ec:9549");
+    // https://aplicaciones.uteq.edu.ec/pocketbase
+    this.client = new PocketBase("https://fyc.uteq.edu.ec/pocketbase");
     let resp = this.initPocket();
     console.log(resp);
     console.log(this.session.token);
@@ -180,7 +180,7 @@ export class MyprofileComponent implements OnInit, AfterViewInit {
   }
 
   makePathRecurso(element: any): string {
-    var urlRecurso: string = "https://fyc.uteq.edu.ec:9549" + "/api/files/" + element["@collectionName"] + "/" + element.id + "/" + element.field;// +"/" ;
+    var urlRecurso: string = "https://fyc.uteq.edu.ec/pocketbase" + "/api/files/" + element["@collectionName"] + "/" + element.id + "/" + element.field;// +"/" ;
     return urlRecurso;
   }
 
@@ -249,75 +249,75 @@ export class MyprofileComponent implements OnInit, AfterViewInit {
   avatar: any [] = [
     {
       name: "paloma",
-      image: "https://fyc.uteq.edu.ec:9549/api/files/vhcVv4ysYudB08r/XrTv4ARtJ14N9rn/c4TI0hFWchjzlFjDjNb6hp8JpXw0tAmM.png",//paloma
+      image: "https://fyc.uteq.edu.ec/pocketbase/api/files/vhcVv4ysYudB08r/XrTv4ARtJ14N9rn/c4TI0hFWchjzlFjDjNb6hp8JpXw0tAmM.png",//paloma
     },
     {
       name: "elefante",
-      image: "https://fyc.uteq.edu.ec:9549/api/files/vhcVv4ysYudB08r/XrTv4ARtJ14N9rn/MmEcidSf5cTgdRV1AtLGN4Pi4sO9nWfD.png",//elefante
+      image: "https://fyc.uteq.edu.ec/pocketbase/api/files/vhcVv4ysYudB08r/XrTv4ARtJ14N9rn/MmEcidSf5cTgdRV1AtLGN4Pi4sO9nWfD.png",//elefante
     },
     {
       name: "morza",
-      image: "https://fyc.uteq.edu.ec:9549/api/files/vhcVv4ysYudB08r/XrTv4ARtJ14N9rn/q0XEor2cF2h4GrsloT7xTAHgNEaY8jae.png",//morza
+      image: "https://fyc.uteq.edu.ec/pocketbase/api/files/vhcVv4ysYudB08r/XrTv4ARtJ14N9rn/q0XEor2cF2h4GrsloT7xTAHgNEaY8jae.png",//morza
     },
     {
       name: "tigre",
-      image: "https://fyc.uteq.edu.ec:9549/api/files/vhcVv4ysYudB08r/XrTv4ARtJ14N9rn/r08Xf0mYdLuz1OFQXPMj3ZmG6uwM4aXa.png",//tigre
+      image: "https://fyc.uteq.edu.ec/pocketbase/api/files/vhcVv4ysYudB08r/XrTv4ARtJ14N9rn/r08Xf0mYdLuz1OFQXPMj3ZmG6uwM4aXa.png",//tigre
     },
     {
       name: "vaca",
-      image: "https://fyc.uteq.edu.ec:9549/api/files/vhcVv4ysYudB08r/XrTv4ARtJ14N9rn/9rrUuGVG4ep8QejNlOhQfoqkqki3ZK2P.png",//vaca
+      image: "https://fyc.uteq.edu.ec/pocketbase/api/files/vhcVv4ysYudB08r/XrTv4ARtJ14N9rn/9rrUuGVG4ep8QejNlOhQfoqkqki3ZK2P.png",//vaca
     },
     {
       name: "alce",
-      image: "https://fyc.uteq.edu.ec:9549/api/files/vhcVv4ysYudB08r/XrTv4ARtJ14N9rn/WAVkyXYIZpdA93VIkJhh327tp3uM4jxA.png",//alce
+      image: "https://fyc.uteq.edu.ec/pocketbase/api/files/vhcVv4ysYudB08r/XrTv4ARtJ14N9rn/WAVkyXYIZpdA93VIkJhh327tp3uM4jxA.png",//alce
     },
     {
       name: "caballo",
-      image: "https://fyc.uteq.edu.ec:9549/api/files/vhcVv4ysYudB08r/XrTv4ARtJ14N9rn/RBSr3TFTj29AAjPD1qfXGFpnOPoZoAl4.png",//caballo
+      image: "https://fyc.uteq.edu.ec/pocketbase/api/files/vhcVv4ysYudB08r/XrTv4ARtJ14N9rn/RBSr3TFTj29AAjPD1qfXGFpnOPoZoAl4.png",//caballo
     },
     {
       name: "cabra",
-      image: "https://fyc.uteq.edu.ec:9549/api/files/vhcVv4ysYudB08r/XrTv4ARtJ14N9rn/hkWhaLgyTjxCWEYbIZ5DJAhIP48VbIcT.png",//cabra
+      image: "https://fyc.uteq.edu.ec/pocketbase/api/files/vhcVv4ysYudB08r/XrTv4ARtJ14N9rn/hkWhaLgyTjxCWEYbIZ5DJAhIP48VbIcT.png",//cabra
     },
     {
       name: "rinoceronte",
-      image: "https://fyc.uteq.edu.ec:9549/api/files/vhcVv4ysYudB08r/XrTv4ARtJ14N9rn/ptIWCVQELOYS2mV3DQXc8pOdbe8m5RPc.png",//rinoceronte
+      image: "https://fyc.uteq.edu.ec/pocketbase/api/files/vhcVv4ysYudB08r/XrTv4ARtJ14N9rn/ptIWCVQELOYS2mV3DQXc8pOdbe8m5RPc.png",//rinoceronte
     },
     {
       name: "venado",
-      image: "https://fyc.uteq.edu.ec:9549/api/files/vhcVv4ysYudB08r/XrTv4ARtJ14N9rn/HcS5vleLE5OXhOx1yOi95WPgF0rVPlnc.png",//venado
+      image: "https://fyc.uteq.edu.ec/pocketbase/api/files/vhcVv4ysYudB08r/XrTv4ARtJ14N9rn/HcS5vleLE5OXhOx1yOi95WPgF0rVPlnc.png",//venado
     },
     {
       name: "gorila",
-      image: "https://fyc.uteq.edu.ec:9549/api/files/vhcVv4ysYudB08r/XrTv4ARtJ14N9rn/bI3UnrRJABu12q8pzswAuMtM0oDT7zhZ.png",//gorila
+      image: "https://fyc.uteq.edu.ec/pocketbase/api/files/vhcVv4ysYudB08r/XrTv4ARtJ14N9rn/bI3UnrRJABu12q8pzswAuMtM0oDT7zhZ.png",//gorila
     },
     {
       name: "hipopótamo",
-      image: "https://fyc.uteq.edu.ec:9549/api/files/vhcVv4ysYudB08r/XrTv4ARtJ14N9rn/SnzOlBKapg5MIxrhPC8VS0tldIlQ8GL0.png",//hipopótamo
+      image: "https://fyc.uteq.edu.ec/pocketbase/api/files/vhcVv4ysYudB08r/XrTv4ARtJ14N9rn/SnzOlBKapg5MIxrhPC8VS0tldIlQ8GL0.png",//hipopótamo
     },
     {
       name: "cerdo",
-      image: "https://fyc.uteq.edu.ec:9549/api/files/vhcVv4ysYudB08r/XrTv4ARtJ14N9rn/8nKZ5siKeLvAFu6uRojMIxTFhQx8HLXW.png",//cerdo
+      image: "https://fyc.uteq.edu.ec/pocketbase/api/files/vhcVv4ysYudB08r/XrTv4ARtJ14N9rn/8nKZ5siKeLvAFu6uRojMIxTFhQx8HLXW.png",//cerdo
     },
     {
       name: "gato",
-      image: "https://fyc.uteq.edu.ec:9549/api/files/vhcVv4ysYudB08r/XrTv4ARtJ14N9rn/EzRB3YSZVicus7CU2U8xxCW1ZS8tYa2G.png",//gato
+      image: "https://fyc.uteq.edu.ec/pocketbase/api/files/vhcVv4ysYudB08r/XrTv4ARtJ14N9rn/EzRB3YSZVicus7CU2U8xxCW1ZS8tYa2G.png",//gato
     },
     {
       name: "zorro",
-      image: "https://fyc.uteq.edu.ec:9549/api/files/vhcVv4ysYudB08r/XrTv4ARtJ14N9rn/xVAR5UMUVuHAtRJnctRSJIIWHF00egRL.png",//zorro
+      image: "https://fyc.uteq.edu.ec/pocketbase/api/files/vhcVv4ysYudB08r/XrTv4ARtJ14N9rn/xVAR5UMUVuHAtRJnctRSJIIWHF00egRL.png",//zorro
     },
     {
       name: "jirafa",
-      image: "https://fyc.uteq.edu.ec:9549/api/files/vhcVv4ysYudB08r/XrTv4ARtJ14N9rn/hrOSvnw3MulIO4HHgMRZd3fQ4meS5bMK.png",//jirafa
+      image: "https://fyc.uteq.edu.ec/pocketbase/api/files/vhcVv4ysYudB08r/XrTv4ARtJ14N9rn/hrOSvnw3MulIO4HHgMRZd3fQ4meS5bMK.png",//jirafa
     },
     {
       name: "león",
-      image: "https://fyc.uteq.edu.ec:9549/api/files/vhcVv4ysYudB08r/XrTv4ARtJ14N9rn/EVsyS8Xq8Jwlq5dieuAIuSBdu2vXE5g3.png",//león
+      image: "https://fyc.uteq.edu.ec/pocketbase/api/files/vhcVv4ysYudB08r/XrTv4ARtJ14N9rn/EVsyS8Xq8Jwlq5dieuAIuSBdu2vXE5g3.png",//león
     },
     {
       name: "conejo",
-      image: "https://fyc.uteq.edu.ec:9549/api/files/vhcVv4ysYudB08r/XrTv4ARtJ14N9rn/mBnytNCGmR2vzJxLX5lfts7wRpOSH6QA.png"//conejo
+      image: "https://fyc.uteq.edu.ec/pocketbase/api/files/vhcVv4ysYudB08r/XrTv4ARtJ14N9rn/mBnytNCGmR2vzJxLX5lfts7wRpOSH6QA.png"//conejo
     },
   ];
 }

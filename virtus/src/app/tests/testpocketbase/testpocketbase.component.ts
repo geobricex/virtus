@@ -32,7 +32,8 @@ export class TestpocketbaseComponent implements OnInit {
     firstName: new FormControl()
   });
 
-  globalUri: string = "https://aplicaciones.uteq.edu.ec:9549";
+  //globalUri: string = "https://aplicaciones.uteq.edu.ec:9549";
+  globalUri: string = "https://aplicaciones.uteq.edu.e/pocketbase";
 
   constructor(private _http: HttpClient) {
   }

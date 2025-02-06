@@ -1,6 +1,6 @@
 {
   "/virtusbk/*": {
-    "target": "https://fyc.uteq.edu.ec:9000/virtusbk/",
+    "target": "https://fyc.uteq.edu.ec/virtus/virtusbk/",
     "secure": false,
     "logLevel": "debug"
   },
